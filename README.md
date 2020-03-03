@@ -8,4 +8,4 @@ TESTING
 
 Tests need to be run from tests directory of the main openNetworkHMI project via sh script.
 
-Project site: https://opennetworkhmi.net
+Project site: https://opennetworkhmi.net/index.php?s=piESocket
