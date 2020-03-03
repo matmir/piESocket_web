@@ -1,4 +1,4 @@
-openNetworkHMI web - moddified version for piESocket project
+openNetworkHMI web - modified version for piESocket project
 =======
 
 Web part of the openNetworkHMI project.
