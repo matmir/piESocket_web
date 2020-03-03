@@ -1,0 +1,109 @@
+
+{{ form_start(form) }}
+<table>
+    <tbody>
+        <tr>
+            <th>{{ form_label(form.username) }}</th>
+            <td>{{ form_widget(form.username) }}</td>
+            <td>{{ form_help(form.username) }}</td>
+            <td>
+                {% if form.username.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.username.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr id="oldPasswordTR" {% if editFlag != 1 %}style="display: none"{% endif %}>
+            <th>{{ form_label(form.oldPassword) }}</th>
+            {% if editFlag != 1 or is_granted('ROLE_ADMIN') %}
+                <td>{{ form_widget(form.oldPassword, {'required': false}) }}</td>
+            {% else %}
+                <td>{{ form_widget(form.oldPassword) }}</td>
+            {% endif %}
+            <td>{{ form_help(form.oldPassword) }}</td>
+            <td>
+                {% if form.oldPassword.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.oldPassword.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.password1) }}</th>
+            {% if editFlag == 1 %}
+                <td>{{ form_widget(form.password1, {'required': false}) }}</td>
+            {% else %}
+                <td>{{ form_widget(form.password1) }}</td>
+            {% endif %}
+            <td>{{ form_help(form.password1) }}</td>
+            <td>
+                {% if form.password1.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.password1.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.password2) }}</th>
+            {% if editFlag == 1 %}
+                <td>{{ form_widget(form.password2, {'required': false}) }}</td>
+            {% else %}
+                <td>{{ form_widget(form.password2) }}</td>
+            {% endif %}
+            <td>{{ form_help(form.password2) }}</td>
+            <td>
+                {% if form.password2.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.password2.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.email) }}</th>
+            <td>{{ form_widget(form.email) }}</td>
+            <td>{{ form_help(form.email) }}</td>
+            <td>
+                {% if form.email.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.email.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.userRole) }}</th>
+            <td>{{ form_widget(form.userRole) }}</td>
+            <td>{{ form_help(form.userRole) }}</td>
+            <td>
+                {% if form.userRole.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.userRole.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                {{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}
+                <a class="btn btn-danger" href="{{ path('admin_user_list') }}" role="button">Cancel</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+{{ form_end(form) }}

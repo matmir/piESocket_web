@@ -1,0 +1,58 @@
+
+{{ form_start(form) }}
+<table>
+    <tbody>
+        <tr>
+            <th>{{ form_label(form.ltTagName) }}</th>
+            <td>
+                {{ form_widget(form.ltTagName, {'attr': {'list': 'tagLogger-datalist'}}) }}
+                <datalist id="tagLogger-datalist"></datalist>
+            </td>
+            <td>{{ form_help(form.ltTagName) }}</td>
+            <td>
+                {% if form.ltTagName.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.ltTagName.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.ltInterval) }}</th>
+            <td>{{ form_widget(form.ltInterval) }}</td>
+            <td>{{ form_help(form.ltInterval) }}</td>
+            <td>
+                {% if form.ltInterval.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.ltInterval.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr id="tagsLoggerIntervalS" {% if form.ltInterval.vars['value'] != '5' %}style="display: none"{% endif %}>
+            <th>{{ form_label(form.ltIntervalS) }}</th>
+            <td>{{ form_widget(form.ltIntervalS) }}</td>
+            <td>{{ form_help(form.ltIntervalS) }}</td>
+            <td>
+                {% if form.ltIntervalS.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.ltIntervalS.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                {{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}
+                <a class="btn btn-danger" href="{{ path('admin_logger_list') }}" role="button">Cancel</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+{{ form_end(form) }}

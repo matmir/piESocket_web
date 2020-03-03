@@ -1,0 +1,175 @@
+{% extends 'admin/config/base.config.html.twig' %}
+
+{% block adminConfigTitle %}General{% endblock %}
+
+{% block adminConfigBody %}
+    
+    <br />
+    
+    {{ form_start(form) }}
+    <table>
+        <tbody>
+            <tr>
+                <th>{{ form_label(form.alarmingUpdateInterval) }}</th>
+                <td>{{ form_widget(form.alarmingUpdateInterval) }}</td>
+                <td>{{ form_help(form.alarmingUpdateInterval) }}</td>
+                <td>
+                    {% if form.alarmingUpdateInterval.vars['errors']|length > 0 %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for error in form.alarmingUpdateInterval.vars['errors'] %}
+                                {{ error.message }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ form_label(form.processUpdateInterval) }}</th>
+                <td>{{ form_widget(form.processUpdateInterval) }}</td>
+                <td>{{ form_help(form.processUpdateInterval) }}</td>
+                <td>
+                    {% if form.processUpdateInterval.vars['errors']|length > 0 %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for error in form.processUpdateInterval.vars['errors'] %}
+                                {{ error.message }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ form_label(form.tagLoggerUpdateInterval) }}</th>
+                <td>{{ form_widget(form.tagLoggerUpdateInterval) }}</td>
+                <td>{{ form_help(form.tagLoggerUpdateInterval) }}</td>
+                <td>
+                    {% if form.tagLoggerUpdateInterval.vars['errors']|length > 0 %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for error in form.tagLoggerUpdateInterval.vars['errors'] %}
+                                {{ error.message }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ form_label(form.scriptSystemUpdateInterval) }}</th>
+                <td>{{ form_widget(form.scriptSystemUpdateInterval) }}</td>
+                <td>{{ form_help(form.scriptSystemUpdateInterval) }}</td>
+                <td>
+                    {% if form.scriptSystemUpdateInterval.vars['errors']|length > 0 %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for error in form.scriptSystemUpdateInterval.vars['errors'] %}
+                                {{ error.message }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ form_label(form.socketMaxConn) }}</th>
+                <td>{{ form_widget(form.socketMaxConn) }}</td>
+                <td>{{ form_help(form.socketMaxConn) }}</td>
+                <td>
+                    {% if form.socketMaxConn.vars['errors']|length > 0 %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for error in form.socketMaxConn.vars['errors'] %}
+                                {{ error.message }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ form_label(form.socketPort) }}</th>
+                <td>{{ form_widget(form.socketPort) }}</td>
+                <td>{{ form_help(form.socketPort) }}</td>
+                <td>
+                    {% if form.socketPort.vars['errors']|length > 0 %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for error in form.socketPort.vars['errors'] %}
+                                {{ error.message }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ form_label(form.serverAppPath) }}</th>
+                <td>{{ form_widget(form.serverAppPath, {'attr': {'size': 50}}) }}</td>
+                <td>{{ form_help(form.serverAppPath) }}</td>
+                <td>
+                    {% if form.serverAppPath.vars['errors']|length > 0 %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for error in form.serverAppPath.vars['errors'] %}
+                                {{ error.message }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ form_label(form.webAppPath) }}</th>
+                <td>{{ form_widget(form.webAppPath, {'attr': {'size': 50}}) }}</td>
+                <td>{{ form_help(form.webAppPath) }}</td>
+                <td>
+                    {% if form.webAppPath.vars['errors']|length > 0 %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for error in form.webAppPath.vars['errors'] %}
+                                {{ error.message }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ form_label(form.scriptSystemExecuteScript) }}</th>
+                <td>{{ form_widget(form.scriptSystemExecuteScript, {'attr': {'size': 50}}) }}</td>
+                <td>{{ form_help(form.scriptSystemExecuteScript) }}</td>
+                <td>
+                    {% if form.scriptSystemExecuteScript.vars['errors']|length > 0 %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for error in form.scriptSystemExecuteScript.vars['errors'] %}
+                                {{ error.message }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ form_label(form.userScriptsPath) }}</th>
+                <td>{{ form_widget(form.userScriptsPath, {'attr': {'size': 50}}) }}</td>
+                <td>{{ form_help(form.userScriptsPath) }}</td>
+                <td>
+                    {% if form.userScriptsPath.vars['errors']|length > 0 %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for error in form.userScriptsPath.vars['errors'] %}
+                                {{ error.message }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ form_label(form.ackAccessRole) }}</th>
+                <td>{{ form_widget(form.ackAccessRole) }}</td>
+                <td>{{ form_help(form.ackAccessRole) }}</td>
+                <td>
+                    {% if form.ackAccessRole.vars['errors']|length > 0 %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for error in form.ackAccessRole.vars['errors'] %}
+                                {{ error.message }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    {{ form_end(form) }}
+              
+{% endblock %}

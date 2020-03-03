@@ -1,0 +1,7 @@
+www-data ALL= NOPASSWD: /bin/sh [onh_shScripts]clear_logs.sh *
+www-data ALL= NOPASSWD: /bin/sh [onh_shScripts]archive_logs.sh *
+www-data ALL= NOPASSWD: /bin/sh [onh_shScripts]disable_services.sh
+www-data ALL= NOPASSWD: /bin/sh [onh_shScripts]enable_services.sh
+www-data ALL= NOPASSWD: /bin/sh [onh_shScripts]onh_start.sh
+www-data ALL= NOPASSWD: /bin/sh [onh_shScripts]onh_stop.sh
+www-data ALL= NOPASSWD: /bin/sh [onh_shScripts]status.sh

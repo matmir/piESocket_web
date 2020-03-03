@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration page - {% block adminTitle %}{% endblock %}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-2">
+          
+            <ul class="nav flex-column nav-pills">
+                <li class="nav-item">
+                  <a class="nav-link {% if app.request.attributes.get( '_route' ) starts with 'admin_index' %}active{% endif %}" href="{{ path('admin_index') }}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if app.request.attributes.get( '_route' ) starts with 'admin_config' %}active{% endif %}" href="{{ path('admin_config_general') }}">System configuration</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if app.request.attributes.get( '_route' ) starts with 'admin_user' %}active{% endif %}" href="{{ path('admin_user_list') }}">Users</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if app.request.attributes.get( '_route' ) starts with 'admin_logs_show' %}active{% endif %}" href="{{ path('admin_logs_show') }}">System logs</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if app.request.attributes.get( '_route' ) starts with 'admin_tags' %}active{% endif %}" href="{{ path('admin_tags_list') }}">System Tags</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if (app.request.attributes.get( '_route' ) starts with 'admin_logger') or (app.request.attributes.get( '_route' ) starts with 'admin_chart') %}active{% endif %}" href="{{ path('admin_logger_list') }}">Tags logger</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if app.request.attributes.get( '_route' ) starts with 'admin_alarm' %}active{% endif %}" href="{{ path('admin_alarm_list') }}">Alarm system</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if app.request.attributes.get( '_route' ) starts with 'admin_script' %}active{% endif %}" href="{{ path('admin_script_list') }}">Script system</a>
+                </li>
+            </ul>
+            
+        </div>
+        
+        <div class="col">
+          
+            {% block adminBody %}{% endblock %}
+            
+        </div>
+    </div>
+{% endblock %}

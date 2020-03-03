@@ -1,0 +1,103 @@
+{% extends 'admin/alarm/base.alarm.html.twig' %}
+
+{% block adminAlarmTitle %}Archived alarms{% endblock %}
+
+{% block adminAlarmBody %}
+    
+    {% for message in app.flashes('alarm-archive-msg-ok') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    
+    <a class="btn btn-primary" href="{{ path('admin_alarm_archived_clear') }}" role="button">Clear history</a>
+    <br />
+    <br />
+    
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            {% set idDir=0 %}
+            {% set priorityDir=0 %}
+            {% set onTimeDir=0 %}
+            {% set offTimeDir=0 %}
+            {% set ackTimeDir=0 %}
+            <th scope="col">
+                {% if app.request.get('sort') == 0 %}
+                    {% if app.request.get('sortDESC') == 0 %}
+                    <span>&#8593;</span>
+                    {% set idDir = 1 %}
+                    {% else %}
+                    <span>&#8595;</span>
+                    {% endif %}
+                {% endif %}
+                <a href="{{ path('admin_alarm_archived', {'sort': 0, 'sortDESC': (idDir)}) }}">ID</a>
+            </th>
+            <th scope="col">
+                {% if app.request.get('sort') == 1 %}
+                    {% if app.request.get('sortDESC') == 0 %}
+                    <span>&#8593;</span>
+                    {% set priorityDir = 1 %}
+                    {% else %}
+                    <span>&#8595;</span>
+                    {% endif %}
+                {% endif %}
+                <a href="{{ path('admin_alarm_archived', {'sort': 1, 'sortDESC': (priorityDir)}) }}">Priority</a>
+            </th>
+            <th scope="col">Message</th>
+            <th scope="col">
+                {% if app.request.get('sort') == 2 %}
+                    {% if app.request.get('sortDESC') == 0 %}
+                    <span>&#8593;</span>
+                    {% set onTimeDir = 1 %}
+                    {% else %}
+                    <span>&#8595;</span>
+                    {% endif %}
+                {% endif %}
+                <a href="{{ path('admin_alarm_archived', {'sort': 2, 'sortDESC': (onTimeDir)}) }}">On Timestamp</a>
+            </th>
+            <th scope="col">
+                {% if app.request.get('sort') == 3 %}
+                    {% if app.request.get('sortDESC') == 0 %}
+                    <span>&#8593;</span>
+                    {% set offTimeDir = 1 %}
+                    {% else %}
+                    <span>&#8595;</span>
+                    {% endif %}
+                {% endif %}
+                <a href="{{ path('admin_alarm_archived', {'sort': 3, 'sortDESC': (offTimeDir)}) }}">Off Timestamp</a>
+            </th>
+            <th scope="col">
+                {% if app.request.get('sort') == 4 %}
+                    {% if app.request.get('sortDESC') == 0 %}
+                    <span>&#8593;</span>
+                    {% set ackTimeDir = 1 %}
+                    {% else %}
+                    <span>&#8595;</span>
+                    {% endif %}
+                {% endif %}
+                <a href="{{ path('admin_alarm_archived', {'sort': 4, 'sortDESC': (ackTimeDir)}) }}">Ack Timestamp</a>
+            </th>
+        </tr>
+        </thead>
+        <tbody id="alarmBody">
+
+        {% for alarm in alarms %}
+            <tr>
+                <th scope="row">{{ alarm.getId() }}</th>
+                <td>{{ alarm.getPriority() }}</td>
+                <td>{{ alarm.getMessage() }}</td>
+                <td>{{ alarm.getOnTimestamp() }}</td>
+                <td>{{ alarm.getOffTimestamp() }}</td>
+                <td>{{ alarm.getAckTimestamp() }}</td>
+            </tr>
+        {% endfor %}
+            
+        </tbody>
+    </table>
+        
+    {% set oParams = {'sort': app.request.get('sort'), 'sortDESC': app.request.get('sortDESC')} %}
+    {{ include('paginator.html.twig', { 'paginator': paginator, 'route_name': 'admin_alarm_archived',
+                                        'route_page': 'page', 'route_perPage': 'perPage', 'route_otherParams': oParams }) }}
+                  
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends 'admin/base.admin.html.twig' %}
+
+{% block adminTitle %}Tags{% endblock %}
+
+{% block adminBody %}
+        
+    {% for message in app.flashes('tag-msg-ok') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    
+    {% for message in app.flashes('tag-msg-error') %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    
+    <a class="btn btn-primary" href="{{ path('admin_tags_add') }}" role="button">Add tag</a>
+        
+    <div class="btn-group" role="group" aria-label="Area sort">
+        <a class="btn btn-{% if app.request.get('area') != 0 %}outline-{% endif %}secondary" href="{{ path('admin_tags_list', {'area': 0}) }}" role="button">All</a>
+        <a class="btn btn-{% if app.request.get('area') != 1 %}outline-{% endif %}success" href="{{ path('admin_tags_list', {'area': 1}) }}" role="button">Input</a>
+        <a class="btn btn-{% if app.request.get('area') != 2 %}outline-{% endif %}danger" href="{{ path('admin_tags_list', {'area': 2}) }}" role="button">Output</a>
+        <a class="btn btn-{% if app.request.get('area') != 3 %}outline-{% endif %}primary" href="{{ path('admin_tags_list', {'area': 3}) }}" role="button">Memory</a>
+    </div>
+    
+    <br /><br />
+    
+    <table class="table table-sm">
+    <thead>
+    <tr>
+        {% set idDir=0 %}
+        {% set nameDir=0 %}
+        {% set addressDir=0 %}
+        {% set typeDir=0 %}
+        <th scope="col">
+            {% if app.request.get('sort') == 0 %}
+                {% if app.request.get('sortDESC') == 0 %}
+                <span>&#8593;</span>
+                {% set idDir = 1 %}
+                {% else %}
+                <span>&#8595;</span>
+                {% endif %}
+            {% endif %}
+            <a href="{{ path('admin_tags_list', {'area': app.request.get('area'), 'sort': 0, 'sortDESC': (idDir)}) }}">ID</a>
+        </th>
+        <th scope="col">
+            {% if app.request.get('sort') == 1 %}
+                {% if app.request.get('sortDESC') == 0 %}
+                <span>&#8593;</span>
+                {% set nameDir = 1 %}
+                {% else %}
+                <span>&#8595;</span>
+                {% endif %}
+            {% endif %}
+            <a href="{{ path('admin_tags_list', {'area': app.request.get('area'), 'sort': 1, 'sortDESC': (nameDir)}) }}">Name</a>
+        </th>
+        <th scope="col">Area</th>
+        <th scope="col">
+            {% if app.request.get('sort') == 2 %}
+                {% if app.request.get('sortDESC') == 0 %}
+                <span>&#8593;</span>
+                {% set addressDir = 1 %}
+                {% else %}
+                <span>&#8595;</span>
+                {% endif %}
+            {% endif %}
+            <a href="{{ path('admin_tags_list', {'area': app.request.get('area'), 'sort': 2, 'sortDESC': (addressDir)}) }}">Start address</a>
+        </th>
+        <th scope="col">
+            {% if app.request.get('sort') == 3 %}
+                {% if app.request.get('sortDESC') == 0 %}
+                <span>&#8593;</span>
+                {% set typeDir = 1 %}
+                {% else %}
+                <span>&#8595;</span>
+                {% endif %}
+            {% endif %}
+            <a href="{{ path('admin_tags_list', {'area': app.request.get('area'), 'sort': 3, 'sortDESC': (typeDir)}) }}">Tag type</a>
+        </th>
+        <th scope="col">Read access</th>
+        <th scope="col">Write access</th>
+        <th scope="col">Options</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for tag in tags %}
+            
+            {% if TagAreaName(tag.getArea()) == "Memory" %}
+            <tr class="table-primary">
+            {% elseif TagAreaName(tag.getArea()) == "Input" %}
+            <tr class="table-success">
+            {% elseif TagAreaName(tag.getArea()) == "Output" %}
+            <tr class="table-danger">
+            {% else %}
+            <tr>
+            {% endif %}
+            
+                <th scope="row">{{ tag.getId() }}</th>
+                <td>{{ tag.getName() }}</td>
+                <td>{{ TagAreaName(tag.getArea()) }}</td>
+                <td>{{ TagAreaPrefix(tag.getArea()) }} {{ tag.getByteAddress() }}.{{ tag.getBitAddress() }}</td>
+                <td>{{ TagTypeName(tag.getType()) }}</td>
+                <td>{{ tag.getReadAccess() }}</td>
+                <td>{{ tag.getWriteAccess() }}</td>
+                <td>
+                    <a href="{{ path('admin_tags_edit', {'tagID': tag.getId()}) }}"><img src="{{ asset('img/edit.png') }}" alt="Edit" title="Edit"></a>
+                    <a href="{{ path('admin_tags_delete', {'tagID': tag.getId()}) }}"><img src="{{ asset('img/delete.png') }}" alt="Delete" title="Delete"></a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+    
+    {% set oParams = { 'area': app.request.get('area'), 'sort': app.request.get('sort'), 'sortDESC': app.request.get('sortDESC')} %}
+    {{ include('paginator.html.twig', { 'paginator': paginator, 'route_name': 'admin_tags_list',
+                                        'route_page': 'page', 'route_perPage': 'perPage', 'route_otherParams': oParams }) }}
+                  
+{% endblock %}

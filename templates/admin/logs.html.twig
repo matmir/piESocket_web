@@ -1,0 +1,58 @@
+{% extends 'admin/base.admin.html.twig' %}
+
+{% block adminTitle %}Logs{% endblock %}
+
+{% block adminBody %}
+    
+    {% for message in app.flashes('log-msg-ok') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    
+    <div>
+        <a class="btn btn-danger" href="{{ path('admin_logs_clear') }}">Delete all logs</a>
+        <a class="btn btn-warning" href="{{ path('admin_logs_archive') }}">Archive all logs</a>
+    </div>
+    
+    <br />
+    
+    <div>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link {% if (component == 'mainProg')  %}active{% endif %}" href="{{ path('admin_logs_show', {'component': 'mainProg'}) }}">Main program</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if (component == 'parser')  %}active{% endif %}" href="{{ path('admin_logs_show', {'component': 'parser'}) }}">Parser</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if (component == 'process')  %}active{% endif %}" href="{{ path('admin_logs_show', {'component': 'process'}) }}">Process updater</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if (component == 'socket')  %}active{% endif %}" href="{{ path('admin_logs_show', {'component': 'socket'}) }}">Socket</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if (component == 'taglogger')  %}active{% endif %}" href="{{ path('admin_logs_show', {'component': 'taglogger'}) }}">Tag logger</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if (component == 'alarming')  %}active{% endif %}" href="{{ path('admin_logs_show', {'component': 'alarming'}) }}">Alarm system</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if (component == 'script')  %}active{% endif %}" href="{{ path('admin_logs_show', {'component': 'script'}) }}">Script system</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if (component == 'scriptOutput')  %}active{% endif %}" href="{{ path('admin_logs_show', {'component': 'scriptOutput'}) }}">Script outputs</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if (component == 'driver')  %}active{% endif %}" href="{{ path('admin_logs_show', {'component': 'driver'}) }}">Driver</a>
+            </li>
+        </ul>
+            
+    </div>
+            
+    <div>
+        <code>
+            <pre class="pre-scrollable" style="max-height: 75vh; white-space: pre-wrap;">{{ log }}</pre>
+        </code>
+    </div>
+{% endblock %}

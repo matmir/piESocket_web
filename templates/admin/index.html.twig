@@ -1,0 +1,162 @@
+{% extends 'admin/base.admin.html.twig' %}
+
+{% block adminTitle %}Dashboard{% endblock %}
+
+{% block adminBody %}
+    
+    <div class="card">
+    <h5 class="card-header">
+        System services
+    </h5>
+    <div class="card-body">
+        
+        <p>
+            Autoloading openNetworkHMI service:
+            {% if services['Autoload'] %}
+                <button id="btnChangeAutoload" type="button" class="btn btn-success">Enabled</button>
+            {% else %}
+                <button id="btnChangeAutoload" type="button" class="btn btn-danger">Disabled</button>
+            {% endif %}
+        </p>
+        
+        <table class="table table-sm">
+        <thead>
+            <tr>
+                <th scope="col">Service name</th>
+                <th scope="col">Status</th>
+                <th scope="col">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <tr>
+                <th scope="row">openNetworkHMI</th>
+                <td>
+                    {% if services['openNetworkHMI'] == 'active' %}
+                        <span id="onhStatus" class="badge badge-success">active</span>
+                    {% elseif services['openNetworkHMI'] == 'inactive' %}
+                        <span id="onhStatus" class="badge badge-danger">inactive</span>
+                    {% elseif services['openNetworkHMI'] == 'failed' %}
+                        <span id="onhStatus" class="badge badge-dark">failed</span>
+                    {% endif %}
+                    {% if restart == true %}
+                        <span id="onhRStatus" class="badge badge-warning" style="display: inline-block">Need restart</span>
+                    {% else %}
+                        <span id="onhRStatus" class="badge badge-warning" style="display: none">Need restart</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if services['openNetworkHMI'] == 'active' %}
+                        <button id="btnChangeONH" type="button" class="btn btn-danger">Kill service</button>
+                        <button id="btnExitONH" type="button" class="btn btn-primary">Exit service</button>
+                    {% else %}
+                        <button id="btnChangeONH" type="button" class="btn btn-success">Start service</button>
+                        <button id="btnExitONH" type="button" class="btn btn-primary" style="display: none">Exit service</button>
+                    {% endif %}
+                    
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Apache2</th>
+                <td>
+                    {% if services['Apache2'] == 'active' %}
+                        <span id="apacheStatus" class="badge badge-success">active</span>
+                    {% elseif services['Apache2'] == 'inactive' %}
+                        <span id="apacheStatus" class="badge badge-danger">inactive</span>
+                    {% elseif services['Apache2'] == 'failed' %}
+                        <span id="apacheStatus" class="badge badge-dark">failed</span>
+                    {% endif %}
+                </td>
+                <td>none</td>
+            </tr>
+            <tr>
+                <th scope="row">MySQL</th>
+                <td>
+                    {% if services['MySQL'] == 'active' %}
+                        <span id="mysqlStatus" class="badge badge-success">active</span>
+                    {% elseif services['MySQL'] == 'inactive' %}
+                        <span id="mysqlStatus" class="badge badge-danger">inactive</span>
+                    {% elseif services['MySQL'] == 'failed' %}
+                        <span id="mysqlStatus" class="badge badge-dark">failed</span>
+                    {% endif %}
+                </td>
+                <td>none</td>
+            </tr>
+            
+        </tbody>
+        </table>
+        
+    </div>
+    </div>
+          
+    <br />
+                
+    <div class="card">
+    <h5 class="card-header">
+        System threads cycle times
+    </h5>
+    <div class="card-body">
+        
+        <table class="table table-sm">
+        <thead>
+            <tr>
+                <th scope="col">Thread name</th>
+                <th scope="col">Min [ms]</th>
+                <th scope="col">Max [ms]</th>
+                <th scope="col">Current [ms]</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <tr>
+                <th scope="row">Process Updater</th>
+                <td id="processUpdaterCycleMin">0</td>
+                <td id="processUpdaterCycleMax">0</td>
+                <td id="processUpdaterCycleCurrent">0</td>
+            </tr>
+            <tr>
+                <th scope="row">Driver polling</th>
+                <td id="driverPollingCycleMin">0</td>
+                <td id="driverPollingCycleMax">0</td>
+                <td id="driverPollingCycleCurrent">0</td>
+            </tr>
+            <tr>
+                <th scope="row">Tag Logger</th>
+                <td id="tagLoggerCycleMin">0</td>
+                <td id="tagLoggerCycleMax">0</td>
+                <td id="tagLoggerCycleCurrent">0</td>
+            </tr>
+            <tr>
+                <th scope="row">Tag Logger Writer</th>
+                <td id="tagLoggerWriterCycleMin">0</td>
+                <td id="tagLoggerWriterCycleMax">0</td>
+                <td id="tagLoggerWriterCycleCurrent">0</td>
+            </tr>
+            <tr>
+                <th scope="row">Alarming</th>
+                <td id="alarmingCycleMin">0</td>
+                <td id="alarmingCycleMax">0</td>
+                <td id="alarmingCycleCurrent">0</td>
+            </tr>
+            <tr>
+                <th scope="row">Script system</th>
+                <td id="scriptCycleMin">0</td>
+                <td id="scriptCycleMax">0</td>
+                <td id="scriptCycleCurrent">0</td>
+            </tr>
+            
+        </tbody>
+        </table>
+        
+    </div>
+    </div>
+    
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/admin/parser/parser.js') }}"></script>
+    <script src="{{ asset('js/admin/parser/buttons.js') }}"></script>
+    <script src="{{ asset('js/admin/dashboard/services.js') }}"></script>
+    <script src="{{ asset('js/admin/dashboard/cycleTimes.js') }}"></script>
+    <script src="{{ asset('js/admin/dashboard/dashboardStatus.js') }}"></script>
+{% endblock %}

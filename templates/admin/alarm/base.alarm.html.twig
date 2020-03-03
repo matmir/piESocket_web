@@ -1,0 +1,27 @@
+{% extends 'admin/base.admin.html.twig' %}
+
+{% block adminTitle %}Alarm system - {% block adminAlarmTitle %}{% endblock %}{% endblock %}
+
+{% block adminBody %}
+    <div>
+        
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link {% if app.request.attributes.get( '_route' ) starts with 'admin_alarm_list' %}active{% endif %}" href="{{ path('admin_alarm_list') }}">Alarm definition</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if app.request.attributes.get( '_route' ) starts with 'admin_alarm_active' %}active{% endif %}" href="{{ path('admin_alarm_active') }}">Active alarms</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if app.request.attributes.get( '_route' ) starts with 'admin_alarm_archived' %}active{% endif %}" href="{{ path('admin_alarm_archived') }}">Archived alarms</a>
+            </li>
+        </ul>
+        
+    </div>
+              
+    <div>
+        <br />
+        {% block adminAlarmBody %}
+        {% endblock %}
+    </div>
+{% endblock %}

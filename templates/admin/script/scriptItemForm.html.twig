@@ -1,0 +1,61 @@
+
+{{ form_start(form) }}
+<table>
+    <tbody>
+        <tr>
+            <th>{{ form_label(form.scTagName) }}</th>
+            <td>
+                {{ form_widget(form.scTagName, {'attr': {'list': 'tagName-datalist'}}) }}
+                <datalist id="tagName-datalist"></datalist>
+            </td>
+            <td>{{ form_help(form.scTagName) }}</td>
+            <td>
+                {% if form.scTagName.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.scTagName.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.scName) }}</th>
+            <td>{{ form_widget(form.scName) }}</td>
+            <td>{{ form_help(form.scName) }}</td>
+            <td>
+                {% if form.scName.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.scName.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.scFeedbackRun) }}</th>
+            <td>
+                {{ form_widget(form.scFeedbackRun, {'attr': {'list': 'tagFbRun-datalist'}}) }}
+                <datalist id="tagFbRun-datalist"></datalist>
+            </td>
+            <td>{{ form_help(form.scFeedbackRun) }}</td>
+            <td>
+                {% if form.scFeedbackRun.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.scFeedbackRun.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                {{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}
+                <a class="btn btn-danger" href="{{ path('admin_script_list') }}" role="button">Cancel</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+{{ form_end(form) }}

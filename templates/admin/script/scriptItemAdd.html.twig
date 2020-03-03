@@ -1,0 +1,16 @@
+{% extends 'admin/base.admin.html.twig' %}
+
+{% block adminTitle %}Add script{% endblock %}
+
+{% block adminBody %}
+
+    <h2>Add new script</h2>
+    
+    {{ include('admin/script/scriptItemForm.html.twig', {'form': form}) }}
+                  
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/admin/tags/tagListSearch.js') }}"></script>
+    <script src="{{ asset('js/admin/scriptSystem/scriptForm.js') }}"></script>
+{% endblock %}

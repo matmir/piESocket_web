@@ -1,0 +1,111 @@
+
+{{ form_start(form) }}
+<table>
+    <tbody>
+        <tr>
+            <th>{{ form_label(form.tName) }}</th>
+            <td>{{ form_widget(form.tName) }}</td>
+            <td>{{ form_help(form.tName) }}</td>
+            <td>
+                {% if form.tName.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.tName.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.tType) }}</th>
+            <td>{{ form_widget(form.tType) }}</td>
+            <td>{{ form_help(form.tType) }}</td>
+            <td>
+                {% if form.tType.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.tType.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.tArea) }}</th>
+            <td>{{ form_widget(form.tArea) }}</td>
+            <td>{{ form_help(form.tArea) }}</td>
+            <td>
+                {% if form.tArea.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.tArea.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.tByteAddress) }}</th>
+            <td>{{ form_widget(form.tByteAddress) }}</td>
+            <td>{{ form_help(form.tByteAddress) }}</td>
+            <td>
+                {% if form.tByteAddress.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.tByteAddress.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.tBitAddress) }}</th>
+            <td>{{ form_widget(form.tBitAddress) }}</td>
+            <td>{{ form_help(form.tBitAddress) }}</td>
+            <td>
+                {% if form.tBitAddress.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.tBitAddress.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.tReadAccess) }}</th>
+            <td>{{ form_widget(form.tReadAccess) }}</td>
+            <td>{{ form_help(form.tReadAccess) }}</td>
+            <td>
+                {% if form.tReadAccess.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.tReadAccess.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.tWriteAccess) }}</th>
+            <td>{{ form_widget(form.tWriteAccess) }}</td>
+            <td>{{ form_help(form.tWriteAccess) }}</td>
+            <td>
+                {% if form.tWriteAccess.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.tWriteAccess.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                {{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}
+                <a class="btn btn-danger" href="{{ path('admin_tags_list') }}" role="button">Cancel</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+{{ form_end(form) }}

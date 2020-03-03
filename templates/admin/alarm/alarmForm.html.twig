@@ -1,0 +1,162 @@
+
+{{ form_start(form) }}
+<table>
+    <tbody>
+        <tr>
+            <th>{{ form_label(form.adTagName) }}</th>
+            <td>
+                {{ form_widget(form.adTagName, {'attr': {'list': 'tagName-datalist'}}) }}
+                <datalist id="tagName-datalist"></datalist>
+            </td>
+            <td>{{ form_help(form.adTagName) }}</td>
+            <td>
+                {% if form.adTagName.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.adTagName.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.adPriority) }}</th>
+            <td>{{ form_widget(form.adPriority) }}</td>
+            <td>{{ form_help(form.adPriority) }}</td>
+            <td>
+                {% if form.adPriority.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.adPriority.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.adMessage) }}</th>
+            <td>{{ form_widget(form.adMessage) }}</td>
+            <td>{{ form_help(form.adMessage) }}</td>
+            <td>
+                {% if form.adMessage.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.adMessage.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.adTrigger) }}</th>
+            <td>{{ form_widget(form.adTrigger) }}</td>
+            <td>{{ form_help(form.adTrigger) }}</td>
+            <td>
+                {% if form.adTrigger.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.adTrigger.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr id="alarmTriggerB" {% if tagType != 'Bit' %}style="display: none"{% endif %}>
+            <th>{{ form_label(form.adTriggerB) }}</th>
+            <td>{{ form_widget(form.adTriggerB) }}</td>
+            <td>{{ form_help(form.adTriggerB) }}</td>
+            <td>
+                {% if form.adTriggerB.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.adTriggerB.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr id="alarmTriggerN" {% if tagType != 'Numeric' %}style="display: none"{% endif %}>
+            <th>{{ form_label(form.adTriggerN) }}</th>
+            <td>{{ form_widget(form.adTriggerN) }}</td>
+            <td>{{ form_help(form.adTriggerN) }}</td>
+            <td>
+                {% if form.adTriggerN.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.adTriggerN.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr id="alarmTriggerR" {% if tagType != 'Real' %}style="display: none"{% endif %}>
+            <th>{{ form_label(form.adTriggerR) }}</th>
+            <td>{{ form_widget(form.adTriggerR) }}</td>
+            <td>{{ form_help(form.adTriggerR) }}</td>
+            <td>
+                {% if form.adTriggerR.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.adTriggerR.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.adAutoAck) }}</th>
+            <td>{{ form_widget(form.adAutoAck) }}</td>
+            <td>{{ form_help(form.adAutoAck) }}</td>
+            <td>
+                {% if form.adAutoAck.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.adAutoAck.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.adFeedbackNotACK) }}</th>
+            <td>
+                {{ form_widget(form.adFeedbackNotACK, {'attr': {'list': 'tagFbNotAck-datalist'}}) }}
+                <datalist id="tagFbNotAck-datalist"></datalist>
+            </td>
+            <td>{{ form_help(form.adFeedbackNotACK) }}</td>
+            <td>
+                {% if form.adFeedbackNotACK.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.adFeedbackNotACK.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.adHWAck) }}</th>
+            <td>
+                {{ form_widget(form.adHWAck, {'attr': {'list': 'tagHWAck-datalist'}}) }}
+                <datalist id="tagHWAck-datalist"></datalist>
+            </td>
+            <td>{{ form_help(form.adHWAck) }}</td>
+            <td>
+                {% if form.adHWAck.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.adHWAck.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                {{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}
+                <a class="btn btn-danger" href="{{ path('admin_alarm_list') }}" role="button">Cancel</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+{{ form_end(form) }}

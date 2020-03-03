@@ -1,0 +1,48 @@
+<div class="row justify-content-start" id="alarmStatus" style="display: none">
+    
+    <div class="col-10">
+    
+        <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th style="width: 2%">Prio</th>
+            <th scope="col">Message</th>
+            <th style="width: 2%">Active</th>
+            <th style="width: 15%">On date</th>
+            <th style="width: 15%">Off date</th>
+        </tr>
+        </thead>
+        <tbody id="alarmBody">
+
+        {% for alarm in alarms %}
+            <tr>
+                <th scope="row">{{ alarm.getPriority() }}</th>
+                <td>{{ alarm.getMessage() }}</td>
+                <td>
+                    {% if (alarm.isActive()) %}
+                        Yes
+                    {% else %}
+                        No
+                    {% endif %}
+                </td>
+                <td>{{ alarm.getOnTimestamp() }}</td>
+                <td>
+                    {% if (alarm.isOffTimestamp()) %}
+                    {{ alarm.getOffTimestamp() }}
+                    {% else %}
+                        none
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+            
+        </tbody>
+        </table>
+        
+    </div>
+
+    <div class="col-md-auto">
+        <button id="ackAlarm" type="button" class="btn btn-success">Ack Alarms</button>
+    </div>
+        
+</div>

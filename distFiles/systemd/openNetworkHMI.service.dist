@@ -1,0 +1,13 @@
+[Unit]
+Description=openNetworkHMI service
+After=network.target mysql.service
+
+[Service]
+Type=simple
+Restart=no
+WorkingDirectory=[onh_full_path]
+ExecStart=[onh_full_path]openNetworkHMI
+User=root
+
+[Install]
+WantedBy=multi-user.target

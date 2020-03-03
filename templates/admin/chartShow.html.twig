@@ -1,0 +1,54 @@
+{% extends 'admin/base.admin.html.twig' %}
+
+{% block adminTitle %}Chart show{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/lib/jquery-ui.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/lib/jquery.timepicker.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block adminBody %}
+    
+    <a class="btn btn-danger" href="{{ path('admin_logger_list') }}" role="button">Cancel</a>
+    
+    <input type="hidden" id="loggerID" name="loggerID" value="{{ loggerID }}">
+    <br /><br />
+    
+    <div class="alert alert-danger" role="alert" id="dangerAlert" style="display: none;">
+    </div>
+    
+    Select sorting mode:
+    <select name="sortingMode" id="sortingMode">
+        <option value="lastData">Last data</option>
+        <option value="rangeData">Data range</option>
+        <option value="currentData">Current data</option>
+    </select>
+    <input type="checkbox" id="timeScale" name="timeScale" value="1" checked>Axis X time scale
+    <br />
+    <div id="lastDataControl">
+        <button id="lastDataBtn" type="button" class="btn btn-primary">Refresh data</button>
+    </div>
+    <div id="rangeDataControl" style="display: none;">
+        From: <input type="text" id="rangeDateFrom" maxlength="10" size="10"><input type="text" id="rangeTimeFrom" maxlength="8" size="8">
+        To: <input type="text" id="rangeDateTo" maxlength="10" size="10"><input type="text" id="rangeTimeTo" maxlength="8" size="8">
+        <button id="rangeDataBtn" type="button" class="btn btn-primary">Refresh data</button>
+    </div>
+    <div id="currentDataControl" style="display: none;">
+        From: <input type="text" id="currentDataFrom" maxlength="10" size="10"><input type="text" id="currentTimeFrom" maxlength="8" size="8">
+        <button id="currentDataBtn" type="button" class="btn btn-primary">Refresh data</button>
+    </div>
+    
+    <br />
+    
+    <div style="width:75%;">
+        <canvas id="canvasChart"></canvas>
+    </div>
+                  
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/lib/Chart.bundle.min.js') }}"></script>
+    <script src="{{ asset('js/lib/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('js/lib/jquery.timepicker.min.js') }}"></script>
+    <script src="{{ asset('js/admin/chartShow.js') }}"></script>
+{% endblock %}

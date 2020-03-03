@@ -1,0 +1,24 @@
+{% extends 'admin/config/base.config.html.twig' %}
+
+{% block adminConfigTitle %}Driver{% endblock %}
+
+{% block adminConfigBody %}
+    <br />
+    <div class="btn-group" role="group" aria-label="Driver type">
+        <a class="btn btn-{% if drvType != 'SHM' %}outline-{% endif %}secondary" href="{{ path('admin_config_driver', {'type': 'SHM'}) }}" role="button">Shared Memory</a>
+        <a class="btn btn-{% if drvType != 'ModbusTCP' %}outline-{% endif %}secondary" href="{{ path('admin_config_driver', {'type': 'ModbusTCP'}) }}" role="button">Modbus TCP</a>
+    </div>
+    
+    <br /><br />
+    
+    {% if drvType == 'SHM' %}
+        
+        {{ include('admin/config/configDriverSHMForm.html.twig', {'form': form}) }}
+        
+    {% elseif drvType == 'ModbusTCP' %}
+            
+        {{ include('admin/config/configDriverModbusForm.html.twig', {'form': form}) }}
+        
+    {% endif %}
+    
+{% endblock %}

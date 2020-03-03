@@ -1,0 +1,16 @@
+{% extends 'admin/base.admin.html.twig' %}
+
+{% block adminTitle %}Edit tag logger{% endblock %}
+
+{% block adminBody %}
+        
+    <h2>Edit tag logger</h2>
+    
+    {{ include('admin/tagsLogger/tagsLoggerForm.html.twig', {'form': form}) }}
+                  
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/admin/tags/tagListSearch.js') }}"></script>
+    <script src="{{ asset('js/admin/tagsLogger/tagsLoggerForm.js') }}"></script>
+{% endblock %}

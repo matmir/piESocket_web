@@ -1,0 +1,23 @@
+{% extends 'admin/base.admin.html.twig' %}
+
+{% block adminTitle %}System configuration - {% block adminConfigTitle %}{% endblock %}{% endblock %}
+
+{% block adminBody %}
+    <div>
+        
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link {% if app.request.attributes.get( '_route' ) starts with 'admin_config_general' %}active{% endif %}" href="{{ path('admin_config_general') }}">General</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if app.request.attributes.get( '_route' ) starts with 'admin_config_driver' %}active{% endif %}" href="{{ path('admin_config_driver') }}">Driver</a>
+            </li>
+        </ul>
+        
+    </div>
+              
+    <div>
+        {% block adminConfigBody %}
+        {% endblock %}
+    </div>
+{% endblock %}

@@ -1,0 +1,166 @@
+{% extends 'admin/base.admin.html.twig' %}
+
+{% block adminTitle %}Tags{% endblock %}
+
+{% block adminBody %}
+        
+    {% for message in app.flashes('script-msg-ok') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    
+    {% for message in app.flashes('script-msg-error') %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    
+    <a class="btn btn-primary" href="{{ path('admin_script_add') }}" role="button">Add script</a>
+    
+    <div class="btn-group" role="group" aria-label="Area sort">
+        <a class="btn btn-{% if app.request.get('area') != 0 %}outline-{% endif %}secondary" href="{{ path('admin_script_list', {'area': 0}) }}" role="button">All</a>
+        <a class="btn btn-{% if app.request.get('area') != 1 %}outline-{% endif %}success" href="{{ path('admin_script_list', {'area': 1}) }}" role="button">Input</a>
+        <a class="btn btn-{% if app.request.get('area') != 2 %}outline-{% endif %}danger" href="{{ path('admin_script_list', {'area': 2}) }}" role="button">Output</a>
+        <a class="btn btn-{% if app.request.get('area') != 3 %}outline-{% endif %}primary" href="{{ path('admin_script_list', {'area': 3}) }}" role="button">Memory</a>
+    </div>
+    
+    <br /><br />
+    
+    <table class="table table-sm">
+    <thead>
+    <tr>
+        {% set idDir=0 %}
+        {% set nameTagDir=0 %}
+        {% set nameScriptDir=0 %}
+        {% set runDir=0 %}
+        {% set lockDir=0 %}
+        {% set enableDir=0 %}
+        <th scope="col">
+            {% if app.request.get('sort') == 0 %}
+                {% if app.request.get('sortDESC') == 0 %}
+                <span>&#8593;</span>
+                {% set idDir = 1 %}
+                {% else %}
+                <span>&#8595;</span>
+                {% endif %}
+            {% endif %}
+            <a href="{{ path('admin_script_list', {'area': app.request.get('area'), 'sort': 0, 'sortDESC': (idDir)}) }}">ID</a>
+        </th>
+        <th scope="col">
+            {% if app.request.get('sort') == 1 %}
+                {% if app.request.get('sortDESC') == 0 %}
+                <span>&#8593;</span>
+                {% set nameTagDir = 1 %}
+                {% else %}
+                <span>&#8595;</span>
+                {% endif %}
+            {% endif %}
+            <a href="{{ path('admin_script_list', {'area': app.request.get('area'), 'sort': 1, 'sortDESC': (nameTagDir)}) }}">Tag name</a>
+        </th>
+        <th scope="col">
+            {% if app.request.get('sort') == 2 %}
+                {% if app.request.get('sortDESC') == 0 %}
+                <span>&#8593;</span>
+                {% set nameScriptDir = 1 %}
+                {% else %}
+                <span>&#8595;</span>
+                {% endif %}
+            {% endif %}
+            <a href="{{ path('admin_script_list', {'area': app.request.get('area'), 'sort': 2, 'sortDESC': (nameScriptDir)}) }}">Script name</a>
+        </th>
+        <th scope="col">
+            {% if app.request.get('sort') == 3 %}
+                {% if app.request.get('sortDESC') == 0 %}
+                <span>&#8593;</span>
+                {% set runDir = 1 %}
+                {% else %}
+                <span>&#8595;</span>
+                {% endif %}
+            {% endif %}
+            <a href="{{ path('admin_script_list', {'area': app.request.get('area'), 'sort': 3, 'sortDESC': (runDir)}) }}">Run</a>
+        </th>
+        <th scope="col">
+            {% if app.request.get('sort') == 4 %}
+                {% if app.request.get('sortDESC') == 0 %}
+                <span>&#8593;</span>
+                {% set lockDir = 1 %}
+                {% else %}
+                <span>&#8595;</span>
+                {% endif %}
+            {% endif %}
+            <a href="{{ path('admin_script_list', {'area': app.request.get('area'), 'sort': 4, 'sortDESC': (lockDir)}) }}">Lock</a>
+        </th>
+        <th scope="col">Feedback Tag</th>
+        <th scope="col">
+            {% if app.request.get('sort') == 5 %}
+                {% if app.request.get('sortDESC') == 0 %}
+                <span>&#8593;</span>
+                {% set enableDir = 1 %}
+                {% else %}
+                <span>&#8595;</span>
+                {% endif %}
+            {% endif %}
+            <a href="{{ path('admin_script_list', {'area': app.request.get('area'), 'sort': 5, 'sortDESC': (enableDir)}) }}">Enable</a>
+        </th>
+        <th scope="col">Options</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for script in scripts %}
+            
+            {% if TagAreaName(script.getTag().getArea()) == "Memory" %}
+            <tr class="table-primary">
+            {% elseif TagAreaName(script.getTag().getArea()) == "Input" %}
+            <tr class="table-success">
+            {% elseif TagAreaName(script.getTag().getArea()) == "Output" %}
+            <tr class="table-danger">
+            {% else %}
+            <tr>
+            {% endif %}
+            
+                <th scope="row">{{ script.getId() }}</th>
+                <td>{{ script.getTag().getName() }}</td>
+                <td>{{ script.getName() }}</td>
+                <td>
+                    {% if (script.isRunning()) %}
+                        Yes
+                    {% else %}
+                        No
+                    {% endif %}
+                </td>
+                <td>
+                    {% if (script.isLocked()) %}
+                        Yes
+                    {% else %}
+                        No
+                    {% endif %}
+                </td>
+                <td>
+                    {% if (script.isFeedbackRun()) %}
+                        {{ script.getFeedbackRun().getName() }}
+                    {% else %}
+                        Not set
+                    {% endif %}
+                </td>
+                <td>
+                    {% if (script.isEnabled()) %}
+                        <a href="{{ path('admin_script_enable', {'scriptID': script.getId(), 'en': 0}) }}"><img src="{{ asset('img/ok.png') }}" alt="Enabled" title="Enabled"></a>
+                    {% else %}
+                        <a href="{{ path('admin_script_enable', {'scriptID': script.getId(), 'en': 1}) }}"><img src="{{ asset('img/stop.png') }}" alt="Disabled" title="Disabled"></a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('admin_script_edit', {'scriptID': script.getId()}) }}"><img src="{{ asset('img/edit.png') }}" alt="Edit" title="Edit"></a>
+                    <a href="{{ path('admin_script_delete', {'scriptID': script.getId()}) }}"><img src="{{ asset('img/delete.png') }}" alt="Delete" title="Delete"></a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+    
+    {% set oParams = { 'area': app.request.get('area'), 'sort': app.request.get('sort'), 'sortDESC': app.request.get('sortDESC')} %}
+    {{ include('paginator.html.twig', { 'paginator': paginator, 'route_name': 'admin_script_list',
+                                        'route_page': 'page', 'route_perPage': 'perPage', 'route_otherParams': oParams }) }}
+                  
+{% endblock %}
