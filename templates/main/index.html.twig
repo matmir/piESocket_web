@@ -1,11 +1,148 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}openNetworkHMI main page{% endblock %}
+{% block title %}piESocket control program{% endblock %}
 
 {% block body %}
-
-<div class="alert alert-primary" role="alert">
-    openNetworkHMI main page
-</div>
+    
+    <div class="row justify-content-md-start">
         
+        <!-- Socket 1 -->
+        <div class="col-md-2">
+            
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <img id="S1_img_state" src="{{ asset('img/main/electricSocket.png') }}" />
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        <img id="S1_img_alarm" src="{{ asset('img/main/emptyIcon.png') }}" alt="A" title="Alarm" />
+                        <img id="S1_img_blocked" src="{{ asset('img/main/emptyIcon.png') }}" alt="B" title="Blocked" />
+                        <img id="S1_img_trigger" src="{{ asset('img/main/emptyIcon.png') }}" alt="T" title="Next state" />
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <button id="S1lock" type="button" class="btn btn-danger">Lock</button>
+                        {% endif %}
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        <div id="S1_error"></div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+                    
+        <!-- Socket 2 -->
+        <div class="col-md-2">
+            
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <img id="S2_img_state" src="{{ asset('img/main/electricSocket.png') }}" />
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        <img id="S2_img_alarm" src="{{ asset('img/main/emptyIcon.png') }}" alt="A" title="Alarm" />
+                        <img id="S2_img_blocked" src="{{ asset('img/main/emptyIcon.png') }}" alt="B" title="Blocked" />
+                        <img id="S2_img_trigger" src="{{ asset('img/main/emptyIcon.png') }}" alt="T" title="Next state" />
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <button id="S2lock" type="button" class="btn btn-danger">Lock</button>
+                        {% endif %}
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        <div id="S2_error"></div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+                    
+        <!-- Socket 3 -->
+        <div class="col-md-2">
+            
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <img id="S3_img_state" src="{{ asset('img/main/electricSocket.png') }}" />
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        <img id="S3_img_alarm" src="{{ asset('img/main/emptyIcon.png') }}" alt="A" title="Alarm" />
+                        <img id="S3_img_blocked" src="{{ asset('img/main/emptyIcon.png') }}" alt="B" title="Blocked" />
+                        <img id="S3_img_trigger" src="{{ asset('img/main/emptyIcon.png') }}" alt="T" title="Next state" />
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <button id="S3lock" type="button" class="btn btn-danger">Lock</button>
+                        {% endif %}
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        <div id="S3_error"></div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+                    
+        <!-- Socket 4 -->
+        <div class="col-md-auto">
+            
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <img id="S4_img_state" src="{{ asset('img/main/electricSocket.png') }}" />
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        <img id="S4_img_alarm" src="{{ asset('img/main/emptyIcon.png') }}" alt="A" title="Alarm" />
+                        <img id="S4_img_blocked" src="{{ asset('img/main/emptyIcon.png') }}" alt="B" title="Blocked" />
+                        <img id="S4_img_trigger" src="{{ asset('img/main/emptyIcon.png') }}" alt="T" title="Next state" />
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <button id="S4lock" type="button" class="btn btn-danger">Lock</button>
+                        {% endif %}
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        <div id="S4_error"></div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
+    
+    <div id="mError"></div>
+    
+    <br />
+    
+    {{ include('alarmStatus.html.twig', {'alarms': []}) }}
+    
+    {% if is_granted('ROLE_ADMIN') %}
+        <br />
+        <button id="exitClient" type="button" class="btn btn-danger">Exit service</button>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/admin/parser/parser.js') }}"></script>
+    <script src="{{ asset('js/admin/parser/buttons.js') }}"></script>
+    <script src="{{ asset('js/admin/parser/multiCommand.js') }}"></script>
+    <script src="{{ asset('js/admin/alarms/alarms.js') }}"></script>
+    <script src="{{ asset('js/admin/alarms/alarmStatus.js') }}"></script>
+    
+    <script src="{{ asset('js/main/socket.js') }}"></script>
+    <script src="{{ asset('js/main/main.js') }}"></script>
 {% endblock %}
