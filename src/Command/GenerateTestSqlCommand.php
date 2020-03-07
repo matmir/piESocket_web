@@ -90,6 +90,9 @@ class GenerateTestSqlCommand extends Command {
                 throw new Exception("User scripts directory does not exist");
             }
             
+            $question4 = new Question("Please set service socket port number:\nDefault [8080]:", "8080");
+            $servicePort = $helper->ask($input, $output, $question4);
+            
             // Get path to test sql dist file
             $distFile = str_replace('src/Command', 'distFiles/testDB/db.sql.dist', $commandPath);
             $sqlFile = str_replace('.dist', '', $distFile);
@@ -107,7 +110,9 @@ class GenerateTestSqlCommand extends Command {
             $cnt1 = str_replace('[webAppPath]', $webAppPath, $f);
             $cnt2 = str_replace('[consoleScript]', $consolePath, $cnt1);
             $cnt3 = str_replace('[serverAppPath]', $servicePath, $cnt2);
-            $cnt = str_replace('[userScriptsPath]', $scriptsPath, $cnt3);
+            $cnt4 = str_replace('[userScriptsPath]', $scriptsPath, $cnt3);
+            $cnt = str_replace('[socketPrt]', "'".$servicePort."'", $cnt4);
+            
             // Write service file
             $r = file_put_contents($sqlFile, $cnt);
             if ($r === false) {

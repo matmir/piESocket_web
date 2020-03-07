@@ -84,6 +84,9 @@ class UpdateSystemPathCommand extends Command {
             if (!is_dir($scriptsPath)) {
                 throw new Exception("User scripts directory does not exist");
             }
+            
+            $question4 = new Question("Please set service socket port number:\nDefault [8080]:", "8080");
+            $servicePort = $helper->ask($input, $output, $question4);
 
             // Get system configuration
             $sysCfg = $this->cfg->getConfig();
@@ -93,6 +96,7 @@ class UpdateSystemPathCommand extends Command {
             $sysCfg->setScriptSystemExecuteScript("php ".$consolePath." app:run-script");
             $sysCfg->setServerAppPath($servicePath);
             $sysCfg->setUserScriptsPath($scriptsPath);
+            $sysCfg->setSocketPort($servicePort);
             
             // Write data to DB
             $this->cfg->setConfig($sysCfg);
