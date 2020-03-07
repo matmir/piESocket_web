@@ -107,7 +107,7 @@ CREATE TABLE `alarms_pending` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `tr1_alarms_pending` AFTER INSERT ON `alarms_pending` FOR EACH ROW UPDATE alarms_definition SET adPending = 1, adActive = 1 WHERE adid = NEW.apadid */;;
+/*!50003 CREATE*/ /*!50017 DEFINER=CURRENT_USER()*/ /*!50003 TRIGGER `tr1_alarms_pending` AFTER INSERT ON `alarms_pending` FOR EACH ROW UPDATE alarms_definition SET adPending = 1, adActive = 1 WHERE adid = NEW.apadid */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -122,7 +122,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `tr4_alarms_pending` AFTER UPDATE ON `alarms_pending` FOR EACH ROW IF OLD.ap_active <> NEW.ap_active THEN
+/*!50003 CREATE*/ /*!50017 DEFINER=CURRENT_USER()*/ /*!50003 TRIGGER `tr4_alarms_pending` AFTER UPDATE ON `alarms_pending` FOR EACH ROW IF OLD.ap_active <> NEW.ap_active THEN
 BEGIN
 UPDATE alarms_definition SET adActive = NEW.ap_active WHERE adid = NEW.apadid;
 END;
@@ -141,7 +141,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `tr2_alarms_pending` AFTER DELETE ON `alarms_pending`
+/*!50003 CREATE*/ /*!50017 DEFINER=CURRENT_USER()*/ /*!50003 TRIGGER `tr2_alarms_pending` AFTER DELETE ON `alarms_pending`
  FOR EACH ROW UPDATE alarms_definition SET adPending = 0, adActive = 0 WHERE adid = OLD.apadid */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -157,7 +157,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `tr3_alarms_pending` AFTER DELETE ON `alarms_pending` FOR EACH ROW INSERT INTO alarms_history (ahid, ahadid, ah_onTimestamp, ah_offTimestamp, ah_ackTimestamp) VALUES( NULL, OLD.apadid, OLD.ap_onTimestamp, OLD.ap_offTimestamp, OLD.ap_ackTimestamp) */;;
+/*!50003 CREATE*/ /*!50017 DEFINER=CURRENT_USER()*/ /*!50003 TRIGGER `tr3_alarms_pending` AFTER DELETE ON `alarms_pending` FOR EACH ROW INSERT INTO alarms_history (ahid, ahadid, ah_onTimestamp, ah_offTimestamp, ah_ackTimestamp) VALUES( NULL, OLD.apadid, OLD.ap_onTimestamp, OLD.ap_offTimestamp, OLD.ap_ackTimestamp) */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
