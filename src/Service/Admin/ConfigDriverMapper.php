@@ -145,7 +145,7 @@ class ConfigDriverMapper extends BaseConfigMapper {
         // Get max allowed Byte address
         switch ($this->getDriverName()) {
             case 'SHM': $maxByteAddress = ConfigDriverSHM::maxProcessAddress; break;
-            case 'Modbus': $maxByteAddress = $this->getModbusConfig()->getRegisterCount(); break;
+            case 'Modbus': $maxByteAddress = $this->getModbusConfig()->getRegisterCount()*2; break;
         }
         
         // Check Tag address
