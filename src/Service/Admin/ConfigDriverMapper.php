@@ -46,9 +46,9 @@ class ConfigDriverMapper extends BaseConfigMapper {
     }
     
     /**
-     * Get ModbusTCP configuration
+     * Get Modbus configuration
      * 
-     * @return ConfigDriverModbus Object with ModbusTCP configuration
+     * @return ConfigDriverModbus Object with Modbus configuration
      */
     public function getModbusConfig(): ConfigDriverModbus {
         
@@ -145,7 +145,7 @@ class ConfigDriverMapper extends BaseConfigMapper {
         // Get max allowed Byte address
         switch ($this->getDriverName()) {
             case 'SHM': $maxByteAddress = ConfigDriverSHM::maxProcessAddress; break;
-            case 'ModbusTCP': $maxByteAddress = $this->getModbusConfig()->getRegisterCount(); break;
+            case 'Modbus': $maxByteAddress = $this->getModbusConfig()->getRegisterCount(); break;
         }
         
         // Check Tag address
@@ -159,9 +159,9 @@ class ConfigDriverMapper extends BaseConfigMapper {
     }
     
     /**
-     * Write ModbusTCP configuration to the DB
+     * Write Modbus configuration to the DB
      * 
-     * @param ConfigDriverModbus $newCFG ModbusTCP configuration object
+     * @param ConfigDriverModbus $newCFG Modbus configuration object
      */
     public function setModbusConfig(ConfigDriverModbus $newCFG) {
         
@@ -340,7 +340,7 @@ class ConfigDriverMapper extends BaseConfigMapper {
     }
     
     /**
-     * Select ModbusTCP driver in DB
+     * Select Modbus driver in DB
      */
     private function selectModbusDriver() {
         
