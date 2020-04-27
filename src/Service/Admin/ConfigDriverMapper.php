@@ -57,21 +57,18 @@ class ConfigDriverMapper extends BaseConfigMapper {
         $items = $statement->fetchAll();
         
         if (empty($items)) {
-            throw new Exception("Configuration for ModbusTCP does not exist!");
+            throw new Exception("Configuration for Modbus does not exist!");
         }
-        if (count($items) != 5) {
-            throw new Exception("Query return more than one element!");
+        if (count($items) != 11) {
+            throw new Exception("Invalid number of modbus configuration entries!");
         }
         
         $cg = new ConfigDriverModbus();
         
         for ($i=0; $i<count($items); ++$i) {
             
-            if ($items[$i]['cName'] == 'modbusIP') {
-                $cg->setIpAddress($items[$i]['cValue']);
-            }
-            if ($items[$i]['cName'] == 'modbusPort') {
-                $cg->setPort($items[$i]['cValue']);
+            if ($items[$i]['cName'] == 'modbusMode') {
+                $cg->setMode($items[$i]['cValue']);
             }
             if ($items[$i]['cName'] == 'modbusRegCount') {
                 $cg->setRegisterCount($items[$i]['cValue']);
@@ -83,6 +80,28 @@ class ConfigDriverMapper extends BaseConfigMapper {
                 $cg->setSlaveID($items[$i]['cValue']);
             }
             
+            if ($items[$i]['cName'] == 'modbusTCP_addr') {
+                $cg->setTCPaddr($items[$i]['cValue']);
+            }
+            if ($items[$i]['cName'] == 'modbusTCP_port') {
+                $cg->setTCPport($items[$i]['cValue']);
+            }
+            
+            if ($items[$i]['cName'] == 'modbusRTU_port') {
+                $cg->setRTUport($items[$i]['cValue']);
+            }
+            if ($items[$i]['cName'] == 'modbusRTU_baud') {
+                $cg->setRTUbaud($items[$i]['cValue']);
+            }
+            if ($items[$i]['cName'] == 'modbusRTU_parity') {
+                $cg->setRTUparity($items[$i]['cValue']);
+            }
+            if ($items[$i]['cName'] == 'modbusRTU_dataBit') {
+                $cg->setRTUdataBit($items[$i]['cValue']);
+            }
+            if ($items[$i]['cName'] == 'modbusRTU_stopBit') {
+                $cg->setRTUstopBit($items[$i]['cValue']);
+            }
         }
         
         return $cg;
@@ -153,21 +172,75 @@ class ConfigDriverMapper extends BaseConfigMapper {
         $vals = array();
         $sql = '';
         
-        // ipAddress
-        if ($newCFG->getIpAddress() <> $currentCFG->getIpAddress()) {
+        // TCP ip address
+        if ($newCFG->getTCPaddr() <> $currentCFG->getTCPaddr()) {
             
-            $sql = "UPDATE configuration SET cValue = ? WHERE cName = 'modbusIP';";
+            $sql = "UPDATE configuration SET cValue = ? WHERE cName = 'modbusTCP_addr';";
             array_push($sqls, $sql);
-            array_push($vals, $newCFG->getIpAddress());
+            array_push($vals, $newCFG->getTCPaddr());
             
         }
         
-        // port
-        if ($newCFG->getPort() <> $currentCFG->getPort()) {
+        // TCP port
+        if ($newCFG->getTCPport() <> $currentCFG->getTCPport()) {
             
-            $sql = "UPDATE configuration SET cValue = ? WHERE cName = 'modbusPort';";
+            $sql = "UPDATE configuration SET cValue = ? WHERE cName = 'modbusTCP_port';";
             array_push($sqls, $sql);
-            array_push($vals, $newCFG->getPort());
+            array_push($vals, $newCFG->getTCPport());
+            
+        }
+        
+        // RTU port
+        if ($newCFG->getRTUport() <> $currentCFG->getRTUport()) {
+            
+            $sql = "UPDATE configuration SET cValue = ? WHERE cName = 'modbusRTU_port';";
+            array_push($sqls, $sql);
+            array_push($vals, $newCFG->getRTUport());
+            
+        }
+        
+        // RTU baud rate
+        if ($newCFG->getRTUbaud() <> $currentCFG->getRTUbaud()) {
+            
+            $sql = "UPDATE configuration SET cValue = ? WHERE cName = 'modbusRTU_baud';";
+            array_push($sqls, $sql);
+            array_push($vals, $newCFG->getRTUbaud());
+            
+        }
+        
+        // RTU parity
+        if ($newCFG->getRTUparity() <> $currentCFG->getRTUparity()) {
+            
+            $sql = "UPDATE configuration SET cValue = ? WHERE cName = 'modbusRTU_parity';";
+            array_push($sqls, $sql);
+            array_push($vals, $newCFG->getRTUparity());
+            
+        }
+        
+        // RTU data bit
+        if ($newCFG->getRTUdataBit() <> $currentCFG->getRTUdataBit()) {
+            
+            $sql = "UPDATE configuration SET cValue = ? WHERE cName = 'modbusRTU_dataBit';";
+            array_push($sqls, $sql);
+            array_push($vals, $newCFG->getRTUdataBit());
+            
+        }
+        
+        // RTU stop bit
+        if ($newCFG->getRTUstopBit() <> $currentCFG->getRTUstopBit()) {
+            
+            $sql = "UPDATE configuration SET cValue = ? WHERE cName = 'modbusRTU_stopBit';";
+            array_push($sqls, $sql);
+            array_push($vals, $newCFG->getRTUstopBit());
+            
+        }
+        
+        // Mode
+        if ($newCFG->getMode() <> $currentCFG->getMode()) {
+            
+            $sql = "UPDATE configuration SET cValue = ? WHERE cName = 'modbusMode';";
+            array_push($sqls, $sql);
+            array_push($vals, $newCFG->getMode());
             
         }
         
@@ -271,7 +344,7 @@ class ConfigDriverMapper extends BaseConfigMapper {
      */
     private function selectModbusDriver() {
         
-        $stmt = $this->dbConn->prepare("UPDATE configuration SET cValue = 'ModbusTCP' WHERE cName = 'connectionDriver';");
+        $stmt = $this->dbConn->prepare("UPDATE configuration SET cValue = 'Modbus' WHERE cName = 'connectionDriver';");
         $stmt->execute();
     }
 }

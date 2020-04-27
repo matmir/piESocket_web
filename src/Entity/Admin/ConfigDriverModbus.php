@@ -5,22 +5,30 @@ namespace App\Entity\Admin;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class for ModbusTCP driver configuration
+ * Class for Modbus driver configuration
  * 
  * @author Mateusz Mirosławski
  */
 class ConfigDriverModbus {
     
     /**
-     * Modbus IP address
+     * Modbus mode
+     * 
+     * @Assert\NotBlank()
+     * @Assert\Length(max=3)
+     */
+    private $mode;
+    
+    /**
+     * Modbus TCP IP address
      * 
      * @Assert\NotBlank()
      * @Assert\Length(max=15)
      */
-    private $ipAddress;
+    private $TCP_addr;
     
     /**
-     * Modbus port number
+     * Modbus TCP port number
      * 
      * @Assert\NotBlank()
      * @Assert\Type("integer")
@@ -29,7 +37,59 @@ class ConfigDriverModbus {
      *      max = 65535
      * )
      */
-    private $port;
+    private $TCP_port;
+    
+    /**
+     * Modbus RTU port name
+     * 
+     * @Assert\NotBlank()
+     * @Assert\Length(max=200)
+     */
+    private $RTU_port;
+    
+    /**
+     * Modbus RTU baud rate
+     * 
+     * @Assert\NotBlank()
+     * @Assert\Type("integer")
+     * @Assert\Range(
+     *      min = 1,
+     *      max = 1000000
+     * )
+     */
+    private $RTU_baud;
+    
+    /**
+     * Modbus RTU parity
+     * 
+     * @Assert\NotBlank()
+     * @Assert\Length(max=1)
+     */
+    private $RTU_parity;
+    
+    /**
+     * Modbus RTU data bits
+     * 
+     * @Assert\NotBlank()
+     * @Assert\Type("integer")
+     * @Assert\Range(
+     *      min = 5,
+     *      max = 8
+     * )
+     */
+    private $RTU_dataBit;
+    
+    /**
+     * Modbus RTU stop bits
+     * 
+     * @Assert\NotBlank()
+     * @Assert\Type("integer")
+     * @Assert\Range(
+     *      min = 1,
+     *      max = 2
+     * )
+     */
+    private $RTU_stopBit;
     
     /**
      * Modbus slave ID
@@ -71,22 +131,53 @@ class ConfigDriverModbus {
      * Default constructor
      */
     public function __construct() {
-                
-        $this->ipAddress = "192.168.0.5";
-        $this->port = 502;
+        
+        // Common data
+        $this->mode = "TCP";
         $this->registerCount = 1;
         $this->driverPolling = 50;
         $this->slaveID = 2;
+        
+        // Modbus TCP
+        $this->TCP_addr = "192.168.0.5";
+        $this->TCP_port = 502;
+        
+        // Modbus RTU
+        $this->RTU_port = "/dev/ttyACM1";
+        $this->RTU_baud = 57600;
+        $this->RTU_parity = 'N';
+        $this->RTU_dataBit = 8;
+        $this->RTU_stopBit = 1;
     }
     
+    /**
+     * Get Modbus mode (TCP/RTU)
+     * 
+     * @return string Modbus mode
+     */
+    public function getMode() {
+        
+        return $this->mode;
+    }
+
+    /**
+     * Set Modbus mode
+     * 
+     * @param string $val Modbus mode
+     */
+    public function setMode(string $val) {
+        
+        $this->mode = $val;
+    }
+
     /**
      * Get Modbus slave IP address
      * 
      * @return string Modbus slave IP address
      */
-    public function getIpAddress() {
+    public function getTCPaddr() {
         
-        return $this->ipAddress;
+        return $this->TCP_addr;
     }
     
     /**
@@ -94,9 +185,9 @@ class ConfigDriverModbus {
      * 
      * @param string $val Modbus slave IP address
      */
-    public function setIpAddress(string $val) {
+    public function setTCPaddr(string $val) {
         
-        $this->ipAddress = $val;
+        $this->TCP_addr = $val;
     }
     
     /**
@@ -104,9 +195,9 @@ class ConfigDriverModbus {
      * 
      * @return int Modbus port number
      */
-    public function getPort() {
+    public function getTCPport() {
         
-        return $this->port;
+        return $this->TCP_port;
     }
     
     /**
@@ -114,9 +205,109 @@ class ConfigDriverModbus {
      * 
      * @param int $val Modbus port number
      */
-    public function setPort(int $val) {
+    public function setTCPport(int $val) {
         
-        $this->port = $val;
+        $this->TCP_port = $val;
+    }
+    
+    /**
+     * Get Modbus RTU port
+     * 
+     * @return string Modbus RTU port
+     */
+    public function getRTUport() {
+        
+        return $this->RTU_port;
+    }
+
+    /**
+     * Set Modbus RTU port
+     * 
+     * @param string $val Modbus RTU port
+     */
+    public function setRTUport(string $val) {
+        
+        $this->RTU_port = $val;
+    }
+    
+    /**
+     * Get Modbus RTU baud rate
+     * 
+     * @return int Modbus RTU baud rate
+     */
+    public function getRTUbaud() {
+        
+        return $this->RTU_baud;
+    }
+    
+    /**
+     * Set Modbus RTU baud rate
+     * 
+     * @param int $val Modbus RTU baud rate
+     */
+    public function setRTUbaud(int $val) {
+        
+        $this->RTU_baud = $val;
+    }
+    
+    /**
+     * Get Modbus RTU parity
+     * 
+     * @return string Modbus RTU parity
+     */
+    public function getRTUparity() {
+        
+        return $this->RTU_parity;
+    }
+
+    /**
+     * Set Modbus RTU parity
+     * 
+     * @param string $val Modbus RTU parity
+     */
+    public function setRTUparity(string $val) {
+        
+        $this->RTU_parity = $val;
+    }
+    
+    /**
+     * Get Modbus RTU data bit
+     * 
+     * @return int Modbus RTU data bit
+     */
+    public function getRTUdataBit() {
+        
+        return $this->RTU_dataBit;
+    }
+    
+    /**
+     * Set Modbus RTU data bit
+     * 
+     * @param int $val Modbus RTU data bit
+     */
+    public function setRTUdataBit(int $val) {
+        
+        $this->RTU_dataBit = $val;
+    }
+    
+    /**
+     * Get Modbus RTU stop bit
+     * 
+     * @return int Modbus RTU stop bit
+     */
+    public function getRTUstopBit() {
+        
+        return $this->RTU_stopBit;
+    }
+    
+    /**
+     * Set Modbus RTU stop bit
+     * 
+     * @param int $val Modbus RTU stop bit
+     */
+    public function setRTUstopBit(int $val) {
+        
+        $this->RTU_stopBit = $val;
     }
     
     /**
