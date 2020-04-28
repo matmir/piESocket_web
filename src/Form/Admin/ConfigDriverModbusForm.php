@@ -26,7 +26,7 @@ class ConfigDriverModbusForm extends AbstractType {
                                                     'label' => 'Mode'
                                             ))
             ->add('slaveID', null, array('label' => 'Slave ID'))
-            ->add('registerCount', null, array('label' => 'Registers to read'))
+            ->add('registerCount', null, array('label' => 'Registers to read [words]'))
             ->add('driverPolling', null, array('label' => 'Driver polling interval [ms]'))
             ->add('TCP_addr', null, array('label' => 'Slave IP address'))
             ->add('TCP_port', null, array('label' => 'Port'))

@@ -34,7 +34,7 @@ class ConfigGeneralForm extends AbstractType {
                                                         'USER' => 'ROLE_USER',
                                                         'GUEST' => 'ROLE_GUEST',
                                                         ),
-                                                    'label' => 'Alarm acknowledgement right'
+                                                    'label' => 'Alarm acknowledgement permission'
                                             ))
             ->add('save', SubmitType::class, array('label' => 'Save'));
     }
