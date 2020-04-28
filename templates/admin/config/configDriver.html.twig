@@ -6,7 +6,7 @@
     <br />
     <div class="btn-group" role="group" aria-label="Driver type">
         <a class="btn btn-{% if drvType != 'SHM' %}outline-{% endif %}secondary" href="{{ path('admin_config_driver', {'type': 'SHM'}) }}" role="button">Shared Memory</a>
-        <a class="btn btn-{% if drvType != 'ModbusTCP' %}outline-{% endif %}secondary" href="{{ path('admin_config_driver', {'type': 'ModbusTCP'}) }}" role="button">Modbus TCP</a>
+        <a class="btn btn-{% if drvType != 'Modbus' %}outline-{% endif %}secondary" href="{{ path('admin_config_driver', {'type': 'Modbus'}) }}" role="button">Modbus</a>
     </div>
     
     <br /><br />
@@ -15,10 +15,16 @@
         
         {{ include('admin/config/configDriverSHMForm.html.twig', {'form': form}) }}
         
-    {% elseif drvType == 'ModbusTCP' %}
+    {% elseif drvType == 'Modbus' %}
             
         {{ include('admin/config/configDriverModbusForm.html.twig', {'form': form}) }}
         
     {% endif %}
     
+{% endblock %}
+
+{% block javascripts %}
+    {% if drvType == 'Modbus' %}
+        <script src="{{ asset('js/admin/config/driverModbusForm.js') }}"></script>
+    {% endif %}
 {% endblock %}

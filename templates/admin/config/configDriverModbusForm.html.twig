@@ -3,27 +3,13 @@
 <table>
     <tbody>
         <tr>
-            <th>{{ form_label(form.ipAddress) }}</th>
-            <td>{{ form_widget(form.ipAddress) }}</td>
-            <td>{{ form_help(form.ipAddress) }}</td>
+            <th>{{ form_label(form.mode) }}</th>
+            <td>{{ form_widget(form.mode) }}</td>
+            <td>{{ form_help(form.mode) }}</td>
             <td>
-                {% if form.ipAddress.vars['errors']|length > 0 %}
+                {% if form.mode.vars['errors']|length > 0 %}
                     <div class="alert alert-danger" role="alert">
-                        {% for error in form.ipAddress.vars['errors'] %}
-                            {{ error.message }}
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <th>{{ form_label(form.port) }}</th>
-            <td>{{ form_widget(form.port) }}</td>
-            <td>{{ form_help(form.port) }}</td>
-            <td>
-                {% if form.port.vars['errors']|length > 0 %}
-                    <div class="alert alert-danger" role="alert">
-                        {% for error in form.port.vars['errors'] %}
+                        {% for error in form.mode.vars['errors'] %}
                             {{ error.message }}
                         {% endfor %}
                     </div>
@@ -66,6 +52,104 @@
                 {% if form.driverPolling.vars['errors']|length > 0 %}
                     <div class="alert alert-danger" role="alert">
                         {% for error in form.driverPolling.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr id="TCP_addr" style="display: none">
+            <th>{{ form_label(form.TCP_addr) }}</th>
+            <td>{{ form_widget(form.TCP_addr) }}</td>
+            <td>{{ form_help(form.TCP_addr) }}</td>
+            <td>
+                {% if form.TCP_addr.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.TCP_addr.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr id="TCP_port" style="display: none">
+            <th>{{ form_label(form.TCP_port) }}</th>
+            <td>{{ form_widget(form.TCP_port) }}</td>
+            <td>{{ form_help(form.TCP_port) }}</td>
+            <td>
+                {% if form.TCP_port.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.TCP_port.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr id="RTU_port" style="display: none">
+            <th>{{ form_label(form.RTU_port) }}</th>
+            <td>{{ form_widget(form.RTU_port) }}</td>
+            <td>{{ form_help(form.RTU_port) }}</td>
+            <td>
+                {% if form.RTU_port.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.RTU_port.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr id="RTU_baud" style="display: none">
+            <th>{{ form_label(form.RTU_baud) }}</th>
+            <td>{{ form_widget(form.RTU_baud) }}</td>
+            <td>{{ form_help(form.RTU_baud) }}</td>
+            <td>
+                {% if form.RTU_baud.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.RTU_baud.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr id="RTU_parity" style="display: none">
+            <th>{{ form_label(form.RTU_parity) }}</th>
+            <td>{{ form_widget(form.RTU_parity) }}</td>
+            <td>{{ form_help(form.RTU_parity) }}</td>
+            <td>
+                {% if form.RTU_parity.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.RTU_parity.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr id="RTU_dataBit" style="display: none">
+            <th>{{ form_label(form.RTU_dataBit) }}</th>
+            <td>{{ form_widget(form.RTU_dataBit) }}</td>
+            <td>{{ form_help(form.RTU_dataBit) }}</td>
+            <td>
+                {% if form.RTU_dataBit.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.RTU_dataBit.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr id="RTU_stopBit" style="display: none">
+            <th>{{ form_label(form.RTU_stopBit) }}</th>
+            <td>{{ form_widget(form.RTU_stopBit) }}</td>
+            <td>{{ form_help(form.RTU_stopBit) }}</td>
+            <td>
+                {% if form.RTU_stopBit.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.RTU_stopBit.vars['errors'] %}
                             {{ error.message }}
                         {% endfor %}
                     </div>
