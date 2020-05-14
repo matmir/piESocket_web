@@ -65,7 +65,7 @@ CREATE TABLE `alarms_definition` (
 
 LOCK TABLES `alarms_definition` WRITE;
 /*!40000 ALTER TABLE `alarms_definition` DISABLE KEYS */;
-INSERT INTO `alarms_definition` VALUES (1,17,1,'Socket 1 triger too fast',1,1,0,0,0,0,0,9,NULL,1),(2,18,1,'Socket 2 triger too fast',1,1,0,0,0,0,0,10,NULL,1),(3,19,1,'Socket 3 triger too fast',1,1,0,0,0,0,0,11,NULL,1),(4,20,1,'Socket 4 triger too fast',1,1,0,0,0,0,0,12,NULL,1);
+INSERT INTO `alarms_definition` VALUES (1,17,1,'Socket 1 trigger too fast',1,1,0,0,0,0,0,9,NULL,1),(2,18,1,'Socket 2 trigger too fast',1,1,0,0,0,0,0,10,NULL,1),(3,19,1,'Socket 3 trigger too fast',1,1,0,0,0,0,0,11,NULL,1),(4,20,1,'Socket 4 trigger too fast',1,1,0,0,0,0,0,12,NULL,1);
 /*!40000 ALTER TABLE `alarms_definition` ENABLE KEYS */;
 UNLOCK TABLES;
 
