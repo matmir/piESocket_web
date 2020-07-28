@@ -1,0 +1,18 @@
+# This file is the entry point to configure your electric sockets.
+
+sockets:
+    S1:
+        enabled: true
+        label: 'Socket 1'
+        
+    S2:
+        enabled: true
+        label: 'Socket 2'
+
+    S3:
+        enabled: true
+        label: 'Socket 3'
+        
+    S4:
+        enabled: true
+        label: 'Socket 4'
