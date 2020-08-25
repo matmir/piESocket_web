@@ -238,9 +238,68 @@ CREATE TABLE `configuration` (
 
 LOCK TABLES `configuration` WRITE;
 /*!40000 ALTER TABLE `configuration` DISABLE KEYS */;
-INSERT INTO `configuration` VALUES ('ackAccessRole','ROLE_USER'),('alarmingUpdateInterval','100'),('connectionDriver','SHM'),('modbusTCP_addr','192.168.56.102'),('modbusPollingInterval','20'),('modbusTCP_port','502'),('modbusRegCount','20'),('modbusSlaveID','15'),('processUpdateInterval','100'),('scriptSystemExecuteScript','php /home/virtual/Dokumenty/openNetworkHMI/APP/SRC/openNetworkHMI_web/bin/console app:run-script'),('scriptSystemUpdateInterval','100'),('serverAppPath','/home/virtual/onh/APP/SRC/tests/bin/onh/'),('serverRestart','0'),('shmSegmentName','onh_SHM_segment_test1'),('socketMaxConn','10'),('socketPort','8080'),('tagLoggerUpdateInterval','100'),('userScriptsPath','/home/virtual/onh/APP/SRC/tests/scripts/'),('webAppPath','/home/virtual/Dokumenty/openNetworkHMI/APP/SRC/openNetworkHMI_web/'),('modbusRTU_baud', '57600'),('modbusRTU_dataBit', '8'),('modbusRTU_parity', 'N'),('modbusRTU_port', '/dev/ttyACM1'),('modbusRTU_stopBit', '1'),('modbusMode', 'TCP');
+INSERT INTO `configuration` VALUES ('ackAccessRole','ROLE_USER'),('alarmingUpdateInterval','100'),('processUpdateInterval','100'),('scriptSystemExecuteScript','php /home/virtual/Dokumenty/openNetworkHMI/APP/SRC/openNetworkHMI_web/bin/console app:run-script'),('scriptSystemUpdateInterval','100'),('serverAppPath','/home/virtual/onh/APP/SRC/tests/bin/onh/'),('serverRestart','0'),('socketMaxConn','10'),('socketPort','8080'),('tagLoggerUpdateInterval','100'),('userScriptsPath','/home/virtual/onh/APP/SRC/tests/scripts/'),('webAppPath','/home/virtual/Dokumenty/openNetworkHMI/APP/SRC/openNetworkHMI_web/');
 /*!40000 ALTER TABLE `configuration` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `driver_modbus`
+--
+
+DROP TABLE IF EXISTS `driver_modbus`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `driver_modbus` (
+  `dmId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Modbus driver identifier',
+  `dmMode` tinyint(3) unsigned NOT NULL COMMENT 'Modbus mode (0 - RTU, 1 - TCP)',
+  `dmPollingInterval` int(10) unsigned NOT NULL COMMENT 'Modbus driver polling interval (ms)',
+  `dmRegCount` int(10) unsigned NOT NULL COMMENT 'Modbus driver register count',
+  `dmRTU_baud` int(10) unsigned NOT NULL DEFAULT 57600 COMMENT 'Modbus RTU baud rate',
+  `dmRTU_dataBit` tinyint(3) unsigned NOT NULL DEFAULT 8 COMMENT 'Modbus RTU data bits',
+  `dmRTU_parity` char(1) NOT NULL DEFAULT 'N' COMMENT 'Modbus RTU parity (N - none, E - even, O - odd)',
+  `dmRTU_port` varchar(200) NOT NULL DEFAULT '/dev/ttyACM1' COMMENT 'Modbus RTU port',
+  `dmRTU_stopBit` smallint(5) unsigned NOT NULL DEFAULT 1 COMMENT 'Modbus RTU stop bit',
+  `dmSlaveID` int(10) unsigned NOT NULL COMMENT 'Modbus slave ID',
+  `dmTCP_addr` varchar(15) NOT NULL DEFAULT '127.0.0.1' COMMENT 'Modbus TCP IP address',
+  `dmTCP_port` int(10) unsigned NOT NULL DEFAULT 502 COMMENT 'Modbus TCP port number',
+  PRIMARY KEY (`dmId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `driver_shm`
+--
+
+DROP TABLE IF EXISTS `driver_shm`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `driver_shm` (
+  `dsId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'SHM driver identifier',
+  `dsSegment` varchar(200) NOT NULL COMMENT 'SHM driver segment name',
+  PRIMARY KEY (`dsId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `driver_connections`
+--
+
+DROP TABLE IF EXISTS `driver_connections`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `driver_connections` (
+  `dcId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Driver connection identifier',
+  `dcName` varchar(100) NOT NULL COMMENT 'Driver connection name',
+  `dcType` smallint(5) unsigned NOT NULL COMMENT 'Driver connection type (0 - SHM, 1 - Modbus)',
+  `dcConfigModbus` int(10) unsigned DEFAULT NULL COMMENT 'Driver modbus configuration identifier',
+  `dcConfigSHM` int(10) unsigned DEFAULT NULL COMMENT 'Driver SHM configuration identifier ',
+  PRIMARY KEY (`dcId`),
+  UNIQUE KEY `dcConfigSHM` (`dcConfigSHM`),
+  UNIQUE KEY `dcConfigModbus` (`dcConfigModbus`),
+  CONSTRAINT `driver_connections_ibfk_1` FOREIGN KEY (`dcConfigModbus`) REFERENCES `driver_modbus` (`dmId`),
+  CONSTRAINT `driver_connections_ibfk_2` FOREIGN KEY (`dcConfigSHM`) REFERENCES `driver_shm` (`dsId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `log_intervals`
@@ -374,6 +433,7 @@ DROP TABLE IF EXISTS `tags`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tags` (
   `tid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `tConnId` int(10) unsigned NOT NULL COMMENT 'Tag driver connection identifier',
   `tName` varchar(50) NOT NULL COMMENT 'Tag name',
   `tType` int(10) unsigned NOT NULL COMMENT 'Tag data type',
   `tArea` int(10) unsigned NOT NULL COMMENT 'Tag data area',
@@ -385,11 +445,12 @@ CREATE TABLE `tags` (
   UNIQUE KEY `tName` (`tName`),
   KEY `tType` (`tType`),
   KEY `tArea` (`tArea`),
+  KEY `tConnId` (`tConnId`),
   CONSTRAINT `tags_ibfk_1` FOREIGN KEY (`tType`) REFERENCES `tag_types` (`ttid`),
-  CONSTRAINT `tags_ibfk_2` FOREIGN KEY (`tArea`) REFERENCES `tag_areas` (`taid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+  CONSTRAINT `tags_ibfk_2` FOREIGN KEY (`tArea`) REFERENCES `tag_areas` (`taid`),
+  CONSTRAINT `tags_ibfk_3` FOREIGN KEY (`tConnId`) REFERENCES `driver_connections` (`dcId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
