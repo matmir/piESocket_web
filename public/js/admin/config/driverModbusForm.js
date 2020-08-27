@@ -3,9 +3,9 @@ $(document).ready(function(){
     updateMode();
         
     // Change mode
-    $('#config_driver_modbus_form_mode').on('change', function() {
+    $('#driver_modbus_form_mode').on('change', function() {
         
-        if (this.value === 'TCP') {
+        if (this.value === '1') {
             showTCP();
         } else {
             showRTU();
@@ -15,7 +15,7 @@ $(document).ready(function(){
     
     function updateMode() {
         
-        if ($('#config_driver_modbus_form_mode').val() === 'TCP') {
+        if ($('#driver_modbus_form_mode').val() === '1') {
             showTCP();
         } else {
             showRTU();

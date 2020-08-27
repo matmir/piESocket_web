@@ -2,7 +2,8 @@
 
 namespace App\Tests\Entity\Admin;
 
-use App\Entity\Admin\ConfigDriverModbus;
+use App\Entity\Admin\DriverModbus;
+use App\Entity\Admin\DriverModbusMode;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -10,16 +11,16 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Mateusz Mirosławski
  */
-class ConfigDriverModbusTest extends TestCase {
+class DriverModbusTest extends TestCase {
     
     /**
      * Test Default constructor
      */
     public function testDefaultConstructor() {
         
-        $cfg = new ConfigDriverModbus();
+        $cfg = new DriverModbus();
         
-        $this->assertEquals('TCP', $cfg->getMode());
+        $this->assertEquals(DriverModbusMode::TCP, $cfg->getMode());
         $this->assertEquals('192.168.0.5', $cfg->getTCPaddr());
         $this->assertEquals(502, $cfg->getTCPport());
         $this->assertEquals('/dev/ttyACM1', $cfg->getRTUport());
@@ -37,10 +38,10 @@ class ConfigDriverModbusTest extends TestCase {
      */
     public function testSetMode() {
         
-        $cfg = new ConfigDriverModbus();
-        $cfg->setMode('RTU');
+        $cfg = new DriverModbus();
+        $cfg->setMode(DriverModbusMode::RTU);
         
-        $this->assertEquals('RTU', $cfg->getMode());
+        $this->assertEquals(DriverModbusMode::RTU, $cfg->getMode());
         
         $this->assertEquals('192.168.0.5', $cfg->getTCPaddr());
         $this->assertEquals(502, $cfg->getTCPport());
@@ -59,12 +60,12 @@ class ConfigDriverModbusTest extends TestCase {
      */
     public function testSetTCPAddr() {
         
-        $cfg = new ConfigDriverModbus();
+        $cfg = new DriverModbus();
         $cfg->setTCPaddr('127.0.0.1');
         
         $this->assertEquals('127.0.0.1', $cfg->getTCPaddr());
         
-        $this->assertEquals('TCP', $cfg->getMode());
+        $this->assertEquals(DriverModbusMode::TCP, $cfg->getMode());
         $this->assertEquals(502, $cfg->getTCPport());
         $this->assertEquals('/dev/ttyACM1', $cfg->getRTUport());
         $this->assertEquals(57600, $cfg->getRTUbaud());
@@ -81,12 +82,12 @@ class ConfigDriverModbusTest extends TestCase {
      */
     public function testSetTCPPort() {
         
-        $cfg = new ConfigDriverModbus();
+        $cfg = new DriverModbus();
         $cfg->setTCPport(45);
         
         $this->assertEquals(45, $cfg->getTCPport());
         
-        $this->assertEquals('TCP', $cfg->getMode());
+        $this->assertEquals(DriverModbusMode::TCP, $cfg->getMode());
         $this->assertEquals('192.168.0.5', $cfg->getTCPaddr());
         $this->assertEquals('/dev/ttyACM1', $cfg->getRTUport());
         $this->assertEquals(57600, $cfg->getRTUbaud());
@@ -103,12 +104,12 @@ class ConfigDriverModbusTest extends TestCase {
      */
     public function testSetRTUPort() {
         
-        $cfg = new ConfigDriverModbus();
+        $cfg = new DriverModbus();
         $cfg->setRTUport('/dev/ttyACM2');
         
         $this->assertEquals('/dev/ttyACM2', $cfg->getRTUport());
         
-        $this->assertEquals('TCP', $cfg->getMode());
+        $this->assertEquals(DriverModbusMode::TCP, $cfg->getMode());
         $this->assertEquals('192.168.0.5', $cfg->getTCPaddr());
         $this->assertEquals(502, $cfg->getTCPport());
         $this->assertEquals(57600, $cfg->getRTUbaud());
@@ -125,12 +126,12 @@ class ConfigDriverModbusTest extends TestCase {
      */
     public function testSetRTUBaud() {
         
-        $cfg = new ConfigDriverModbus();
+        $cfg = new DriverModbus();
         $cfg->setRTUbaud(11800);
         
         $this->assertEquals(11800, $cfg->getRTUbaud());
         
-        $this->assertEquals('TCP', $cfg->getMode());
+        $this->assertEquals(DriverModbusMode::TCP, $cfg->getMode());
         $this->assertEquals('192.168.0.5', $cfg->getTCPaddr());
         $this->assertEquals(502, $cfg->getTCPport());
         $this->assertEquals('/dev/ttyACM1', $cfg->getRTUport());
@@ -147,12 +148,12 @@ class ConfigDriverModbusTest extends TestCase {
      */
     public function testSetRTUParity() {
         
-        $cfg = new ConfigDriverModbus();
+        $cfg = new DriverModbus();
         $cfg->setRTUparity('O');
         
         $this->assertEquals('O', $cfg->getRTUparity());
         
-        $this->assertEquals('TCP', $cfg->getMode());
+        $this->assertEquals(DriverModbusMode::TCP, $cfg->getMode());
         $this->assertEquals('192.168.0.5', $cfg->getTCPaddr());
         $this->assertEquals(502, $cfg->getTCPport());
         $this->assertEquals('/dev/ttyACM1', $cfg->getRTUport());
@@ -169,12 +170,12 @@ class ConfigDriverModbusTest extends TestCase {
      */
     public function testSetRTUDataBit() {
         
-        $cfg = new ConfigDriverModbus();
+        $cfg = new DriverModbus();
         $cfg->setRTUdataBit(5);
         
         $this->assertEquals(5, $cfg->getRTUdataBit());
         
-        $this->assertEquals('TCP', $cfg->getMode());
+        $this->assertEquals(DriverModbusMode::TCP, $cfg->getMode());
         $this->assertEquals('192.168.0.5', $cfg->getTCPaddr());
         $this->assertEquals(502, $cfg->getTCPport());
         $this->assertEquals('/dev/ttyACM1', $cfg->getRTUport());
@@ -191,12 +192,12 @@ class ConfigDriverModbusTest extends TestCase {
      */
     public function testSetRTUStopBit() {
         
-        $cfg = new ConfigDriverModbus();
+        $cfg = new DriverModbus();
         $cfg->setRTUstopBit(2);
         
         $this->assertEquals(2, $cfg->getRTUstopBit());
         
-        $this->assertEquals('TCP', $cfg->getMode());
+        $this->assertEquals(DriverModbusMode::TCP, $cfg->getMode());
         $this->assertEquals('192.168.0.5', $cfg->getTCPaddr());
         $this->assertEquals(502, $cfg->getTCPport());
         $this->assertEquals('/dev/ttyACM1', $cfg->getRTUport());
@@ -213,12 +214,12 @@ class ConfigDriverModbusTest extends TestCase {
      */
     public function testSetSlaveID() {
         
-        $cfg = new ConfigDriverModbus();
+        $cfg = new DriverModbus();
         $cfg->setSlaveID(34);
         
         $this->assertEquals(34, $cfg->getSlaveID());
         
-        $this->assertEquals('TCP', $cfg->getMode());
+        $this->assertEquals(DriverModbusMode::TCP, $cfg->getMode());
         $this->assertEquals('192.168.0.5', $cfg->getTCPaddr());
         $this->assertEquals(502, $cfg->getTCPport());
         $this->assertEquals('/dev/ttyACM1', $cfg->getRTUport());
@@ -235,12 +236,12 @@ class ConfigDriverModbusTest extends TestCase {
      */
     public function testSetRegisterCount() {
         
-        $cfg = new ConfigDriverModbus();
+        $cfg = new DriverModbus();
         $cfg->setRegisterCount(10);
         
         $this->assertEquals(10, $cfg->getRegisterCount());
         
-        $this->assertEquals('TCP', $cfg->getMode());
+        $this->assertEquals(DriverModbusMode::TCP, $cfg->getMode());
         $this->assertEquals('192.168.0.5', $cfg->getTCPaddr());
         $this->assertEquals(502, $cfg->getTCPport());
         $this->assertEquals('/dev/ttyACM1', $cfg->getRTUport());
@@ -257,12 +258,12 @@ class ConfigDriverModbusTest extends TestCase {
      */
     public function testSetDriverPolling() {
         
-        $cfg = new ConfigDriverModbus();
+        $cfg = new DriverModbus();
         $cfg->setDriverPolling(105);
         
         $this->assertEquals(105, $cfg->getDriverPolling());
         
-        $this->assertEquals('TCP', $cfg->getMode());
+        $this->assertEquals(DriverModbusMode::TCP, $cfg->getMode());
         $this->assertEquals('192.168.0.5', $cfg->getTCPaddr());
         $this->assertEquals(502, $cfg->getTCPport());
         $this->assertEquals('/dev/ttyACM1', $cfg->getRTUport());

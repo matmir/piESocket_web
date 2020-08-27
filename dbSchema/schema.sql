@@ -254,15 +254,16 @@ CREATE TABLE `driver_modbus` (
   `dmMode` tinyint(3) unsigned NOT NULL COMMENT 'Modbus mode (0 - RTU, 1 - TCP)',
   `dmPollingInterval` int(10) unsigned NOT NULL COMMENT 'Modbus driver polling interval (ms)',
   `dmRegCount` int(10) unsigned NOT NULL COMMENT 'Modbus driver register count',
-  `dmRTU_baud` int(10) unsigned NOT NULL DEFAULT 57600 COMMENT 'Modbus RTU baud rate',
-  `dmRTU_dataBit` tinyint(3) unsigned NOT NULL DEFAULT 8 COMMENT 'Modbus RTU data bits',
-  `dmRTU_parity` char(1) NOT NULL DEFAULT 'N' COMMENT 'Modbus RTU parity (N - none, E - even, O - odd)',
-  `dmRTU_port` varchar(200) NOT NULL DEFAULT '/dev/ttyACM1' COMMENT 'Modbus RTU port',
-  `dmRTU_stopBit` smallint(5) unsigned NOT NULL DEFAULT 1 COMMENT 'Modbus RTU stop bit',
+  `dmRTU_baud` int(10) unsigned DEFAULT NULL COMMENT 'Modbus RTU baud rate',
+  `dmRTU_dataBit` tinyint(3) unsigned DEFAULT NULL COMMENT 'Modbus RTU data bits',
+  `dmRTU_parity` char(1) DEFAULT NULL COMMENT 'Modbus RTU parity (N - none, E - even, O - odd)',
+  `dmRTU_port` varchar(200) DEFAULT NULL COMMENT 'Modbus RTU port',
+  `dmRTU_stopBit` smallint(5) unsigned DEFAULT NULL COMMENT 'Modbus RTU stop bit',
   `dmSlaveID` int(10) unsigned NOT NULL COMMENT 'Modbus slave ID',
-  `dmTCP_addr` varchar(15) NOT NULL DEFAULT '127.0.0.1' COMMENT 'Modbus TCP IP address',
-  `dmTCP_port` int(10) unsigned NOT NULL DEFAULT 502 COMMENT 'Modbus TCP port number',
-  PRIMARY KEY (`dmId`)
+  `dmTCP_addr` varchar(15) DEFAULT NULL COMMENT 'Modbus TCP IP address',
+  `dmTCP_port` int(10) unsigned DEFAULT NULL COMMENT 'Modbus TCP port number',
+  PRIMARY KEY (`dmId`),
+  UNIQUE KEY `dmRTU_port` (`dmRTU_port`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -276,7 +277,8 @@ DROP TABLE IF EXISTS `driver_shm`;
 CREATE TABLE `driver_shm` (
   `dsId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'SHM driver identifier',
   `dsSegment` varchar(200) NOT NULL COMMENT 'SHM driver segment name',
-  PRIMARY KEY (`dsId`)
+  PRIMARY KEY (`dsId`),
+  UNIQUE KEY `dsSegment` (`dsSegment`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -293,7 +295,9 @@ CREATE TABLE `driver_connections` (
   `dcType` smallint(5) unsigned NOT NULL COMMENT 'Driver connection type (0 - SHM, 1 - Modbus)',
   `dcConfigModbus` int(10) unsigned DEFAULT NULL COMMENT 'Driver modbus configuration identifier',
   `dcConfigSHM` int(10) unsigned DEFAULT NULL COMMENT 'Driver SHM configuration identifier ',
+  `dcEnable` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Enable driver connection',
   PRIMARY KEY (`dcId`),
+  UNIQUE KEY `dcName` (`dcName`),
   UNIQUE KEY `dcConfigSHM` (`dcConfigSHM`),
   UNIQUE KEY `dcConfigModbus` (`dcConfigModbus`),
   CONSTRAINT `driver_connections_ibfk_1` FOREIGN KEY (`dcConfigModbus`) REFERENCES `driver_modbus` (`dmId`),

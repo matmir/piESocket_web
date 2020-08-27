@@ -4,18 +4,36 @@ namespace App\Entity\Admin;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
+use Symfony\Component\Config\Definition\Exception\Exception;
+use App\Entity\Admin\DriverConnectionEntity;
+use App\Entity\Admin\DriverConnection;
+use App\Entity\Admin\DriverType;
+use App\Entity\Admin\DriverModbus;
+use App\Entity\Admin\DriverModbusMode;
+
 /**
  * Class for Modbus driver configuration
  * 
  * @author Mateusz Mirosławski
  */
-class ConfigDriverModbus {
+class DriverModbusEntity extends DriverConnectionEntity {
+    
+    /**
+     * Modbus driver identifier
+     * 
+     * @Assert\PositiveOrZero
+     */
+    private $id;
     
     /**
      * Modbus mode
      * 
      * @Assert\NotBlank()
-     * @Assert\Length(max=3)
+     * @Assert\Type("integer")
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 1
+     * )
      */
     private $mode;
     
@@ -132,7 +150,10 @@ class ConfigDriverModbus {
      */
     public function __construct() {
         
+        parent::__construct();
+        
         // Common data
+        $this->id = 0;
         $this->mode = "TCP";
         $this->registerCount = 1;
         $this->driverPolling = 50;
@@ -151,6 +172,26 @@ class ConfigDriverModbus {
     }
     
     /**
+     * Get Modbus driver identifier
+     * 
+     * @return int Modbus driver identifier
+     */
+    public function getId(): int {
+        
+        return $this->id;
+    }
+    
+    /**
+     * Set Modbus driver identifier
+     * 
+     * @param int $id Modbus driver identifier
+     */
+    public function setId(int $id) {
+                
+        $this->id = $id;
+    }
+    
+    /**
      * Get Modbus mode (TCP/RTU)
      * 
      * @return string Modbus mode
@@ -163,9 +204,9 @@ class ConfigDriverModbus {
     /**
      * Set Modbus mode
      * 
-     * @param string $val Modbus mode
+     * @param int $val Modbus mode
      */
-    public function setMode(string $val) {
+    public function setMode(int $val) {
         
         $this->mode = $val;
     }
@@ -368,5 +409,71 @@ class ConfigDriverModbus {
     public function setDriverPolling(int $val) {
         
         $this->driverPolling = $val;
+    }
+    
+    /**
+     * Get Driver Connection object
+     * 
+     * @return DriverConnection Driver connection object
+     */
+    public function getFullConnectionObject(): DriverConnection {
+        
+        // New Modbus
+        $mb = new DriverModbus();
+        $mb->setId($this->id);
+        $mb->setMode($this->mode);
+        $mb->setDriverPolling($this->driverPolling);
+        $mb->setRegisterCount($this->registerCount);
+        
+        if ($mb->getMode() == DriverModbusMode::RTU) {
+            $mb->setRTUbaud($this->RTU_baud);
+            $mb->setRTUdataBit($this->RTU_dataBit);
+            $mb->setRTUparity($this->RTU_parity);
+            $mb->setRTUport($this->RTU_port);
+            $mb->setRTUstopBit($this->RTU_stopBit);
+        } else if ($mb->getMode() == DriverModbusMode::TCP) {
+            $mb->setTCPaddr($this->TCP_addr);
+            $mb->setTCPport($this->TCP_port);
+        }
+        $mb->setSlaveID($this->slaveID);
+        
+        // New connection
+        $conn = new DriverConnection();
+        $conn->setId($this->connId);
+        $conn->setName($this->connName);
+        $conn->setType(DriverType::Modbus);
+        $conn->setModbusConfig($mb);
+        
+        return $conn;
+    }
+    
+    /**
+     * Initialize from Driver connection object
+     * 
+     * @param DriverConnection $conn Driver connection object
+     */
+    public function initFromConnectionObject(DriverConnection $conn) {
+        
+        // Init parent
+        parent::initFromConnectionObject($conn);
+        
+        if (!$conn->isModbusConfig()) {
+            throw new Exception("Missing modbus configuration in connection object");
+        }
+        
+        $mb = $conn->getModbusConfig();
+        
+        $this->id = $mb->getId();
+        $this->mode = $mb->getMode();
+        $this->driverPolling = $mb->getDriverPolling();
+        $this->registerCount = $mb->getRegisterCount();
+        $this->RTU_baud = $mb->getRTUbaud();
+        $this->RTU_dataBit = $mb->getRTUdataBit();
+        $this->RTU_parity = $mb->getRTUparity();
+        $this->RTU_port = $mb->getRTUport();
+        $this->RTU_stopBit = $mb->getRTUstopBit();
+        $this->TCP_addr = $mb->getTCPaddr();
+        $this->TCP_port = $mb->getTCPport();
+        $this->slaveID = $mb->getSlaveID();
     }
 }

@@ -7,23 +7,28 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
-use App\Entity\Admin\ConfigDriverModbus;
+use App\Entity\Admin\DriverModbusEntity;
+use App\Entity\Admin\DriverModbusMode;
 
 /**
  * Form class for ModbusTCP driver configuration
  *
  * @author Mateusz Mirosławski
  */
-class ConfigDriverModbusForm extends AbstractType {
+class DriverModbusForm extends AbstractType {
     
     public function buildForm(FormBuilderInterface $builder, array $options) {
         
-        $builder->add('mode', ChoiceType::class, array('choices'  => array(
-                                                        'TCP' => 'TCP',
-                                                        'RTU' => 'RTU',
-                                                        ),
-                                                    'label' => 'Mode'
+        $builder->add('connId', HiddenType::class)
+            ->add('connName', null, array('label' => 'Connection name'))
+            ->add('id', HiddenType::class)
+            ->add('mode', ChoiceType::class, array('choices'  => array(
+                                                    'TCP' => DriverModbusMode::TCP,
+                                                    'RTU' => DriverModbusMode::RTU,
+                                                    ),
+                                                'label' => 'Mode'
                                             ))
             ->add('slaveID', null, array('label' => 'Slave ID'))
             ->add('registerCount', null, array('label' => 'Registers to read [words]'))
@@ -59,7 +64,7 @@ class ConfigDriverModbusForm extends AbstractType {
     public function configureOptions(OptionsResolver $resolver) {
         
         $resolver->setDefaults(array(
-            'data_class' => ConfigDriverModbus::class,
+            'data_class' => DriverModbusEntity::class,
         ));
     }
 }

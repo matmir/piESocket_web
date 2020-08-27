@@ -1,30 +1,83 @@
 {% extends 'admin/config/base.config.html.twig' %}
 
-{% block adminConfigTitle %}Driver{% endblock %}
+{% block adminConfigTitle %}Driver connections{% endblock %}
 
 {% block adminConfigBody %}
     <br />
-    <div class="btn-group" role="group" aria-label="Driver type">
-        <a class="btn btn-{% if drvType != 'SHM' %}outline-{% endif %}secondary" href="{{ path('admin_config_driver', {'type': 'SHM'}) }}" role="button">Shared Memory</a>
-        <a class="btn btn-{% if drvType != 'Modbus' %}outline-{% endif %}secondary" href="{{ path('admin_config_driver', {'type': 'Modbus'}) }}" role="button">Modbus</a>
+    {% for message in app.flashes('driver-msg-ok') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    
+    {% for message in app.flashes('driver-msg-error') %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+        
+    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+        <div class="btn-group" role="group">
+            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Add connection
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+              <a class="dropdown-item" href="{{ path('admin_config_driver_add', {'type': 0}) }}">SHM driver</a>
+              <a class="dropdown-item" href="{{ path('admin_config_driver_add', {'type': 1}) }}">Modbus driver</a>
+            </div>
+        </div>
     </div>
     
     <br /><br />
     
-    {% if drvType == 'SHM' %}
-        
-        {{ include('admin/config/configDriverSHMForm.html.twig', {'form': form}) }}
-        
-    {% elseif drvType == 'Modbus' %}
+    <table class="table table-sm">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Type</th>
+        <th scope="col">Configuration</th>
+        <th scope="col">Enabled</th>
+        <th scope="col">Options</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for conn in connections %}
             
-        {{ include('admin/config/configDriverModbusForm.html.twig', {'form': form}) }}
-        
-    {% endif %}
+            <tr>
+                <th scope="row">{{ conn.getId() }}</th>
+                <td>{{ conn.getName() }}</td>
+                <td>{{ DriverTypeName(conn.getType()) }}</td>
+                <td>
+                    {% if conn.getType() == 0 %}
+                        Segment name: {{ conn.getShmConfig().getSegmentName() }}
+                    {% else %}
+                        
+                        {% if conn.getModbusConfig().getMode() == 0 %}
+                            <b>RTU</b> (Port: {{ conn.getModbusConfig().getRTUport() }}, Params: {{ conn.getModbusConfig().getRTUbaud() }} bps
+                            {{ conn.getModbusConfig().getRTUdataBit() }}{{ conn.getModbusConfig().getRTUparity() }}{{ conn.getModbusConfig().getRTUstopBit() }},
+                            Registers: {{ conn.getModbusConfig().getRegisterCount() }})
+                        {% else %}
+                            <b>TCP</b> (IP: {{ conn.getModbusConfig().getTCPaddr() }}, port: {{ conn.getModbusConfig().getTCPport() }},
+                            Registers: {{ conn.getModbusConfig().getRegisterCount() }})
+                        {% endif %}
+                        
+                    {% endif %}
+                </td>
+                <td>
+                    {% if (conn.isEnabled()) %}
+                        <a href="{{ path('admin_config_driver_enable', {'connId': conn.getId(), 'en': 0}) }}"><img src="{{ asset('img/ok.png') }}" alt="Enabled" title="Enabled"></a>
+                    {% else %}
+                        <a href="{{ path('admin_config_driver_enable', {'connId': conn.getId(), 'en': 1}) }}"><img src="{{ asset('img/stop.png') }}" alt="Disabled" title="Disabled"></a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('admin_config_driver_edit', {'connId': conn.getId()}) }}"><img src="{{ asset('img/edit.png') }}" alt="Edit" title="Edit"></a>
+                    <a href="{{ path('admin_config_driver_delete', {'connId': conn.getId()}) }}"><img src="{{ asset('img/delete.png') }}" alt="Delete" title="Delete"></a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
     
-{% endblock %}
-
-{% block javascripts %}
-    {% if drvType == 'Modbus' %}
-        <script src="{{ asset('js/admin/config/driverModbusForm.js') }}"></script>
-    {% endif %}
 {% endblock %}

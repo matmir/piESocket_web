@@ -3,6 +3,20 @@
 <table>
     <tbody>
         <tr>
+            <th>{{ form_label(form.connName) }}</th>
+            <td>{{ form_widget(form.connName) }}</td>
+            <td>{{ form_help(form.connName) }}</td>
+            <td>
+                {% if form.connName.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.connName.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
             <th>{{ form_label(form.mode) }}</th>
             <td>{{ form_widget(form.mode) }}</td>
             <td>{{ form_help(form.mode) }}</td>
@@ -159,6 +173,7 @@
         <tr>
             <td colspan="4">
                 {{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}
+                <a class="btn btn-danger" href="{{ path('admin_config_driver') }}" role="button">Cancel</a>
             </td>
         </tr>
     </tbody>

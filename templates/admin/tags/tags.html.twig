@@ -45,6 +45,7 @@
             {% endif %}
             <a href="{{ path('admin_tags_list', {'area': app.request.get('area'), 'sort': 0, 'sortDESC': (idDir)}) }}">ID</a>
         </th>
+        <th scope="col">Connection</th>
         <th scope="col">
             {% if app.request.get('sort') == 1 %}
                 {% if app.request.get('sortDESC') == 0 %}
@@ -98,6 +99,7 @@
             {% endif %}
             
                 <th scope="row">{{ tag.getId() }}</th>
+                <td>{{ tag.getConnName() }}</td>
                 <td>{{ tag.getName() }}</td>
                 <td>{{ TagAreaName(tag.getArea()) }}</td>
                 <td>{{ TagAreaPrefix(tag.getArea()) }} {{ tag.getByteAddress() }}.{{ tag.getBitAddress() }}</td>

@@ -46,4 +46,10 @@ class AppException extends Exception {
     const USER_OLD_PASSWORD_WRONG = 63;
     
     const SPECIAL_FUNCTION_DENIED = 70;
+    
+    const SHM_EXIST = 80;
+    const DRIVER_EXIST = 81;
+    const MODBUS_ADDRESS_EXIST = 82;
+    const DRIVER_LIMIT = 83;
+    const DRIVER_USED = 84;
 }

@@ -5,14 +5,19 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\Form;
 
 use App\Form\Admin\ConfigGeneralForm;
-use App\Form\Admin\ConfigDriverModbusForm;
-use App\Form\Admin\ConfigDriverSHMForm;
+use App\Form\Admin\DriverModbusForm;
+use App\Form\Admin\DriverSHMForm;
 use App\Service\Admin\ConfigGeneralMapper;
-use App\Service\Admin\ConfigDriverMapper;
+use App\Service\Admin\DriverConnectionMapper;
 use App\Service\Admin\SystemScripts;
+use App\Entity\Admin\DriverModbusEntity;
+use App\Entity\Admin\DriverSHMEntity;
+use App\Entity\Admin\DriverType;
+use App\Entity\AppException;
 
 class AdminController extends AbstractController {
     
@@ -59,44 +64,230 @@ class AdminController extends AbstractController {
     }
     
     /**
-     * @Route("/admin/config/driver/{type}", name="admin_config_driver")
+     * @Route("/admin/config/driver", name="admin_config_driver")
      */
-    public function configDriver(ConfigDriverMapper $cfgMapper, Request $request, $type = 'def') {
+    public function configDriver(DriverConnectionMapper $connMapper) {
         
-        // Check driver selection
-        if ($type == 'def') {
-            $type = $cfgMapper->getDriverName();
+        // Get connections
+        $connList = $connMapper->getConnections();
+        
+        return $this->render('admin/config/configDriver.html.twig', array(
+            'connections' => $connList
+        ));
+    }
+    
+    /**
+     * Parse Driver exception
+     * 
+     * @param $errorObj Error object
+     * @param Form $form Form object
+     */
+    private function parseDriverError($errorObj, Form $form) {
+        
+        $code = $errorObj->getCode();
+        
+        if ($errorObj instanceof AppException) {
+            
+            switch ($code) {
+                case AppException::SHM_EXIST: {
+                    // Add error
+                    $form->get('segmentName')->addError(new FormError('SHM segment name exist!'));
+                } break;
+                case AppException::DRIVER_EXIST: {
+                    // Add error
+                    $form->get('connName')->addError(new FormError($errorObj->getMessage()));
+                } break;
+                case AppException::MODBUS_ADDRESS_EXIST: {
+                    // Add error
+                    $form->get('TCP_addr')->addError(new FormError($errorObj->getMessage()));
+                } break;
+                case AppException::DRIVER_LIMIT: {
+                    // Add error
+                    $form->get('connName')->addError(new FormError($errorObj->getMessage()));
+                } break;
+                default: $form->get('connName')->addError(new FormError('Unknown exception!'));
+            }
+            
         }
+    }
+    
+    /**
+     * @Route("/admin/config/driver/add/{type}", name="admin_config_driver_add")
+     */
+    public function configDriverAdd($type, DriverConnectionMapper $connMapper, Request $request) {
         
+        // Check driver type
+        if ($type < 0 || $type > 1) {
+            $type = 0;
+        }
+                
+        $connE = 0;
+                
         // Select driver form
-        if ($type == 'SHM') {
-            $cfg = $cfgMapper->getSHMConfig();
-            $form = $this->createForm(ConfigDriverSHMForm::class, $cfg);
+        if ($type == DriverType::SHM) {
+            $connE = new DriverSHMEntity();
+            $form = $this->createForm(DriverSHMForm::class, $connE);
         } else {
-            $cfg = $cfgMapper->getModbusConfig();
-            $form = $this->createForm(ConfigDriverModbusForm::class, $cfg);
+            $connE = new DriverModbusEntity();
+            $form = $this->createForm(DriverModbusForm::class, $connE);
         }
         
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             
-            $cfg = $form->getData();
+            // Get Form data
+            $connE = $form->getData();
             
-            // Write data to the DB
-            if ($type == 'SHM') {
-                $cfgMapper->setSHMConfig($cfg);
-            } else {
-                $cfgMapper->setModbusConfig($cfg);
+            // Get real connection object
+            $conn = $connE->getFullConnectionObject();
+                        
+            try {
+                
+                // Add to the DB
+                $connMapper->addConnection($conn);
+                
+                $this->addFlash(
+                    'driver-msg-ok',
+                    'New connection was saved!'
+                );
+                
+                return $this->redirect($this->generateUrl('admin_config_driver'));
+                
+            } catch (AppException $ex) {
+                
+                $this->parseDriverError($ex, $form);
+                
             }
-            
         }
         
-        return $this->render('admin/config/configDriver.html.twig', array(
+        return $this->render('admin/config/configDriverAdd.html.twig', array(
             'drvType' => $type,
             'form' => $form->createView()
         ));
     }
+    
+    /**
+     * @Route("/admin/config/driver/edit/{connId}", name="admin_config_driver_edit")
+     */
+    public function configDriverEdit($connId, DriverConnectionMapper $connMapper, Request $request) {
+        
+        // Get connection object
+        $conn = $connMapper->getConnection($connId);
+        
+        $type = $conn->getType();
+                
+        $connE = 0;
+                
+        // Select driver form
+        if ($conn->getType() == DriverType::SHM) {
+            $connE = new DriverSHMEntity();
+            $connE->initFromConnectionObject($conn);
+            $form = $this->createForm(DriverSHMForm::class, $connE);
+        } else {
+            $connE = new DriverModbusEntity();
+            $connE->initFromConnectionObject($conn);
+            $form = $this->createForm(DriverModbusForm::class, $connE);
+        }
+        
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            // Get Form data
+            $connE = $form->getData();
+            
+            // Get real connection object
+            $newConn = $connE->getFullConnectionObject();
+            
+            try {
+                
+                // Add to the DB
+                $connMapper->editConnection($newConn);
+                
+                $this->addFlash(
+                    'driver-msg-ok',
+                    'New connection was saved!'
+                );
+                
+                return $this->redirect($this->generateUrl('admin_config_driver'));
+                
+            } catch (AppException $ex) {
+                
+                $this->parseDriverError($ex, $form);
+                
+            }
+        }
+        
+        return $this->render('admin/config/configDriverEdit.html.twig', array(
+            'drvType' => $type,
+            'form' => $form->createView()
+        ));
+    }
+    
+    /**
+     * @Route("/admin/config/driver/enable/{connId}/{en}", name="admin_config_driver_enable")
+     */
+    public function enable($connId, $en, DriverConnectionMapper $connMapper) {
+        
+        if ($en < 0 || $en > 1) {
+            $en = 0;
+        }
+        
+        // Enable connection
+        $connMapper->enableConnection($connId, $en);
+
+        return $this->redirect($this->generateUrl('admin_config_driver'));
+    }
+    
+    /**
+     * Parse delete connection exception
+     * 
+     * @param numeric $errorCode Error code
+     */
+    private function parseDeleteConnError($errorCode) {
+        
+        switch ($errorCode) {
+            case AppException::DRIVER_USED: {
+                // Add error
+                $this->addFlash(
+                    'driver-msg-error',
+                    'Connection is used inside the system - can not be deleted!'
+                );
+            } break;
+            default: {
+                $this->addFlash(
+                    'driver-msg-error',
+                    'Unknown error during delete!'
+                );
+            }
+        }
+    }
+    
+    /**
+     * @Route("/admin/config/driver/delete/{connId}", name="admin_config_driver_delete")
+     */
+    public function delete($connId, DriverConnectionMapper $connMapper) {
+        
+        try {
+            
+            // Delete connection
+            $connMapper->deleteConnection($connId);
+            
+            $this->addFlash(
+                'driver-msg-ok',
+                'Connection was deleted!'
+            );
+            
+        } catch (AppException $ex) {
+
+            $this->parseDeleteConnError($ex->getCode());
+            
+        }
+        
+        return $this->redirect($this->generateUrl('admin_config_driver'));
+    }
+    
     
     /**
      * @Route("/admin/logs/show/{component}", name="admin_logs_show")

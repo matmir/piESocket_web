@@ -7,9 +7,10 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use App\Entity\Admin\TagArea;
 use App\Entity\Admin\TagType;
 use App\Entity\Admin\User;
+use App\Entity\Admin\DriverConnection;
 
 /**
- * Class represents PLC tag
+ * Class represents tag
  *
  * @author Mateusz Mirosławski
  */
@@ -19,6 +20,16 @@ class Tag {
      * Tag identifier
      */
     private $tid;
+    
+    /**
+     * Driver connection identifier
+     */
+    private $connId;
+    
+    /**
+     * Driver connection name
+     */
+    private $connName;
     
     /**
      * Tag name
@@ -61,6 +72,8 @@ class Tag {
     public function __construct() {
         
         $this->tid = 0;
+        $this->connId = 0;
+        $this->connName = '';
         $this->tName = '';
         $this->tType = TagType::Bit;
         $this->tArea = TagArea::input;
@@ -107,6 +120,50 @@ class Tag {
         }
         
         return true;
+    }
+    
+    /**
+     * Get Driver connection identifier
+     * 
+     * @return int Driver connection identifier
+     */
+    public function getConnId(): int {
+        
+        return $this->connId;
+    }
+    
+    /**
+     * Set Driver connection identifier
+     * 
+     * @param int $id Driver connection identifier
+     */
+    public function setConnId(int $id) {
+        
+        DriverConnection::checkId($id);
+        
+        $this->connId = $id;
+    }
+    
+    /**
+     * Get Driver connection name
+     * 
+     * @return string Driver connection name
+     */
+    public function getConnName(): string {
+        
+        return $this->connName;
+    }
+    
+    /**
+     * Set Driver connection name
+     * 
+     * @param string $nm Driver connection name
+     */
+    public function setConnName(string $nm) {
+        
+        DriverConnection::checkName($nm);
+        
+        $this->connName = $nm;
     }
     
     /**
@@ -354,6 +411,9 @@ class Tag {
         if ($checkID) {
             $this->checkId($this->tid);
         }
+        
+        // Check connection id
+        DriverConnection::checkId($this->connId);
         
         // Check name
         $this->checkName($this->tName);

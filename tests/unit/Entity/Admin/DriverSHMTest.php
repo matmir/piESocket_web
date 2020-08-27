@@ -2,7 +2,7 @@
 
 namespace App\Tests\Entity\Admin;
 
-use App\Entity\Admin\ConfigDriverSHM;
+use App\Entity\Admin\DriverSHM;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -10,14 +10,14 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Mateusz Mirosławski
  */
-class ConfigDriverSHMTest extends TestCase {
+class DriverSHMTest extends TestCase {
     
     /**
      * Test Default constructor
      */
     public function testDefaultConstructor() {
         
-        $cfg = new ConfigDriverSHM();
+        $cfg = new DriverSHM();
         
         $this->assertEquals('shm_segment', $cfg->getSegmentName());
     }
@@ -27,7 +27,7 @@ class ConfigDriverSHMTest extends TestCase {
      */
     public function testSetSegmentName() {
         
-        $cfg = new ConfigDriverSHM();
+        $cfg = new DriverSHM();
         $cfg->setSegmentName('test');
         
         $this->assertEquals('test', $cfg->getSegmentName());

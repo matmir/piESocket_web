@@ -8,6 +8,7 @@ use App\Entity\Admin\TagArea;
 use App\Entity\Admin\TagType;
 use App\Entity\Admin\AlarmTrigger;
 use App\Entity\Admin\TagLoggerInterval;
+use App\Entity\Admin\DriverType;
 
 class AppExtension extends AbstractExtension {
     
@@ -19,6 +20,7 @@ class AppExtension extends AbstractExtension {
             new TwigFunction('TagTypeName', [TagType::class, 'getName']),
             new TwigFunction('AlarmTriggerName', [AlarmTrigger::class, 'getName']),
             new TwigFunction('TagLoggerIntervalName', [TagLoggerInterval::class, 'getName']),
+            new TwigFunction('DriverTypeName', [DriverType::class, 'getName']),
         ];
     }
 }
