@@ -33,7 +33,8 @@ abstract class BaseFunctionTestCase extends WebTestCase {
         
         // Clear test server process data
         $this->parser->setBit('BIT_CLEAR_PROCESS');
-        $this->waitOnProcessDataSync();
+        $this->parser->setBit('MB_BIT_CLEAR_PROCESS');
+        $this->waitOnProcessDataSync(false);
     }
     
     public function tearDown() {
@@ -42,10 +43,19 @@ abstract class BaseFunctionTestCase extends WebTestCase {
         $this->parser = null;
     }
     
+    protected function waitOnProcessDataSync(bool $onlyShm=true) {
+        
+        $this->waitOnShmProcessDataSync();
+        
+        if (!$onlyShm) {
+            $this->waitOnModbusProcessDataSync();
+        }
+    }
+    
     /**
-     * Wait until process data is updated in SHM
+     * Wait until process data is updated in SHM driver
      */
-    protected function waitOnProcessDataSync() {
+    protected function waitOnShmProcessDataSync() {
         
         $this->parser->setBit('BIT_SYNC');
         while (!$this->parser->getBit('BIT_SYNC')) {
@@ -54,6 +64,22 @@ abstract class BaseFunctionTestCase extends WebTestCase {
         
         $this->parser->resetBit('BIT_SYNC');
         while ($this->parser->getBit('BIT_SYNC')) {
+            usleep(10000);
+        }
+    }
+    
+    /**
+     * Wait until process data is updated in Modbus driver
+     */
+    protected function waitOnModbusProcessDataSync() {
+        
+        $this->parser->setBit('MB_BIT_SYNC');
+        while (!$this->parser->getBit('MB_BIT_SYNC')) {
+            usleep(10000);
+        }
+        
+        $this->parser->resetBit('MB_BIT_SYNC');
+        while ($this->parser->getBit('MB_BIT_SYNC')) {
             usleep(10000);
         }
     }
