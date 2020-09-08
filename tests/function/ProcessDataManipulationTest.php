@@ -452,7 +452,7 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(0, $this->parser->getDWord('MB_TEST_DWORD40'));
         
         $pret1 = $this->parser->writeWord('TEST_WORD12', 27901);
-        $pret2 = $this->parser->writeWord('MB_TEST_WORD42', 55844);
+        $pret2 = $this->parser->writeWord('MB_TEST_WORD42', 27903);
         
         $this->assertEquals(ParserReplyCodes::OK, $pret1);
         $this->assertEquals(ParserReplyCodes::OK, $pret2);
@@ -460,7 +460,7 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->waitOnProcessDataSync(false);
         
         $this->assertEquals(1828519936, $this->parser->getDWord('TEST_DWORD10'));
-        $this->assertEquals(3659792384, $this->parser->getDWord('MB_TEST_DWORD40'));
+        $this->assertEquals(1828651008, $this->parser->getDWord('MB_TEST_DWORD40'));
     }
     
     public function testGetDWordWrong1() {
@@ -491,7 +491,7 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(0, $this->parser->getDWord('MB_TEST_DWORD40'));
         
         $pret1 = $this->parser->writeDWord('TEST_DWORD10', 1828520016);
-        $pret2 = $this->parser->writeDWord('MB_TEST_DWORD40', 3659793152);
+        $pret2 = $this->parser->writeDWord('MB_TEST_DWORD40', 1828651008);
         
         $this->assertEquals(ParserReplyCodes::OK, $pret1);
         $this->assertEquals(ParserReplyCodes::OK, $pret2);
@@ -502,9 +502,9 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(80, $this->parser->getWord('TEST_WORD10'));
         $this->assertEquals(27901, $this->parser->getWord('TEST_WORD12'));
         
-        $this->assertEquals(3659793152, $this->parser->getDWord('MB_TEST_DWORD40'));
-        $this->assertEquals(768, $this->parser->getWord('MB_TEST_WORD40'));
-        $this->assertEquals(55844, $this->parser->getWord('MB_TEST_WORD42'));
+        $this->assertEquals(1828651008, $this->parser->getDWord('MB_TEST_DWORD40'));
+        $this->assertEquals(0, $this->parser->getWord('MB_TEST_WORD40'));
+        $this->assertEquals(27903, $this->parser->getWord('MB_TEST_WORD42'));
     }
     
     public function testWriteDWordWrong1() {
