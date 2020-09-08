@@ -498,47 +498,67 @@ class ParserResponse {
         // Explode thread cycle times
         $threadData = explode(ParserSeparators::ctTh, $data);
 
-        if (empty($threadData) || count($threadData) < 6) {
+        if (empty($threadData) || count($threadData) < 5) {
             throw new ParserException('RES_GET_THREAD_CYCLE_TIME: Error during data explode!');
         }
         
-        // Get Cycle times from Process Updater
-        $UpdaterCT = explode(ParserSeparators::ctThVal, $threadData[0]);
-        if (count($UpdaterCT) != 2 || $UpdaterCT[0] != "Updater") {
-            throw new ParserException('RES_GET_THREAD_CYCLE_TIME: Error during Process Updater data explode!');
+        // Get number of updaters and buffers
+        $countDT = explode(ParserSeparators::ctVal, $threadData[0]);
+        if (count($countDT) != 2) {
+            throw new ParserException('RES_GET_THREAD_CYCLE_TIME: Error during count data explode!');
         }
-        $UpdaterCTVals = $this->getCycleTime($UpdaterCT[1]);
+        if (!is_numeric($countDT[0]) || !is_numeric($countDT[1])) {
+            throw new ParserException('RES_GET_THREAD_CYCLE_TIME: Error during count data parsing!');
+        }
         
-        // Get Cycle times from Driver polling
-        $PollingCT = explode(ParserSeparators::ctThVal, $threadData[1]);
-        if (count($PollingCT) != 2 || $PollingCT[0] != "Polling") {
-            throw new ParserException('RES_GET_THREAD_CYCLE_TIME: Error during Driver polling data explode!');
+        $UpdaterCTVals = array();
+        // Get Cycle times from Process Updater
+        for ($i=0; $i<$countDT[0]; ++$i) {
+            $UpdaterCT = explode(ParserSeparators::ctThVal, $threadData[$i+1]);
+            if (count($UpdaterCT) != 2 || strpos($UpdaterCT[0], 'Updater_') === false) {
+                throw new ParserException('RES_GET_THREAD_CYCLE_TIME: Error during Process Updater data explode!');
+            }
+            
+            $UpdaterCTVals[$UpdaterCT[0]] = $this->getCycleTime($UpdaterCT[1]);
         }
-        $PollingCTVals = $this->getCycleTime($PollingCT[1]);
+            
+        $PollingCTVals = array();
+        // Get Cycle times from Driver polling
+        for ($i=0; $i<$countDT[1]; ++$i) {
+            $PollingCT = explode(ParserSeparators::ctThVal, $threadData[$i+1+$countDT[0]]);
+            if (count($PollingCT) != 2 || strpos($PollingCT[0], 'DriverBuffer_') === false) {
+                throw new ParserException('RES_GET_THREAD_CYCLE_TIME: Error during Driver polling data explode!');
+            }
+            
+            $PollingCTVals[$PollingCT[0]] = $this->getCycleTime($PollingCT[1]);
+        }
+        
+        // Data offset
+        $dtOffset = 1 + $countDT[0] + $countDT[1];
         
         // Get Cycle times from Tag Logger
-        $LoggerCT = explode(ParserSeparators::ctThVal, $threadData[2]);
+        $LoggerCT = explode(ParserSeparators::ctThVal, $threadData[$dtOffset]);
         if (count($LoggerCT) != 2 || $LoggerCT[0] != "Logger") {
             throw new ParserException('RES_GET_THREAD_CYCLE_TIME: Error during Tag logger data explode!');
         }
         $LoggerCTVals = $this->getCycleTime($LoggerCT[1]);
         
         // Get Cycle times from Tag Logger Writer
-        $LoggerWriterCT = explode(ParserSeparators::ctThVal, $threadData[3]);
+        $LoggerWriterCT = explode(ParserSeparators::ctThVal, $threadData[$dtOffset+1]);
         if (count($LoggerWriterCT) != 2 || $LoggerWriterCT[0] != "LoggerWriter") {
             throw new ParserException('RES_GET_THREAD_CYCLE_TIME: Error during Tag logger writer data explode!');
         }
         $LoggerWriterCTVals = $this->getCycleTime($LoggerWriterCT[1]);
         
         // Get Cycle times from Alarming
-        $AlarmingCT = explode(ParserSeparators::ctThVal, $threadData[4]);
+        $AlarmingCT = explode(ParserSeparators::ctThVal, $threadData[$dtOffset+2]);
         if (count($AlarmingCT) != 2 || $AlarmingCT[0] != "Alarming") {
             throw new ParserException('RES_GET_THREAD_CYCLE_TIME: Error during Alarming data explode!');
         }
         $AlarmingCTVals = $this->getCycleTime($AlarmingCT[1]);
         
         // Get Cycle times from Script system
-        $ScriptCT = explode(ParserSeparators::ctThVal, $threadData[5]);
+        $ScriptCT = explode(ParserSeparators::ctThVal, $threadData[$dtOffset+3]);
         if (count($ScriptCT) != 2 || $ScriptCT[0] != "Script") {
             throw new ParserException('RES_GET_THREAD_CYCLE_TIME: Error during Script system data explode!');
         }
@@ -546,6 +566,8 @@ class ParserResponse {
 
         // Cycle times array
         $CT = array(
+            'UpdaterCnt' => $countDT[0],
+            'PollingCnt' => $countDT[1],
             'Updater' => $UpdaterCTVals,
             'Polling' => $PollingCTVals,
             'Logger' => $LoggerCTVals,

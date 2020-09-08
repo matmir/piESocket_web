@@ -40,10 +40,15 @@ class DriverConnectionMapper extends BaseConfigMapper {
      * 
      * @return array Array with Driver connections
      */
-    public function getConnections() {
+    public function getConnections(bool $onlyActive=false) {
         
         // Basic query
         $sql = 'SELECT * FROM driver_connections';
+        
+        // Enabled?
+        if ($onlyActive===true) {
+            $sql .= ' WHERE dcEnable = 1';
+        }
         
         // End query
         $sql .= ';';

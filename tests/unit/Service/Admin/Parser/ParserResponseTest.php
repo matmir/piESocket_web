@@ -1121,6 +1121,304 @@ class ParserResponseTest extends TestCase {
     }
     
     /**
+     * Test response method for GET_THREAD_CYCLE_TIME function
+     */
+    public function testResponse_GET_THREAD_CYCLE_TIME_1() {
+        
+        // Server response
+        $sres = '500|3?2!Updater_1:1.0?1.1?1.2!Updater_2:2.0?2.1?2.2!Updater_3:3.0?3.1?3.2!';
+        $sres .= 'DriverBuffer_1:1.3?1.4?1.5!DriverBuffer_2:2.3?2.4?2.5!';
+        $sres .= 'Logger:10.0?10.1?10.2!LoggerWriter:20.0?20.1?20.2!Alarming:30.0?30.1?30.2!Script:40.0?40.1?40.2!';
+        
+        // Prepare response
+        $response = new ParserResponse();
+        $dt = $response->response($sres);
+        
+        $this->assertArrayHasKey('cmd', $dt);
+        $this->assertArrayHasKey('values', $dt);
+        
+        $this->assertInternalType('array', $dt['values']);
+        $this->assertEquals(8, count($dt['values']));
+        
+        $this->assertEquals(ParserCommands::GET_THREAD_CYCLE_TIME, $dt['cmd']);
+        
+        $val = $dt['values'];
+        $this->assertArrayHasKey('UpdaterCnt', $val);
+        $this->assertArrayHasKey('PollingCnt', $val);
+        $this->assertArrayHasKey('Updater', $val);
+        $this->assertInternalType('array', $val['Updater']);
+        $this->assertArrayHasKey('Polling', $val);
+        $this->assertInternalType('array', $val['Polling']);
+        $this->assertArrayHasKey('Logger', $val);
+        $this->assertInternalType('array', $val['Logger']);
+        $this->assertArrayHasKey('LoggerWriter', $val);
+        $this->assertInternalType('array', $val['LoggerWriter']);
+        $this->assertArrayHasKey('Alarming', $val);
+        $this->assertInternalType('array', $val['Alarming']);
+        $this->assertArrayHasKey('Script', $val);
+        $this->assertInternalType('array', $val['Script']);
+        
+        $this->assertEquals(3, $val['UpdaterCnt']);
+        $this->assertEquals(2, $val['PollingCnt']);
+        
+        $this->assertEquals(3, count($val['Updater']));
+        $this->assertArrayHasKey('Updater_1', $val['Updater']);
+        $this->assertArrayHasKey('Updater_2', $val['Updater']);
+        $this->assertArrayHasKey('Updater_3', $val['Updater']);
+        
+        foreach($val['Updater'] as $key => $value) {
+            $upd = $val['Updater'][$key];
+            $this->assertEquals($upd, $value);
+            $this->assertInternalType('array', $upd);
+            $this->assertArrayHasKey('min', $upd);
+            $this->assertArrayHasKey('max', $upd);
+            $this->assertArrayHasKey('current', $upd);
+        }
+        
+        $this->assertEquals(2, count($val['Polling']));
+        $this->assertArrayHasKey('DriverBuffer_1', $val['Polling']);
+        $this->assertArrayHasKey('DriverBuffer_2', $val['Polling']);
+        
+        foreach($val['Polling'] as $key => $value) {
+            $upd = $val['Polling'][$key];
+            $this->assertEquals($upd, $value);
+            $this->assertInternalType('array', $upd);
+            $this->assertArrayHasKey('min', $upd);
+            $this->assertArrayHasKey('max', $upd);
+            $this->assertArrayHasKey('current', $upd);
+        }
+        
+        $this->assertInternalType('array', $val['Logger']);
+        $this->assertArrayHasKey('min', $val['Logger']);
+        $this->assertArrayHasKey('max', $val['Logger']);
+        $this->assertArrayHasKey('current', $val['Logger']);
+        
+        $this->assertInternalType('array', $val['LoggerWriter']);
+        $this->assertArrayHasKey('min', $val['LoggerWriter']);
+        $this->assertArrayHasKey('max', $val['LoggerWriter']);
+        $this->assertArrayHasKey('current', $val['LoggerWriter']);
+        
+        $this->assertInternalType('array', $val['Alarming']);
+        $this->assertArrayHasKey('min', $val['Alarming']);
+        $this->assertArrayHasKey('max', $val['Alarming']);
+        $this->assertArrayHasKey('current', $val['Alarming']);
+        
+        $this->assertInternalType('array', $val['Script']);
+        $this->assertArrayHasKey('min', $val['Script']);
+        $this->assertArrayHasKey('max', $val['Script']);
+        $this->assertArrayHasKey('current', $val['Script']);
+        
+        $this->assertEquals(1.0, $val['Updater']['Updater_1']['min']);
+        $this->assertEquals(1.1, $val['Updater']['Updater_1']['max']);
+        $this->assertEquals(1.2, $val['Updater']['Updater_1']['current']);
+        $this->assertEquals(2.0, $val['Updater']['Updater_2']['min']);
+        $this->assertEquals(2.1, $val['Updater']['Updater_2']['max']);
+        $this->assertEquals(2.2, $val['Updater']['Updater_2']['current']);
+        $this->assertEquals(3.0, $val['Updater']['Updater_3']['min']);
+        $this->assertEquals(3.1, $val['Updater']['Updater_3']['max']);
+        $this->assertEquals(3.2, $val['Updater']['Updater_3']['current']);
+        
+        $this->assertEquals(1.3, $val['Polling']['DriverBuffer_1']['min']);
+        $this->assertEquals(1.4, $val['Polling']['DriverBuffer_1']['max']);
+        $this->assertEquals(1.5, $val['Polling']['DriverBuffer_1']['current']);
+        $this->assertEquals(2.3, $val['Polling']['DriverBuffer_2']['min']);
+        $this->assertEquals(2.4, $val['Polling']['DriverBuffer_2']['max']);
+        $this->assertEquals(2.5, $val['Polling']['DriverBuffer_2']['current']);
+        
+        $this->assertEquals(10.0, $val['Logger']['min']);
+        $this->assertEquals(10.1, $val['Logger']['max']);
+        $this->assertEquals(10.2, $val['Logger']['current']);
+        
+        $this->assertEquals(20.0, $val['LoggerWriter']['min']);
+        $this->assertEquals(20.1, $val['LoggerWriter']['max']);
+        $this->assertEquals(20.2, $val['LoggerWriter']['current']);
+        
+        $this->assertEquals(30.0, $val['Alarming']['min']);
+        $this->assertEquals(30.1, $val['Alarming']['max']);
+        $this->assertEquals(30.2, $val['Alarming']['current']);
+        
+        $this->assertEquals(40.0, $val['Script']['min']);
+        $this->assertEquals(40.1, $val['Script']['max']);
+        $this->assertEquals(40.2, $val['Script']['current']);
+    }
+    
+    public function testResponse_GET_THREAD_CYCLE_TIME_err1() {
+        
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage('RES_GET_THREAD_CYCLE_TIME: Data is empty!');
+        
+        // Server response
+        $sres = '500|';
+        
+        // Prepare response
+        $response = new ParserResponse();
+        $response->response($sres);
+    }
+    
+    public function testResponse_GET_THREAD_CYCLE_TIME_err2() {
+        
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage('RES_GET_THREAD_CYCLE_TIME: Error during data explode!');
+        
+        // Server response
+        $sres = '500|3';
+        
+        // Prepare response
+        $response = new ParserResponse();
+        $response->response($sres);
+    }
+    
+    public function testResponse_GET_THREAD_CYCLE_TIME_err3() {
+        
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage('RES_GET_THREAD_CYCLE_TIME: Error during count data explode!');
+        
+        // Server response
+        $sres = '500|3?2?5!Updater_1:1.0?1.1?1.2!Updater_2:2.0?2.1?2.2!Updater_3:3.0?3.1?3.2!';
+        $sres .= 'DriverBuffer_1:1.3?1.4?1.5!DriverBuffer_2:2.3?2.4?2.5!';
+        $sres .= 'Logger:10.0?10.1?10.2!LoggerWriter:20.0?20.1?20.2!Alarming:30.0?30.1?30.2!Script:40.0?40.1?40.2!';
+        
+        // Prepare response
+        $response = new ParserResponse();
+        $response->response($sres);
+    }
+    
+    public function testResponse_GET_THREAD_CYCLE_TIME_err4() {
+        
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage('RES_GET_THREAD_CYCLE_TIME: Error during Process Updater data explode!');
+        
+        // Server response
+        $sres = '500|3?2!Updater_1:1.0?1.1?1.2!Upddater_2:2.0?2.1?2.2!Updater_3:3.0?3.1?3.2!';
+        $sres .= 'DriverBuffer_1:1.3?1.4?1.5!DriverBuffer_2:2.3?2.4?2.5!';
+        $sres .= 'Logger:10.0?10.1?10.2!LoggerWriter:20.0?20.1?20.2!Alarming:30.0?30.1?30.2!Script:40.0?40.1?40.2!';
+        
+        // Prepare response
+        $response = new ParserResponse();
+        $response->response($sres);
+    }
+    
+    public function testResponse_GET_THREAD_CYCLE_TIME_err5() {
+        
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage('RES_GET_THREAD_CYCLE_TIME: Error during Driver polling data explode!');
+        
+        // Server response
+        $sres = '500|3?2!Updater_1:1.0?1.1?1.2!Updater_2:2.0?2.1?2.2!Updater_3:3.0?3.1?3.2!';
+        $sres .= 'DriverBuffer_1:1.3?1.4?1.5!DrivderBuffer_2:2.3?2.4?2.5!';
+        $sres .= 'Logger:10.0?10.1?10.2!LoggerWriter:20.0?20.1?20.2!Alarming:30.0?30.1?30.2!Script:40.0?40.1?40.2!';
+        
+        // Prepare response
+        $response = new ParserResponse();
+        $response->response($sres);
+    }
+    
+    public function testResponse_GET_THREAD_CYCLE_TIME_err6() {
+        
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage('RES_GET_THREAD_CYCLE_TIME: Error during Tag logger data explode!');
+        
+        // Server response
+        $sres = '500|3?2!Updater_1:1.0?1.1?1.2!Updater_2:2.0?2.1?2.2!Updater_3:3.0?3.1?3.2!';
+        $sres .= 'DriverBuffer_1:1.3?1.4?1.5!DriverBuffer_2:2.3?2.4?2.5!';
+        $sres .= 'Logwger:10.0?10.1?10.2!LoggerWriter:20.0?20.1?20.2!Alarming:30.0?30.1?30.2!Script:40.0?40.1?40.2!';
+        
+        // Prepare response
+        $response = new ParserResponse();
+        $response->response($sres);
+    }
+    
+    public function testResponse_GET_THREAD_CYCLE_TIME_err7() {
+        
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage('RES_GET_THREAD_CYCLE_TIME: Error during Tag logger writer data explode!');
+        
+        // Server response
+        $sres = '500|3?2!Updater_1:1.0?1.1?1.2!Updater_2:2.0?2.1?2.2!Updater_3:3.0?3.1?3.2!';
+        $sres .= 'DriverBuffer_1:1.3?1.4?1.5!DriverBuffer_2:2.3?2.4?2.5!';
+        $sres .= 'Logger:10.0?10.1?10.2!LoggerWrditer:20.0?20.1?20.2!Alarming:30.0?30.1?30.2!Script:40.0?40.1?40.2!';
+        
+        // Prepare response
+        $response = new ParserResponse();
+        $response->response($sres);
+    }
+    
+    public function testResponse_GET_THREAD_CYCLE_TIME_err8() {
+        
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage('RES_GET_THREAD_CYCLE_TIME: Error during Alarming data explode!');
+        
+        // Server response
+        $sres = '500|3?2!Updater_1:1.0?1.1?1.2!Updater_2:2.0?2.1?2.2!Updater_3:3.0?3.1?3.2!';
+        $sres .= 'DriverBuffer_1:1.3?1.4?1.5!DriverBuffer_2:2.3?2.4?2.5!';
+        $sres .= 'Logger:10.0?10.1?10.2!LoggerWriter:20.0?20.1?20.2!Allarming:30.0?30.1?30.2!Script:40.0?40.1?40.2!';
+        
+        // Prepare response
+        $response = new ParserResponse();
+        $response->response($sres);
+    }
+    
+    public function testResponse_GET_THREAD_CYCLE_TIME_err9() {
+        
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage('RES_GET_THREAD_CYCLE_TIME: Error during Script system data explode!');
+        
+        // Server response
+        $sres = '500|3?2!Updater_1:1.0?1.1?1.2!Updater_2:2.0?2.1?2.2!Updater_3:3.0?3.1?3.2!';
+        $sres .= 'DriverBuffer_1:1.3?1.4?1.5!DriverBuffer_2:2.3?2.4?2.5!';
+        $sres .= 'Logger:10.0?10.1?10.2!LoggerWriter:20.0?20.1?20.2!Alarming:30.0?30.1?30.2!Scr7ipt:40.0?40.1?40.2!';
+        
+        // Prepare response
+        $response = new ParserResponse();
+        $response->response($sres);
+    }
+    
+    public function testResponse_GET_THREAD_CYCLE_TIME_err10() {
+        
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage('RES_GET_THREAD_CYCLE_TIME: Error during thread values explode!');
+        
+        // Server response
+        $sres = '500|3?2!Updater_1:1.0?1.1?1.2!Updater_2:2.0?2.1?2.2!Updater_3:3.0?3.1?3.2!';
+        $sres .= 'DriverBuffer_1:1.3?1.4?1.5!DriverBuffer_2:2.3?2.4?2.5!';
+        $sres .= 'Logger:10.0?10.1?10.2?44!LoggerWriter:20.0?20.1?20.2!Alarming:30.0?30.1?30.2!Script:40.0?40.1?40.2!';
+        
+        // Prepare response
+        $response = new ParserResponse();
+        $response->response($sres);
+    }
+    
+    public function testResponse_GET_THREAD_CYCLE_TIME_err11() {
+        
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage('RES_GET_THREAD_CYCLE_TIME: Error during thread values parsing!');
+        
+        // Server response
+        $sres = '500|3?2!Updater_1:1.0?1.1?1.2!Updater_2:2.0?2.1?2.2!Updater_3:3.0?3.1?3.2!';
+        $sres .= 'DriverBuffer_1:1.3?1.4?1.5!DriverBuffer_2:2.3?2.4?2.5!';
+        $sres .= 'Logger:10.0?10.1?10.2!LoggerWriter:20.0?r?20.2!Alarming:30.0?30.1?30.2!Script:40.0?40.1?40.2!';
+        
+        // Prepare response
+        $response = new ParserResponse();
+        $response->response($sres);
+    }
+    
+    public function testResponse_GET_THREAD_CYCLE_TIME_err12() {
+        
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage('RES_GET_THREAD_CYCLE_TIME: Error during count data parsing!');
+        
+        // Server response
+        $sres = '500|3?e!Updater_1:1.0?1.1?1.2!Updater_2:2.0?2.1?2.2!Updater_3:3.0?3.1?3.2!';
+        $sres .= 'DriverBuffer_1:1.3?1.4?1.5!DriverBuffer_2:2.3?2.4?2.5!';
+        $sres .= 'Logger:10.0?10.1?10.2!LoggerWriter:20.0?20.5?20.2!Alarming:30.0?30.1?30.2!Script:40.0?40.1?40.2!';
+        
+        // Prepare response
+        $response = new ParserResponse();
+        $response->response($sres);
+    }
+    
+    /**
      * Test response method for MULTI_CMD function
      */
     public function testResponse_MULTI_CMD_1() {
@@ -1417,6 +1715,19 @@ class ParserResponseTest extends TestCase {
     }
     
     public function testResponse_MULTI_CMD_err7() {
+        
+        $this->expectException(ParserException::class);
+        $this->expectExceptionMessage('RES_MULTI_CMD: Can not call GET_THREAD_CYCLE_TIME inside MULTI_CMD!');
+        
+        // Server response
+        $sres = '50|36?-500!37?0!38?-3.14!500?0';
+        
+        // Prepare response
+        $response = new ParserResponse();
+        $response->response($sres);
+    }
+    
+    public function testResponse_MULTI_CMD_err8() {
         
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Unknown reply');

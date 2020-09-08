@@ -24,7 +24,7 @@ class AdminController extends AbstractController {
     /**
      * @Route("/admin", name="admin_index")
      */
-    public function index(SystemScripts $scripts, ConfigGeneralMapper $cfgMapper) {
+    public function index(SystemScripts $scripts, ConfigGeneralMapper $cfgMapper, DriverConnectionMapper $connMapper) {
         
         // Get service status
         $services = $scripts->getServiceStatus();
@@ -32,9 +32,13 @@ class AdminController extends AbstractController {
         // Get restart flag
         $restart = $cfgMapper->serverNeedRestart();
         
+        // Get connections
+        $connections = $connMapper->getConnections(true);
+        
         return $this->render('admin/index.html.twig', array(
             'services' => $services,
-            'restart' => $restart
+            'restart' => $restart,
+            'connections' => $connections
         ));
     }
     
