@@ -5,6 +5,7 @@ namespace App\Entity\Admin;
 use App\Entity\Admin\DriverType;
 use App\Entity\Admin\DriverModbus;
 use App\Entity\Admin\DriverSHM;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Class for driver connection configuration

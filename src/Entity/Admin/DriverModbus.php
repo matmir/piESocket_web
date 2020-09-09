@@ -189,7 +189,7 @@ class DriverModbus {
     public static function checkPolling(int $val): bool {
         
         // Check values
-        if ($val < 0) {
+        if ($val <= 0) {
             throw new Exception("Modbus driver polling interval wrong value");
         }
         

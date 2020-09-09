@@ -23,6 +23,7 @@ class TagEntityTest extends TestCase {
         $te = new TagEntity();
         
         $this->assertEquals(0, $te->gettid());
+        $this->assertEquals(0, $te->gettConnId());
         $this->assertEquals('', $te->gettName());
         $this->assertEquals(0, $te->gettArea());
         $this->assertEquals(0, $te->gettType());
@@ -38,6 +39,14 @@ class TagEntityTest extends TestCase {
         $te->settid(654);
         
         $this->assertEquals(654, $te->gettid());
+    }
+    
+    public function testSetConnId() {
+        
+        $te = new TagEntity();
+        $te->settConnId(654);
+        
+        $this->assertEquals(654, $te->gettConnId());
     }
     
     public function testSetName() {
@@ -115,6 +124,7 @@ class TagEntityTest extends TestCase {
         
         $tag = new Tag();
         $tag->setId(40);
+        $tag->setConnId(5);
         $tag->setName('TestTag');
         $tag->setArea(TagArea::input);
         $tag->setType(TagType::Word);
@@ -127,6 +137,7 @@ class TagEntityTest extends TestCase {
         $te->initFromTagObject($tag);
         
         $this->assertEquals(40, $te->gettid());
+        $this->assertEquals(5, $te->gettConnId());
         $this->assertEquals('TestTag', $te->gettName());
         $this->assertEquals(TagArea::input, $te->gettArea());
         $this->assertEquals(TagType::Word, $te->gettType());

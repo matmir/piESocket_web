@@ -154,7 +154,7 @@ class DriverModbusEntity extends DriverConnectionEntity {
         
         // Common data
         $this->id = 0;
-        $this->mode = "TCP";
+        $this->mode = DriverModbusMode::TCP;
         $this->registerCount = 1;
         $this->driverPolling = 50;
         $this->slaveID = 2;
@@ -194,7 +194,7 @@ class DriverModbusEntity extends DriverConnectionEntity {
     /**
      * Get Modbus mode (TCP/RTU)
      * 
-     * @return string Modbus mode
+     * @return int Modbus mode
      */
     public function getMode() {
         

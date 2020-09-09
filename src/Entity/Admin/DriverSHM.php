@@ -2,6 +2,8 @@
 
 namespace App\Entity\Admin;
 
+use Symfony\Component\Config\Definition\Exception\Exception;
+
 /**
  * Class for SHM driver configuration
  * 
