@@ -290,9 +290,10 @@ CREATE TABLE `driver_modbus` (
   `dmSlaveID` int(10) unsigned NOT NULL COMMENT 'Modbus slave ID',
   `dmTCP_addr` varchar(15) DEFAULT NULL COMMENT 'Modbus TCP IP address',
   `dmTCP_port` int(10) unsigned DEFAULT NULL COMMENT 'Modbus TCP port number',
+  `dmTCP_use_slaveID` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Use slave ID in TCP mode',
   PRIMARY KEY (`dmId`),
   UNIQUE KEY `dmRTU_port` (`dmRTU_port`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -301,7 +302,7 @@ CREATE TABLE `driver_modbus` (
 
 LOCK TABLES `driver_modbus` WRITE;
 /*!40000 ALTER TABLE `driver_modbus` DISABLE KEYS */;
-INSERT INTO `driver_modbus` VALUES (1,1,10,50,NULL,NULL,NULL,NULL,NULL,2,'127.0.0.1',1502);
+INSERT INTO `driver_modbus` VALUES (1,1,10,50,NULL,NULL,NULL,NULL,NULL,2,'127.0.0.1',1502,0);
 /*!40000 ALTER TABLE `driver_modbus` ENABLE KEYS */;
 UNLOCK TABLES;
 

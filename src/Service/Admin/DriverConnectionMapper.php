@@ -179,6 +179,7 @@ class DriverConnectionMapper extends BaseConfigMapper {
         } else if ($mb->getMode() == DriverModbusMode::TCP) {
             $mb->setTCPaddr($item['dmTCP_addr']);
             $mb->setTCPport($item['dmTCP_port']);
+            $mb->setSlaveIdUsageInTCP($item['dmTCP_use_slaveID']);
         }
         
         $mb->setSlaveID($item['dmSlaveID']);
@@ -439,8 +440,8 @@ class DriverConnectionMapper extends BaseConfigMapper {
         
         $q = 'INSERT INTO driver_modbus (dmMode, dmPollingInterval, dmRegCount, dmSlaveID';
         $q .= ', dmRTU_baud, dmRTU_dataBit, dmRTU_parity, dmRTU_port, dmRTU_stopBit';
-        $q .= ', dmTCP_addr, dmTCP_port)';
-        $q .= ' VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);';
+        $q .= ', dmTCP_addr, dmTCP_port, dmTCP_use_slaveID)';
+        $q .= ' VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);';
         
         $stmt = $this->dbConn->prepare($q);
         
@@ -457,6 +458,7 @@ class DriverConnectionMapper extends BaseConfigMapper {
             $stmt->bindValue(9, $newModbus->getRTUstopBit(), ParameterType::INTEGER);
             $stmt->bindValue(10, NULL, ParameterType::NULL);
             $stmt->bindValue(11, NULL, ParameterType::NULL);
+            $stmt->bindValue(12, 0, ParameterType::INTEGER);
         } else {
             $stmt->bindValue(5, NULL, ParameterType::NULL);
             $stmt->bindValue(6, NULL, ParameterType::NULL);
@@ -465,6 +467,7 @@ class DriverConnectionMapper extends BaseConfigMapper {
             $stmt->bindValue(9, NULL, ParameterType::NULL);
             $stmt->bindValue(10, $newModbus->getTCPaddr(), ParameterType::STRING);
             $stmt->bindValue(11, $newModbus->getTCPport(), ParameterType::INTEGER);
+            $stmt->bindValue(12, $newModbus->useSlaveIdInTCP(), ParameterType::INTEGER);
         }
         
         if (!$stmt->execute()) {
@@ -523,7 +526,7 @@ class DriverConnectionMapper extends BaseConfigMapper {
         
         $q = 'UPDATE driver_modbus SET dmMode = ?, dmPollingInterval = ?, dmRegCount = ?, dmSlaveID = ?';
         $q .= ', dmRTU_baud = ?, dmRTU_dataBit = ?, dmRTU_parity = ?, dmRTU_port = ?, dmRTU_stopBit = ?';
-        $q .= ', dmTCP_addr = ?, dmTCP_port = ? WHERE dmId = ?;';
+        $q .= ', dmTCP_addr = ?, dmTCP_port = ?, dmTCP_use_slaveID = ? WHERE dmId = ?;';
         
         $stmt = $this->dbConn->prepare($q);
         
@@ -541,6 +544,7 @@ class DriverConnectionMapper extends BaseConfigMapper {
             $stmt->bindValue(9, $mb->getRTUstopBit(), ParameterType::INTEGER);
             $stmt->bindValue(10, NULL, ParameterType::NULL);
             $stmt->bindValue(11, NULL, ParameterType::NULL);
+            $stmt->bindValue(12, 0, ParameterType::INTEGER);
         } else if ($mb->getMode() == DriverModbusMode::TCP) {
             $stmt->bindValue(5, NULL, ParameterType::NULL);
             $stmt->bindValue(6, NULL, ParameterType::NULL);
@@ -549,8 +553,9 @@ class DriverConnectionMapper extends BaseConfigMapper {
             $stmt->bindValue(9, NULL, ParameterType::NULL);
             $stmt->bindValue(10, $mb->getTCPaddr(), ParameterType::STRING);
             $stmt->bindValue(11, $mb->getTCPport(), ParameterType::INTEGER);
+            $stmt->bindValue(12, $mb->useSlaveIdInTCP(), ParameterType::INTEGER);
         }
-        $stmt->bindValue(12, $mb->getId(), ParameterType::INTEGER);
+        $stmt->bindValue(13, $mb->getId(), ParameterType::INTEGER);
         
         if (!$stmt->execute()) {
             throw new Exception("Error during execute sql update query!");

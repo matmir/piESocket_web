@@ -33,6 +33,7 @@ class DriverModbusTest extends TestCase {
         $this->assertEquals(50, $cfg->getDriverPolling());
         $this->assertEquals(2, $cfg->getSlaveID());
         $this->assertEquals(2, $cfg->getMaxByteAddress());
+        $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
     /**
@@ -56,6 +57,7 @@ class DriverModbusTest extends TestCase {
         $this->assertEquals(50, $cfg->getDriverPolling());
         $this->assertEquals(2, $cfg->getSlaveID());
         $this->assertEquals(2, $cfg->getMaxByteAddress());
+        $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
     public function testSetIdWrong1() {
@@ -89,6 +91,7 @@ class DriverModbusTest extends TestCase {
         $this->assertEquals(50, $cfg->getDriverPolling());
         $this->assertEquals(2, $cfg->getSlaveID());
         $this->assertEquals(2, $cfg->getMaxByteAddress());
+        $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
     public function testSetModeWrong1() {
@@ -122,6 +125,7 @@ class DriverModbusTest extends TestCase {
         $this->assertEquals(1, $cfg->getRegisterCount());
         $this->assertEquals(2, $cfg->getSlaveID());
         $this->assertEquals(2, $cfg->getMaxByteAddress());
+        $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
     public function testSetDriverPollingWrong1() {
@@ -155,6 +159,7 @@ class DriverModbusTest extends TestCase {
         $this->assertEquals(1, $cfg->getRTUstopBit());
         $this->assertEquals(50, $cfg->getDriverPolling());
         $this->assertEquals(2, $cfg->getSlaveID());
+        $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
     public function testSetRegisterCountWrong1() {
@@ -188,6 +193,7 @@ class DriverModbusTest extends TestCase {
         $this->assertEquals(50, $cfg->getDriverPolling());
         $this->assertEquals(2, $cfg->getSlaveID());
         $this->assertEquals(2, $cfg->getMaxByteAddress());
+        $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
     public function testSetRTUBaudWrong1() {
@@ -221,6 +227,7 @@ class DriverModbusTest extends TestCase {
         $this->assertEquals(50, $cfg->getDriverPolling());
         $this->assertEquals(2, $cfg->getSlaveID());
         $this->assertEquals(2, $cfg->getMaxByteAddress());
+        $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
     public function testSetRTUDataBitWrong1() {
@@ -254,6 +261,7 @@ class DriverModbusTest extends TestCase {
         $this->assertEquals(50, $cfg->getDriverPolling());
         $this->assertEquals(2, $cfg->getSlaveID());
         $this->assertEquals(2, $cfg->getMaxByteAddress());
+        $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
     public function testSetRTUParityWrong1() {
@@ -287,6 +295,7 @@ class DriverModbusTest extends TestCase {
         $this->assertEquals(50, $cfg->getDriverPolling());
         $this->assertEquals(2, $cfg->getSlaveID());
         $this->assertEquals(2, $cfg->getMaxByteAddress());
+        $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
     public function testSetRTUPortWrong1() {
@@ -320,6 +329,7 @@ class DriverModbusTest extends TestCase {
         $this->assertEquals(50, $cfg->getDriverPolling());
         $this->assertEquals(2, $cfg->getSlaveID());
         $this->assertEquals(2, $cfg->getMaxByteAddress());
+        $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
     public function testSetRTUStopBitWrong1() {
@@ -353,6 +363,7 @@ class DriverModbusTest extends TestCase {
         $this->assertEquals(1, $cfg->getRegisterCount());
         $this->assertEquals(50, $cfg->getDriverPolling());
         $this->assertEquals(2, $cfg->getMaxByteAddress());
+        $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
     public function testSetSlaveIDWrong1() {
@@ -386,6 +397,7 @@ class DriverModbusTest extends TestCase {
         $this->assertEquals(50, $cfg->getDriverPolling());
         $this->assertEquals(2, $cfg->getSlaveID());
         $this->assertEquals(2, $cfg->getMaxByteAddress());
+        $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
     public function testSetTCPAddrWrong1() {
@@ -419,6 +431,7 @@ class DriverModbusTest extends TestCase {
         $this->assertEquals(50, $cfg->getDriverPolling());
         $this->assertEquals(2, $cfg->getSlaveID());
         $this->assertEquals(2, $cfg->getMaxByteAddress());
+        $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
     public function testSetTCPPortWrong1() {
@@ -428,6 +441,30 @@ class DriverModbusTest extends TestCase {
         
         $cfg = new DriverModbus();
         $cfg->setTCPport(0);
+    }
+    
+    /**
+     * Test setSlaveIdUsageInTCP method
+     */
+    public function testSetSlaveIdUsageInTCP() {
+        
+        $cfg = new DriverModbus();
+        $cfg->setSlaveIdUsageInTCP(true);
+        
+        $this->assertEquals(0, $cfg->getId());
+        $this->assertEquals(DriverModbusMode::TCP, $cfg->getMode());
+        $this->assertEquals('192.168.0.5', $cfg->getTCPaddr());
+        $this->assertEquals(502, $cfg->getTCPport());
+        $this->assertEquals('/dev/ttyACM1', $cfg->getRTUport());
+        $this->assertEquals(57600, $cfg->getRTUbaud());
+        $this->assertEquals('N', $cfg->getRTUparity());
+        $this->assertEquals(8, $cfg->getRTUdataBit());
+        $this->assertEquals(1, $cfg->getRTUstopBit());
+        $this->assertEquals(1, $cfg->getRegisterCount());
+        $this->assertEquals(50, $cfg->getDriverPolling());
+        $this->assertEquals(2, $cfg->getSlaveID());
+        $this->assertEquals(2, $cfg->getMaxByteAddress());
+        $this->assertTrue($cfg->useSlaveIdInTCP());
     }
     
     /**

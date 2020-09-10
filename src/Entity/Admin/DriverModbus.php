@@ -73,6 +73,11 @@ class DriverModbus {
     private $TCP_port;
     
     /**
+     * Use slaveID in TCP mode
+     */
+    private $TCP_use_slaveID;
+    
+    /**
      * Default constructor
      */
     public function __construct() {
@@ -87,6 +92,7 @@ class DriverModbus {
         // Modbus TCP
         $this->TCP_addr = "192.168.0.5";
         $this->TCP_port = 502;
+        $this->TCP_use_slaveID = false;
         
         // Modbus RTU
         $this->RTU_port = "/dev/ttyACM1";
@@ -544,6 +550,26 @@ class DriverModbus {
         }
         
         return true;
+    }
+    
+    /**
+     * Use slaveID in TCP mode?
+     * 
+     * @return bool Use slaveID in TCP mode?
+     */
+    public function useSlaveIdInTCP(): bool {
+        
+        return $this->TCP_use_slaveID;
+    }
+    
+    /**
+     * Set slaveID usage in TCP mode
+     * 
+     * @param bool $val usage flage
+     */
+    public function setSlaveIdUsageInTCP(bool $val) {
+        
+        $this->TCP_use_slaveID = $val;
     }
     
     /**

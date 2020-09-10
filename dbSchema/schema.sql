@@ -262,6 +262,7 @@ CREATE TABLE `driver_modbus` (
   `dmSlaveID` int(10) unsigned NOT NULL COMMENT 'Modbus slave ID',
   `dmTCP_addr` varchar(15) DEFAULT NULL COMMENT 'Modbus TCP IP address',
   `dmTCP_port` int(10) unsigned DEFAULT NULL COMMENT 'Modbus TCP port number',
+  `dmTCP_use_slaveID` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Use slave ID in TCP mode',
   PRIMARY KEY (`dmId`),
   UNIQUE KEY `dmRTU_port` (`dmRTU_port`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

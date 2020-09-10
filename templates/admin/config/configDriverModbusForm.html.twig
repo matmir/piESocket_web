@@ -31,20 +31,6 @@
             </td>
         </tr>
         <tr>
-            <th>{{ form_label(form.slaveID) }}</th>
-            <td>{{ form_widget(form.slaveID) }}</td>
-            <td>{{ form_help(form.slaveID) }}</td>
-            <td>
-                {% if form.slaveID.vars['errors']|length > 0 %}
-                    <div class="alert alert-danger" role="alert">
-                        {% for error in form.slaveID.vars['errors'] %}
-                            {{ error.message }}
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
             <th>{{ form_label(form.registerCount) }}</th>
             <td>{{ form_widget(form.registerCount) }}</td>
             <td>{{ form_help(form.registerCount) }}</td>
@@ -94,6 +80,34 @@
                 {% if form.TCP_port.vars['errors']|length > 0 %}
                     <div class="alert alert-danger" role="alert">
                         {% for error in form.TCP_port.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr id="TCP_use_slaveID" style="display: none">
+            <th>{{ form_label(form.TCP_use_slaveID) }}</th>
+            <td>{{ form_widget(form.TCP_use_slaveID) }}</td>
+            <td>{{ form_help(form.TCP_use_slaveID) }}</td>
+            <td>
+                {% if form.TCP_use_slaveID.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.TCP_use_slaveID.vars['errors'] %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr id="slaveID" style="display: none">
+            <th>{{ form_label(form.slaveID) }}</th>
+            <td>{{ form_widget(form.slaveID) }}</td>
+            <td>{{ form_help(form.slaveID) }}</td>
+            <td>
+                {% if form.slaveID.vars['errors']|length > 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.slaveID.vars['errors'] %}
                             {{ error.message }}
                         {% endfor %}
                     </div>

@@ -58,6 +58,18 @@ class DriverModbusEntity extends DriverConnectionEntity {
     private $TCP_port;
     
     /**
+     * Use slaveID in TCP mode
+     * 
+     * @Assert\NotBlank()
+     * @Assert\Type("integer")
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 1
+     * )
+     */
+    private $TCP_use_slaveID;
+    
+    /**
      * Modbus RTU port name
      * 
      * @Assert\NotBlank()
@@ -162,6 +174,7 @@ class DriverModbusEntity extends DriverConnectionEntity {
         // Modbus TCP
         $this->TCP_addr = "192.168.0.5";
         $this->TCP_port = 502;
+        $this->TCP_use_slaveID = 0;
         
         // Modbus RTU
         $this->RTU_port = "/dev/ttyACM1";
@@ -249,6 +262,26 @@ class DriverModbusEntity extends DriverConnectionEntity {
     public function setTCPport(int $val) {
         
         $this->TCP_port = $val;
+    }
+    
+    /**
+     * Get Use slaveID in TCP mode
+     * 
+     * @return int Modbus port number
+     */
+    public function getTCPuseslaveID() {
+        
+        return $this->TCP_use_slaveID;
+    }
+    
+    /**
+     * Set Use slaveID in TCP mode
+     * 
+     * @param int $val slaveID usage flag
+     */
+    public function setTCPuseslaveID(int $val) {
+        
+        $this->TCP_use_slaveID = $val;
     }
     
     /**
@@ -434,6 +467,7 @@ class DriverModbusEntity extends DriverConnectionEntity {
         } else if ($mb->getMode() == DriverModbusMode::TCP) {
             $mb->setTCPaddr($this->TCP_addr);
             $mb->setTCPport($this->TCP_port);
+            $mb->setSlaveIdUsageInTCP(($this->TCP_use_slaveID==0)?(false):(true));
         }
         $mb->setSlaveID($this->slaveID);
         
@@ -474,6 +508,7 @@ class DriverModbusEntity extends DriverConnectionEntity {
         $this->RTU_stopBit = $mb->getRTUstopBit();
         $this->TCP_addr = $mb->getTCPaddr();
         $this->TCP_port = $mb->getTCPport();
+        $this->TCP_use_slaveID = ($mb->useSlaveIdInTCP())?(1):(0);
         $this->slaveID = $mb->getSlaveID();
     }
 }

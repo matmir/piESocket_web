@@ -30,11 +30,17 @@ class DriverModbusForm extends AbstractType {
                                                     ),
                                                 'label' => 'Mode'
                                             ))
-            ->add('slaveID', null, array('label' => 'Slave ID'))
             ->add('registerCount', null, array('label' => 'Registers to read [words]'))
             ->add('driverPolling', null, array('label' => 'Driver polling interval [ms]'))
             ->add('TCP_addr', null, array('label' => 'Slave IP address'))
             ->add('TCP_port', null, array('label' => 'Port'))
+            ->add('TCP_use_slaveID', ChoiceType::class, array('choices'  => array(
+                                                    'No' => 0,
+                                                    'Yes' => 1,
+                                                    ),
+                                                'label' => 'Use SlaveID'
+                                            ))
+            ->add('slaveID', null, array('label' => 'Slave ID'))
             ->add('RTU_port', null, array('label' => 'COM port name'))
             ->add('RTU_baud', null, array('label' => 'COM baud rate'))
             ->add('RTU_parity', ChoiceType::class, array('choices'  => array(

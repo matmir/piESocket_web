@@ -1,6 +1,7 @@
 $(document).ready(function(){
         
     updateMode();
+    updateSlaveID();
         
     // Change mode
     $('#driver_modbus_form_mode').on('change', function() {
@@ -11,6 +12,7 @@ $(document).ready(function(){
             showRTU();
         }
         
+        updateSlaveID();
     });
     
     function updateMode() {
@@ -22,11 +24,30 @@ $(document).ready(function(){
         }
     }
     
+    // Change slaveID usage
+    $('#driver_modbus_form_TCP_use_slaveID').on('change', function() {
+                
+        updateSlaveID();
+    });
+    
+    function updateSlaveID() {
+        
+        if ($('#driver_modbus_form_mode').val() === '1') {
+            if ($('#driver_modbus_form_TCP_use_slaveID').val() === '1') {
+                $('#slaveID').show();
+            } else {
+                $('#slaveID').hide();
+            }
+        }
+    }
+    
     function showTCP() {
         
         $('#TCP_addr').show();
         $('#TCP_port').show();
+        $('#TCP_use_slaveID').show();
         
+        $('#slaveID').hide();
         $('#RTU_port').hide();
         $('#RTU_baud').hide();
         $('#RTU_parity').hide();
@@ -38,7 +59,9 @@ $(document).ready(function(){
         
         $('#TCP_addr').hide();
         $('#TCP_port').hide();
+        $('#TCP_use_slaveID').hide();
         
+        $('#slaveID').show();
         $('#RTU_port').show();
         $('#RTU_baud').show();
         $('#RTU_parity').show();

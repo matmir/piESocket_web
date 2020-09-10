@@ -30,6 +30,7 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(DriverModbusMode::TCP, $mbEntity->getMode());
         $this->assertEquals("192.168.0.5", $mbEntity->getTCPaddr());
         $this->assertEquals(502, $mbEntity->getTCPport());
+        $this->assertEquals(0, $mbEntity->getTCPuseslaveID());
         $this->assertEquals("/dev/ttyACM1", $mbEntity->getRTUport());
         $this->assertEquals(57600, $mbEntity->getRTUbaud());
         $this->assertEquals('N', $mbEntity->getRTUparity());
@@ -52,6 +53,7 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(DriverModbusMode::TCP, $mbEntity->getMode());
         $this->assertEquals("192.168.0.5", $mbEntity->getTCPaddr());
         $this->assertEquals(502, $mbEntity->getTCPport());
+        $this->assertEquals(0, $mbEntity->getTCPuseslaveID());
         $this->assertEquals("/dev/ttyACM1", $mbEntity->getRTUport());
         $this->assertEquals(57600, $mbEntity->getRTUbaud());
         $this->assertEquals('N', $mbEntity->getRTUparity());
@@ -74,6 +76,7 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(DriverModbusMode::TCP, $mbEntity->getMode());
         $this->assertEquals("192.168.0.5", $mbEntity->getTCPaddr());
         $this->assertEquals(502, $mbEntity->getTCPport());
+        $this->assertEquals(0, $mbEntity->getTCPuseslaveID());
         $this->assertEquals("/dev/ttyACM1", $mbEntity->getRTUport());
         $this->assertEquals(57600, $mbEntity->getRTUbaud());
         $this->assertEquals('N', $mbEntity->getRTUparity());
@@ -96,6 +99,7 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(DriverModbusMode::TCP, $mbEntity->getMode());
         $this->assertEquals("192.168.0.5", $mbEntity->getTCPaddr());
         $this->assertEquals(502, $mbEntity->getTCPport());
+        $this->assertEquals(0, $mbEntity->getTCPuseslaveID());
         $this->assertEquals("/dev/ttyACM1", $mbEntity->getRTUport());
         $this->assertEquals(57600, $mbEntity->getRTUbaud());
         $this->assertEquals('N', $mbEntity->getRTUparity());
@@ -118,6 +122,7 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(DriverModbusMode::RTU, $mbEntity->getMode());
         $this->assertEquals("192.168.0.5", $mbEntity->getTCPaddr());
         $this->assertEquals(502, $mbEntity->getTCPport());
+        $this->assertEquals(0, $mbEntity->getTCPuseslaveID());
         $this->assertEquals("/dev/ttyACM1", $mbEntity->getRTUport());
         $this->assertEquals(57600, $mbEntity->getRTUbaud());
         $this->assertEquals('N', $mbEntity->getRTUparity());
@@ -140,6 +145,7 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(DriverModbusMode::TCP, $mbEntity->getMode());
         $this->assertEquals("192.168.8.8", $mbEntity->getTCPaddr());
         $this->assertEquals(502, $mbEntity->getTCPport());
+        $this->assertEquals(0, $mbEntity->getTCPuseslaveID());
         $this->assertEquals("/dev/ttyACM1", $mbEntity->getRTUport());
         $this->assertEquals(57600, $mbEntity->getRTUbaud());
         $this->assertEquals('N', $mbEntity->getRTUparity());
@@ -162,6 +168,7 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(DriverModbusMode::TCP, $mbEntity->getMode());
         $this->assertEquals("192.168.0.5", $mbEntity->getTCPaddr());
         $this->assertEquals(550, $mbEntity->getTCPport());
+        $this->assertEquals(0, $mbEntity->getTCPuseslaveID());
         $this->assertEquals("/dev/ttyACM1", $mbEntity->getRTUport());
         $this->assertEquals(57600, $mbEntity->getRTUbaud());
         $this->assertEquals('N', $mbEntity->getRTUparity());
@@ -184,6 +191,7 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(DriverModbusMode::TCP, $mbEntity->getMode());
         $this->assertEquals("192.168.0.5", $mbEntity->getTCPaddr());
         $this->assertEquals(502, $mbEntity->getTCPport());
+        $this->assertEquals(0, $mbEntity->getTCPuseslaveID());
         $this->assertEquals("/dev/ttyACM3", $mbEntity->getRTUport());
         $this->assertEquals(57600, $mbEntity->getRTUbaud());
         $this->assertEquals('N', $mbEntity->getRTUparity());
@@ -206,6 +214,7 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(DriverModbusMode::TCP, $mbEntity->getMode());
         $this->assertEquals("192.168.0.5", $mbEntity->getTCPaddr());
         $this->assertEquals(502, $mbEntity->getTCPport());
+        $this->assertEquals(0, $mbEntity->getTCPuseslaveID());
         $this->assertEquals("/dev/ttyACM1", $mbEntity->getRTUport());
         $this->assertEquals(57630, $mbEntity->getRTUbaud());
         $this->assertEquals('N', $mbEntity->getRTUparity());
@@ -228,6 +237,7 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(DriverModbusMode::TCP, $mbEntity->getMode());
         $this->assertEquals("192.168.0.5", $mbEntity->getTCPaddr());
         $this->assertEquals(502, $mbEntity->getTCPport());
+        $this->assertEquals(0, $mbEntity->getTCPuseslaveID());
         $this->assertEquals("/dev/ttyACM1", $mbEntity->getRTUport());
         $this->assertEquals(57600, $mbEntity->getRTUbaud());
         $this->assertEquals('E', $mbEntity->getRTUparity());
@@ -250,6 +260,7 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(DriverModbusMode::TCP, $mbEntity->getMode());
         $this->assertEquals("192.168.0.5", $mbEntity->getTCPaddr());
         $this->assertEquals(502, $mbEntity->getTCPport());
+        $this->assertEquals(0, $mbEntity->getTCPuseslaveID());
         $this->assertEquals("/dev/ttyACM1", $mbEntity->getRTUport());
         $this->assertEquals(57600, $mbEntity->getRTUbaud());
         $this->assertEquals('N', $mbEntity->getRTUparity());
@@ -272,6 +283,7 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(DriverModbusMode::TCP, $mbEntity->getMode());
         $this->assertEquals("192.168.0.5", $mbEntity->getTCPaddr());
         $this->assertEquals(502, $mbEntity->getTCPport());
+        $this->assertEquals(0, $mbEntity->getTCPuseslaveID());
         $this->assertEquals("/dev/ttyACM1", $mbEntity->getRTUport());
         $this->assertEquals(57600, $mbEntity->getRTUbaud());
         $this->assertEquals('N', $mbEntity->getRTUparity());
@@ -294,6 +306,7 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(DriverModbusMode::TCP, $mbEntity->getMode());
         $this->assertEquals("192.168.0.5", $mbEntity->getTCPaddr());
         $this->assertEquals(502, $mbEntity->getTCPport());
+        $this->assertEquals(0, $mbEntity->getTCPuseslaveID());
         $this->assertEquals("/dev/ttyACM1", $mbEntity->getRTUport());
         $this->assertEquals(57600, $mbEntity->getRTUbaud());
         $this->assertEquals('N', $mbEntity->getRTUparity());
@@ -316,6 +329,7 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(DriverModbusMode::TCP, $mbEntity->getMode());
         $this->assertEquals("192.168.0.5", $mbEntity->getTCPaddr());
         $this->assertEquals(502, $mbEntity->getTCPport());
+        $this->assertEquals(0, $mbEntity->getTCPuseslaveID());
         $this->assertEquals("/dev/ttyACM1", $mbEntity->getRTUport());
         $this->assertEquals(57600, $mbEntity->getRTUbaud());
         $this->assertEquals('N', $mbEntity->getRTUparity());
@@ -338,6 +352,7 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(DriverModbusMode::TCP, $mbEntity->getMode());
         $this->assertEquals("192.168.0.5", $mbEntity->getTCPaddr());
         $this->assertEquals(502, $mbEntity->getTCPport());
+        $this->assertEquals(0, $mbEntity->getTCPuseslaveID());
         $this->assertEquals("/dev/ttyACM1", $mbEntity->getRTUport());
         $this->assertEquals(57600, $mbEntity->getRTUbaud());
         $this->assertEquals('N', $mbEntity->getRTUparity());
@@ -356,6 +371,7 @@ class DriverModbusEntityTest extends TestCase {
         $mbEntity->setId(45);
         $mbEntity->setTCPaddr("10.8.4.2");
         $mbEntity->setTCPport(855);
+        $mbEntity->setTCPuseslaveID(1);
         $mbEntity->setRegisterCount(60);
         $mbEntity->setDriverPolling(600);
         $mbEntity->setSlaveID(7);
@@ -373,6 +389,7 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(DriverModbusMode::TCP, $cfg->getMode());
         $this->assertEquals('10.8.4.2', $cfg->getTCPaddr());
         $this->assertEquals(855, $cfg->getTCPport());
+        $this->assertEquals(1, $mbEntity->getTCPuseslaveID());
         $this->assertEquals('/dev/ttyACM1', $cfg->getRTUport());
         $this->assertEquals(57600, $cfg->getRTUbaud());
         $this->assertEquals('N', $cfg->getRTUparity());
@@ -413,6 +430,7 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(DriverModbusMode::RTU, $cfg->getMode());
         $this->assertEquals('192.168.0.5', $cfg->getTCPaddr());
         $this->assertEquals(502, $cfg->getTCPport());
+        $this->assertEquals(0, $mbEntity->getTCPuseslaveID());
         $this->assertEquals('port3', $cfg->getRTUport());
         $this->assertEquals(4500, $cfg->getRTUbaud());
         $this->assertEquals('E', $cfg->getRTUparity());
@@ -435,6 +453,7 @@ class DriverModbusEntityTest extends TestCase {
         $mb->setDriverPolling(300);
         $mb->setTCPaddr("172.0.0.6");
         $mb->setTCPport(600);
+        $mb->setSlaveIdUsageInTCP(true);
         
         // Connection
         $conn = new DriverConnection();
@@ -453,6 +472,7 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(DriverModbusMode::TCP, $mbEntity->getMode());
         $this->assertEquals("172.0.0.6", $mbEntity->getTCPaddr());
         $this->assertEquals(600, $mbEntity->getTCPport());
+        $this->assertEquals(1, $mbEntity->getTCPuseslaveID());
         $this->assertEquals("/dev/ttyACM1", $mbEntity->getRTUport());
         $this->assertEquals(57600, $mbEntity->getRTUbaud());
         $this->assertEquals('N', $mbEntity->getRTUparity());
@@ -495,6 +515,7 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(DriverModbusMode::RTU, $mbEntity->getMode());
         $this->assertEquals("192.168.0.5", $mbEntity->getTCPaddr());
         $this->assertEquals(502, $mbEntity->getTCPport());
+        $this->assertEquals(0, $mbEntity->getTCPuseslaveID());
         $this->assertEquals("portCOM5", $mbEntity->getRTUport());
         $this->assertEquals(6000, $mbEntity->getRTUbaud());
         $this->assertEquals('O', $mbEntity->getRTUparity());
