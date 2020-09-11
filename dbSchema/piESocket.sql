@@ -267,8 +267,92 @@ CREATE TABLE `configuration` (
 
 LOCK TABLES `configuration` WRITE;
 /*!40000 ALTER TABLE `configuration` DISABLE KEYS */;
-INSERT INTO `configuration` VALUES ('ackAccessRole','ROLE_GUEST'),('alarmingUpdateInterval','100'),('connectionDriver','SHM'),('modbusTCP_addr','192.168.56.102'),('modbusPollingInterval','20'),('modbusTCP_port','502'),('modbusRegCount','20'),('modbusSlaveID','15'),('processUpdateInterval','100'),('scriptSystemExecuteScript','php /home/virtual/Dokumenty/openNetworkHMI/PI_SOCKET/openNetworkHMI/openNetworkHMI_web/bin/console app:run-script'),('scriptSystemUpdateInterval','100'),('serverAppPath','/home/virtual/Dokumenty/openNetworkHMI/PI_SOCKET/openNetworkHMI/openNetworkHMI_service/build/app/'),('serverRestart','0'),('shmSegmentName','piESocket_SHM'),('socketMaxConn','10'),('socketPort','8080'),('tagLoggerUpdateInterval','100'),('userScriptsPath','/home/virtual/Dokumenty/openNetworkHMI/PI_SOCKET/openNetworkHMI/userScripts/'),('webAppPath','/home/virtual/Dokumenty/openNetworkHMI/PI_SOCKET/openNetworkHMI/openNetworkHMI_web/'),('modbusRTU_baud', '57600'),('modbusRTU_dataBit', '8'),('modbusRTU_parity', 'N'),('modbusRTU_port', '/dev/ttyACM1'),('modbusRTU_stopBit', '1'),('modbusMode', 'TCP');
+INSERT INTO `configuration` VALUES ('ackAccessRole','ROLE_USER'),('alarmingUpdateInterval','100'),('processUpdateInterval','100'),('scriptSystemExecuteScript','php /home/virtual/Dokumenty/openNetworkHMI/APP/SRC/openNetworkHMI_web/bin/console app:run-script'),('scriptSystemUpdateInterval','100'),('serverAppPath','/home/virtual/onh/APP/SRC/tests/bin/onh/'),('serverRestart','0'),('socketMaxConn','10'),('socketPort','8080'),('tagLoggerUpdateInterval','100'),('userScriptsPath','/home/virtual/onh/APP/SRC/tests/scripts/'),('webAppPath','/home/virtual/Dokumenty/openNetworkHMI/APP/SRC/openNetworkHMI_web/');
 /*!40000 ALTER TABLE `configuration` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `driver_modbus`
+--
+
+DROP TABLE IF EXISTS `driver_modbus`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `driver_modbus` (
+  `dmId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Modbus driver identifier',
+  `dmMode` tinyint(3) unsigned NOT NULL COMMENT 'Modbus mode (0 - RTU, 1 - TCP)',
+  `dmPollingInterval` int(10) unsigned NOT NULL COMMENT 'Modbus driver polling interval (ms)',
+  `dmRegCount` int(10) unsigned NOT NULL COMMENT 'Modbus driver register count',
+  `dmRTU_baud` int(10) unsigned DEFAULT NULL COMMENT 'Modbus RTU baud rate',
+  `dmRTU_dataBit` tinyint(3) unsigned DEFAULT NULL COMMENT 'Modbus RTU data bits',
+  `dmRTU_parity` char(1) DEFAULT NULL COMMENT 'Modbus RTU parity (N - none, E - even, O - odd)',
+  `dmRTU_port` varchar(200) DEFAULT NULL COMMENT 'Modbus RTU port',
+  `dmRTU_stopBit` smallint(5) unsigned DEFAULT NULL COMMENT 'Modbus RTU stop bit',
+  `dmSlaveID` int(10) unsigned NOT NULL COMMENT 'Modbus slave ID',
+  `dmTCP_addr` varchar(15) DEFAULT NULL COMMENT 'Modbus TCP IP address',
+  `dmTCP_port` int(10) unsigned DEFAULT NULL COMMENT 'Modbus TCP port number',
+  `dmTCP_use_slaveID` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Use slave ID in TCP mode',
+  PRIMARY KEY (`dmId`),
+  UNIQUE KEY `dmRTU_port` (`dmRTU_port`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `driver_shm`
+--
+
+DROP TABLE IF EXISTS `driver_shm`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `driver_shm` (
+  `dsId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'SHM driver identifier',
+  `dsSegment` varchar(200) NOT NULL COMMENT 'SHM driver segment name',
+  PRIMARY KEY (`dsId`),
+  UNIQUE KEY `dsSegment` (`dsSegment`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `driver_shm`
+--
+
+LOCK TABLES `driver_shm` WRITE;
+/*!40000 ALTER TABLE `driver_shm` DISABLE KEYS */;
+INSERT INTO `driver_shm` VALUES (1,'piESocket_SHM');
+/*!40000 ALTER TABLE `driver_shm` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `driver_connections`
+--
+
+DROP TABLE IF EXISTS `driver_connections`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `driver_connections` (
+  `dcId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Driver connection identifier',
+  `dcName` varchar(100) NOT NULL COMMENT 'Driver connection name',
+  `dcType` smallint(5) unsigned NOT NULL COMMENT 'Driver connection type (0 - SHM, 1 - Modbus)',
+  `dcConfigModbus` int(10) unsigned DEFAULT NULL COMMENT 'Driver modbus configuration identifier',
+  `dcConfigSHM` int(10) unsigned DEFAULT NULL COMMENT 'Driver SHM configuration identifier ',
+  `dcEnable` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Enable driver connection',
+  PRIMARY KEY (`dcId`),
+  UNIQUE KEY `dcName` (`dcName`),
+  UNIQUE KEY `dcConfigSHM` (`dcConfigSHM`),
+  UNIQUE KEY `dcConfigModbus` (`dcConfigModbus`),
+  CONSTRAINT `driver_connections_ibfk_1` FOREIGN KEY (`dcConfigModbus`) REFERENCES `driver_modbus` (`dmId`),
+  CONSTRAINT `driver_connections_ibfk_2` FOREIGN KEY (`dcConfigSHM`) REFERENCES `driver_shm` (`dsId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `driver_connections`
+--
+
+LOCK TABLES `driver_connections` WRITE;
+/*!40000 ALTER TABLE `driver_connections` DISABLE KEYS */;
+INSERT INTO `driver_connections` VALUES (1,'Conn1',0,NULL,1,1);
+/*!40000 ALTER TABLE `driver_connections` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -586,6 +670,7 @@ DROP TABLE IF EXISTS `tags`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tags` (
   `tid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `tConnId` int(10) unsigned NOT NULL COMMENT 'Tag driver connection identifier',
   `tName` varchar(50) NOT NULL COMMENT 'Tag name',
   `tType` int(10) unsigned NOT NULL COMMENT 'Tag data type',
   `tArea` int(10) unsigned NOT NULL COMMENT 'Tag data area',
@@ -597,9 +682,11 @@ CREATE TABLE `tags` (
   UNIQUE KEY `tName` (`tName`),
   KEY `tType` (`tType`),
   KEY `tArea` (`tArea`),
+  KEY `tConnId` (`tConnId`),
   CONSTRAINT `tags_ibfk_1` FOREIGN KEY (`tType`) REFERENCES `tag_types` (`ttid`),
-  CONSTRAINT `tags_ibfk_2` FOREIGN KEY (`tArea`) REFERENCES `tag_areas` (`taid`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+  CONSTRAINT `tags_ibfk_2` FOREIGN KEY (`tArea`) REFERENCES `tag_areas` (`taid`),
+  CONSTRAINT `tags_ibfk_3` FOREIGN KEY (`tConnId`) REFERENCES `driver_connections` (`dcId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -608,7 +695,7 @@ CREATE TABLE `tags` (
 
 LOCK TABLES `tags` WRITE;
 /*!40000 ALTER TABLE `tags` DISABLE KEYS */;
-INSERT INTO `tags` VALUES (1,'S1Trigger',1,3,10,0,'ROLE_GUEST','ROLE_GUEST'),(2,'S2Trigger',1,3,10,1,'ROLE_GUEST','ROLE_GUEST'),(3,'S3Trigger',1,3,10,2,'ROLE_GUEST','ROLE_GUEST'),(4,'S4Trigger',1,3,10,3,'ROLE_GUEST','ROLE_GUEST'),(5,'S1TriggerLock',1,3,11,0,'ROLE_GUEST','ROLE_ADMIN'),(6,'S2TriggerLock',1,3,11,1,'ROLE_GUEST','ROLE_ADMIN'),(7,'S3TriggerLock',1,3,11,2,'ROLE_GUEST','ROLE_ADMIN'),(8,'S4TriggerLock',1,3,11,3,'ROLE_GUEST','ROLE_ADMIN'),(9,'S1NotAck',1,3,12,0,'ROLE_GUEST','ROLE_ADMIN'),(10,'S2NotAck',1,3,12,1,'ROLE_GUEST','ROLE_ADMIN'),(11,'S3NotAck',1,3,12,2,'ROLE_GUEST','ROLE_ADMIN'),(12,'S4NotAck',1,3,12,3,'ROLE_GUEST','ROLE_ADMIN'),(13,'S1Out',1,2,10,0,'ROLE_GUEST','ROLE_ADMIN'),(14,'S2Out',1,2,10,1,'ROLE_GUEST','ROLE_ADMIN'),(15,'S3Out',1,2,10,2,'ROLE_GUEST','ROLE_ADMIN'),(16,'S4Out',1,2,10,3,'ROLE_GUEST','ROLE_ADMIN'),(17,'S1Alarm',1,2,11,0,'ROLE_GUEST','ROLE_ADMIN'),(18,'S2Alarm',1,2,11,1,'ROLE_GUEST','ROLE_ADMIN'),(19,'S3Alarm',1,2,11,2,'ROLE_GUEST','ROLE_ADMIN'),(20,'S4Alarm',1,2,11,3,'ROLE_GUEST','ROLE_ADMIN'),(21,'S1Locked',1,2,12,0,'ROLE_GUEST','ROLE_ADMIN'),(22,'S2Locked',1,2,12,1,'ROLE_GUEST','ROLE_ADMIN'),(23,'S3Locked',1,2,12,2,'ROLE_GUEST','ROLE_ADMIN'),(24,'S4Locked',1,2,12,3,'ROLE_GUEST','ROLE_ADMIN');
+INSERT INTO `tags` VALUES (1,1,'S1Trigger',1,3,10,0,'ROLE_GUEST','ROLE_GUEST'),(2,1,'S2Trigger',1,3,10,1,'ROLE_GUEST','ROLE_GUEST'),(3,1,'S3Trigger',1,3,10,2,'ROLE_GUEST','ROLE_GUEST'),(4,1,'S4Trigger',1,3,10,3,'ROLE_GUEST','ROLE_GUEST'),(5,1,'S1TriggerLock',1,3,11,0,'ROLE_GUEST','ROLE_ADMIN'),(6,1,'S2TriggerLock',1,3,11,1,'ROLE_GUEST','ROLE_ADMIN'),(7,1,'S3TriggerLock',1,3,11,2,'ROLE_GUEST','ROLE_ADMIN'),(8,1,'S4TriggerLock',1,3,11,3,'ROLE_GUEST','ROLE_ADMIN'),(9,1,'S1NotAck',1,3,12,0,'ROLE_GUEST','ROLE_ADMIN'),(10,1,'S2NotAck',1,3,12,1,'ROLE_GUEST','ROLE_ADMIN'),(11,1,'S3NotAck',1,3,12,2,'ROLE_GUEST','ROLE_ADMIN'),(12,1,'S4NotAck',1,3,12,3,'ROLE_GUEST','ROLE_ADMIN'),(13,1,'S1Out',1,2,10,0,'ROLE_GUEST','ROLE_ADMIN'),(14,1,'S2Out',1,2,10,1,'ROLE_GUEST','ROLE_ADMIN'),(15,1,'S3Out',1,2,10,2,'ROLE_GUEST','ROLE_ADMIN'),(16,1,'S4Out',1,2,10,3,'ROLE_GUEST','ROLE_ADMIN'),(17,1,'S1Alarm',1,2,11,0,'ROLE_GUEST','ROLE_ADMIN'),(18,1,'S2Alarm',1,2,11,1,'ROLE_GUEST','ROLE_ADMIN'),(19,1,'S3Alarm',1,2,11,2,'ROLE_GUEST','ROLE_ADMIN'),(20,1,'S4Alarm',1,2,11,3,'ROLE_GUEST','ROLE_ADMIN'),(21,1,'S1Locked',1,2,12,0,'ROLE_GUEST','ROLE_ADMIN'),(22,1,'S2Locked',1,2,12,1,'ROLE_GUEST','ROLE_ADMIN'),(23,1,'S3Locked',1,2,12,2,'ROLE_GUEST','ROLE_ADMIN'),(24,1,'S4Locked',1,2,12,3,'ROLE_GUEST','ROLE_ADMIN');
 /*!40000 ALTER TABLE `tags` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
