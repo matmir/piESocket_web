@@ -13,7 +13,7 @@ use App\Entity\Admin\Tag;
 use App\Entity\Admin\TagArea;
 use App\Entity\Paginator;
 use App\Entity\AppException;
-use App\Service\Admin\ConfigDriverMapper;
+use App\Service\Admin\DriverConnectionMapper;
 
 /**
  * Class to read/write Tags
@@ -41,11 +41,11 @@ class TagsMapper {
     public function getTags(int $area = 0, int $sort = 0, int $sortDESC = 0, Paginator $paginator = null) {
         
         // Basic query
-        $sql = 'SELECT * FROM tags';
+        $sql = 'SELECT * FROM tags t, driver_connections dc WHERE t.tConnId = dc.dcId';
         
         // Area
         if ($area > 0) {
-            $sql .= ' WHERE tArea = ?';
+            $sql .= ' AND tArea = ?';
         }
         
         // Order direction
@@ -84,6 +84,8 @@ class TagsMapper {
             // New tag
             $tag = new Tag();
             $tag->setId($item['tid']);
+            $tag->setConnId($item['tConnId']);
+            $tag->setConnName($item['dcName']);
             $tag->setName($item['tName']);
             $tag->setType($item['tType']);
             $tag->setArea($item['tArea']);
@@ -149,7 +151,7 @@ class TagsMapper {
         // Check tag identifier
         Tag::checkId($tagId);
         
-        $statement = $this->dbConn->prepare('SELECT * FROM tags WHERE tid = ?;');
+        $statement = $this->dbConn->prepare('SELECT * FROM tags t, driver_connections dc WHERE t.tConnId = dc.dcId AND tid = ?;');
         $statement->bindValue(1, $tagId, ParameterType::INTEGER);
         $statement->execute();
         
@@ -166,6 +168,8 @@ class TagsMapper {
         // New tag
         $tag = new Tag();
         $tag->setId($item['tid']);
+        $tag->setConnId($item['tConnId']);
+        $tag->setConnName($item['dcName']);
         $tag->setName($item['tName']);
         $tag->setType($item['tType']);
         $tag->setArea($item['tArea']);
@@ -189,7 +193,7 @@ class TagsMapper {
         // Check tag name
         Tag::checkName($tagName);
         
-        $statement = $this->dbConn->prepare('SELECT * FROM tags WHERE tName = ?;');
+        $statement = $this->dbConn->prepare('SELECT * FROM tags t, driver_connections dc WHERE t.tConnId = dc.dcId AND tName = ?;');
         $statement->bindValue(1, $tagName, ParameterType::STRING);
         $statement->execute();
         
@@ -206,6 +210,8 @@ class TagsMapper {
         // New tag
         $tag = new Tag();
         $tag->setId($item['tid']);
+        $tag->setConnId($item['tConnId']);
+        $tag->setConnName($item['dcName']);
         $tag->setName($item['tName']);
         $tag->setType($item['tType']);
         $tag->setArea($item['tArea']);
@@ -233,7 +239,7 @@ class TagsMapper {
         // Add '%' at the end
         $tagName.="%";
         
-        $statement = $this->dbConn->prepare('SELECT * FROM tags WHERE tName LIKE ?;');
+        $statement = $this->dbConn->prepare('SELECT * FROM tags t, driver_connections dc WHERE t.tConnId = dc.dcId AND tName LIKE ?;');
         $statement->bindValue(1, $tagName, ParameterType::STRING);
         $statement->execute();
                 
@@ -246,6 +252,8 @@ class TagsMapper {
             // New tag
             $tag = new Tag();
             $tag->setId($item['tid']);
+            $tag->setConnId($item['tConnId']);
+            $tag->setConnName($item['dcName']);
             $tag->setName($item['tName']);
             $tag->setType($item['tType']);
             $tag->setArea($item['tArea']);
@@ -272,7 +280,8 @@ class TagsMapper {
         
         $ret = false;
         
-        $sql = "SELECT count(*) AS 'cnt' FROM tags WHERE tType = ? AND tArea = ? AND tByteAddress = ? AND tBitAddress = ?;";
+        $sql = "SELECT count(*) AS 'cnt' FROM tags WHERE tType = ? AND tArea = ? AND tByteAddress = ? AND tBitAddress = ?";
+        $sql .= ' AND tConnId = ? AND tid <> ?;';
                 
         $statement = $this->dbConn->prepare($sql);
         
@@ -280,6 +289,8 @@ class TagsMapper {
         $statement->bindValue(2, $tag->getArea(), ParameterType::INTEGER);
         $statement->bindValue(3, $tag->getByteAddress(), ParameterType::INTEGER);
         $statement->bindValue(4, $tag->getBitAddress(), ParameterType::INTEGER);
+        $statement->bindValue(5, $tag->getConnId(), ParameterType::INTEGER);
+        $statement->bindValue(6, $tag->getId(), ParameterType::INTEGER);
         
         $statement->execute();
         $items = $statement->fetchAll();
@@ -317,18 +328,23 @@ class TagsMapper {
         }
         
         // Check Byte address
-        $cfg = new ConfigDriverMapper($this->dbConn);
-        $cfg->checkDriverByteAddress($newTag);
+        $conn = new DriverConnectionMapper($this->dbConn);
+        $conn->checkDriverByteAddress($newTag);
         
-        $stmt = $this->dbConn->prepare('INSERT INTO tags (tName, tType, tArea, tByteAddress, tBitAddress, tReadAccess, tWriteAccess) VALUES(?, ?, ?, ?, ?, ?, ?);');
+        // Query
+        $q = 'INSERT INTO tags (tConnId, tName, tType, tArea, tByteAddress, tBitAddress, tReadAccess, tWriteAccess)';
+        $q .= ' VALUES(?, ?, ?, ?, ?, ?, ?, ?);';
         
-        $stmt->bindValue(1, $newTag->getName(), ParameterType::STRING);
-        $stmt->bindValue(2, $newTag->getType(), ParameterType::INTEGER);
-        $stmt->bindValue(3, $newTag->getArea(), ParameterType::INTEGER);
-        $stmt->bindValue(4, $newTag->getByteAddress(), ParameterType::INTEGER);
-        $stmt->bindValue(5, $newTag->getBitAddress(), ParameterType::INTEGER);
-        $stmt->bindValue(6, $newTag->getReadAccess(), ParameterType::STRING);
-        $stmt->bindValue(7, $newTag->getWriteAccess(), ParameterType::STRING);
+        $stmt = $this->dbConn->prepare($q);
+        
+        $stmt->bindValue(1, $newTag->getConnId(), ParameterType::INTEGER);
+        $stmt->bindValue(2, $newTag->getName(), ParameterType::STRING);
+        $stmt->bindValue(3, $newTag->getType(), ParameterType::INTEGER);
+        $stmt->bindValue(4, $newTag->getArea(), ParameterType::INTEGER);
+        $stmt->bindValue(5, $newTag->getByteAddress(), ParameterType::INTEGER);
+        $stmt->bindValue(6, $newTag->getBitAddress(), ParameterType::INTEGER);
+        $stmt->bindValue(7, $newTag->getReadAccess(), ParameterType::STRING);
+        $stmt->bindValue(8, $newTag->getWriteAccess(), ParameterType::STRING);
         
         try {
             
@@ -347,52 +363,18 @@ class TagsMapper {
     }
     
     /**
-     * Check if Tag address is changed
-     * 
-     * @param Tag $newTag  New Tag object
-     * @param Tag $oldTag  Old Tag object
-     * @return boolean True if address is different
-     */
-    private function isAddressChanged(Tag $newTag, Tag $oldTag) {
-        
-        $ret = false;
-        
-        // Check area
-        if ($newTag->getArea() == $oldTag->getArea()) {
-            // Check type
-            if ($newTag->getType() == $oldTag->getType()) {
-                // Check Byte address
-                if ($newTag->getByteAddress() == $oldTag->getByteAddress()) {
-                    // Check Bit address
-                    if ($newTag->getBitAddress() != $oldTag->getBitAddress()) {
-                        $ret = true;
-                    }
-                } else {
-                    $ret = true;
-                }
-            } else {
-                $ret = true;
-            }
-        } else {
-            $ret = true;
-        }
-        
-        return $ret;
-    }
-    
-    /**
      * Edit Tag
      * 
      * @param Tag $newTag New Tag object
      * @param Tag $oldTag Old Tag object
      */
-    public function editTag(Tag $newTag, Tag $oldTag) {
+    public function editTag(Tag $newTag) {
         
         // Check if Tag is valid
         $newTag->isValid(true);
         
         // Check Tag address
-        if ($this->isAddressChanged($newTag, $oldTag) && $this->isTagAddressExist($newTag)) {
+        if ($this->isTagAddressExist($newTag)) {
             throw new AppException(
                 "Tag ".$newTag->getName()." address: ".TagArea::getPrefix($newTag->getArea()).
                 " ".$newTag->getByteAddress().".".$newTag->getBitAddress()." exist in DB!",
@@ -401,19 +383,24 @@ class TagsMapper {
         }
         
         // Check Byte address
-        $cfg = new ConfigDriverMapper($this->dbConn);
-        $cfg->checkDriverByteAddress($newTag);
+        $conn = new DriverConnectionMapper($this->dbConn);
+        $conn->checkDriverByteAddress($newTag);
         
-        $stmt = $this->dbConn->prepare('UPDATE tags SET tName = ?, tType = ?, tArea = ?, tByteAddress = ?, tBitAddress = ?, tReadAccess = ?, tWriteAccess = ? WHERE tid = ?;');
+        // Query
+        $q = 'UPDATE tags SET tConnId = ?, tName = ?, tType = ?, tArea = ?, tByteAddress = ?, tBitAddress = ?';
+        $q .= ', tReadAccess = ?, tWriteAccess = ? WHERE tid = ?;';
         
-        $stmt->bindValue(1, $newTag->getName(), ParameterType::STRING);
-        $stmt->bindValue(2, $newTag->getType(), ParameterType::INTEGER);
-        $stmt->bindValue(3, $newTag->getArea(), ParameterType::INTEGER);
-        $stmt->bindValue(4, $newTag->getByteAddress(), ParameterType::INTEGER);
-        $stmt->bindValue(5, $newTag->getBitAddress(), ParameterType::INTEGER);
-        $stmt->bindValue(6, $newTag->getReadAccess(), ParameterType::STRING);
-        $stmt->bindValue(7, $newTag->getWriteAccess(), ParameterType::STRING);
-        $stmt->bindValue(8, $newTag->getId(), ParameterType::INTEGER);
+        $stmt = $this->dbConn->prepare($q);
+        
+        $stmt->bindValue(1, $newTag->getConnId(), ParameterType::INTEGER);
+        $stmt->bindValue(2, $newTag->getName(), ParameterType::STRING);
+        $stmt->bindValue(3, $newTag->getType(), ParameterType::INTEGER);
+        $stmt->bindValue(4, $newTag->getArea(), ParameterType::INTEGER);
+        $stmt->bindValue(5, $newTag->getByteAddress(), ParameterType::INTEGER);
+        $stmt->bindValue(6, $newTag->getBitAddress(), ParameterType::INTEGER);
+        $stmt->bindValue(7, $newTag->getReadAccess(), ParameterType::STRING);
+        $stmt->bindValue(8, $newTag->getWriteAccess(), ParameterType::STRING);
+        $stmt->bindValue(9, $newTag->getId(), ParameterType::INTEGER);
         
         try {
             

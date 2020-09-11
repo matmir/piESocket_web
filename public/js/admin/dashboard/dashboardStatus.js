@@ -17,8 +17,8 @@ $(document).ready(function(){
     var buttonONHExit = new createExitButton(pr, "btnExitONH");
     
     // Cycle times
-    var cycleUpdater = new createCycleTime("processUpdater");
-    var cyclePolling = new createCycleTime("driverPolling");
+    var cycleUpdater = new createCycleTime("process");
+    var cyclePolling = new createCycleTime("polling");
     var cycleLogger = new createCycleTime("tagLogger");
     var cycleLoggerWriter = new createCycleTime("tagLoggerWriter");
     var cycleAlarming = new createCycleTime("alarming");
@@ -50,8 +50,8 @@ $(document).ready(function(){
             buttonONHExit.hide();
             
             // Clear cycle times
-            cycleUpdater.clear();
-            cyclePolling.clear();
+            cycleUpdater.clearM();
+            cyclePolling.clearM();
             cycleLogger.clear();
             cycleLoggerWriter.clear();
             cycleAlarming.clear();

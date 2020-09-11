@@ -21,6 +21,14 @@ class TagEntity {
     private $tid;
     
     /**
+     * Driver connection identifier
+     * 
+     * @Assert\NotBlank()
+     * @Assert\Positive
+     */
+    private $tConnId;
+    
+    /**
      * Tag name
      * 
      * @Assert\NotBlank()
@@ -100,6 +108,7 @@ class TagEntity {
     public function __construct() {
         
         $this->tid = 0;
+        $this->tConnId = 0;
         $this->tName = '';
         $this->tType = 0;
         $this->tArea = 0;
@@ -117,6 +126,16 @@ class TagEntity {
     public function settid($id) {
         
         $this->tid = $id;
+    }
+    
+    public function gettConnId() {
+        
+        return $this->tConnId;
+    }
+    
+    public function settConnId($id) {
+        
+        $this->tConnId = $id;
     }
     
     public function gettName() {
@@ -199,6 +218,7 @@ class TagEntity {
         // New tag
         $tag = new Tag();
         $tag->setId($this->tid);
+        $tag->setConnId($this->tConnId);
         $tag->setName($this->tName);
         $tag->setType($this->tType);
         $tag->setArea($this->tArea);
@@ -221,6 +241,7 @@ class TagEntity {
         $tag->isValid(true);
         
         $this->tid = $tag->getId();
+        $this->tConnId = $tag->getConnId();
         $this->tName = $tag->getName();
         $this->tType = $tag->getType();
         $this->tArea = $tag->getArea();

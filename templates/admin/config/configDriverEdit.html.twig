@@ -1,0 +1,24 @@
+{% extends 'admin/config/base.config.html.twig' %}
+
+{% block adminConfigTitle %}Edit driver connections{% endblock %}
+
+{% block adminConfigBody %}
+    <br />
+        
+    {% if drvType == 0 %}
+        
+        {{ include('admin/config/configDriverSHMForm.html.twig', {'form': form}) }}
+        
+    {% elseif drvType == 1 %}
+            
+        {{ include('admin/config/configDriverModbusForm.html.twig', {'form': form}) }}
+        
+    {% endif %}
+    
+{% endblock %}
+
+{% block javascripts %}
+    {% if drvType == 1 %}
+        <script src="{{ asset('js/admin/config/driverModbusForm.js') }}"></script>
+    {% endif %}
+{% endblock %}

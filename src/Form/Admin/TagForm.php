@@ -21,6 +21,9 @@ class TagForm extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         
         $builder->add('tid', HiddenType::class)
+            ->add('tConnId', ChoiceType::class, array('choices'  => $options['connections'],
+                                                    'label' => 'Connection'
+                                            ))
             ->add('tName', null, array('label' => 'Name'))
             ->add('tType', ChoiceType::class, array('choices'  => array(
                                                         'Bit' => 1,
@@ -73,6 +76,7 @@ class TagForm extends AbstractType {
         
         $resolver->setDefaults(array(
             'data_class' => TagEntity::class,
+            'connections' => array(),
         ));
     }
 }

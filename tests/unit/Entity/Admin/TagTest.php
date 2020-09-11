@@ -22,6 +22,8 @@ class TagTest extends TestCase {
         $tag = new Tag();
         
         $this->assertEquals(0, $tag->getId());
+        $this->assertEquals(0, $tag->getConnId());
+        $this->assertEquals('', $tag->getConnName());
         $this->assertEquals('', $tag->getName());
         $this->assertEquals(TagArea::input, $tag->getArea());
         $this->assertEquals(TagType::Bit, $tag->getType());
@@ -49,6 +51,46 @@ class TagTest extends TestCase {
         
         $tag = new Tag();
         $tag->setId(-3);
+    }
+    
+    /**
+     * Test setConnId method
+     */
+    public function testSetConnId() {
+        
+        $tag = new Tag();
+        $tag->setConnId(33);
+        
+        $this->assertEquals(33, $tag->getConnId());
+    }
+    
+    public function testSetConnIdWrong1() {
+        
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
+        $this->expectExceptionMessage('Driver connection identifier wrong value');
+        
+        $tag = new Tag();
+        $tag->setConnId(-4);
+    }
+    
+    /**
+     * Test setConnName method
+     */
+    public function testSetConnName() {
+        
+        $tag = new Tag();
+        $tag->setConnName('testConn');
+        
+        $this->assertEquals('testConn', $tag->getConnName());
+    }
+    
+    public function testSetConnNameWrong1() {
+        
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
+        $this->expectExceptionMessage('Driver connection name can not be empty');
+        
+        $tag = new Tag();
+        $tag->setConnName(' ');
     }
     
     /**

@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\Form;
 
 use App\Service\Admin\TagsMapper;
+use App\Service\Admin\DriverConnectionMapper;
 use App\Form\Admin\TagForm;
 use App\Entity\Admin\TagEntity;
 use App\Entity\Paginator;
@@ -95,11 +96,11 @@ class TagController extends AbstractController {
             switch ($code) {
                 case AppException::TAG_ADDRESS_EXIST: {
                     // Add error
-                    $form->get('tArea')->addError(new FormError('Tag address exist!'));
+                    $form->get('tArea')->addError(new FormError($errorObj->getMessage()));
                 } break;
                 case AppException::TAG_NAME_EXIST: {
                     // Add error
-                    $form->get('tName')->addError(new FormError('Tag already exist!'));
+                    $form->get('tName')->addError(new FormError($errorObj->getMessage()));
                 } break;
                 case AppException::TAG_BYTE_ADDRESS_WRONG: {
                     // Add error
@@ -114,11 +115,14 @@ class TagController extends AbstractController {
     /**
      * @Route("/admin/tags/add", name="admin_tags_add")
      */
-    public function add(TagsMapper $tagsMapper, Request $request) {
+    public function add(TagsMapper $tagsMapper, DriverConnectionMapper $connMapper, Request $request) {
         
         $tagE = new TagEntity();
         
-        $form = $this->createForm(TagForm::class, $tagE);
+        // Get connection names
+        $connections = $connMapper->getConnectionsName();
+        
+        $form = $this->createForm(TagForm::class, $tagE, ['connections' => $connections]);
         
         $form->handleRequest($request);
 
@@ -161,15 +165,18 @@ class TagController extends AbstractController {
     /**
      * @Route("/admin/tags/edit/{tagID}", name="admin_tags_edit")
      */
-    public function edit($tagID, TagsMapper $tagsMapper, Request $request) {
+    public function edit($tagID, TagsMapper $tagsMapper, DriverConnectionMapper $connMapper, Request $request) {
         
         // Get Tag data from DB
         $tag = $tagsMapper->getTag($tagID);
         
+        // Get connection names
+        $connections = $connMapper->getConnectionsName();
+        
         $tagE = new TagEntity();
         $tagE->initFromTagObject($tag);
         
-        $form = $this->createForm(TagForm::class, $tagE);
+        $form = $this->createForm(TagForm::class, $tagE, ['connections' => $connections]);
         
         $form->handleRequest($request);
 
@@ -184,7 +191,7 @@ class TagController extends AbstractController {
             try {
                 
                 // Save Tag
-                $tagsMapper->editTag($tagN, $tag);
+                $tagsMapper->editTag($tagN);
                 
                 $this->addFlash(
                     'tag-msg-ok',

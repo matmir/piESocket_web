@@ -108,18 +108,24 @@
         </thead>
         <tbody>
             
+            {% for conn in connections %}
             <tr>
-                <th scope="row">Process Updater</th>
-                <td id="processUpdaterCycleMin">0</td>
-                <td id="processUpdaterCycleMax">0</td>
-                <td id="processUpdaterCycleCurrent">0</td>
+                <th scope="row">Updater {{ conn.getName() }}</th>
+                <td id="processUpdater_{{ conn.getId() }}_CycleMin">0</td>
+                <td id="processUpdater_{{ conn.getId() }}_CycleMax">0</td>
+                <td id="processUpdater_{{ conn.getId() }}_CycleCurrent">0</td>
             </tr>
-            <tr>
-                <th scope="row">Driver polling</th>
-                <td id="driverPollingCycleMin">0</td>
-                <td id="driverPollingCycleMax">0</td>
-                <td id="driverPollingCycleCurrent">0</td>
-            </tr>
+            {% endfor %}
+            {% for conn in connections %}
+                {% if conn.isModbusConfig() == true %}
+                    <tr>
+                        <th scope="row">Driver polling {{ conn.getName() }}</th>
+                        <td id="pollingDriverBuffer_{{ conn.getId() }}_CycleMin">0</td>
+                        <td id="pollingDriverBuffer_{{ conn.getId() }}_CycleMax">0</td>
+                        <td id="pollingDriverBuffer_{{ conn.getId() }}_CycleCurrent">0</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
             <tr>
                 <th scope="row">Tag Logger</th>
                 <td id="tagLoggerCycleMin">0</td>
