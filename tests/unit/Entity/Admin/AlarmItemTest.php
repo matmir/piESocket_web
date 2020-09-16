@@ -10,13 +10,13 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Mateusz Mirosławski
  */
-class AlarmItemTest extends TestCase {
-    
+class AlarmItemTest extends TestCase
+{
     /**
      * Test Default constructor
      */
-    public function testDefaultConstructor() {
-        
+    public function testDefaultConstructor()
+    {
         $alarmItem = new AlarmItem();
         
         $this->assertEquals(0, $alarmItem->getId());
@@ -28,8 +28,8 @@ class AlarmItemTest extends TestCase {
         $this->assertFalse($alarmItem->isOffTimestamp());
     }
     
-    public function testDefaultConstructor1() {
-        
+    public function testDefaultConstructor1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Alarm on timestamp is NULL');
         
@@ -38,8 +38,8 @@ class AlarmItemTest extends TestCase {
         $alarmItem->getOnTimestamp();
     }
     
-    public function testDefaultConstructor2() {
-        
+    public function testDefaultConstructor2()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Alarm off timestamp is NULL');
         
@@ -48,8 +48,8 @@ class AlarmItemTest extends TestCase {
         $alarmItem->getOffTimestamp();
     }
     
-    public function testDefaultConstructor3() {
-        
+    public function testDefaultConstructor3()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Alarm ack timestamp is NULL');
         
@@ -61,8 +61,8 @@ class AlarmItemTest extends TestCase {
     /**
      * Test setId method
      */
-    public function testSetId() {
-        
+    public function testSetId()
+    {
         $alarmItem = new AlarmItem();
         $alarmItem->setId(35);
         
@@ -79,8 +79,8 @@ class AlarmItemTest extends TestCase {
     /**
      * Test setDefinitionId method
      */
-    public function testSetDefinitionId() {
-        
+    public function testSetDefinitionId()
+    {
         $alarmItem = new AlarmItem();
         $alarmItem->setDefinitionId(89);
         
@@ -97,8 +97,8 @@ class AlarmItemTest extends TestCase {
     /**
      * Test setPriority method
      */
-    public function testSetPriority() {
-        
+    public function testSetPriority()
+    {
         $alarmItem = new AlarmItem();
         $alarmItem->setPriority(3);
         
@@ -115,8 +115,8 @@ class AlarmItemTest extends TestCase {
     /**
      * Test setMessage method
      */
-    public function testSetMessage() {
-        
+    public function testSetMessage()
+    {
         $alarmItem = new AlarmItem();
         $alarmItem->setMessage('Test alarm');
         
@@ -133,8 +133,8 @@ class AlarmItemTest extends TestCase {
     /**
      * Test setActive method
      */
-    public function testSetActive() {
-        
+    public function testSetActive()
+    {
         $alarmItem = new AlarmItem();
         $alarmItem->setActive(true);
         
@@ -151,8 +151,8 @@ class AlarmItemTest extends TestCase {
     /**
      * Test setAck method
      */
-    public function testSetAck() {
-        
+    public function testSetAck()
+    {
         $alarmItem = new AlarmItem();
         $alarmItem->setAck(true);
         
@@ -169,8 +169,8 @@ class AlarmItemTest extends TestCase {
     /**
      * Test setOnTimestamp method
      */
-    public function testSetOnTimestamp() {
-        
+    public function testSetOnTimestamp()
+    {
         $alarmItem = new AlarmItem();
         $alarmItem->setOnTimestamp('2019-08-07 14:56:07');
         
@@ -185,8 +185,8 @@ class AlarmItemTest extends TestCase {
         $this->assertFalse($alarmItem->isOffTimestamp());
     }
     
-    public function testSetOnTimestampWrong1() {
-        
+    public function testSetOnTimestampWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Alarm on timestamp can not be empty');
         
@@ -196,8 +196,8 @@ class AlarmItemTest extends TestCase {
         $alarmItem->getOnTimestamp();
     }
     
-    public function testSetOnTimestampWrong2() {
-        
+    public function testSetOnTimestampWrong2()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Alarm on timestamp wrong format');
         
@@ -210,8 +210,8 @@ class AlarmItemTest extends TestCase {
     /**
      * Test setOffTimestamp method
      */
-    public function testSetOffTimestamp() {
-        
+    public function testSetOffTimestamp()
+    {
         $alarmItem = new AlarmItem();
         $alarmItem->setOffTimestamp('2019-08-07 14:56:07');
         
@@ -226,8 +226,8 @@ class AlarmItemTest extends TestCase {
         $this->assertTrue($alarmItem->isOffTimestamp());
     }
     
-    public function testSetOffTimestampWrong1() {
-        
+    public function testSetOffTimestampWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Alarm off timestamp can not be empty');
         
@@ -237,8 +237,8 @@ class AlarmItemTest extends TestCase {
         $alarmItem->getOffTimestamp();
     }
     
-    public function testSetOffTimestampWrong2() {
-        
+    public function testSetOffTimestampWrong2()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Alarm off timestamp wrong format');
         
@@ -251,8 +251,8 @@ class AlarmItemTest extends TestCase {
     /**
      * Test setAckTimestamp method
      */
-    public function testSetAckTimestamp() {
-        
+    public function testSetAckTimestamp()
+    {
         $alarmItem = new AlarmItem();
         $alarmItem->setAckTimestamp('2019-08-07 14:56:07');
         
@@ -267,8 +267,8 @@ class AlarmItemTest extends TestCase {
         $this->assertFalse($alarmItem->isOffTimestamp());
     }
     
-    public function testSetAckTimestampWrong1() {
-        
+    public function testSetAckTimestampWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Alarm ack timestamp can not be empty');
         
@@ -278,8 +278,8 @@ class AlarmItemTest extends TestCase {
         $alarmItem->getAckTimestamp();
     }
     
-    public function testSetAckTimestampWrong2() {
-        
+    public function testSetAckTimestampWrong2()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Alarm ack timestamp wrong format');
         

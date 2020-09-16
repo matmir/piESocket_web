@@ -11,15 +11,15 @@ use App\Entity\Admin\TagType;
  *
  * @author Mateusz Mirosławski
  */
-class AlarmSystemDWordTest extends AlarmSystemFunctionTestCase {
-    
+class AlarmSystemDWordTest extends AlarmSystemFunctionTestCase
+{
     /**
      * Test DWORD alarm Tag>value
      */
-    public function testDWord1() {
-        
+    public function testDWord1()
+    {
         // Get alarm definition
-        $alarmDef = $this->getAlarmDefinition(TagType::DWord);
+        $alarmDef = $this->getAlarmDefinition(TagType::DWORD);
         
         $data1 = $this->getAlarmsData($alarmDef);
         
@@ -57,7 +57,7 @@ class AlarmSystemDWordTest extends AlarmSystemFunctionTestCase {
         // Deactivate alarm definition
         $this->alarmMapper->enableAlarm($alarmDef->getId(), false);
         
-        $this->assertEquals(TagType::DWord, $alarmDef->getTag()->getType());
+        $this->assertEquals(TagType::DWORD, $alarmDef->getTag()->getType());
         $this->assertEquals(AlarmTrigger::TR_TAG_GT_VAL, $alarmDef->getTrigger());
         $this->assertEquals(100800, $alarmDef->getTriggerNumeric());
         $this->assertEquals('TEST_ALARM_DWORD', $alarmDef->getTag()->getName());
@@ -117,10 +117,10 @@ class AlarmSystemDWordTest extends AlarmSystemFunctionTestCase {
     /**
      * Test DWORD alarm Tag<value
      */
-    public function testDWord2() {
-        
+    public function testDWord2()
+    {
         // Get alarm definition
-        $alarmDef = $this->getAlarmDefinition(TagType::DWord);
+        $alarmDef = $this->getAlarmDefinition(TagType::DWORD);
         // Change trigger
         $alarmDef->setTrigger(AlarmTrigger::TR_TAG_LT_VAL);
         $alarmDef->setTriggerNumeric(100200);
@@ -163,7 +163,7 @@ class AlarmSystemDWordTest extends AlarmSystemFunctionTestCase {
         // Deactivate alarm definition
         $this->alarmMapper->enableAlarm($alarmDef->getId(), false);
         
-        $this->assertEquals(TagType::DWord, $alarmDef->getTag()->getType());
+        $this->assertEquals(TagType::DWORD, $alarmDef->getTag()->getType());
         $this->assertEquals(AlarmTrigger::TR_TAG_LT_VAL, $alarmDef->getTrigger());
         $this->assertEquals(100200, $alarmDef->getTriggerNumeric());
         $this->assertEquals('TEST_ALARM_DWORD', $alarmDef->getTag()->getName());
@@ -223,10 +223,10 @@ class AlarmSystemDWordTest extends AlarmSystemFunctionTestCase {
     /**
      * Test DWORD alarm Tag>=value
      */
-    public function testDWord3() {
-        
+    public function testDWord3()
+    {
         // Get alarm definition
-        $alarmDef = $this->getAlarmDefinition(TagType::DWord);
+        $alarmDef = $this->getAlarmDefinition(TagType::DWORD);
         // Change trigger
         $alarmDef->setTrigger(AlarmTrigger::TR_TAG_GTE_VAL);
         $alarmDef->setTriggerNumeric(250750);
@@ -269,7 +269,7 @@ class AlarmSystemDWordTest extends AlarmSystemFunctionTestCase {
         // Deactivate alarm definition
         $this->alarmMapper->enableAlarm($alarmDef->getId(), false);
         
-        $this->assertEquals(TagType::DWord, $alarmDef->getTag()->getType());
+        $this->assertEquals(TagType::DWORD, $alarmDef->getTag()->getType());
         $this->assertEquals(AlarmTrigger::TR_TAG_GTE_VAL, $alarmDef->getTrigger());
         $this->assertEquals(250750, $alarmDef->getTriggerNumeric());
         $this->assertEquals('TEST_ALARM_DWORD', $alarmDef->getTag()->getName());
@@ -329,10 +329,10 @@ class AlarmSystemDWordTest extends AlarmSystemFunctionTestCase {
     /**
      * Test DWORD alarm Tag<=value
      */
-    public function testDWord4() {
-        
+    public function testDWord4()
+    {
         // Get alarm definition
-        $alarmDef = $this->getAlarmDefinition(TagType::DWord);
+        $alarmDef = $this->getAlarmDefinition(TagType::DWORD);
         // Change trigger
         $alarmDef->setTrigger(AlarmTrigger::TR_TAG_LTE_VAL);
         $alarmDef->setTriggerNumeric(180600);
@@ -375,7 +375,7 @@ class AlarmSystemDWordTest extends AlarmSystemFunctionTestCase {
         // Deactivate alarm definition
         $this->alarmMapper->enableAlarm($alarmDef->getId(), false);
         
-        $this->assertEquals(TagType::DWord, $alarmDef->getTag()->getType());
+        $this->assertEquals(TagType::DWORD, $alarmDef->getTag()->getType());
         $this->assertEquals(AlarmTrigger::TR_TAG_LTE_VAL, $alarmDef->getTrigger());
         $this->assertEquals(180600, $alarmDef->getTriggerNumeric());
         $this->assertEquals('TEST_ALARM_DWORD', $alarmDef->getTag()->getName());
@@ -435,10 +435,10 @@ class AlarmSystemDWordTest extends AlarmSystemFunctionTestCase {
     /**
      * Test DWORD alarm Tag=value
      */
-    public function testDWord5() {
-        
+    public function testDWord5()
+    {
         // Get alarm definition
-        $alarmDef = $this->getAlarmDefinition(TagType::DWord);
+        $alarmDef = $this->getAlarmDefinition(TagType::DWORD);
         // Change trigger
         $alarmDef->setTrigger(AlarmTrigger::TR_TAG_EQ_VAL);
         $alarmDef->setTriggerNumeric(2850650);
@@ -481,7 +481,7 @@ class AlarmSystemDWordTest extends AlarmSystemFunctionTestCase {
         // Deactivate alarm definition
         $this->alarmMapper->enableAlarm($alarmDef->getId(), false);
         
-        $this->assertEquals(TagType::DWord, $alarmDef->getTag()->getType());
+        $this->assertEquals(TagType::DWORD, $alarmDef->getTag()->getType());
         $this->assertEquals(AlarmTrigger::TR_TAG_EQ_VAL, $alarmDef->getTrigger());
         $this->assertEquals(2850650, $alarmDef->getTriggerNumeric());
         $this->assertEquals('TEST_ALARM_DWORD', $alarmDef->getTag()->getName());
@@ -541,10 +541,10 @@ class AlarmSystemDWordTest extends AlarmSystemFunctionTestCase {
     /**
      * Test DWORD alarm Tag!=value
      */
-    public function testDWord6() {
-        
+    public function testDWord6()
+    {
         // Get alarm definition
-        $alarmDef = $this->getAlarmDefinition(TagType::DWord);
+        $alarmDef = $this->getAlarmDefinition(TagType::DWORD);
         // Change trigger
         $alarmDef->setTrigger(AlarmTrigger::TR_TAG_NEQ_VAL);
         $alarmDef->setTriggerNumeric(2850610);
@@ -587,7 +587,7 @@ class AlarmSystemDWordTest extends AlarmSystemFunctionTestCase {
         // Deactivate alarm definition
         $this->alarmMapper->enableAlarm($alarmDef->getId(), false);
         
-        $this->assertEquals(TagType::DWord, $alarmDef->getTag()->getType());
+        $this->assertEquals(TagType::DWORD, $alarmDef->getTag()->getType());
         $this->assertEquals(AlarmTrigger::TR_TAG_NEQ_VAL, $alarmDef->getTrigger());
         $this->assertEquals(2850610, $alarmDef->getTriggerNumeric());
         $this->assertEquals('TEST_ALARM_DWORD', $alarmDef->getTag()->getName());
@@ -647,10 +647,10 @@ class AlarmSystemDWordTest extends AlarmSystemFunctionTestCase {
     /**
      * Test DWORD alarm - AutoAck
      */
-    public function testDWord7() {
-        
+    public function testDWord7()
+    {
         // Get alarm definition
-        $alarmDef = $this->getAlarmDefinition(TagType::DWord);
+        $alarmDef = $this->getAlarmDefinition(TagType::DWORD);
         // Set AutoAck flag
         $alarmDef->setAutoAck(true);
         // Change trigger
@@ -683,7 +683,7 @@ class AlarmSystemDWordTest extends AlarmSystemFunctionTestCase {
         // Deactivate alarm definition
         $this->alarmMapper->enableAlarm($alarmDef->getId(), false);
         
-        $this->assertEquals(TagType::DWord, $alarmDef->getTag()->getType());
+        $this->assertEquals(TagType::DWORD, $alarmDef->getTag()->getType());
         $this->assertEquals(AlarmTrigger::TR_TAG_EQ_VAL, $alarmDef->getTrigger());
         $this->assertEquals(3450199, $alarmDef->getTriggerNumeric());
         $this->assertEquals('TEST_ALARM_DWORD', $alarmDef->getTag()->getName());
@@ -730,10 +730,10 @@ class AlarmSystemDWordTest extends AlarmSystemFunctionTestCase {
     /**
      * Test DWORD alarm - no feedback tag
      */
-    public function testDWord8() {
-        
+    public function testDWord8()
+    {
         // Get alarm definition
-        $alarmDef = $this->getAlarmDefinition(TagType::DWord);
+        $alarmDef = $this->getAlarmDefinition(TagType::DWORD);
         // Set AutoAck flag
         $alarmDef->setAutoAck(false);
         // Delete feedback tag
@@ -777,7 +777,7 @@ class AlarmSystemDWordTest extends AlarmSystemFunctionTestCase {
         // Deactivate alarm definition
         $this->alarmMapper->enableAlarm($alarmDef->getId(), false);
         
-        $this->assertEquals(TagType::DWord, $alarmDef->getTag()->getType());
+        $this->assertEquals(TagType::DWORD, $alarmDef->getTag()->getType());
         $this->assertEquals(AlarmTrigger::TR_TAG_EQ_VAL, $alarmDef->getTrigger());
         $this->assertEquals(3450199, $alarmDef->getTriggerNumeric());
         $this->assertEquals('TEST_ALARM_DWORD', $alarmDef->getTag()->getName());
@@ -837,10 +837,10 @@ class AlarmSystemDWordTest extends AlarmSystemFunctionTestCase {
     /**
      * Test DWORD alarm - no HW ack tag
      */
-    public function testDWord9() {
-        
+    public function testDWord9()
+    {
         // Get alarm definition
-        $alarmDef = $this->getAlarmDefinition(TagType::DWord);
+        $alarmDef = $this->getAlarmDefinition(TagType::DWORD);
         // Delete HW ack tag
         $alarmDef->setHWAck();
         // Save alarm definition
@@ -878,7 +878,7 @@ class AlarmSystemDWordTest extends AlarmSystemFunctionTestCase {
         // Deactivate alarm definition
         $this->alarmMapper->enableAlarm($alarmDef->getId(), false);
         
-        $this->assertEquals(TagType::DWord, $alarmDef->getTag()->getType());
+        $this->assertEquals(TagType::DWORD, $alarmDef->getTag()->getType());
         $this->assertEquals(AlarmTrigger::TR_TAG_EQ_VAL, $alarmDef->getTrigger());
         $this->assertEquals(3450199, $alarmDef->getTriggerNumeric());
         $this->assertEquals('TEST_ALARM_DWORD', $alarmDef->getTag()->getName());

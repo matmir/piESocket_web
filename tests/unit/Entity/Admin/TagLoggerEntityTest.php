@@ -14,13 +14,13 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Mateusz Mirosławski
  */
-class TagLoggerEntityTest extends TestCase {
-    
+class TagLoggerEntityTest extends TestCase
+{
     /**
      * Test Default constructor
      */
-    public function testDefaultConstructor() {
-        
+    public function testDefaultConstructor()
+    {
         $loggerEntity = new TagLoggerEntity();
         
         $this->assertEquals(0, $loggerEntity->getltid());
@@ -32,8 +32,8 @@ class TagLoggerEntityTest extends TestCase {
     /**
      * Test setltid method
      */
-    public function testSetId() {
-        
+    public function testSetId()
+    {
         $loggerEntity = new TagLoggerEntity();
         $loggerEntity->setltid(85);
         
@@ -43,8 +43,8 @@ class TagLoggerEntityTest extends TestCase {
     /**
      * Test setltTagName method
      */
-    public function testSetTagName() {
-        
+    public function testSetTagName()
+    {
         $loggerEntity = new TagLoggerEntity();
         $loggerEntity->setltTagName('TestTag');
         
@@ -54,8 +54,8 @@ class TagLoggerEntityTest extends TestCase {
     /**
      * Test setltInterval method
      */
-    public function testSetInterval() {
-        
+    public function testSetInterval()
+    {
         $loggerEntity = new TagLoggerEntity();
         $loggerEntity->setltInterval(4);
         
@@ -65,8 +65,8 @@ class TagLoggerEntityTest extends TestCase {
     /**
      * Test setltIntervalS method
      */
-    public function testSetIntervalS() {
-        
+    public function testSetIntervalS()
+    {
         $loggerEntity = new TagLoggerEntity();
         $loggerEntity->setltIntervalS(46);
         
@@ -76,8 +76,8 @@ class TagLoggerEntityTest extends TestCase {
     /**
      * Test getFullLoggerObject method
      */
-    public function testGetFullLoggerObject() {
-        
+    public function testGetFullLoggerObject()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
         
@@ -99,8 +99,8 @@ class TagLoggerEntityTest extends TestCase {
         $this->assertEquals(10, $tagLog->getIntervalS());
     }
     
-    public function testGetFullLoggerObjectWrong() {
-        
+    public function testGetFullLoggerObjectWrong()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Tag name can not be empty');
         
@@ -118,8 +118,8 @@ class TagLoggerEntityTest extends TestCase {
     /**
      * Test initFromLoggerObject method
      */
-    public function testInitFromLoggerObject() {
-        
+    public function testInitFromLoggerObject()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
         

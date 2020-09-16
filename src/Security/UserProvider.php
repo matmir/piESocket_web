@@ -9,12 +9,13 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use App\Service\Admin\UserMapper;
 use App\Entity\Admin\User;
 
-class UserProvider implements UserProviderInterface {
+class UserProvider implements UserProviderInterface
+{
     
     private $userMapper;
     
-    public function __construct(UserMapper $ursMapper) {
-        
+    public function __construct(UserMapper $ursMapper)
+    {
         $this->userMapper = $ursMapper;
     }
     
@@ -29,8 +30,8 @@ class UserProvider implements UserProviderInterface {
      *
      * @throws UsernameNotFoundException if the user is not found
      */
-    public function loadUserByUsername($username) {
-        
+    public function loadUserByUsername($username)
+    {
         $user = $this->userMapper->getUserByName($username);
         
         return $user;

@@ -7,25 +7,25 @@ namespace App\Service\Admin\Parser;
  *
  * @author Mateusz Mirosławski
  */
-abstract class ParserSeparators {
-    
+abstract class ParserSeparators
+{
     /// Command value separator for normal query
-    const cvS = '|';
+    public const CVS = '|';
 
     /// Values separator
-    const vS = ',';
+    public const VS = ',';
 
     /// Command value separator for multi query
-    const cvMS = '?';
+    public const CVMS = '?';
 
     /// Commands separator for multi query
-    const cMS = '!';
+    public const CMS = '!';
     
     /// Cycle times separator
-    const ctTh = '!';
+    public const CTTH = '!';
     
-    const ctVal = '?';
+    public const CTVAL = '?';
     
     /// Cycle time Thread and value separator
-    const ctThVal = ':';
+    public const CTTHVAL = ':';
 }

@@ -8,21 +8,21 @@ use App\Entity\AppException;
 
 /**
  * Class represents User object for Forms (add/edit)
- * 
+ *
  * @author Mateusz Mirosławski
  */
-class UserEntity {
-    
+class UserEntity
+{
     /**
      * User identifier
-     * 
+     *
      * @Assert\PositiveOrZero
      */
     private $id;
     
     /**
      * User name
-     * 
+     *
      * @Assert\NotBlank()
      * @Assert\Length(max=25)
      */
@@ -30,28 +30,28 @@ class UserEntity {
     
     /**
      * Old User password
-     * 
+     *
      * @Assert\Length(max=200)
      */
     private $oldPassword;
     
     /**
      * User password
-     * 
+     *
      * @Assert\Length(max=200)
      */
     private $password1;
     
     /**
      * User password
-     * 
+     *
      * @Assert\Length(max=200)
      */
     private $password2;
     
     /**
      * User email
-     * 
+     *
      * @Assert\NotBlank()
      * @Assert\Email(
      *     message = "The email '{{ value }}' is not a valid email"
@@ -62,7 +62,7 @@ class UserEntity {
     
     /**
      * User role
-     * 
+     *
      * @Assert\NotBlank()
      * @Assert\Length(max=20)
      */
@@ -73,8 +73,8 @@ class UserEntity {
      */
     private $isActive;
     
-    public function __construct() {
-        
+    public function __construct()
+    {
         $this->id = 0;
         $this->username = '';
         $this->oldPassword = '';
@@ -84,84 +84,84 @@ class UserEntity {
         $this->userRole = '';
     }
     
-    public function getid() {
-        
+    public function getid()
+    {
         return $this->id;
     }
     
-    public function setid($id) {
-        
+    public function setid($id)
+    {
         $this->id = $id;
     }
     
-    public function getusername() {
-        
+    public function getusername()
+    {
         return $this->username;
     }
     
-    public function setusername($val) {
-        
+    public function setusername($val)
+    {
         $this->username = $val;
     }
     
-    public function getpassword1() {
-        
+    public function getpassword1()
+    {
         return $this->password1;
     }
     
-    public function setpassword1($val) {
-        
+    public function setpassword1($val)
+    {
         $this->password1 = $val;
     }
     
-    public function getpassword2() {
-        
+    public function getpassword2()
+    {
         return $this->password2;
     }
     
-    public function setpassword2($val) {
-        
+    public function setpassword2($val)
+    {
         $this->password2 = $val;
     }
     
-    public function getoldPassword() {
-        
+    public function getoldPassword()
+    {
         return $this->oldPassword;
     }
     
-    public function setoldPassword($val) {
-        
+    public function setoldPassword($val)
+    {
         $this->oldPassword = $val;
     }
     
-    public function getemail() {
-        
+    public function getemail()
+    {
         return $this->email;
     }
     
-    public function setemail($val) {
-        
+    public function setemail($val)
+    {
         $this->email = $val;
     }
     
-    public function getuserrole() {
-        
+    public function getuserrole()
+    {
         return $this->userRole;
     }
     
-    public function setuserrole($val) {
-        
+    public function setuserrole($val)
+    {
         $this->userRole = $val;
     }
     
     /**
      * Get User object
-     * 
+     *
      * @param bool $add New User flag
      * @return User User object
      */
-    public function getFullUserObject(bool $add=true): User {
-        
+    public function getFullUserObject(bool $add = true): User
+    {
         // New User
         $user = new User();
         $user->setId($this->id);
@@ -192,11 +192,11 @@ class UserEntity {
     
     /**
      * Initialize from User object
-     * 
+     *
      * @param User $user User object
      */
-    public function initFromUserObject(User $user) {
-        
+    public function initFromUserObject(User $user)
+    {
         // Check if User object is valid
         $user->isValid(true);
         

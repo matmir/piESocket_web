@@ -15,13 +15,13 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Mateusz Mirosławski
  */
-class AlarmTest extends TestCase {
-    
+class AlarmTest extends TestCase
+{
     /**
      * Test Default constructor
      */
-    public function testDefaultConstructor() {
-        
+    public function testDefaultConstructor()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
         
@@ -48,8 +48,8 @@ class AlarmTest extends TestCase {
         $this->assertFalse($alarm->isEnabled());
     }
     
-    public function testDefaultConstructorWrong() {
-        
+    public function testDefaultConstructorWrong()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Tag name can not be empty');
         
@@ -61,8 +61,8 @@ class AlarmTest extends TestCase {
     /**
      * Test setId method
      */
-    public function testSetId() {
-        
+    public function testSetId()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
         
@@ -72,8 +72,8 @@ class AlarmTest extends TestCase {
         $this->assertEquals(35, $alarm->getId());
     }
     
-    public function testSetIdWrong1() {
-        
+    public function testSetIdWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Alarm identifier wrong value');
         
@@ -87,8 +87,8 @@ class AlarmTest extends TestCase {
     /**
      * Test setTag method
      */
-    public function testSetTag() {
-        
+    public function testSetTag()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
         
@@ -102,8 +102,8 @@ class AlarmTest extends TestCase {
         $this->assertEquals(66, $alarm->getTag()->getId());
     }
     
-    public function testSetTagWrong() {
-        
+    public function testSetTagWrong()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Tag name can not be empty');
         
@@ -119,8 +119,8 @@ class AlarmTest extends TestCase {
     /**
      * Test setPriority method
      */
-    public function testSetPriority() {
-        
+    public function testSetPriority()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
         
@@ -130,8 +130,8 @@ class AlarmTest extends TestCase {
         $this->assertEquals(80, $alarm->getPriority());
     }
     
-    public function testSetPriorityWrong() {
-        
+    public function testSetPriorityWrong()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Alarm priority wrong value');
         
@@ -145,8 +145,8 @@ class AlarmTest extends TestCase {
     /**
      * Test setMessage method
      */
-    public function testSetMessage() {
-        
+    public function testSetMessage()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
         
@@ -156,8 +156,8 @@ class AlarmTest extends TestCase {
         $this->assertEquals('Some alarm', $alarm->getMessage());
     }
     
-    public function testSetMessageWrong() {
-        
+    public function testSetMessageWrong()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Alarm message can not be empty');
         
@@ -171,8 +171,8 @@ class AlarmTest extends TestCase {
     /**
      * Test setTrigger method
      */
-    public function testSetTrigger() {
-        
+    public function testSetTrigger()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
         
@@ -185,8 +185,8 @@ class AlarmTest extends TestCase {
     /**
      * Test setTriggerBin method
      */
-    public function testSetTriggerBin() {
-        
+    public function testSetTriggerBin()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
                 
@@ -199,8 +199,8 @@ class AlarmTest extends TestCase {
     /**
      * Test setTriggerNumeric method
      */
-    public function testSetTriggerNumeric() {
-        
+    public function testSetTriggerNumeric()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
                 
@@ -213,8 +213,8 @@ class AlarmTest extends TestCase {
     /**
      * Test setTriggerReal method
      */
-    public function testSetTriggerReal() {
-        
+    public function testSetTriggerReal()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
                 
@@ -227,8 +227,8 @@ class AlarmTest extends TestCase {
     /**
      * Test setAutoAck method
      */
-    public function testSetAutoAck() {
-        
+    public function testSetAutoAck()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
                 
@@ -241,8 +241,8 @@ class AlarmTest extends TestCase {
     /**
      * Test setActive method
      */
-    public function testSetActive() {
-        
+    public function testSetActive()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
                 
@@ -255,8 +255,8 @@ class AlarmTest extends TestCase {
     /**
      * Test setPending method
      */
-    public function testSetPending() {
-        
+    public function testSetPending()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
                 
@@ -269,8 +269,8 @@ class AlarmTest extends TestCase {
     /**
      * Test setFeedbackNotAck method
      */
-    public function testSetFeedbackNotAck1() {
-        
+    public function testSetFeedbackNotAck1()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
                 
@@ -280,15 +280,15 @@ class AlarmTest extends TestCase {
         $this->assertNull($alarm->getFeedbackNotAck());
     }
     
-    public function testSetFeedbackNotAck2() {
-        
+    public function testSetFeedbackNotAck2()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
         
         $tagF = null;
         TagLoggerTest::createTag($tagF);
         $tagF->setId(10);
-        $tagF->setType(TagType::Bit);
+        $tagF->setType(TagType::BIT);
                 
         $alarm = new Alarm($tag);
         $alarm->setFeedbackNotAck($tagF);
@@ -297,8 +297,8 @@ class AlarmTest extends TestCase {
         $this->assertEquals(10, $alarm->getFeedbackNotAck()->getId());
     }
     
-    public function testSetFeedbackNotAckWrong1() {
-        
+    public function testSetFeedbackNotAckWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Tag name can not be empty');
         
@@ -311,8 +311,8 @@ class AlarmTest extends TestCase {
         $alarm->setFeedbackNotAck($tagF);
     }
     
-    public function testSetFeedbackNotAckWrong2() {
-        
+    public function testSetFeedbackNotAckWrong2()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Feedback Tag is wrong type');
         
@@ -326,8 +326,8 @@ class AlarmTest extends TestCase {
     /**
      * Test isFeedbackNotAck method
      */
-    public function testIsFeedbackNotAck1() {
-        
+    public function testIsFeedbackNotAck1()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
                         
@@ -336,15 +336,15 @@ class AlarmTest extends TestCase {
         $this->assertFalse($alarm->isFeedbackNotAck());
     }
     
-    public function testIsFeedbackNotAck2() {
-        
+    public function testIsFeedbackNotAck2()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
         
         $tagF = null;
         TagLoggerTest::createTag($tagF);
         $tagF->setId(10);
-        $tagF->setType(TagType::Bit);
+        $tagF->setType(TagType::BIT);
                         
         $alarm = new Alarm($tag);
         $alarm->setFeedbackNotAck($tagF);
@@ -355,8 +355,8 @@ class AlarmTest extends TestCase {
     /**
      * Test setHWAck method
      */
-    public function testSetHWAck1() {
-        
+    public function testSetHWAck1()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
                 
@@ -366,15 +366,15 @@ class AlarmTest extends TestCase {
         $this->assertNull($alarm->getHWAck());
     }
     
-    public function testSetHWAck2() {
-        
+    public function testSetHWAck2()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
         
         $tagF = null;
         TagLoggerTest::createTag($tagF);
         $tagF->setId(10);
-        $tagF->setType(TagType::Bit);
+        $tagF->setType(TagType::BIT);
                 
         $alarm = new Alarm($tag);
         $alarm->setHWAck($tagF);
@@ -383,8 +383,8 @@ class AlarmTest extends TestCase {
         $this->assertEquals(10, $alarm->getHWAck()->getId());
     }
     
-    public function testSetHWAckWrong1() {
-        
+    public function testSetHWAckWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Tag name can not be empty');
         
@@ -397,8 +397,8 @@ class AlarmTest extends TestCase {
         $alarm->setHWAck($tagF);
     }
     
-    public function testSetHWAckWrong2() {
-        
+    public function testSetHWAckWrong2()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('HW acknowledgment Tag is wrong type');
         
@@ -412,8 +412,8 @@ class AlarmTest extends TestCase {
     /**
      * Test isHWAck method
      */
-    public function testIsHWAck1() {
-        
+    public function testIsHWAck1()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
                         
@@ -422,15 +422,15 @@ class AlarmTest extends TestCase {
         $this->assertFalse($alarm->isHWAck());
     }
     
-    public function testIsHWAck2() {
-        
+    public function testIsHWAck2()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
         
         $tagF = null;
         TagLoggerTest::createTag($tagF);
         $tagF->setId(10);
-        $tagF->setType(TagType::Bit);
+        $tagF->setType(TagType::BIT);
                         
         $alarm = new Alarm($tag);
         $alarm->setHWAck($tagF);
@@ -441,8 +441,8 @@ class AlarmTest extends TestCase {
     /**
      * Test setEnabled method
      */
-    public function testSetEnabled() {
-        
+    public function testSetEnabled()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
                                 
@@ -455,8 +455,8 @@ class AlarmTest extends TestCase {
     /**
      * Test isValid method
      */
-    public function testIsValid() {
-        
+    public function testIsValid()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
                                 
@@ -466,15 +466,15 @@ class AlarmTest extends TestCase {
         $this->assertTrue($alarm->isValid(true));
     }
     
-    public function testIsValidWrong1() {
-        
+    public function testIsValidWrong1()
+    {
         $this->expectException(AppException::class);
         $this->expectExceptionMessage('Alarm trigger need to be BIT type');
         $this->expectExceptionCode(AppException::ALARM_TRIGGER_WRONG_TYPE);
         
         $tag = null;
         TagLoggerTest::createTag($tag);
-        $tag->setType(TagType::Bit);
+        $tag->setType(TagType::BIT);
                                 
         $alarm = new Alarm($tag);
         $alarm->setTrigger(AlarmTrigger::TR_TAG_EQ_VAL);
@@ -482,8 +482,8 @@ class AlarmTest extends TestCase {
         $alarm->isValid(true);
     }
     
-    public function testIsValidWrong2() {
-        
+    public function testIsValidWrong2()
+    {
         $this->expectException(AppException::class);
         $this->expectExceptionMessage('Alarm trigger need to be numeric type');
         $this->expectExceptionCode(AppException::ALARM_TRIGGER_WRONG_TYPE);

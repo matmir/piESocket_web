@@ -15,13 +15,13 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Mateusz Mirosławski
  */
-class AlarmEntityTest extends TestCase {
-    
+class AlarmEntityTest extends TestCase
+{
     /**
      * Test Default constructor
      */
-    public function testDefaultConstructor() {
-        
+    public function testDefaultConstructor()
+    {
         $alarmE = new AlarmEntity();
         
         $this->assertEquals(0, $alarmE->getadid());
@@ -40,8 +40,8 @@ class AlarmEntityTest extends TestCase {
     /**
      * Test setadid method
      */
-    public function testSetId() {
-        
+    public function testSetId()
+    {
         $alarmE = new AlarmEntity();
         $alarmE->setadid(89);
         
@@ -51,8 +51,8 @@ class AlarmEntityTest extends TestCase {
     /**
      * Test setadTagName method
      */
-    public function testSetTagName() {
-        
+    public function testSetTagName()
+    {
         $alarmE = new AlarmEntity();
         $alarmE->setadTagName('TestTag');
         
@@ -62,8 +62,8 @@ class AlarmEntityTest extends TestCase {
     /**
      * Test setadPriority method
      */
-    public function testSetPriority() {
-        
+    public function testSetPriority()
+    {
         $alarmE = new AlarmEntity();
         $alarmE->setadPriority(66);
         
@@ -73,8 +73,8 @@ class AlarmEntityTest extends TestCase {
     /**
      * Test setadMessage method
      */
-    public function testSetMessage() {
-        
+    public function testSetMessage()
+    {
         $alarmE = new AlarmEntity();
         $alarmE->setadMessage('Test message');
         
@@ -84,8 +84,8 @@ class AlarmEntityTest extends TestCase {
     /**
      * Test setadTrigger method
      */
-    public function testSetTrigger() {
-        
+    public function testSetTrigger()
+    {
         $alarmE = new AlarmEntity();
         $alarmE->setadTrigger(2);
         
@@ -95,8 +95,8 @@ class AlarmEntityTest extends TestCase {
     /**
      * Test setadTriggerB method
      */
-    public function testSetTriggerB() {
-        
+    public function testSetTriggerB()
+    {
         $alarmE = new AlarmEntity();
         $alarmE->setadTriggerB(22);
         
@@ -106,8 +106,8 @@ class AlarmEntityTest extends TestCase {
     /**
      * Test setadTriggerN method
      */
-    public function testSetTriggerN() {
-        
+    public function testSetTriggerN()
+    {
         $alarmE = new AlarmEntity();
         $alarmE->setadTriggerN(23);
         
@@ -117,8 +117,8 @@ class AlarmEntityTest extends TestCase {
     /**
      * Test setadTriggerR method
      */
-    public function testSetTriggerR() {
-        
+    public function testSetTriggerR()
+    {
         $alarmE = new AlarmEntity();
         $alarmE->setadTriggerR(23.7);
         
@@ -128,8 +128,8 @@ class AlarmEntityTest extends TestCase {
     /**
      * Test setadAutoAck method
      */
-    public function testSetadAutoAck() {
-        
+    public function testSetadAutoAck()
+    {
         $alarmE = new AlarmEntity();
         $alarmE->setadAutoAck(1);
         
@@ -139,8 +139,8 @@ class AlarmEntityTest extends TestCase {
     /**
      * Test setadFeedbackNotACK method
      */
-    public function testSetadFeedbackNotACK() {
-        
+    public function testSetadFeedbackNotACK()
+    {
         $alarmE = new AlarmEntity();
         $alarmE->setadFeedbackNotACK('Tag2');
         
@@ -150,8 +150,8 @@ class AlarmEntityTest extends TestCase {
     /**
      * Test setadHWAck method
      */
-    public function testSetadHWAck() {
-        
+    public function testSetadHWAck()
+    {
         $alarmE = new AlarmEntity();
         $alarmE->setadHWAck('Tag4');
         
@@ -161,21 +161,21 @@ class AlarmEntityTest extends TestCase {
     /**
      * Test getFullAlarmObject method
      */
-    public function testGetFullAlarmObject() {
-        
+    public function testGetFullAlarmObject()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
         
         $tagF = null;
         TagLoggerTest::createTag($tagF);
         $tagF->setId(16);
-        $tagF->setType(TagType::Bit);
+        $tagF->setType(TagType::BIT);
         $tagF->setName('FeedbackTag');
         
         $tagH = null;
         TagLoggerTest::createTag($tagH);
         $tagH->setId(17);
-        $tagH->setType(TagType::Bit);
+        $tagH->setType(TagType::BIT);
         $tagH->setName('HWTag');
         
         $alarmE = new AlarmEntity();
@@ -215,8 +215,8 @@ class AlarmEntityTest extends TestCase {
         $this->assertEquals(17, $alarm->getHWAck()->getId());
     }
     
-    public function testGetFullAlarmObjectWrong1() {
-        
+    public function testGetFullAlarmObjectWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Tag name can not be empty');
         
@@ -245,8 +245,8 @@ class AlarmEntityTest extends TestCase {
         $alarm = $alarmE->getFullAlarmObject($tag, $tagF, $tagH);
     }
     
-    public function testGetFullAlarmObjectWrong2() {
-        
+    public function testGetFullAlarmObjectWrong2()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Tag name can not be empty');
         
@@ -256,7 +256,7 @@ class AlarmEntityTest extends TestCase {
         $tagF = null;
         TagLoggerTest::createTag($tagF);
         $tagF->setId(16);
-        $tagF->setType(TagType::Bit);
+        $tagF->setType(TagType::BIT);
         $tagF->setName('FeedbackTag');
         
         $tagH = new Tag();
@@ -276,8 +276,8 @@ class AlarmEntityTest extends TestCase {
         $alarm = $alarmE->getFullAlarmObject($tag, $tagF, $tagH);
     }
     
-    public function testGetFullAlarmObjectWrong3() {
-        
+    public function testGetFullAlarmObjectWrong3()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Tag name can not be empty');
         
@@ -286,13 +286,13 @@ class AlarmEntityTest extends TestCase {
         $tagF = null;
         TagLoggerTest::createTag($tagF);
         $tagF->setId(16);
-        $tagF->setType(TagType::Bit);
+        $tagF->setType(TagType::BIT);
         $tagF->setName('FeedbackTag');
         
         $tagH = null;
         TagLoggerTest::createTag($tagH);
         $tagH->setId(17);
-        $tagH->setType(TagType::Bit);
+        $tagH->setType(TagType::BIT);
         $tagH->setName('HWTag');
         
         $alarmE = new AlarmEntity();
@@ -313,21 +313,21 @@ class AlarmEntityTest extends TestCase {
     /**
      * Test initFromAlarmObject method
      */
-    public function testInitFromAlarmObject1() {
-        
+    public function testInitFromAlarmObject1()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
         
         $tagF = null;
         TagLoggerTest::createTag($tagF);
         $tagF->setId(16);
-        $tagF->setType(TagType::Bit);
+        $tagF->setType(TagType::BIT);
         $tagF->setName('FeedbackTag');
         
         $tagH = null;
         TagLoggerTest::createTag($tagH);
         $tagH->setId(17);
-        $tagH->setType(TagType::Bit);
+        $tagH->setType(TagType::BIT);
         $tagH->setName('HWTag');
         
         $alarm = new Alarm($tag);
@@ -358,8 +358,8 @@ class AlarmEntityTest extends TestCase {
         $this->assertEquals('HWTag', $alarmE->getadHWAck());
     }
     
-    public function testInitFromAlarmObject2() {
-        
+    public function testInitFromAlarmObject2()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
         

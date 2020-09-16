@@ -13,8 +13,8 @@ use App\Service\Admin\SystemSocket;
  *
  * @author Mateusz Mirosławski
  */
-class ParserExecute {
-    
+class ParserExecute
+{
     /**
      * Parser query object
      */
@@ -30,8 +30,8 @@ class ParserExecute {
      */
     private $cfg;
     
-    public function __construct(ConfigGeneralMapper $cfg, ParserQuery $pQuery, ParserResponse $pResponse) {
-        
+    public function __construct(ConfigGeneralMapper $cfg, ParserQuery $pQuery, ParserResponse $pResponse)
+    {
         $this->query = $pQuery;
         $this->response = $pResponse;
         $this->cfg = $cfg;
@@ -39,12 +39,12 @@ class ParserExecute {
     
     /**
      * Send command to the server
-     * 
+     *
      * @param array $cmd Command
      * @return array Reply from server
      */
-    private function sendCommand(array $cmd): array {
-        
+    private function sendCommand(array $cmd): array
+    {
         // Prepare query
         $qStr = $this->query->query($cmd);
         
@@ -58,12 +58,12 @@ class ParserExecute {
     
     /**
      * Get array with GET_BIT command
-     * 
+     *
      * @param string $tagName Tag name
      * @return array
      */
-    public function getBitCMD(string $tagName): array {
-        
+    public function getBitCMD(string $tagName): array
+    {
         return array(
             'cmd' => ParserCommands::GET_BIT,
             'tag' => $tagName
@@ -72,12 +72,12 @@ class ParserExecute {
     
     /**
      * Get bit value
-     * 
+     *
      * @param string $tagName Tag name
      * @return bool
      */
-    public function getBit(string $tagName): bool {
-        
+    public function getBit(string $tagName): bool
+    {
         // Prepare command
         $command = $this->getBitCMD($tagName);
         
@@ -89,12 +89,12 @@ class ParserExecute {
     
     /**
      * Get array with GET_BITS command
-     * 
+     *
      * @param array $tagNames Tag names
      * @return array
      */
-    public function getBitsCMD(array $tagNames): array {
-        
+    public function getBitsCMD(array $tagNames): array
+    {
         return array(
             'cmd' => ParserCommands::GET_BITS,
             'tags' => $tagNames
@@ -103,12 +103,12 @@ class ParserExecute {
     
     /**
      * Get bits value
-     * 
+     *
      * @param array $tagNames Tag names
      * @return array
      */
-    public function getBits(array $tagNames): array {
-        
+    public function getBits(array $tagNames): array
+    {
         // Prepare command
         $command = $this->getBitsCMD($tagNames);
         
@@ -120,12 +120,12 @@ class ParserExecute {
     
     /**
      * Get array with SET_BIT command
-     * 
+     *
      * @param string $tagName Tag name
      * @return array
      */
-    public function setBitCMD(string $tagName): array {
-        
+    public function setBitCMD(string $tagName): array
+    {
         return array(
             'cmd' => ParserCommands::SET_BIT,
             'tag' => $tagName
@@ -134,12 +134,12 @@ class ParserExecute {
     
     /**
      * Set bit value
-     * 
+     *
      * @param string $tagName Tag name
      * @return bool
      */
-    public function setBit(string $tagName): bool {
-        
+    public function setBit(string $tagName): bool
+    {
         // Prepare command
         $command = $this->setBitCMD($tagName);
         
@@ -151,12 +151,12 @@ class ParserExecute {
     
     /**
      * Get array with RESET_BIT command
-     * 
+     *
      * @param string $tagName Tag name
      * @return array
      */
-    public function resetBitCMD(string $tagName): array {
-        
+    public function resetBitCMD(string $tagName): array
+    {
         return array(
             'cmd' => ParserCommands::RESET_BIT,
             'tag' => $tagName
@@ -165,12 +165,12 @@ class ParserExecute {
     
     /**
      * Reset bit value
-     * 
+     *
      * @param string $tagName Tag name
      * @return bool
      */
-    public function resetBit(string $tagName): bool {
-        
+    public function resetBit(string $tagName): bool
+    {
         // Prepare command
         $command = $this->resetBitCMD($tagName);
         
@@ -182,12 +182,12 @@ class ParserExecute {
     
     /**
      * Get array with SET_BITS command
-     * 
+     *
      * @param array $tagNames Tag names
      * @return array
      */
-    public function setBitsCMD(array $tagNames): array {
-        
+    public function setBitsCMD(array $tagNames): array
+    {
         return array(
             'cmd' => ParserCommands::SET_BITS,
             'tags' => $tagNames
@@ -196,12 +196,12 @@ class ParserExecute {
     
     /**
      * Set bits value
-     * 
+     *
      * @param array $tagNames Tag names
      * @return bool
      */
-    public function setBits(array $tagNames): bool {
-        
+    public function setBits(array $tagNames): bool
+    {
         // Prepare command
         $command = $this->setBitsCMD($tagNames);
         
@@ -213,12 +213,12 @@ class ParserExecute {
     
     /**
      * Get array with INVERT_BIT command
-     * 
+     *
      * @param string $tagName Tag name
      * @return array
      */
-    public function invertBitCMD(string $tagName): array {
-        
+    public function invertBitCMD(string $tagName): array
+    {
         return array(
             'cmd' => ParserCommands::INVERT_BIT,
             'tag' => $tagName
@@ -227,12 +227,12 @@ class ParserExecute {
     
     /**
      * Invert bit value
-     * 
+     *
      * @param string $tagName Tag name
      * @return bool
      */
-    public function invertBit(string $tagName): bool {
-        
+    public function invertBit(string $tagName): bool
+    {
         // Prepare command
         $command = $this->invertBitCMD($tagName);
         
@@ -244,12 +244,12 @@ class ParserExecute {
     
     /**
      * Get array with GET_BYTE command
-     * 
+     *
      * @param string $tagName Tag name
      * @return array
      */
-    public function getByteCMD(string $tagName): array {
-        
+    public function getByteCMD(string $tagName): array
+    {
         return array(
             'cmd' => ParserCommands::GET_BYTE,
             'tag' => $tagName
@@ -258,12 +258,12 @@ class ParserExecute {
     
     /**
      * Get BYTE value
-     * 
+     *
      * @param string $tagName Tag name
      * @return int
      */
-    public function getByte(string $tagName): int {
-        
+    public function getByte(string $tagName): int
+    {
         // Prepare command
         $command = $this->getByteCMD($tagName);
         
@@ -275,13 +275,13 @@ class ParserExecute {
     
     /**
      * Get array with WRITE_BYTE command
-     * 
+     *
      * @param string $tagName Tag name
      * @param int $val Value to write
      * @return array
      */
-    public function writeByteCMD(string $tagName, int $val): array {
-        
+    public function writeByteCMD(string $tagName, int $val): array
+    {
         return array(
             'cmd' => ParserCommands::WRITE_BYTE,
             'tag' => $tagName,
@@ -291,13 +291,13 @@ class ParserExecute {
     
     /**
      * Write BYTE value
-     * 
+     *
      * @param string $tagName Tag name
      * @param int $val Value to write
      * @return bool
      */
-    public function writeByte(string $tagName, int $val): bool {
-        
+    public function writeByte(string $tagName, int $val): bool
+    {
         // Prepare command
         $command = $this->writeByteCMD($tagName, $val);
         
@@ -309,12 +309,12 @@ class ParserExecute {
     
     /**
      * Get array with GET_WORD command
-     * 
+     *
      * @param string $tagName Tag name
      * @return array
      */
-    public function getWordCMD(string $tagName): array {
-        
+    public function getWordCMD(string $tagName): array
+    {
         return array(
             'cmd' => ParserCommands::GET_WORD,
             'tag' => $tagName
@@ -323,12 +323,12 @@ class ParserExecute {
     
     /**
      * Get WORD value
-     * 
+     *
      * @param string $tagName Tag name
      * @return int
      */
-    public function getWord(string $tagName): int {
-        
+    public function getWord(string $tagName): int
+    {
         // Prepare command
         $command = $this->getWordCMD($tagName);
         
@@ -340,13 +340,13 @@ class ParserExecute {
     
     /**
      * Get array with WRITE_WORD command
-     * 
+     *
      * @param string $tagName Tag name
      * @param int $val Value to write
      * @return array
      */
-    public function writeWordCMD(string $tagName, int $val): array {
-        
+    public function writeWordCMD(string $tagName, int $val): array
+    {
         return array(
             'cmd' => ParserCommands::WRITE_WORD,
             'tag' => $tagName,
@@ -356,13 +356,13 @@ class ParserExecute {
     
     /**
      * Write WORD value
-     * 
+     *
      * @param string $tagName Tag name
      * @param int $val Value to write
      * @return bool
      */
-    public function writeWord(string $tagName, int $val): bool {
-        
+    public function writeWord(string $tagName, int $val): bool
+    {
         // Prepare command
         $command = $this->writeWordCMD($tagName, $val);
         
@@ -374,12 +374,12 @@ class ParserExecute {
     
     /**
      * Get array with GET_DWORD command
-     * 
+     *
      * @param string $tagName Tag name
      * @return array
      */
-    public function getDWordCMD(string $tagName): array {
-        
+    public function getDWordCMD(string $tagName): array
+    {
         return array(
             'cmd' => ParserCommands::GET_DWORD,
             'tag' => $tagName
@@ -388,12 +388,12 @@ class ParserExecute {
     
     /**
      * Get DWORD value
-     * 
+     *
      * @param string $tagName Tag name
      * @return int
      */
-    public function getDWord(string $tagName): int {
-        
+    public function getDWord(string $tagName): int
+    {
         // Prepare command
         $command = $this->getDWordCMD($tagName);
         
@@ -405,13 +405,13 @@ class ParserExecute {
     
     /**
      * Get array with WRITE_DWORD command
-     * 
+     *
      * @param string $tagName Tag name
      * @param int $val Value to write
      * @return array
      */
-    public function writeDWordCMD(string $tagName, int $val): array {
-        
+    public function writeDWordCMD(string $tagName, int $val): array
+    {
         return array(
             'cmd' => ParserCommands::WRITE_DWORD,
             'tag' => $tagName,
@@ -421,13 +421,13 @@ class ParserExecute {
     
     /**
      * Write DWORD value
-     * 
+     *
      * @param string $tagName Tag name
      * @param int $val Value to write
      * @return bool
      */
-    public function writeDWord(string $tagName, int $val): bool {
-        
+    public function writeDWord(string $tagName, int $val): bool
+    {
         // Prepare command
         $command = $this->writeDWordCMD($tagName, $val);
         
@@ -439,12 +439,12 @@ class ParserExecute {
     
     /**
      * Get array with GET_INT command
-     * 
+     *
      * @param string $tagName Tag name
      * @return array
      */
-    public function getIntCMD(string $tagName): array {
-        
+    public function getIntCMD(string $tagName): array
+    {
         return array(
             'cmd' => ParserCommands::GET_INT,
             'tag' => $tagName
@@ -453,12 +453,12 @@ class ParserExecute {
     
     /**
      * Get INT value
-     * 
+     *
      * @param string $tagName Tag name
      * @return bool
      */
-    public function getInt(string $tagName): int {
-        
+    public function getInt(string $tagName): int
+    {
         // Prepare command
         $command = $this->getIntCMD($tagName);
         
@@ -470,13 +470,13 @@ class ParserExecute {
     
     /**
      * Get array with WRITE_INT command
-     * 
+     *
      * @param string $tagName Tag name
      * @param int $val Value to write
      * @return array
      */
-    public function writeIntCMD(string $tagName, int $val): array {
-        
+    public function writeIntCMD(string $tagName, int $val): array
+    {
         return array(
             'cmd' => ParserCommands::WRITE_INT,
             'tag' => $tagName,
@@ -486,13 +486,13 @@ class ParserExecute {
     
     /**
      * Write INT value
-     * 
+     *
      * @param string $tagName Tag name
      * @param int $val Value to write
      * @return bool
      */
-    public function writeInt(string $tagName, int $val): bool {
-        
+    public function writeInt(string $tagName, int $val): bool
+    {
         // Prepare command
         $command = $this->writeIntCMD($tagName, $val);
         
@@ -504,12 +504,12 @@ class ParserExecute {
     
     /**
      * Get array with GET_REAL command
-     * 
+     *
      * @param string $tagName Tag name
      * @return array
      */
-    public function getRealCMD(string $tagName): array {
-        
+    public function getRealCMD(string $tagName): array
+    {
         return array(
             'cmd' => ParserCommands::GET_REAL,
             'tag' => $tagName
@@ -518,12 +518,12 @@ class ParserExecute {
     
     /**
      * Get REAL value
-     * 
+     *
      * @param string $tagName Tag name
      * @return float
      */
-    public function getReal(string $tagName): float {
-        
+    public function getReal(string $tagName): float
+    {
         // Prepare command
         $command = $this->getRealCMD($tagName);
         
@@ -535,13 +535,13 @@ class ParserExecute {
     
     /**
      * Get array with WRITE_REAL command
-     * 
+     *
      * @param string $tagName Tag name
      * @param float $val Value to write
      * @return array
      */
-    public function writeRealCMD(string $tagName, float $val): array {
-        
+    public function writeRealCMD(string $tagName, float $val): array
+    {
         return array(
             'cmd' => ParserCommands::WRITE_REAL,
             'tag' => $tagName,
@@ -551,13 +551,13 @@ class ParserExecute {
     
     /**
      * Write REAL value
-     * 
+     *
      * @param string $tagName Tag name
      * @param float $val Value to write
      * @return bool
      */
-    public function writeReal(string $tagName, float $val): bool {
-        
+    public function writeReal(string $tagName, float $val): bool
+    {
         // Prepare command
         $command = $this->writeRealCMD($tagName, $val);
         
@@ -569,12 +569,12 @@ class ParserExecute {
     
     /**
      * Execute multi command in controller
-     * 
+     *
      * @param array $commands Commands to execute
      * @return array
      */
-    public function executeMultiCMD(array $commands): array {
-        
+    public function executeMultiCMD(array $commands): array
+    {
         // Prepare command
         $command = array(
             'cmd' => ParserCommands::MULTI_CMD,
@@ -589,11 +589,11 @@ class ParserExecute {
     
     /**
      * Exit application command
-     * 
+     *
      * @return bool
      */
-    public function exit(): bool {
-        
+    public function exit(): bool
+    {
         // Prepare command
         $command = array(
             'cmd' => ParserCommands::EXIT_APP
@@ -607,12 +607,12 @@ class ParserExecute {
     
     /**
      * Acknowledge alarm
-     * 
+     *
      * @param int $alarmId Alarm definition identifier
      * @return bool
      */
-    public function ackAlarm(int $alarmId=0): bool {
-        
+    public function ackAlarm(int $alarmId = 0): bool
+    {
         // Prepare command
         $command = array(
             'cmd' => ParserCommands::ACK_ALARM,

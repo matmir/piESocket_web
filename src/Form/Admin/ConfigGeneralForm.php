@@ -7,7 +7,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-
 use App\Entity\Admin\ConfigGeneral;
 
 /**
@@ -15,10 +14,11 @@ use App\Entity\Admin\ConfigGeneral;
  *
  * @author Mateusz Mirosławski
  */
-class ConfigGeneralForm extends AbstractType {
+class ConfigGeneralForm extends AbstractType
+{
     
-    public function buildForm(FormBuilderInterface $builder, array $options) {
-        
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
         $builder->add('alarmingUpdateInterval', null, array('label' => 'Alarm thread update interval [ms]'))
             ->add('processUpdateInterval', null, array('label' => 'Process updater thread update interval [ms]'))
             ->add('tagLoggerUpdateInterval', null, array('label' => 'Tag logger thread update interval [ms]'))
@@ -39,8 +39,8 @@ class ConfigGeneralForm extends AbstractType {
             ->add('save', SubmitType::class, array('label' => 'Save'));
     }
     
-    public function configureOptions(OptionsResolver $resolver) {
-        
+    public function configureOptions(OptionsResolver $resolver)
+    {
         $resolver->setDefaults(array(
             'data_class' => ConfigGeneral::class,
         ));

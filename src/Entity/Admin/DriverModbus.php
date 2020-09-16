@@ -7,11 +7,11 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Class for Modbus driver configuration
- * 
+ *
  * @author Mateusz Mirosławski
  */
-class DriverModbus {
-    
+class DriverModbus
+{
     /**
      * Modbus driver identifier
      */
@@ -80,8 +80,8 @@ class DriverModbus {
     /**
      * Default constructor
      */
-    public function __construct() {
-        
+    public function __construct()
+    {
         // Common data
         $this->id = 0;
         $this->mode = DriverModbusMode::TCP;
@@ -104,21 +104,21 @@ class DriverModbus {
     
     /**
      * Get Modbus driver identifier
-     * 
+     *
      * @return int Modbus driver identifier
      */
-    public function getId(): int {
-        
+    public function getId(): int
+    {
         return $this->id;
     }
     
     /**
      * Set Modbus driver identifier
-     * 
+     *
      * @param int $id Modbus driver identifier
      */
-    public function setId(int $id) {
-                
+    public function setId(int $id)
+    {
         $this->checkId($id);
         
         $this->id = $id;
@@ -126,13 +126,13 @@ class DriverModbus {
     
     /**
      * Check Modbus driver identifier
-     * 
+     *
      * @param int $id Modbus driver identifier
      * @return bool True if Modbus driver identifier is valid
      * @throws Exception if Modbus driver identifier is invalid
      */
-    public static function checkId(int $id): bool {
-        
+    public static function checkId(int $id): bool
+    {
         // Check values
         if ($id < 0) {
             throw new Exception("Modbus driver identifier wrong value");
@@ -143,21 +143,21 @@ class DriverModbus {
     
     /**
      * Get Modbus mode (TCP/RTU)
-     * 
+     *
      * @return int Modbus mode
      */
-    public function getMode(): int {
-        
+    public function getMode(): int
+    {
         return $this->mode;
     }
 
     /**
      * Set Modbus mode
-     * 
+     *
      * @param int $val Modbus mode
      */
-    public function setMode(int $val) {
-        
+    public function setMode(int $val)
+    {
         DriverModbusMode::check($val);
         
         $this->mode = $val;
@@ -165,21 +165,21 @@ class DriverModbus {
 
     /**
      * Get driver polling interval
-     * 
+     *
      * @return int Driver polling interval
      */
-    public function getDriverPolling() {
-        
+    public function getDriverPolling()
+    {
         return $this->driverPolling;
     }
     
     /**
      * Set driver polling interval
-     * 
+     *
      * @param int $val Driver polling interval
      */
-    public function setDriverPolling(int $val) {
-        
+    public function setDriverPolling(int $val)
+    {
         $this->checkPolling($val);
         
         $this->driverPolling = $val;
@@ -187,13 +187,13 @@ class DriverModbus {
     
     /**
      * Check driver polling interval
-     * 
+     *
      * @param int $val Modbus driver polling interval
      * @return bool True if Modbus driver polling interval is valid
      * @throws Exception if Modbus driver polling interval is invalid
      */
-    public static function checkPolling(int $val): bool {
-        
+    public static function checkPolling(int $val): bool
+    {
         // Check values
         if ($val <= 0) {
             throw new Exception("Modbus driver polling interval wrong value");
@@ -204,21 +204,21 @@ class DriverModbus {
     
     /**
      * Get Modbus register count
-     * 
+     *
      * @return int Modbus register count
      */
-    public function getRegisterCount() {
-        
+    public function getRegisterCount()
+    {
         return $this->registerCount;
     }
     
     /**
      * Set Modbus register count
-     * 
+     *
      * @param int $val Modbus register count
      */
-    public function setRegisterCount(int $val) {
-        
+    public function setRegisterCount(int $val)
+    {
         $this->checkRegisterCount($val);
         
         $this->registerCount = $val;
@@ -226,13 +226,13 @@ class DriverModbus {
     
     /**
      * Check Modbus register count
-     * 
+     *
      * @param int $val Modbus register count
      * @return bool True if Modbus register count is valid
      * @throws Exception if Modbus register count is invalid
      */
-    public static function checkRegisterCount(int $val): bool {
-        
+    public static function checkRegisterCount(int $val): bool
+    {
         // Check values
         if ($val <= 0) {
             throw new Exception("Modbus register count wrong value");
@@ -243,21 +243,21 @@ class DriverModbus {
     
     /**
      * Get Modbus RTU baud rate
-     * 
+     *
      * @return int Modbus RTU baud rate
      */
-    public function getRTUbaud() {
-        
+    public function getRTUbaud()
+    {
         return $this->RTU_baud;
     }
     
     /**
      * Set Modbus RTU baud rate
-     * 
+     *
      * @param int $val Modbus RTU baud rate
      */
-    public function setRTUbaud(int $val) {
-        
+    public function setRTUbaud(int $val)
+    {
         $this->checkRTUbaud($val);
         
         $this->RTU_baud = $val;
@@ -265,13 +265,13 @@ class DriverModbus {
     
     /**
      * Check Modbus RTU baud rate
-     * 
+     *
      * @param int $val Modbus RTU baud rate
      * @return bool True if Modbus RTU baud rate is valid
      * @throws Exception if Modbus RTU baud rate is invalid
      */
-    public static function checkRTUbaud(int $val): bool {
-        
+    public static function checkRTUbaud(int $val): bool
+    {
         // Check values
         if ($val <= 0) {
             throw new Exception("Modbus baud rate wrong value");
@@ -282,21 +282,21 @@ class DriverModbus {
     
     /**
      * Get Modbus RTU data bit
-     * 
+     *
      * @return int Modbus RTU data bit
      */
-    public function getRTUdataBit() {
-        
+    public function getRTUdataBit()
+    {
         return $this->RTU_dataBit;
     }
     
     /**
      * Set Modbus RTU data bit
-     * 
+     *
      * @param int $val Modbus RTU data bit
      */
-    public function setRTUdataBit(int $val) {
-        
+    public function setRTUdataBit(int $val)
+    {
         $this->checkRTUdataBit($val);
         
         $this->RTU_dataBit = $val;
@@ -304,13 +304,13 @@ class DriverModbus {
     
     /**
      * Check Modbus RTU data bit
-     * 
+     *
      * @param int $val Modbus RTU data bit
      * @return bool True if Modbus RTU data bit is valid
      * @throws Exception if Modbus RTU data bit is invalid
      */
-    public static function checkRTUdataBit(int $val): bool {
-        
+    public static function checkRTUdataBit(int $val): bool
+    {
         // Check values
         if ($val < 5 || $val > 8) {
             throw new Exception("Modbus data bit wrong value");
@@ -321,21 +321,21 @@ class DriverModbus {
     
     /**
      * Get Modbus RTU parity
-     * 
+     *
      * @return string Modbus RTU parity
      */
-    public function getRTUparity() {
-        
+    public function getRTUparity()
+    {
         return $this->RTU_parity;
     }
 
     /**
      * Set Modbus RTU parity
-     * 
+     *
      * @param string $val Modbus RTU parity
      */
-    public function setRTUparity(string $val) {
-        
+    public function setRTUparity(string $val)
+    {
         $this->checkRTUparity($val);
         
         $this->RTU_parity = $val;
@@ -343,14 +343,14 @@ class DriverModbus {
     
     /**
      * Check Modbus RTU parity
-     * 
+     *
      * @param int $val Modbus RTU parity
      * @return bool True if Modbus RTU parity is valid
      * @throws Exception if Modbus RTU parity is invalid
      */
-    public static function checkRTUparity(string $val): bool {
-                
-        if (strlen($val) != 1 || !($val=='N' || $val=='E' || $val=='O')) {
+    public static function checkRTUparity(string $val): bool
+    {
+        if (strlen($val) != 1 || !($val == 'N' || $val == 'E' || $val == 'O')) {
             throw new Exception("Modbus RTU parity wrong value");
         }
         
@@ -359,21 +359,21 @@ class DriverModbus {
     
     /**
      * Get Modbus RTU port
-     * 
+     *
      * @return string Modbus RTU port
      */
-    public function getRTUport() {
-        
+    public function getRTUport()
+    {
         return $this->RTU_port;
     }
 
     /**
      * Set Modbus RTU port
-     * 
+     *
      * @param string $val Modbus RTU port
      */
-    public function setRTUport(string $val) {
-        
+    public function setRTUport(string $val)
+    {
         $this->checkRTUport($val);
         
         $this->RTU_port = $val;
@@ -381,13 +381,13 @@ class DriverModbus {
     
     /**
      * Check Modbus RTU port
-     * 
+     *
      * @param int $val Modbus RTU port
      * @return bool True if Modbus RTU port is valid
      * @throws Exception if Modbus RTU port is invalid
      */
-    public static function checkRTUport(string $val): bool {
-        
+    public static function checkRTUport(string $val): bool
+    {
         // Check values
         if (trim($val) == false) {
             throw new Exception("Modbus RTU port can not be empty");
@@ -398,21 +398,21 @@ class DriverModbus {
     
     /**
      * Get Modbus RTU stop bit
-     * 
+     *
      * @return int Modbus RTU stop bit
      */
-    public function getRTUstopBit() {
-        
+    public function getRTUstopBit()
+    {
         return $this->RTU_stopBit;
     }
     
     /**
      * Set Modbus RTU stop bit
-     * 
+     *
      * @param int $val Modbus RTU stop bit
      */
-    public function setRTUstopBit(int $val) {
-        
+    public function setRTUstopBit(int $val)
+    {
         $this->checkRTUstopBit($val);
         
         $this->RTU_stopBit = $val;
@@ -420,13 +420,13 @@ class DriverModbus {
     
     /**
      * Check Modbus RTU stop bit
-     * 
+     *
      * @param int $val Modbus RTU stop bit
      * @return bool True if Modbus RTU stop bit is valid
      * @throws Exception if Modbus RTU stop bit is invalid
      */
-    public static function checkRTUstopBit(int $val): bool {
-        
+    public static function checkRTUstopBit(int $val): bool
+    {
         // Check values
         if ($val < 1 || $val > 2) {
             throw new Exception("Modbus stop bit wrong value");
@@ -437,21 +437,21 @@ class DriverModbus {
     
     /**
      * Get Modbus slave identifier
-     * 
+     *
      * @return int Modbus slave ID
      */
-    public function getSlaveID() {
-        
+    public function getSlaveID()
+    {
         return $this->slaveID;
     }
     
     /**
      * Set Modbus slave identifier
-     * 
+     *
      * @param int $val Modbus slave ID
      */
-    public function setSlaveID(int $val) {
-        
+    public function setSlaveID(int $val)
+    {
         $this->checkSlaveID($val);
         
         $this->slaveID = $val;
@@ -459,13 +459,13 @@ class DriverModbus {
     
     /**
      * Check Modbus slave ID
-     * 
+     *
      * @param int $val Modbus slave ID
      * @return bool True if Modbus slave ID is valid
      * @throws Exception if Modbus slave ID is invalid
      */
-    public static function checkSlaveID(int $val): bool {
-        
+    public static function checkSlaveID(int $val): bool
+    {
         // Check values
         if ($val < 1 || $val > 247) {
             throw new Exception("Modbus slave ID wrong value");
@@ -476,21 +476,21 @@ class DriverModbus {
     
     /**
      * Get Modbus slave IP address
-     * 
+     *
      * @return string Modbus slave IP address
      */
-    public function getTCPaddr() {
-        
+    public function getTCPaddr()
+    {
         return $this->TCP_addr;
     }
     
     /**
      * Set Modbus slave IP address
-     * 
+     *
      * @param string $val Modbus slave IP address
      */
-    public function setTCPaddr(string $val) {
-        
+    public function setTCPaddr(string $val)
+    {
         $this->checkTCPaddr($val);
         
         $this->TCP_addr = $val;
@@ -498,13 +498,13 @@ class DriverModbus {
     
     /**
      * Check Modbus slave IP address
-     * 
+     *
      * @param int $val Modbus slave IP address
      * @return bool True if Modbus slave IP address is valid
      * @throws Exception if Modbus slave IP address is invalid
      */
-    public static function checkTCPaddr(string $val): bool {
-        
+    public static function checkTCPaddr(string $val): bool
+    {
         // Check values
         if (trim($val) == false) {
             throw new Exception("Modbus slave IP address can not be empty");
@@ -515,21 +515,21 @@ class DriverModbus {
     
     /**
      * Get Modbus port number
-     * 
+     *
      * @return int Modbus port number
      */
-    public function getTCPport() {
-        
+    public function getTCPport()
+    {
         return $this->TCP_port;
     }
     
     /**
      * Set Modbus port number
-     * 
+     *
      * @param int $val Modbus port number
      */
-    public function setTCPport(int $val) {
-        
+    public function setTCPport(int $val)
+    {
         $this->checkTCPport($val);
         
         $this->TCP_port = $val;
@@ -537,13 +537,13 @@ class DriverModbus {
     
     /**
      * Check Modbus TCP port
-     * 
+     *
      * @param int $val Modbus TCP port
      * @return bool True if Modbus TCP port bit is valid
      * @throws Exception if Modbus TCP port bit is invalid
      */
-    public static function checkTCPport(int $val): bool {
-        
+    public static function checkTCPport(int $val): bool
+    {
         // Check values
         if ($val < 1) {
             throw new Exception("Modbus TCP port wrong value");
@@ -554,43 +554,43 @@ class DriverModbus {
     
     /**
      * Use slaveID in TCP mode?
-     * 
+     *
      * @return bool Use slaveID in TCP mode?
      */
-    public function useSlaveIdInTCP(): bool {
-        
+    public function useSlaveIdInTCP(): bool
+    {
         return $this->TCP_use_slaveID;
     }
     
     /**
      * Set slaveID usage in TCP mode
-     * 
+     *
      * @param bool $val usage flage
      */
-    public function setSlaveIdUsageInTCP(bool $val) {
-        
+    public function setSlaveIdUsageInTCP(bool $val)
+    {
         $this->TCP_use_slaveID = $val;
     }
     
     /**
      * Get max byte address
-     * 
+     *
      * @return int Max byte address
      */
-    public function getMaxByteAddress(): int {
-        
-        return $this->registerCount*2;
+    public function getMaxByteAddress(): int
+    {
+        return $this->registerCount * 2;
     }
     
     /**
      * Check if Modbus object is valid
-     * 
+     *
      * @param bool $checkID Flag validating Modbus identifier
      * @return bool True if Modbus is valid
      * @throws Exception Throws when Modbus is invalid
      */
-    public function isValid(bool $checkID = false): bool {
-        
+    public function isValid(bool $checkID = false): bool
+    {
         // Check identifier
         if ($checkID) {
             $this->checkId($this->id);

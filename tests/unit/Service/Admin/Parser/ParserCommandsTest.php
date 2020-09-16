@@ -10,13 +10,13 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Mateusz Mirosławski
  */
-class ParserCommandsTest extends TestCase {
-    
+class ParserCommandsTest extends TestCase
+{
     /**
      * Test checkCMD function
      */
-    public function testCheckCMD() {
-        
+    public function testCheckCMD()
+    {
         // GET_BIT
         $this->assertTrue(ParserCommands::checkCMD(ParserCommands::GET_BIT));
         

@@ -9,8 +9,8 @@ use Symfony\Component\Config\Definition\Exception\Exception;
  *
  * @author Mateusz Mirosławski
  */
-class Paginator {
-    
+class Paginator
+{
     /**
      * Total number of rows in DB
      */
@@ -38,13 +38,13 @@ class Paginator {
     
     /**
      * Default constructor
-     * 
+     *
      * @param numeric $totalRows Total number of rows
      * @param numeric $rowsPerPage Number of rows per page
      * @throws Exception Wrong parameters
      */
-    public function __construct($totalRows, $rowsPerPage) {
-        
+    public function __construct($totalRows, $rowsPerPage)
+    {
         if (!is_numeric($totalRows)) {
             throw new Exception("Total rows variable need to be numeric");
         }
@@ -62,7 +62,7 @@ class Paginator {
         $this->rowsPerPage = $rowsPerPage;
         
         // Calculate total number of pages
-        $this->totalPages = ceil($this->totalRows/$this->rowsPerPage);
+        $this->totalPages = ceil($this->totalRows / $this->rowsPerPage);
         
         $this->currentPage = 1;
         
@@ -71,22 +71,22 @@ class Paginator {
     
     /**
      * Get current page
-     * 
+     *
      * @return numeric Current page
      */
-    public function getCurrentPage() {
-        
+    public function getCurrentPage()
+    {
         return $this->currentPage;
     }
     
     /**
      * Set current page number
-     * 
+     *
      * @param numeric $page Page number
      * @throws Exception Wrong parameters
      */
-    public function setCurrentPage($page) {
-        
+    public function setCurrentPage($page)
+    {
         if (!is_numeric($page)) {
             throw new Exception("Page variable need to be numeric");
         }
@@ -103,21 +103,21 @@ class Paginator {
     
     /**
      * Get Page buttons count
-     * 
+     *
      * @return int Page buttons count
      */
-    public function getViewCount() {
-        
+    public function getViewCount()
+    {
         return $this->viewCount;
     }
     
     /**
      * Set Page button count
-     * 
+     *
      * @param int $vCount Page buttons count
      */
-    public function setViewCount(int $vCount) {
-        
+    public function setViewCount(int $vCount)
+    {
         if ($vCount <= 0) {
             throw new Exception("Page count can not be less than 1");
         }
@@ -127,77 +127,73 @@ class Paginator {
     
     /**
      * Get total number of pages
-     * 
+     *
      * @return numeric Total number of pages
      */
-    public function getTotalPages() {
-        
+    public function getTotalPages()
+    {
         return $this->totalPages;
     }
     
     /**
      * Get rows per page
-     * 
+     *
      * @return numeric Rows per page
      */
-    public function getRowsPerPage() {
-        
+    public function getRowsPerPage()
+    {
         return $this->rowsPerPage;
     }
     
     /**
      * Get sql query contains LIMIT and OFFSET values
-     * 
+     *
      * @return string Query contains LIMIT and OFFSET values
      */
-    public function getSqlQuery() {
-                
+    public function getSqlQuery()
+    {
         // Prepare limit
-        $limitQuery = "LIMIT ".$this->rowsPerPage;
+        $limitQuery = "LIMIT " . $this->rowsPerPage;
         
         if ($this->totalPages == 0) {
             $offset = 0;
         } else {
-            $offset = ($this->currentPage-1)*$this->rowsPerPage;
+            $offset = ($this->currentPage - 1) * $this->rowsPerPage;
         }
         
-        $offsetQuery = "OFFSET ".$offset;
+        $offsetQuery = "OFFSET " . $offset;
         
-        return $limitQuery." ".$offsetQuery;
+        return $limitQuery . " " . $offsetQuery;
     }
     
     /**
      * Get page numbers to show
-     * 
+     *
      * @return array Page numbers to show
      */
-    public function getViewPages() {
-        
+    public function getViewPages()
+    {
         $ret = array();
         
-        $middle = floor($this->viewCount/2);
+        $middle = floor($this->viewCount / 2);
         
         // Check pages to print
-        $ptp = ($this->totalPages < $this->viewCount) ? ($this->totalPages) :($this->viewCount);
+        $ptp = ($this->totalPages < $this->viewCount) ? ($this->totalPages) : ($this->viewCount);
         
         // Low limit
         if ($this->currentPage <= $middle) {
-            for ($i=1; $i<=$ptp; ++$i) {
+            for ($i = 1; $i <= $ptp; ++$i) {
                 array_push($ret, $i);
             }
-        } else if ($this->currentPage > $middle && $this->currentPage <= ($this->totalPages-$middle)) {
+        } elseif ($this->currentPage > $middle && $this->currentPage <= ($this->totalPages - $middle)) {
             // Middle
-            for ($i=0; $i<$ptp; ++$i) {
-                
-                array_push($ret, $i+($this->currentPage-$middle));
-                
+            for ($i = 0; $i < $ptp; ++$i) {
+                array_push($ret, $i + ($this->currentPage - $middle));
             }
-        } else if ($this->currentPage > $middle && $this->currentPage > ($this->totalPages-$middle)) {
+        } elseif ($this->currentPage > $middle && $this->currentPage > ($this->totalPages - $middle)) {
             // Max limit
-            for ($i=$this->totalPages-$ptp; $i<$this->totalPages; ++$i) {
-                
-                array_push($ret, $i+1);
-                
+            for ($i = $this->totalPages - $ptp; $i < $this->totalPages; ++$i) {
+                array_push($ret, $i + 1);
             }
         }
         

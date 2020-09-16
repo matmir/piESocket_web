@@ -6,11 +6,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class for Modbus driver configuration
- * 
+ *
  * @author Mateusz Mirosławski
  */
-abstract class DriverConnectionEntity {
-        
+abstract class DriverConnectionEntity
+{
     /**
      * Driver connection identifier
      *
@@ -29,59 +29,59 @@ abstract class DriverConnectionEntity {
     /**
      * Default constructor
      */
-    public function __construct() {
-        
+    public function __construct()
+    {
         $this->connId = 0;
         $this->connName = '';
     }
     
     /**
      * Get Connection driver identifier
-     * 
+     *
      * @return int Connection driver identifier
      */
-    public function getConnId(): int {
-        
+    public function getConnId(): int
+    {
         return $this->connId;
     }
     
     /**
      * Set Connection driver identifier
-     * 
+     *
      * @param int $id Connection driver identifier
      */
-    public function setConnId(int $id) {
-                
+    public function setConnId(int $id)
+    {
         $this->connId = $id;
     }
     
     /**
      * Get Driver connection name
-     * 
+     *
      * @return string Driver connection name
      */
-    public function getconnName() {
-        
+    public function getconnName()
+    {
         return $this->connName;
     }
     
     /**
      * Set Driver connection name
-     * 
+     *
      * @param string $val Driver connection name
      */
-    public function setconnName(string $val) {
-        
+    public function setconnName(string $val)
+    {
         $this->connName = $val;
     }
     
     /**
      * Initialize from Driver connection object
-     * 
+     *
      * @param DriverConnection $conn Driver connection object
      */
-    protected function initFromConnectionObject(DriverConnection $conn) {
-        
+    protected function initFromConnectionObject(DriverConnection $conn)
+    {
         // Check if object is valid
         $conn->isValid(true);
         

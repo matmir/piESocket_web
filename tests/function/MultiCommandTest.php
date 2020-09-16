@@ -12,13 +12,13 @@ use App\Service\Admin\Parser\ParserCommands;
  *
  * @author Mateusz Mirosławski
  */
-class MultiCommandTest extends BaseFunctionTestCase {
-    
+class MultiCommandTest extends BaseFunctionTestCase
+{
     /**
      * Test Multifunction command
      */
-    public function testMulti1() {
-        
+    public function testMulti1()
+    {
         // Check process dword
         $this->assertEquals(0, $this->parser->getDWord('TEST_DWORD10'));
         $this->assertEquals(0, $this->parser->getDWord('MB_TEST_DWORD40'));
@@ -60,8 +60,8 @@ class MultiCommandTest extends BaseFunctionTestCase {
         $this->assertEquals(10896, $this->parser->getWord('MB_TEST_WORD42'));
     }
     
-    public function testMulti2() {
-        
+    public function testMulti2()
+    {
         // Check process dword
         $this->assertEquals(0, $this->parser->getDWord('TEST_DWORD10'));
         $this->assertEquals(0, $this->parser->getDWord('MB_TEST_DWORD40'));
@@ -111,8 +111,8 @@ class MultiCommandTest extends BaseFunctionTestCase {
         $this->assertEquals(10333, $this->parser->getWord('MB_TEST_WORD42'));
     }
     
-    public function testMulti3() {
-        
+    public function testMulti3()
+    {
         // Check process dword
         $this->assertEquals(0, $this->parser->getDWord('TEST_DWORD10'));
         $this->assertEquals(0, $this->parser->getDWord('MB_TEST_DWORD40'));
@@ -162,8 +162,8 @@ class MultiCommandTest extends BaseFunctionTestCase {
         $this->assertEquals(50803, $this->parser->getWord('MB_TEST_WORD42'));
     }
     
-    public function testMultiWrong1() {
-        
+    public function testMultiWrong1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag does not exist!');
         
@@ -176,8 +176,8 @@ class MultiCommandTest extends BaseFunctionTestCase {
         $this->parser->executeMultiCMD($cmds);
     }
     
-    public function testMultiWrong2() {
-        
+    public function testMultiWrong2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag has wrong type!');
         

@@ -7,30 +7,29 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\Form;
-
 use App\Service\Admin\UserMapper;
 use App\Entity\Admin\UserEntity;
 use App\Entity\Paginator;
 use App\Entity\AppException;
 use App\Form\Admin\UserForm;
 
-class UserController extends AbstractController {
-    
+class UserController extends AbstractController
+{
     /**
      * Check user list router parameters
-     * 
+     *
      * @param int $page Page number
      * @param int $perPage Rows per page
      * @param int $sort User sorting (0 - ID, 1 - user name, 2 - email, 3 - active flag)
      * @param int $sortDESC Sorting direction (0 - ASC, 1 - DESC)
      */
-    private function checkParams(int &$page, int &$perPage, int &$sort, int &$sortDESC) {
-        
+    private function checkParams(int &$page, int &$perPage, int &$sort, int &$sortDESC)
+    {
         // Check page params
         if ($page <= 0) {
             $page = 1;
         }
-        if ($perPage <10) {
+        if ($perPage < 10) {
             $perPage = 10;
         }
         
@@ -48,8 +47,8 @@ class UserController extends AbstractController {
     /**
      * @Route("/admin/user/list/{page}/{perPage}/{sort}/{sortDESC}", name="admin_user_list")
      */
-    public function index(UserMapper $userMapper, Request $request, $page=1, $perPage=20, $sort=0, $sortDESC=0) {
-        
+    public function index(UserMapper $userMapper, Request $request, $page = 1, $perPage = 20, $sort = 0, $sortDESC = 0)
+    {
         // Check parameters
         $this->checkParams($page, $perPage, $sort, $sortDESC);
         
@@ -74,44 +73,43 @@ class UserController extends AbstractController {
     
     /**
      * Parse User exception
-     * 
+     *
      * @param $errorObj Error object
      * @param Form $form Form object
      */
-    private function parseUserError($errorObj, Form $form) {
-        
+    private function parseUserError($errorObj, Form $form)
+    {
         $code = $errorObj->getCode();
         
         if ($errorObj instanceof AppException) {
-            
             switch ($code) {
-                case AppException::USER_ADDRESS_EXIST: {
+                case AppException::USER_ADDRESS_EXIST:
                     // Add error
                     $form->get('email')->addError(new FormError($errorObj->getMessage()));
-                } break;
-                case AppException::USER_NAME_EXIST: {
+                    break;
+                case AppException::USER_NAME_EXIST:
                     // Add error
                     $form->get('username')->addError(new FormError($errorObj->getMessage()));
-                } break;
-                case AppException::USER_PASSWORD_NOT_EQUAL: {
+                    break;
+                case AppException::USER_PASSWORD_NOT_EQUAL:
                     // Add error
                     $form->get('password1')->addError(new FormError($errorObj->getMessage()));
-                } break;
-                case AppException::USER_OLD_PASSWORD_WRONG: {
+                    break;
+                case AppException::USER_OLD_PASSWORD_WRONG:
                     // Add error
                     $form->get('oldPassword')->addError(new FormError($errorObj->getMessage()));
-                } break;
-                default: $form->get('username')->addError(new FormError('Unknown exception!'));
+                    break;
+                default:
+                    $form->get('username')->addError(new FormError('Unknown exception!'));
             }
-            
         }
     }
     
     /**
      * @Route("/admin/user/add", name="admin_user_add")
      */
-    public function add(UserMapper $userMapper, Request $request) {
-        
+    public function add(UserMapper $userMapper, Request $request)
+    {
         $userE = new UserEntity();
         
         $form = $this->createForm(UserForm::class, $userE);
@@ -119,12 +117,10 @@ class UserController extends AbstractController {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
             // Get Form data
             $userE = $form->getData();
             
             try {
-                
                 // Get real Tag object
                 $user = $userE->getFullUserObject();
                 
@@ -140,13 +136,9 @@ class UserController extends AbstractController {
                 $lastUrl = $this->get('session')->get('userListURL', $this->generateUrl('admin_user_list'));
 
                 return $this->redirect($lastUrl);
-                
             } catch (AppException $ex) {
-                
                 $this->parseUserError($ex, $form);
-                
             }
-            
         }
         
         return $this->render('admin/user/userAdd.html.twig', array(
@@ -157,8 +149,8 @@ class UserController extends AbstractController {
     /**
      * @Route("/admin/user/edit/{userID}", name="admin_user_edit")
      */
-    public function edit($userID, UserMapper $userMapper, Request $request) {
-        
+    public function edit($userID, UserMapper $userMapper, Request $request)
+    {
         // Get user data from DB
         $oldUser = $userMapper->getUser($userID);
         
@@ -170,7 +162,6 @@ class UserController extends AbstractController {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
             // Get Form data
             $newUserE = $form->getData();
             
@@ -190,13 +181,9 @@ class UserController extends AbstractController {
                 $lastUrl = $this->get('session')->get('userListURL', $this->generateUrl('admin_user_list'));
 
                 return $this->redirect($lastUrl);
-                
             } catch (AppException $ex) {
-
                 $this->parseUserError($ex, $form);
-                
             }
-            
         }
         
         return $this->render('admin/user/userEdit.html.twig', array(
@@ -207,8 +194,8 @@ class UserController extends AbstractController {
     /**
      * @Route("/admin/user/delete/{userID}", name="admin_user_delete")
      */
-    public function delete($userID, UserMapper $userMapper) {
-        
+    public function delete($userID, UserMapper $userMapper)
+    {
         // Delete user
         $userMapper->deleteUser($userID);
 
@@ -226,8 +213,8 @@ class UserController extends AbstractController {
     /**
      * @Route("/admin/user/enable/{userID}/{en}", name="admin_user_enable")
      */
-    public function enable($userID, $en, UserMapper $userMapper) {
-        
+    public function enable($userID, $en, UserMapper $userMapper)
+    {
         if ($en < 0 || $en > 1) {
             $en = 0;
         }
@@ -240,5 +227,4 @@ class UserController extends AbstractController {
 
         return $this->redirect($lastUrl);
     }
-    
 }

@@ -15,13 +15,13 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Mateusz Mirosławski
  */
-class DriverModbusEntityTest extends TestCase {
-    
+class DriverModbusEntityTest extends TestCase
+{
     /**
      * Test default constructor
      */
-    public function testDefaultConstructor() {
-        
+    public function testDefaultConstructor()
+    {
         $mbEntity = new DriverModbusEntity();
         
         $this->assertEquals(0, $mbEntity->getConnId());
@@ -41,8 +41,8 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(50, $mbEntity->getDriverPolling());
     }
     
-    public function testSetConnId() {
-        
+    public function testSetConnId()
+    {
         $mbEntity = new DriverModbusEntity();
         
         $mbEntity->setConnId(8);
@@ -64,8 +64,8 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(50, $mbEntity->getDriverPolling());
     }
     
-    public function testSetConnName() {
-        
+    public function testSetConnName()
+    {
         $mbEntity = new DriverModbusEntity();
         
         $mbEntity->setConnName("conn1");
@@ -87,8 +87,8 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(50, $mbEntity->getDriverPolling());
     }
     
-    public function testSetId() {
-        
+    public function testSetId()
+    {
         $mbEntity = new DriverModbusEntity();
         
         $mbEntity->setId(3);
@@ -110,8 +110,8 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(50, $mbEntity->getDriverPolling());
     }
     
-    public function testSetMode() {
-        
+    public function testSetMode()
+    {
         $mbEntity = new DriverModbusEntity();
         
         $mbEntity->setMode(DriverModbusMode::RTU);
@@ -133,8 +133,8 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(50, $mbEntity->getDriverPolling());
     }
     
-    public function testSetTcpAddr() {
-        
+    public function testSetTcpAddr()
+    {
         $mbEntity = new DriverModbusEntity();
         
         $mbEntity->setTCPaddr("192.168.8.8");
@@ -156,8 +156,8 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(50, $mbEntity->getDriverPolling());
     }
     
-    public function testSetTcpPort() {
-        
+    public function testSetTcpPort()
+    {
         $mbEntity = new DriverModbusEntity();
         
         $mbEntity->setTCPport(550);
@@ -179,8 +179,8 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(50, $mbEntity->getDriverPolling());
     }
     
-    public function testSetRTUPort() {
-        
+    public function testSetRTUPort()
+    {
         $mbEntity = new DriverModbusEntity();
         
         $mbEntity->setRTUport("/dev/ttyACM3");
@@ -202,8 +202,8 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(50, $mbEntity->getDriverPolling());
     }
     
-    public function testSetRTUbaud() {
-        
+    public function testSetRTUbaud()
+    {
         $mbEntity = new DriverModbusEntity();
         
         $mbEntity->setRTUbaud(57630);
@@ -225,8 +225,8 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(50, $mbEntity->getDriverPolling());
     }
     
-    public function testSetRTUparity() {
-        
+    public function testSetRTUparity()
+    {
         $mbEntity = new DriverModbusEntity();
         
         $mbEntity->setRTUparity('E');
@@ -248,8 +248,8 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(50, $mbEntity->getDriverPolling());
     }
     
-    public function testSetRTUdataBit() {
-        
+    public function testSetRTUdataBit()
+    {
         $mbEntity = new DriverModbusEntity();
         
         $mbEntity->setRTUdataBit(7);
@@ -271,8 +271,8 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(50, $mbEntity->getDriverPolling());
     }
     
-    public function testSetRTUstopBit() {
-        
+    public function testSetRTUstopBit()
+    {
         $mbEntity = new DriverModbusEntity();
         
         $mbEntity->setRTUstopBit(2);
@@ -294,8 +294,8 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(50, $mbEntity->getDriverPolling());
     }
     
-    public function testSetSlaveID() {
-        
+    public function testSetSlaveID()
+    {
         $mbEntity = new DriverModbusEntity();
         
         $mbEntity->setSlaveID(45);
@@ -317,8 +317,8 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(50, $mbEntity->getDriverPolling());
     }
     
-    public function testSetRegisterCount() {
-        
+    public function testSetRegisterCount()
+    {
         $mbEntity = new DriverModbusEntity();
         
         $mbEntity->setRegisterCount(52);
@@ -340,8 +340,8 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(50, $mbEntity->getDriverPolling());
     }
     
-    public function testSetDriverPolling() {
-        
+    public function testSetDriverPolling()
+    {
         $mbEntity = new DriverModbusEntity();
         
         $mbEntity->setDriverPolling(100);
@@ -363,8 +363,8 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(100, $mbEntity->getDriverPolling());
     }
     
-    public function testGetFullConnectionObject1() {
-        
+    public function testGetFullConnectionObject1()
+    {
         $mbEntity = new DriverModbusEntity();
         $mbEntity->setConnId(8);
         $mbEntity->setconnName("conn3");
@@ -380,7 +380,7 @@ class DriverModbusEntityTest extends TestCase {
         
         $this->assertEquals(8, $conn->getId());
         $this->assertEquals("conn3", $conn->getName());
-        $this->assertEquals(DriverType::Modbus, $conn->getType());
+        $this->assertEquals(DriverType::MODBUS, $conn->getType());
         $this->assertTrue($conn->isModbusConfig());
         $this->assertFalse($conn->isShmConfig());
         
@@ -401,8 +401,8 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(120, $cfg->getMaxByteAddress());
     }
     
-    public function testGetFullConnectionObject2() {
-        
+    public function testGetFullConnectionObject2()
+    {
         $mbEntity = new DriverModbusEntity();
         $mbEntity->setConnId(8);
         $mbEntity->setconnName("conn3");
@@ -421,7 +421,7 @@ class DriverModbusEntityTest extends TestCase {
         
         $this->assertEquals(8, $conn->getId());
         $this->assertEquals("conn3", $conn->getName());
-        $this->assertEquals(DriverType::Modbus, $conn->getType());
+        $this->assertEquals(DriverType::MODBUS, $conn->getType());
         $this->assertTrue($conn->isModbusConfig());
         $this->assertFalse($conn->isShmConfig());
         
@@ -442,8 +442,8 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(80, $cfg->getMaxByteAddress());
     }
     
-    public function testInitFromConnectionObject1() {
-        
+    public function testInitFromConnectionObject1()
+    {
         // Modbus CFG
         $mb = new DriverModbus();
         $mb->setId(7);
@@ -459,7 +459,7 @@ class DriverModbusEntityTest extends TestCase {
         $conn = new DriverConnection();
         $conn->setId(3);
         $conn->setName("Conn5");
-        $conn->setType(DriverType::Modbus);
+        $conn->setType(DriverType::MODBUS);
         $conn->setModbusConfig($mb);
         
         // Init entity
@@ -483,8 +483,8 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(300, $mbEntity->getDriverPolling());
     }
     
-    public function testInitFromConnectionObject2() {
-        
+    public function testInitFromConnectionObject2()
+    {
         // Modbus CFG
         $mb = new DriverModbus();
         $mb->setId(7);
@@ -502,7 +502,7 @@ class DriverModbusEntityTest extends TestCase {
         $conn = new DriverConnection();
         $conn->setId(3);
         $conn->setName("Conn5");
-        $conn->setType(DriverType::Modbus);
+        $conn->setType(DriverType::MODBUS);
         $conn->setModbusConfig($mb);
         
         // Init entity
@@ -526,8 +526,8 @@ class DriverModbusEntityTest extends TestCase {
         $this->assertEquals(300, $mbEntity->getDriverPolling());
     }
     
-    public function testInitFromConnectionObjectWrong1() {
-                
+    public function testInitFromConnectionObjectWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Missing modbus configuration in connection object');
         
@@ -539,11 +539,10 @@ class DriverModbusEntityTest extends TestCase {
         $conn->setId(3);
         $conn->setName("Conn5");
         $conn->setShmConfig($shm);
-        $conn->setType(DriverType::Modbus);
+        $conn->setType(DriverType::MODBUS);
         
         // Init entity
         $mbEntity = new DriverModbusEntity();
         $mbEntity->initFromConnectionObject($conn);
     }
 }
-

@@ -6,7 +6,6 @@ use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\Config\Definition\Exception\Exception;
-
 use App\Entity\Admin\Tag;
 use App\Service\Admin\TagsMapper;
 use App\Entity\Admin\ScriptItem;
@@ -18,26 +17,27 @@ use App\Entity\AppException;
  *
  * @author Mateusz Mirosławski
  */
-class ScriptItemMapper {
-    
+class ScriptItemMapper
+{
     private $dbConn;
     
-    public function __construct(Connection $connection) {
-        
+    public function __construct(Connection $connection)
+    {
         $this->dbConn = $connection;
     }
     
     /**
      * Get Script items
-     * 
+     *
      * @param int $area Script item area (0 - all, 1 - input, 2 - output, 3 - memory)
-     * @param int $sort Script item sorting (0 - ID, 1 - tag name, 2 - script name, 3 - run flag, 4 - lock flag, 5 - enabled flag)
+     * @param int $sort Script item sorting (0 - ID, 1 - tag name,
+     *                                      2 - script name, 3 - run flag, 4 - lock flag, 5 - enabled flag)
      * @param int $sortDESC Sorting direction (0 - ASC, 1 - DESC)
      * @param Paginator $paginator Paginator object
      * @return array Array with Script item
      */
-    public function getScripts(int $area = 0, int $sort = 0, int $sortDESC = 0, Paginator $paginator = null) {
-        
+    public function getScripts(int $area = 0, int $sort = 0, int $sortDESC = 0, Paginator $paginator = null)
+    {
         // Basic query
         $sql = 'SELECT * FROM scripts sc, tags t';
         $sql .= ' WHERE sc.scTagId=t.tid';
@@ -48,22 +48,35 @@ class ScriptItemMapper {
         }
         
         // Order direction
-        $oDirection = ($sortDESC==1)?('DESC'):('ASC');
+        $oDirection = ($sortDESC == 1) ? ('DESC') : ('ASC');
         
         // Order
         switch ($sort) {
-            case 0: $sql .= ' ORDER BY sc.scid '.$oDirection; break;
-            case 1: $sql .= ' ORDER BY t.tName '.$oDirection; break;
-            case 2: $sql .= ' ORDER BY sc.scName '.$oDirection; break;
-            case 3: $sql .= ' ORDER BY sc.scRun '.$oDirection; break;
-            case 4: $sql .= ' ORDER BY sc.scLock '.$oDirection; break;
-            case 5: $sql .= ' ORDER BY sc.scEnable '.$oDirection; break;
-            default: $sql .= ' ORDER BY sc.scid '.$oDirection;
+            case 0:
+                $sql .= ' ORDER BY sc.scid ' . $oDirection;
+                break;
+            case 1:
+                $sql .= ' ORDER BY t.tName ' . $oDirection;
+                break;
+            case 2:
+                $sql .= ' ORDER BY sc.scName ' . $oDirection;
+                break;
+            case 3:
+                $sql .= ' ORDER BY sc.scRun ' . $oDirection;
+                break;
+            case 4:
+                $sql .= ' ORDER BY sc.scLock ' . $oDirection;
+                break;
+            case 5:
+                $sql .= ' ORDER BY sc.scEnable ' . $oDirection;
+                break;
+            default:
+                $sql .= ' ORDER BY sc.scid ' . $oDirection;
         }
         
         // Check paginator
         if (!is_null($paginator)) {
-            $sql .= " ".$paginator->getSqlQuery();
+            $sql .= " " . $paginator->getSqlQuery();
         }
         
         // End query
@@ -80,8 +93,7 @@ class ScriptItemMapper {
         
         $ret = array();
         
-        foreach($items as $item) {
-            
+        foreach ($items as $item) {
             // New tag
             $tag = new Tag();
             $tag->setId($item['tid']);
@@ -97,23 +109,22 @@ class ScriptItemMapper {
             $scriptItem = new ScriptItem($tag);
             $scriptItem->setId($item['scid']);
             $scriptItem->setName($item['scName']);
-            $scriptItem->setRun((($item['scRun']==1)?(true):(false)));
-            $scriptItem->setLocked((($item['scLock']==1)?(true):(false)));
+            $scriptItem->setRun((($item['scRun'] == 1) ? (true) : (false)));
+            $scriptItem->setLocked((($item['scLock'] == 1) ? (true) : (false)));
             
             $tagsMapper = null;
             // Is feedback Tag?
-            if (!($item['scFeedbackRun']===null)) {
+            if (!($item['scFeedbackRun'] === null)) {
                 // Tags mappers
                 $tagsMapper = new TagsMapper($this->dbConn);
                 $fbTag = $tagsMapper->getTag($item['scFeedbackRun']);
                 $scriptItem->setFeedbackRun($fbTag);
             }
             
-            $scriptItem->setEnabled((($item['scEnable']==1)?(true):(false)));
+            $scriptItem->setEnabled((($item['scEnable'] == 1) ? (true) : (false)));
             
             // Add to the array
             array_push($ret, $scriptItem);
-            
         }
         
         return $ret;
@@ -121,13 +132,13 @@ class ScriptItemMapper {
     
     /**
      * Get number of all script items in DB
-     * 
+     *
      * @param int $area Tag area
      * @return numeric Number of script items in DB
      * @throws Exception
      */
-    public function getScriptsCount(int $area = 0) {
-        
+    public function getScriptsCount(int $area = 0)
+    {
         // Base query
         $sql = "SELECT count(*) AS 'cnt' FROM tags t, scripts sc WHERE sc.scTagId=t.tid";
         
@@ -159,13 +170,13 @@ class ScriptItemMapper {
     
     /**
      * Get Script item data
-     * 
+     *
      * @param numeric $scriptId Script item identifier
      * @return ScriptItem Script item object
      * @throws Exception Script item identifier invalid or Script item not exist
      */
-    public function getScript($scriptId): ScriptItem {
-        
+    public function getScript($scriptId): ScriptItem
+    {
         // Check script identifier
         ScriptItem::checkId($scriptId);
         
@@ -178,10 +189,10 @@ class ScriptItemMapper {
         $statement->bindValue(1, $scriptId, ParameterType::INTEGER);
         $statement->execute();
         
-        $items= $statement->fetchAll();
+        $items = $statement->fetchAll();
         
         if (empty($items)) {
-            throw new Exception("Script item with identifier ".$scriptId." does not exist!");
+            throw new Exception("Script item with identifier " . $scriptId . " does not exist!");
         }
         if (count($items) != 1) {
             throw new Exception("Query return more than one element!");
@@ -201,32 +212,32 @@ class ScriptItemMapper {
         $scriptItem = new ScriptItem($tag);
         $scriptItem->setId($item['scid']);
         $scriptItem->setName($item['scName']);
-        $scriptItem->setRun((($item['scRun']==1)?(true):(false)));
-        $scriptItem->setLocked((($item['scLock']==1)?(true):(false)));
+        $scriptItem->setRun((($item['scRun'] == 1) ? (true) : (false)));
+        $scriptItem->setLocked((($item['scLock'] == 1) ? (true) : (false)));
 
         $tagsMapper = null;
         // Is feedback Tag?
-        if (!($item['scFeedbackRun']===null)) {
+        if (!($item['scFeedbackRun'] === null)) {
             // Tags mappers
             $tagsMapper = new TagsMapper($this->dbConn);
             $fbTag = $tagsMapper->getTag($item['scFeedbackRun']);
             $scriptItem->setFeedbackRun($fbTag);
         }
 
-        $scriptItem->setEnabled((($item['scEnable']==1)?(true):(false)));
+        $scriptItem->setEnabled((($item['scEnable'] == 1) ? (true) : (false)));
         
         return $scriptItem;
     }
     
     /**
      * Get Script item data by script name
-     * 
+     *
      * @param string $scriptName Script name
      * @return ScriptItem Script item object
      * @throws Exception Script item identifier invalid or Script item not exist
      */
-    public function getScriptByName(string $scriptName): ScriptItem {
-        
+    public function getScriptByName(string $scriptName): ScriptItem
+    {
         // Check script name
         ScriptItem::checkName($scriptName);
         
@@ -239,10 +250,10 @@ class ScriptItemMapper {
         $statement->bindValue(1, $scriptName, ParameterType::STRING);
         $statement->execute();
         
-        $items= $statement->fetchAll();
+        $items = $statement->fetchAll();
         
         if (empty($items)) {
-            throw new Exception("Script item with name ".$scriptName." does not exist!");
+            throw new Exception("Script item with name " . $scriptName . " does not exist!");
         }
         if (count($items) != 1) {
             throw new Exception("Query return more than one element!");
@@ -262,30 +273,30 @@ class ScriptItemMapper {
         $scriptItem = new ScriptItem($tag);
         $scriptItem->setId($item['scid']);
         $scriptItem->setName($item['scName']);
-        $scriptItem->setRun((($item['scRun']==1)?(true):(false)));
-        $scriptItem->setLocked((($item['scLock']==1)?(true):(false)));
+        $scriptItem->setRun((($item['scRun'] == 1) ? (true) : (false)));
+        $scriptItem->setLocked((($item['scLock'] == 1) ? (true) : (false)));
 
         $tagsMapper = null;
         // Is feedback Tag?
-        if (!($item['scFeedbackRun']===null)) {
+        if (!($item['scFeedbackRun'] === null)) {
             // Tags mappers
             $tagsMapper = new TagsMapper($this->dbConn);
             $fbTag = $tagsMapper->getTag($item['scFeedbackRun']);
             $scriptItem->setFeedbackRun($fbTag);
         }
 
-        $scriptItem->setEnabled((($item['scEnable']==1)?(true):(false)));
+        $scriptItem->setEnabled((($item['scEnable'] == 1) ? (true) : (false)));
         
         return $scriptItem;
     }
     
     /**
      * Add Script item to the DB
-     * 
+     *
      * @param ScriptItem $newScript Script item to add
      */
-    public function addScript(ScriptItem $newScript) {
-        
+    public function addScript(ScriptItem $newScript)
+    {
         // Check if Script is valid
         $newScript->isValid();
         
@@ -300,17 +311,14 @@ class ScriptItemMapper {
         if ($newScript->isFeedbackRun()) {
             $stmt->bindValue(3, $newScript->getFeedbackRun()->getId(), ParameterType::INTEGER);
         } else {
-            $stmt->bindValue(3, NULL, ParameterType::NULL);
+            $stmt->bindValue(3, null, ParameterType::NULL);
         }
         
         try {
-            
             if (!$stmt->execute()) {
                 throw new Exception("Error during execute sql add query!");
             }
-            
         } catch (UniqueConstraintViolationException $ex) {
-            
             $tagExist = strpos($ex->getMessage(), "key 'scTagId'");
             $scriptExist = strpos($ex->getMessage(), "key 'scName'");
             
@@ -318,12 +326,12 @@ class ScriptItemMapper {
             $errCode = -1;
             
             if ($tagExist !== false) {
-                $errMsg = "Script with tag: ".$newScript->getTag()->getName()." exist in DB!";
+                $errMsg = "Script with tag: " . $newScript->getTag()->getName() . " exist in DB!";
                 $errCode = AppException::SCRIPT_TAG_EXIST;
             }
             
             if ($scriptExist !== false) {
-                $errMsg = "Script :".$newScript->getName()." exist in DB!";
+                $errMsg = "Script :" . $newScript->getName() . " exist in DB!";
                 $errCode = AppException::SCRIPT_FILE_EXIST;
             }
             
@@ -333,11 +341,11 @@ class ScriptItemMapper {
     
     /**
      * Edit Script item
-     * 
+     *
      * @param ScriptItem $newScript Script item to edit
      */
-    public function editScript(ScriptItem $newScript) {
-        
+    public function editScript(ScriptItem $newScript)
+    {
         // Check if Script is valid
         $newScript->isValid(true);
         
@@ -352,19 +360,16 @@ class ScriptItemMapper {
         if ($newScript->isFeedbackRun()) {
             $stmt->bindValue(3, $newScript->getFeedbackRun()->getId(), ParameterType::INTEGER);
         } else {
-            $stmt->bindValue(3, NULL, ParameterType::NULL);
+            $stmt->bindValue(3, null, ParameterType::NULL);
         }
         
         $stmt->bindValue(4, $newScript->getId(), ParameterType::INTEGER);
         
         try {
-            
             if (!$stmt->execute()) {
                 throw new Exception("Error during execute sql add query!");
             }
-            
         } catch (UniqueConstraintViolationException $ex) {
-            
             $tagExist = strpos($ex->getMessage(), "key 'scTagId'");
             $scriptExist = strpos($ex->getMessage(), "key 'scName'");
             
@@ -372,12 +377,12 @@ class ScriptItemMapper {
             $errCode = -1;
             
             if ($tagExist !== false) {
-                $errMsg = "Script with tag: ".$newScript->getTag()->getName()." exist in DB!";
+                $errMsg = "Script with tag: " . $newScript->getTag()->getName() . " exist in DB!";
                 $errCode = AppException::SCRIPT_TAG_EXIST;
             }
             
             if ($scriptExist !== false) {
-                $errMsg = "Script :".$newScript->getName()." exist in DB!";
+                $errMsg = "Script :" . $newScript->getName() . " exist in DB!";
                 $errCode = AppException::SCRIPT_FILE_EXIST;
             }
             
@@ -387,11 +392,11 @@ class ScriptItemMapper {
     
     /**
      * Delete Script item
-     * 
+     *
      * @param numeric $scriptId Script item identifier
      */
-    public function deleteScript($scriptId) {
-                
+    public function deleteScript($scriptId)
+    {
         // Check script identifier
         ScriptItem::checkId($scriptId);
         
@@ -405,18 +410,18 @@ class ScriptItemMapper {
     
     /**
      * Enable script item
-     * 
+     *
      * @param numeric $scriptId Script item identifier
      * @param bool $en Enable flag
      */
-    public function enableScript($scriptId, bool $en = true) {
-        
+    public function enableScript($scriptId, bool $en = true)
+    {
         // Check script identifier
         ScriptItem::checkId($scriptId);
         
         $stmt = $this->dbConn->prepare('UPDATE scripts SET scEnable = ? WHERE scid = ?;');
         
-        $stmt->bindValue(1, (($en)?(1):(0)), ParameterType::INTEGER);
+        $stmt->bindValue(1, (($en) ? (1) : (0)), ParameterType::INTEGER);
         $stmt->bindValue(2, $scriptId, ParameterType::INTEGER);
         
         if (!$stmt->execute()) {
@@ -426,12 +431,12 @@ class ScriptItemMapper {
     
     /**
      * Check if given script name exist in DB
-     * 
+     *
      * @param string $scriptName Script name
      * @throws Exception
      */
-    public function exist(string $scriptName): bool {
-        
+    public function exist(string $scriptName): bool
+    {
         // Check script name
         ScriptItem::checkName($scriptName);
         
@@ -451,17 +456,17 @@ class ScriptItemMapper {
         
         $item = $items[0];
                 
-        return (($item['cnt']==1)?(true):(false));
+        return (($item['cnt'] == 1) ? (true) : (false));
     }
     
     /**
      * Set run and lock flag of the script
-     * 
+     *
      * @param string $scriptName Script name
      * @throws Exception
      */
-    public function setFlags(string $scriptName) {
-        
+    public function setFlags(string $scriptName)
+    {
         // Check script name
         ScriptItem::checkName($scriptName);
         
@@ -476,12 +481,12 @@ class ScriptItemMapper {
     
     /**
      * Clear run flag of the script
-     * 
+     *
      * @param string $scriptName Script name
      * @throws Exception
      */
-    public function clearRunFlag(string $scriptName) {
-        
+    public function clearRunFlag(string $scriptName)
+    {
         // Check script name
         ScriptItem::checkName($scriptName);
         

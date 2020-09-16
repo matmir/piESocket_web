@@ -11,15 +11,15 @@ use App\Entity\Admin\TagType;
  *
  * @author Mateusz Mirosławski
  */
-class AlarmSystemByteTest extends AlarmSystemFunctionTestCase {
-    
+class AlarmSystemByteTest extends AlarmSystemFunctionTestCase
+{
     /**
      * Test BYTE alarm Tag>value
      */
-    public function testByte1() {
-        
+    public function testByte1()
+    {
         // Get alarm definition
-        $alarmDef = $this->getAlarmDefinition(TagType::Byte);
+        $alarmDef = $this->getAlarmDefinition(TagType::BYTE);
         
         $data1 = $this->getAlarmsData($alarmDef);
         
@@ -57,7 +57,7 @@ class AlarmSystemByteTest extends AlarmSystemFunctionTestCase {
         // Deactivate alarm definition
         $this->alarmMapper->enableAlarm($alarmDef->getId(), false);
         
-        $this->assertEquals(TagType::Byte, $alarmDef->getTag()->getType());
+        $this->assertEquals(TagType::BYTE, $alarmDef->getTag()->getType());
         $this->assertEquals(AlarmTrigger::TR_TAG_GT_VAL, $alarmDef->getTrigger());
         $this->assertEquals(100, $alarmDef->getTriggerNumeric());
         $this->assertEquals('TEST_ALARM_BYTE', $alarmDef->getTag()->getName());
@@ -117,10 +117,10 @@ class AlarmSystemByteTest extends AlarmSystemFunctionTestCase {
     /**
      * Test BYTE alarm Tag<value
      */
-    public function testByte2() {
-        
+    public function testByte2()
+    {
         // Get alarm definition
-        $alarmDef = $this->getAlarmDefinition(TagType::Byte);
+        $alarmDef = $this->getAlarmDefinition(TagType::BYTE);
         // Change trigger
         $alarmDef->setTrigger(AlarmTrigger::TR_TAG_LT_VAL);
         $alarmDef->setTriggerNumeric(50);
@@ -163,7 +163,7 @@ class AlarmSystemByteTest extends AlarmSystemFunctionTestCase {
         // Deactivate alarm definition
         $this->alarmMapper->enableAlarm($alarmDef->getId(), false);
         
-        $this->assertEquals(TagType::Byte, $alarmDef->getTag()->getType());
+        $this->assertEquals(TagType::BYTE, $alarmDef->getTag()->getType());
         $this->assertEquals(AlarmTrigger::TR_TAG_LT_VAL, $alarmDef->getTrigger());
         $this->assertEquals(50, $alarmDef->getTriggerNumeric());
         $this->assertEquals('TEST_ALARM_BYTE', $alarmDef->getTag()->getName());
@@ -223,10 +223,10 @@ class AlarmSystemByteTest extends AlarmSystemFunctionTestCase {
     /**
      * Test BYTE alarm Tag>=value
      */
-    public function testByte3() {
-        
+    public function testByte3()
+    {
         // Get alarm definition
-        $alarmDef = $this->getAlarmDefinition(TagType::Byte);
+        $alarmDef = $this->getAlarmDefinition(TagType::BYTE);
         // Change trigger
         $alarmDef->setTrigger(AlarmTrigger::TR_TAG_GTE_VAL);
         $alarmDef->setTriggerNumeric(100);
@@ -269,7 +269,7 @@ class AlarmSystemByteTest extends AlarmSystemFunctionTestCase {
         // Deactivate alarm definition
         $this->alarmMapper->enableAlarm($alarmDef->getId(), false);
         
-        $this->assertEquals(TagType::Byte, $alarmDef->getTag()->getType());
+        $this->assertEquals(TagType::BYTE, $alarmDef->getTag()->getType());
         $this->assertEquals(AlarmTrigger::TR_TAG_GTE_VAL, $alarmDef->getTrigger());
         $this->assertEquals(100, $alarmDef->getTriggerNumeric());
         $this->assertEquals('TEST_ALARM_BYTE', $alarmDef->getTag()->getName());
@@ -329,10 +329,10 @@ class AlarmSystemByteTest extends AlarmSystemFunctionTestCase {
     /**
      * Test BYTE alarm Tag<=value
      */
-    public function testByte4() {
-        
+    public function testByte4()
+    {
         // Get alarm definition
-        $alarmDef = $this->getAlarmDefinition(TagType::Byte);
+        $alarmDef = $this->getAlarmDefinition(TagType::BYTE);
         // Change trigger
         $alarmDef->setTrigger(AlarmTrigger::TR_TAG_LTE_VAL);
         $alarmDef->setTriggerNumeric(50);
@@ -375,7 +375,7 @@ class AlarmSystemByteTest extends AlarmSystemFunctionTestCase {
         // Deactivate alarm definition
         $this->alarmMapper->enableAlarm($alarmDef->getId(), false);
         
-        $this->assertEquals(TagType::Byte, $alarmDef->getTag()->getType());
+        $this->assertEquals(TagType::BYTE, $alarmDef->getTag()->getType());
         $this->assertEquals(AlarmTrigger::TR_TAG_LTE_VAL, $alarmDef->getTrigger());
         $this->assertEquals(50, $alarmDef->getTriggerNumeric());
         $this->assertEquals('TEST_ALARM_BYTE', $alarmDef->getTag()->getName());
@@ -435,10 +435,10 @@ class AlarmSystemByteTest extends AlarmSystemFunctionTestCase {
     /**
      * Test BYTE alarm Tag=value
      */
-    public function testByte5() {
-        
+    public function testByte5()
+    {
         // Get alarm definition
-        $alarmDef = $this->getAlarmDefinition(TagType::Byte);
+        $alarmDef = $this->getAlarmDefinition(TagType::BYTE);
         // Change trigger
         $alarmDef->setTrigger(AlarmTrigger::TR_TAG_EQ_VAL);
         $alarmDef->setTriggerNumeric(70);
@@ -481,7 +481,7 @@ class AlarmSystemByteTest extends AlarmSystemFunctionTestCase {
         // Deactivate alarm definition
         $this->alarmMapper->enableAlarm($alarmDef->getId(), false);
         
-        $this->assertEquals(TagType::Byte, $alarmDef->getTag()->getType());
+        $this->assertEquals(TagType::BYTE, $alarmDef->getTag()->getType());
         $this->assertEquals(AlarmTrigger::TR_TAG_EQ_VAL, $alarmDef->getTrigger());
         $this->assertEquals(70, $alarmDef->getTriggerNumeric());
         $this->assertEquals('TEST_ALARM_BYTE', $alarmDef->getTag()->getName());
@@ -541,10 +541,10 @@ class AlarmSystemByteTest extends AlarmSystemFunctionTestCase {
     /**
      * Test BYTE alarm Tag!=value
      */
-    public function testByte6() {
-        
+    public function testByte6()
+    {
         // Get alarm definition
-        $alarmDef = $this->getAlarmDefinition(TagType::Byte);
+        $alarmDef = $this->getAlarmDefinition(TagType::BYTE);
         // Change trigger
         $alarmDef->setTrigger(AlarmTrigger::TR_TAG_NEQ_VAL);
         $alarmDef->setTriggerNumeric(71);
@@ -587,7 +587,7 @@ class AlarmSystemByteTest extends AlarmSystemFunctionTestCase {
         // Deactivate alarm definition
         $this->alarmMapper->enableAlarm($alarmDef->getId(), false);
         
-        $this->assertEquals(TagType::Byte, $alarmDef->getTag()->getType());
+        $this->assertEquals(TagType::BYTE, $alarmDef->getTag()->getType());
         $this->assertEquals(AlarmTrigger::TR_TAG_NEQ_VAL, $alarmDef->getTrigger());
         $this->assertEquals(71, $alarmDef->getTriggerNumeric());
         $this->assertEquals('TEST_ALARM_BYTE', $alarmDef->getTag()->getName());
@@ -647,10 +647,10 @@ class AlarmSystemByteTest extends AlarmSystemFunctionTestCase {
     /**
      * Test BYTE alarm - AutoAck
      */
-    public function testByte7() {
-        
+    public function testByte7()
+    {
         // Get alarm definition
-        $alarmDef = $this->getAlarmDefinition(TagType::Byte);
+        $alarmDef = $this->getAlarmDefinition(TagType::BYTE);
         // Set AutoAck flag
         $alarmDef->setAutoAck(true);
         // Change trigger
@@ -683,7 +683,7 @@ class AlarmSystemByteTest extends AlarmSystemFunctionTestCase {
         // Deactivate alarm definition
         $this->alarmMapper->enableAlarm($alarmDef->getId(), false);
         
-        $this->assertEquals(TagType::Byte, $alarmDef->getTag()->getType());
+        $this->assertEquals(TagType::BYTE, $alarmDef->getTag()->getType());
         $this->assertEquals(AlarmTrigger::TR_TAG_EQ_VAL, $alarmDef->getTrigger());
         $this->assertEquals(70, $alarmDef->getTriggerNumeric());
         $this->assertEquals('TEST_ALARM_BYTE', $alarmDef->getTag()->getName());
@@ -730,10 +730,10 @@ class AlarmSystemByteTest extends AlarmSystemFunctionTestCase {
     /**
      * Test BYTE alarm - no feedback tag
      */
-    public function testByte8() {
-        
+    public function testByte8()
+    {
         // Get alarm definition
-        $alarmDef = $this->getAlarmDefinition(TagType::Byte);
+        $alarmDef = $this->getAlarmDefinition(TagType::BYTE);
         // Set AutoAck flag
         $alarmDef->setAutoAck(false);
         // Delete feedback tag
@@ -777,7 +777,7 @@ class AlarmSystemByteTest extends AlarmSystemFunctionTestCase {
         // Deactivate alarm definition
         $this->alarmMapper->enableAlarm($alarmDef->getId(), false);
         
-        $this->assertEquals(TagType::Byte, $alarmDef->getTag()->getType());
+        $this->assertEquals(TagType::BYTE, $alarmDef->getTag()->getType());
         $this->assertEquals(AlarmTrigger::TR_TAG_EQ_VAL, $alarmDef->getTrigger());
         $this->assertEquals(70, $alarmDef->getTriggerNumeric());
         $this->assertEquals('TEST_ALARM_BYTE', $alarmDef->getTag()->getName());
@@ -837,10 +837,10 @@ class AlarmSystemByteTest extends AlarmSystemFunctionTestCase {
     /**
      * Test BYTE alarm - no HW ack tag
      */
-    public function testByte9() {
-        
+    public function testByte9()
+    {
         // Get alarm definition
-        $alarmDef = $this->getAlarmDefinition(TagType::Byte);
+        $alarmDef = $this->getAlarmDefinition(TagType::BYTE);
         // Delete HW ack tag
         $alarmDef->setHWAck();
         // Save alarm definition
@@ -878,7 +878,7 @@ class AlarmSystemByteTest extends AlarmSystemFunctionTestCase {
         // Deactivate alarm definition
         $this->alarmMapper->enableAlarm($alarmDef->getId(), false);
         
-        $this->assertEquals(TagType::Byte, $alarmDef->getTag()->getType());
+        $this->assertEquals(TagType::BYTE, $alarmDef->getTag()->getType());
         $this->assertEquals(AlarmTrigger::TR_TAG_EQ_VAL, $alarmDef->getTrigger());
         $this->assertEquals(70, $alarmDef->getTriggerNumeric());
         $this->assertEquals('TEST_ALARM_BYTE', $alarmDef->getTag()->getName());

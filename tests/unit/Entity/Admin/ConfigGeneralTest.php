@@ -10,19 +10,19 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Mateusz Mirosławski
  */
-class ConfigGeneralTest extends TestCase {
-    
+class ConfigGeneralTest extends TestCase
+{
     /**
      * Test Default constructor
      */
-    public function testDefaultConstructor() {
-        
+    public function testDefaultConstructor()
+    {
         $cfg = new ConfigGeneral();
         
-        $this->assertEquals(ConfigGeneral::updateIntervalMax, $cfg->getAlarmingUpdateInterval());
-        $this->assertEquals(ConfigGeneral::updateIntervalMax, $cfg->getProcessUpdateInterval());
-        $this->assertEquals(ConfigGeneral::updateIntervalMax, $cfg->getTagLoggerUpdateInterval());
-        $this->assertEquals(ConfigGeneral::updateIntervalMax, $cfg->getScriptSystemUpdateInterval());
+        $this->assertEquals(ConfigGeneral::UPDATE_INTERVAL_MAX, $cfg->getAlarmingUpdateInterval());
+        $this->assertEquals(ConfigGeneral::UPDATE_INTERVAL_MAX, $cfg->getProcessUpdateInterval());
+        $this->assertEquals(ConfigGeneral::UPDATE_INTERVAL_MAX, $cfg->getTagLoggerUpdateInterval());
+        $this->assertEquals(ConfigGeneral::UPDATE_INTERVAL_MAX, $cfg->getScriptSystemUpdateInterval());
         
         $this->assertEquals(3, $cfg->getSocketMaxConn());
         $this->assertEquals(8080, $cfg->getSocketPort());
@@ -36,8 +36,8 @@ class ConfigGeneralTest extends TestCase {
     /**
      * Test setAlarmingUpdateInterval method
      */
-    public function testSetAlarmingUpdateInterval() {
-        
+    public function testSetAlarmingUpdateInterval()
+    {
         $cfg = new ConfigGeneral();
         $cfg->setAlarmingUpdateInterval(45);
         
@@ -47,8 +47,8 @@ class ConfigGeneralTest extends TestCase {
     /**
      * Test setProcessUpdateInterval method
      */
-    public function testSetProcessUpdateInterval() {
-        
+    public function testSetProcessUpdateInterval()
+    {
         $cfg = new ConfigGeneral();
         $cfg->setProcessUpdateInterval(800);
         
@@ -58,8 +58,8 @@ class ConfigGeneralTest extends TestCase {
     /**
      * Test setScriptSystemUpdateInterval method
      */
-    public function testSetScriptSystemUpdateInterval() {
-        
+    public function testSetScriptSystemUpdateInterval()
+    {
         $cfg = new ConfigGeneral();
         $cfg->setScriptSystemUpdateInterval(800);
         
@@ -69,8 +69,8 @@ class ConfigGeneralTest extends TestCase {
     /**
      * Test setSocketMaxConn method
      */
-    public function testSetSocketMaxConn() {
-        
+    public function testSetSocketMaxConn()
+    {
         $cfg = new ConfigGeneral();
         $cfg->setSocketMaxConn(5);
         
@@ -80,8 +80,8 @@ class ConfigGeneralTest extends TestCase {
     /**
      * Test setSocketPort method
      */
-    public function testSetSocketPort() {
-        
+    public function testSetSocketPort()
+    {
         $cfg = new ConfigGeneral();
         $cfg->setSocketPort(5060);
         
@@ -91,8 +91,8 @@ class ConfigGeneralTest extends TestCase {
     /**
      * Test setTagLoggerUpdateInterval method
      */
-    public function testSetTagLoggerUpdateInterval() {
-        
+    public function testSetTagLoggerUpdateInterval()
+    {
         $cfg = new ConfigGeneral();
         $cfg->setTagLoggerUpdateInterval(600);
         
@@ -102,8 +102,8 @@ class ConfigGeneralTest extends TestCase {
     /**
      * Test setServerAppPath method
      */
-    public function testSetServerAppPath() {
-        
+    public function testSetServerAppPath()
+    {
         $cfg = new ConfigGeneral();
         $cfg->setServerAppPath('path3');
         
@@ -113,8 +113,8 @@ class ConfigGeneralTest extends TestCase {
     /**
      * Test setWebAppPath method
      */
-    public function testSetWebAppPath() {
-        
+    public function testSetWebAppPath()
+    {
         $cfg = new ConfigGeneral();
         $cfg->setWebAppPath('testPathWeb');
         
@@ -124,8 +124,8 @@ class ConfigGeneralTest extends TestCase {
     /**
      * Test setSystemScriptsPath method
      */
-    public function testSetScriptSystemExecuteScript() {
-        
+    public function testSetScriptSystemExecuteScript()
+    {
         $cfg = new ConfigGeneral();
         $cfg->setScriptSystemExecuteScript('testPath');
         
@@ -135,8 +135,8 @@ class ConfigGeneralTest extends TestCase {
     /**
      * Test setUserScriptsPath method
      */
-    public function testSetUserScriptsPath() {
-        
+    public function testSetUserScriptsPath()
+    {
         $cfg = new ConfigGeneral();
         $cfg->setUserScriptsPath('testScriptPth');
         
@@ -146,8 +146,8 @@ class ConfigGeneralTest extends TestCase {
     /**
      * Test setAckAccessRole method
      */
-    public function testSetAckAccessRole() {
-        
+    public function testSetAckAccessRole()
+    {
         $cfg = new ConfigGeneral();
         $cfg->setAckAccessRole('ROLE_ADMIN');
         

@@ -11,15 +11,15 @@ use App\Entity\Admin\TagType;
  *
  * @author Mateusz Mirosławski
  */
-class TagLoggerTest extends TagLoggerFunctionTestCase {
-    
+class TagLoggerTest extends TagLoggerFunctionTestCase
+{
     /**
      * Test BIT logger
      */
-    public function testBit1() {
-        
+    public function testBit1()
+    {
         // Get logger
-        $logger = $this->getLogger(TagType::Bit);
+        $logger = $this->getLogger(TagType::BIT);
         
         // Get logger data
         $params = array(
@@ -40,7 +40,7 @@ class TagLoggerTest extends TagLoggerFunctionTestCase {
         $data2 = $this->chartReader->getData($params);
         
         $this->assertEquals(TagLoggerInterval::I_100MS, $logger->getInterval());
-        $this->assertEquals(TagType::Bit, $logger->getTag()->getType());
+        $this->assertEquals(TagType::BIT, $logger->getTag()->getType());
         
         $this->assertEquals('stepped', $data1['chartType']);
         $this->assertEquals('TEST_LOG_BIT1', $data1['dataTitle']);
@@ -49,14 +49,14 @@ class TagLoggerTest extends TagLoggerFunctionTestCase {
         
         $this->assertEquals('stepped', $data2['chartType']);
         $this->assertEquals('TEST_LOG_BIT1', $data2['dataTitle']);
-        $this->assertTrue((count($data2['data']['x'])>=1)?(true):(false));
-        $this->assertTrue((count($data2['data']['y'])>=1)?(true):(false));
+        $this->assertTrue((count($data2['data']['x']) >= 1) ? (true) : (false));
+        $this->assertTrue((count($data2['data']['y']) >= 1) ? (true) : (false));
     }
     
-    public function testBit2() {
-        
+    public function testBit2()
+    {
         // Get logger - 'on change'
-        $logger = $this->getLogger(TagType::Bit, false);
+        $logger = $this->getLogger(TagType::BIT, false);
         
         // Get logger data
         $params = array(
@@ -88,7 +88,7 @@ class TagLoggerTest extends TagLoggerFunctionTestCase {
         $data3 = $this->chartReader->getData($params);
         
         $this->assertEquals(TagLoggerInterval::I_ON_CHANGE, $logger->getInterval());
-        $this->assertEquals(TagType::Bit, $logger->getTag()->getType());
+        $this->assertEquals(TagType::BIT, $logger->getTag()->getType());
         
         $this->assertEquals('stepped', $data1['chartType']);
         $this->assertEquals('TEST_LOG_BIT2', $data1['dataTitle']);
@@ -112,10 +112,10 @@ class TagLoggerTest extends TagLoggerFunctionTestCase {
     /**
      * Test BYTE logger
      */
-    public function testByte1() {
-        
+    public function testByte1()
+    {
         // Get logger
-        $logger = $this->getLogger(TagType::Byte);
+        $logger = $this->getLogger(TagType::BYTE);
         
         // Get logger data
         $params = array(
@@ -146,7 +146,7 @@ class TagLoggerTest extends TagLoggerFunctionTestCase {
         $this->loggerMapper->enableLogger($logger->getId(), false);
         
         $this->assertEquals(TagLoggerInterval::I_100MS, $logger->getInterval());
-        $this->assertEquals(TagType::Byte, $logger->getTag()->getType());
+        $this->assertEquals(TagType::BYTE, $logger->getTag()->getType());
         
         $this->assertEquals('line', $data1['chartType']);
         $this->assertEquals('TEST_LOG_BYTE1', $data1['dataTitle']);
@@ -155,24 +155,24 @@ class TagLoggerTest extends TagLoggerFunctionTestCase {
         
         $this->assertEquals('line', $data2['chartType']);
         $this->assertEquals('TEST_LOG_BYTE1', $data2['dataTitle']);
-        $this->assertTrue((count($data2['data']['x'])>=1)?(true):(false));
-        $this->assertTrue((count($data2['data']['y'])>=1)?(true):(false));
+        $this->assertTrue((count($data2['data']['x']) >= 1) ? (true) : (false));
+        $this->assertTrue((count($data2['data']['y']) >= 1) ? (true) : (false));
         $this->assertEquals(55, $data2['data']['y'][0]);
         $this->assertEquals(55, $data2['data']['y'][1]);
         
         $this->assertEquals('line', $data3['chartType']);
         $this->assertEquals('TEST_LOG_BYTE1', $data3['dataTitle']);
-        $this->assertTrue((count($data3['data']['x'])>=2)?(true):(false));
-        $this->assertTrue((count($data3['data']['y'])>=2)?(true):(false));
+        $this->assertTrue((count($data3['data']['x']) >= 2) ? (true) : (false));
+        $this->assertTrue((count($data3['data']['y']) >= 2) ? (true) : (false));
         // Get last value
-        $dtVal = count($data3['data']['y'])-1;
+        $dtVal = count($data3['data']['y']) - 1;
         $this->assertEquals(150, $data3['data']['y'][$dtVal]);
     }
     
-    public function testByte2() {
-        
+    public function testByte2()
+    {
         // Get logger - 'on change'
-        $logger = $this->getLogger(TagType::Byte, false);
+        $logger = $this->getLogger(TagType::BYTE, false);
         
         // Get logger data
         $params = array(
@@ -206,7 +206,7 @@ class TagLoggerTest extends TagLoggerFunctionTestCase {
         $data3 = $this->chartReader->getData($params);
         
         $this->assertEquals(TagLoggerInterval::I_ON_CHANGE, $logger->getInterval());
-        $this->assertEquals(TagType::Byte, $logger->getTag()->getType());
+        $this->assertEquals(TagType::BYTE, $logger->getTag()->getType());
         
         $this->assertEquals('line', $data1['chartType']);
         $this->assertEquals('TEST_LOG_BYTE2', $data1['dataTitle']);
@@ -232,10 +232,10 @@ class TagLoggerTest extends TagLoggerFunctionTestCase {
     /**
      * Test WORD logger
      */
-    public function testWord1() {
-        
+    public function testWord1()
+    {
         // Get logger
-        $logger = $this->getLogger(TagType::Word);
+        $logger = $this->getLogger(TagType::WORD);
         
         // Get logger data
         $params = array(
@@ -266,7 +266,7 @@ class TagLoggerTest extends TagLoggerFunctionTestCase {
         $this->loggerMapper->enableLogger($logger->getId(), false);
         
         $this->assertEquals(TagLoggerInterval::I_100MS, $logger->getInterval());
-        $this->assertEquals(TagType::Word, $logger->getTag()->getType());
+        $this->assertEquals(TagType::WORD, $logger->getTag()->getType());
         
         $this->assertEquals('line', $data1['chartType']);
         $this->assertEquals('TEST_LOG_WORD1', $data1['dataTitle']);
@@ -275,24 +275,24 @@ class TagLoggerTest extends TagLoggerFunctionTestCase {
         
         $this->assertEquals('line', $data2['chartType']);
         $this->assertEquals('TEST_LOG_WORD1', $data2['dataTitle']);
-        $this->assertTrue((count($data2['data']['x'])>=1)?(true):(false));
-        $this->assertTrue((count($data2['data']['y'])>=1)?(true):(false));
+        $this->assertTrue((count($data2['data']['x']) >= 1) ? (true) : (false));
+        $this->assertTrue((count($data2['data']['y']) >= 1) ? (true) : (false));
         $this->assertEquals(12120, $data2['data']['y'][0]);
         $this->assertEquals(12120, $data2['data']['y'][1]);
         
         $this->assertEquals('line', $data3['chartType']);
         $this->assertEquals('TEST_LOG_WORD1', $data3['dataTitle']);
-        $this->assertTrue((count($data3['data']['x'])>=2)?(true):(false));
-        $this->assertTrue((count($data3['data']['y'])>=2)?(true):(false));
+        $this->assertTrue((count($data3['data']['x']) >= 2) ? (true) : (false));
+        $this->assertTrue((count($data3['data']['y']) >= 2) ? (true) : (false));
         // Get last value
-        $dtVal = count($data3['data']['y'])-1;
+        $dtVal = count($data3['data']['y']) - 1;
         $this->assertEquals(35120, $data3['data']['y'][$dtVal]);
     }
     
-    public function testWord2() {
-        
+    public function testWord2()
+    {
         // Get logger - 'on change'
-        $logger = $this->getLogger(TagType::Word, false);
+        $logger = $this->getLogger(TagType::WORD, false);
         
         // Get logger data
         $params = array(
@@ -326,7 +326,7 @@ class TagLoggerTest extends TagLoggerFunctionTestCase {
         $data3 = $this->chartReader->getData($params);
         
         $this->assertEquals(TagLoggerInterval::I_ON_CHANGE, $logger->getInterval());
-        $this->assertEquals(TagType::Word, $logger->getTag()->getType());
+        $this->assertEquals(TagType::WORD, $logger->getTag()->getType());
         
         $this->assertEquals('line', $data1['chartType']);
         $this->assertEquals('TEST_LOG_WORD2', $data1['dataTitle']);
@@ -352,10 +352,10 @@ class TagLoggerTest extends TagLoggerFunctionTestCase {
     /**
      * Test DWORD logger
      */
-    public function testDWord1() {
-        
+    public function testDWord1()
+    {
         // Get logger
-        $logger = $this->getLogger(TagType::DWord);
+        $logger = $this->getLogger(TagType::DWORD);
         
         // Get logger data
         $params = array(
@@ -386,7 +386,7 @@ class TagLoggerTest extends TagLoggerFunctionTestCase {
         $this->loggerMapper->enableLogger($logger->getId(), false);
         
         $this->assertEquals(TagLoggerInterval::I_100MS, $logger->getInterval());
-        $this->assertEquals(TagType::DWord, $logger->getTag()->getType());
+        $this->assertEquals(TagType::DWORD, $logger->getTag()->getType());
         
         $this->assertEquals('line', $data1['chartType']);
         $this->assertEquals('TEST_LOG_DWORD1', $data1['dataTitle']);
@@ -395,24 +395,24 @@ class TagLoggerTest extends TagLoggerFunctionTestCase {
         
         $this->assertEquals('line', $data2['chartType']);
         $this->assertEquals('TEST_LOG_DWORD1', $data2['dataTitle']);
-        $this->assertTrue((count($data2['data']['x'])>=1)?(true):(false));
-        $this->assertTrue((count($data2['data']['y'])>=1)?(true):(false));
+        $this->assertTrue((count($data2['data']['x']) >= 1) ? (true) : (false));
+        $this->assertTrue((count($data2['data']['y']) >= 1) ? (true) : (false));
         $this->assertEquals(558654, $data2['data']['y'][0]);
         $this->assertEquals(558654, $data2['data']['y'][1]);
         
         $this->assertEquals('line', $data3['chartType']);
         $this->assertEquals('TEST_LOG_DWORD1', $data3['dataTitle']);
-        $this->assertTrue((count($data3['data']['x'])>=2)?(true):(false));
-        $this->assertTrue((count($data3['data']['y'])>=2)?(true):(false));
+        $this->assertTrue((count($data3['data']['x']) >= 2) ? (true) : (false));
+        $this->assertTrue((count($data3['data']['y']) >= 2) ? (true) : (false));
         // Get last value
-        $dtVal = count($data3['data']['y'])-1;
+        $dtVal = count($data3['data']['y']) - 1;
         $this->assertEquals(158654, $data3['data']['y'][$dtVal]);
     }
     
-    public function testDWord2() {
-        
+    public function testDWord2()
+    {
         // Get logger - 'on change'
-        $logger = $this->getLogger(TagType::DWord, false);
+        $logger = $this->getLogger(TagType::DWORD, false);
         
         // Get logger data
         $params = array(
@@ -446,7 +446,7 @@ class TagLoggerTest extends TagLoggerFunctionTestCase {
         $data3 = $this->chartReader->getData($params);
         
         $this->assertEquals(TagLoggerInterval::I_ON_CHANGE, $logger->getInterval());
-        $this->assertEquals(TagType::DWord, $logger->getTag()->getType());
+        $this->assertEquals(TagType::DWORD, $logger->getTag()->getType());
         
         $this->assertEquals('line', $data1['chartType']);
         $this->assertEquals('TEST_LOG_DWORD2', $data1['dataTitle']);
@@ -472,8 +472,8 @@ class TagLoggerTest extends TagLoggerFunctionTestCase {
     /**
      * Test INT logger
      */
-    public function testInt1() {
-        
+    public function testInt1()
+    {
         // Get logger
         $logger = $this->getLogger(TagType::INT);
         
@@ -515,22 +515,22 @@ class TagLoggerTest extends TagLoggerFunctionTestCase {
         
         $this->assertEquals('line', $data2['chartType']);
         $this->assertEquals('TEST_LOG_INT1', $data2['dataTitle']);
-        $this->assertTrue((count($data2['data']['x'])>=1)?(true):(false));
-        $this->assertTrue((count($data2['data']['y'])>=1)?(true):(false));
+        $this->assertTrue((count($data2['data']['x']) >= 1) ? (true) : (false));
+        $this->assertTrue((count($data2['data']['y']) >= 1) ? (true) : (false));
         $this->assertEquals(-1201, $data2['data']['y'][0]);
         $this->assertEquals(-1201, $data2['data']['y'][1]);
         
         $this->assertEquals('line', $data3['chartType']);
         $this->assertEquals('TEST_LOG_INT1', $data3['dataTitle']);
-        $this->assertTrue((count($data3['data']['x'])>=2)?(true):(false));
-        $this->assertTrue((count($data3['data']['y'])>=2)?(true):(false));
+        $this->assertTrue((count($data3['data']['x']) >= 2) ? (true) : (false));
+        $this->assertTrue((count($data3['data']['y']) >= 2) ? (true) : (false));
         // Get last value
-        $dtVal = count($data3['data']['y'])-1;
+        $dtVal = count($data3['data']['y']) - 1;
         $this->assertEquals(-1200, $data3['data']['y'][$dtVal]);
     }
     
-    public function testINT2() {
-        
+    public function testINT2()
+    {
         // Get logger - 'on change'
         $logger = $this->getLogger(TagType::INT, false);
         
@@ -592,8 +592,8 @@ class TagLoggerTest extends TagLoggerFunctionTestCase {
     /**
      * Test REAL logger
      */
-    public function testReal1() {
-        
+    public function testReal1()
+    {
         // Get logger
         $logger = $this->getLogger(TagType::REAL);
         
@@ -635,22 +635,22 @@ class TagLoggerTest extends TagLoggerFunctionTestCase {
         
         $this->assertEquals('line', $data2['chartType']);
         $this->assertEquals('TEST_LOG_REAL1', $data2['dataTitle']);
-        $this->assertTrue((count($data2['data']['x'])>=1)?(true):(false));
-        $this->assertTrue((count($data2['data']['y'])>=1)?(true):(false));
+        $this->assertTrue((count($data2['data']['x']) >= 1) ? (true) : (false));
+        $this->assertTrue((count($data2['data']['y']) >= 1) ? (true) : (false));
         $this->assertEquals(3.79, $data2['data']['y'][0]);
         $this->assertEquals(3.79, $data2['data']['y'][1]);
         
         $this->assertEquals('line', $data3['chartType']);
         $this->assertEquals('TEST_LOG_REAL1', $data3['dataTitle']);
-        $this->assertTrue((count($data3['data']['x'])>=2)?(true):(false));
-        $this->assertTrue((count($data3['data']['y'])>=2)?(true):(false));
+        $this->assertTrue((count($data3['data']['x']) >= 2) ? (true) : (false));
+        $this->assertTrue((count($data3['data']['y']) >= 2) ? (true) : (false));
         // Get last value
-        $dtVal = count($data3['data']['y'])-1;
+        $dtVal = count($data3['data']['y']) - 1;
         $this->assertEquals(3.78, $data3['data']['y'][$dtVal]);
     }
     
-    public function testReal2() {
-        
+    public function testReal2()
+    {
         // Get logger - 'on change'
         $logger = $this->getLogger(TagType::REAL, false);
         

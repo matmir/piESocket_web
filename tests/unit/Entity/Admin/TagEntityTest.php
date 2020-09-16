@@ -13,13 +13,13 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Mateusz Mirosławski
  */
-class TagEntityTest extends TestCase {
-    
+class TagEntityTest extends TestCase
+{
     /**
      * Test default constructor
      */
-    public function testDefaultConstructor() {
-        
+    public function testDefaultConstructor()
+    {
         $te = new TagEntity();
         
         $this->assertEquals(0, $te->gettid());
@@ -33,56 +33,56 @@ class TagEntityTest extends TestCase {
         $this->assertEquals('ROLE_USER', $te->gettWriteAccess());
     }
     
-    public function testSetId() {
-        
+    public function testSetId()
+    {
         $te = new TagEntity();
         $te->settid(654);
         
         $this->assertEquals(654, $te->gettid());
     }
     
-    public function testSetConnId() {
-        
+    public function testSetConnId()
+    {
         $te = new TagEntity();
         $te->settConnId(654);
         
         $this->assertEquals(654, $te->gettConnId());
     }
     
-    public function testSetName() {
-        
+    public function testSetName()
+    {
         $te = new TagEntity();
         $te->settName('TestTag');
         
         $this->assertEquals('TestTag', $te->gettName());
     }
     
-    public function testSetArea() {
-        
+    public function testSetArea()
+    {
         $te = new TagEntity();
         $te->settArea(2);
         
         $this->assertEquals(2, $te->gettArea());
     }
     
-    public function testSetType() {
-        
+    public function testSetType()
+    {
         $te = new TagEntity();
         $te->settType(2);
         
         $this->assertEquals(2, $te->gettType());
     }
     
-    public function testSetBitAddress() {
-        
+    public function testSetBitAddress()
+    {
         $te = new TagEntity();
         $te->settBitAddress(5);
         
         $this->assertEquals(5, $te->gettBitAddress());
     }
     
-    public function testSetByteAddress() {
-        
+    public function testSetByteAddress()
+    {
         $te = new TagEntity();
         $te->settByteAddress(100);
         
@@ -92,13 +92,13 @@ class TagEntityTest extends TestCase {
     /**
      * Test getFullTagObject method
      */
-    public function testGetFullTagObject() {
-        
+    public function testGetFullTagObject()
+    {
         $te = new TagEntity();
         $te->settid(50);
         $te->settName('TestTag');
-        $te->settArea(TagArea::memory);
-        $te->settType(TagType::Byte);
+        $te->settArea(TagArea::MEMORY);
+        $te->settType(TagType::BYTE);
         $te->settByteAddress(100);
         $te->settBitAddress(0);
         $te->settReadAccess('ROLE_GUEST');
@@ -107,8 +107,8 @@ class TagEntityTest extends TestCase {
         $tag = $te->getFullTagObject();
         
         $this->assertInstanceOf(Tag::class, $tag);
-        $this->assertEquals(TagArea::memory, $tag->getArea());
-        $this->assertEquals(TagType::Byte, $tag->getType());
+        $this->assertEquals(TagArea::MEMORY, $tag->getArea());
+        $this->assertEquals(TagType::BYTE, $tag->getType());
         $this->assertEquals(50, $tag->getId());
         $this->assertEquals(100, $tag->getByteAddress());
         $this->assertEquals(0, $tag->getBitAddress());
@@ -120,14 +120,14 @@ class TagEntityTest extends TestCase {
     /**
      * Test initFromTagObject
      */
-    public function testInitFromTagObject() {
-        
+    public function testInitFromTagObject()
+    {
         $tag = new Tag();
         $tag->setId(40);
         $tag->setConnId(5);
         $tag->setName('TestTag');
-        $tag->setArea(TagArea::input);
-        $tag->setType(TagType::Word);
+        $tag->setArea(TagArea::INPUT);
+        $tag->setType(TagType::WORD);
         $tag->setByteAddress(30);
         $tag->setBitAddress(0);
         $tag->setReadAccess('ROLE_GUEST');
@@ -139,22 +139,22 @@ class TagEntityTest extends TestCase {
         $this->assertEquals(40, $te->gettid());
         $this->assertEquals(5, $te->gettConnId());
         $this->assertEquals('TestTag', $te->gettName());
-        $this->assertEquals(TagArea::input, $te->gettArea());
-        $this->assertEquals(TagType::Word, $te->gettType());
+        $this->assertEquals(TagArea::INPUT, $te->gettArea());
+        $this->assertEquals(TagType::WORD, $te->gettType());
         $this->assertEquals(0, $te->gettBitAddress());
         $this->assertEquals(30, $te->gettByteAddress());
         $this->assertEquals('ROLE_GUEST', $te->gettReadAccess());
         $this->assertEquals('ROLE_USER', $te->gettWriteAccess());
     }
     
-    public function testInitFromTagObjectWrong() {
-        
+    public function testInitFromTagObjectWrong()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Tag name can not be empty');
         
         $tag = new Tag();
-        $tag->setArea(TagArea::input);
-        $tag->setType(TagType::Word);
+        $tag->setArea(TagArea::INPUT);
+        $tag->setType(TagType::WORD);
         
         $te = new TagEntity();
         $te->initFromTagObject($tag);

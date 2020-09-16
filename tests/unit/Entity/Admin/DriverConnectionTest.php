@@ -14,13 +14,13 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Mateusz Mirosławski
  */
-class DriverConnectionTest extends TestCase {
-    
+class DriverConnectionTest extends TestCase
+{
     /**
      * Test Default constructor
      */
-    public function testDefaultConstructor() {
-        
+    public function testDefaultConstructor()
+    {
         $cfg = new DriverConnection();
         
         $this->assertEquals(0, $cfg->getId());
@@ -36,8 +36,8 @@ class DriverConnectionTest extends TestCase {
     /**
      * Test setId method
      */
-    public function testSetId() {
-        
+    public function testSetId()
+    {
         $cfg = new DriverConnection();
         $cfg->setId(65);
         
@@ -51,8 +51,8 @@ class DriverConnectionTest extends TestCase {
         $this->assertFalse($cfg->isEnabled());
     }
     
-    public function testSetIdWrong1() {
-        
+    public function testSetIdWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Driver connection identifier wrong value');
         
@@ -63,8 +63,8 @@ class DriverConnectionTest extends TestCase {
     /**
      * Test setName method
      */
-    public function testSetName() {
-        
+    public function testSetName()
+    {
         $cfg = new DriverConnection();
         $cfg->setName("dfgh");
         
@@ -78,8 +78,8 @@ class DriverConnectionTest extends TestCase {
         $this->assertFalse($cfg->isEnabled());
     }
     
-    public function testSetNameWrong1() {
-        
+    public function testSetNameWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Driver connection name can not be empty');
         
@@ -90,14 +90,14 @@ class DriverConnectionTest extends TestCase {
     /**
      * Test setType method
      */
-    public function testSetType() {
-        
+    public function testSetType()
+    {
         $cfg = new DriverConnection();
-        $cfg->setType(DriverType::Modbus);
+        $cfg->setType(DriverType::MODBUS);
         
         $this->assertEquals(0, $cfg->getId());
         $this->assertEquals('conn1', $cfg->getName());
-        $this->assertEquals(DriverType::Modbus, $cfg->getType());
+        $this->assertEquals(DriverType::MODBUS, $cfg->getType());
         $this->assertEquals(null, $cfg->getModbusConfig());
         $this->assertEquals(null, $cfg->getShmConfig());
         $this->assertFalse($cfg->isModbusConfig());
@@ -105,8 +105,8 @@ class DriverConnectionTest extends TestCase {
         $this->assertFalse($cfg->isEnabled());
     }
     
-    public function testSetTypeWrong1() {
-        
+    public function testSetTypeWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('DriverType::check: Invalid driver type identifier');
         
@@ -117,8 +117,8 @@ class DriverConnectionTest extends TestCase {
     /**
      * Test setModbusConfig method
      */
-    public function testSetModbusConfig() {
-        
+    public function testSetModbusConfig()
+    {
         // Modbus CFG
         $mb = new DriverModbus();
         $mb->setId(7);
@@ -133,12 +133,12 @@ class DriverConnectionTest extends TestCase {
         $mb->setRTUstopBit(2);
         
         $cfg = new DriverConnection();
-        $cfg->setType(DriverType::Modbus);
+        $cfg->setType(DriverType::MODBUS);
         $cfg->setModbusConfig($mb);
         
         $this->assertEquals(0, $cfg->getId());
         $this->assertEquals('conn1', $cfg->getName());
-        $this->assertEquals(DriverType::Modbus, $cfg->getType());
+        $this->assertEquals(DriverType::MODBUS, $cfg->getType());
         
         $mbc = $cfg->getModbusConfig();
         $this->assertEquals(7, $mbc->getId());
@@ -161,8 +161,8 @@ class DriverConnectionTest extends TestCase {
         $this->assertFalse($cfg->isEnabled());
     }
     
-    public function testSetModbusConfigWrong1() {
-        
+    public function testSetModbusConfigWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Modbus configuration is wrong type');
         
@@ -170,15 +170,15 @@ class DriverConnectionTest extends TestCase {
         $shm = new DriverSHM();
         
         $cfg = new DriverConnection();
-        $cfg->setType(DriverType::Modbus);
+        $cfg->setType(DriverType::MODBUS);
         $cfg->setModbusConfig($shm);
     }
     
     /**
      * Test setShmConfig method
      */
-    public function testSetShmConfig() {
-        
+    public function testSetShmConfig()
+    {
         // SHM CFG
         $shm = new DriverSHM();
         $shm->setId(7);
@@ -202,8 +202,8 @@ class DriverConnectionTest extends TestCase {
         $this->assertFalse($cfg->isEnabled());
     }
     
-    public function testSetShmConfigWrong1() {
-        
+    public function testSetShmConfigWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('SHM configuration is wrong type');
         
@@ -218,8 +218,8 @@ class DriverConnectionTest extends TestCase {
     /**
      * Test setEnable method
      */
-    public function testSetEnable() {
-        
+    public function testSetEnable()
+    {
         $cfg = new DriverConnection();
         $cfg->setEnable(true);
         
@@ -236,8 +236,8 @@ class DriverConnectionTest extends TestCase {
     /**
      * Test isValid method
      */
-    public function testIsValidWithoutID() {
-        
+    public function testIsValidWithoutID()
+    {
         // Shm CFG
         $shm = new DriverSHM();
         
@@ -247,8 +247,8 @@ class DriverConnectionTest extends TestCase {
         $this->assertTrue($cfg->isValid());
     }
     
-    public function testIsValidWithID() {
-        
+    public function testIsValidWithID()
+    {
         // Shm CFG
         $shm = new DriverSHM();
         
@@ -259,8 +259,8 @@ class DriverConnectionTest extends TestCase {
         $this->assertTrue($cfg->isValid(true));
     }
     
-    public function testIsValidWrong1() {
-                
+    public function testIsValidWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Missing driver configuration object');
         
@@ -268,23 +268,23 @@ class DriverConnectionTest extends TestCase {
         $cfg->isValid();
     }
     
-    public function testGetDriverName1() {
-        
+    public function testGetDriverName1()
+    {
         $cfg = new DriverConnection();
         
         $this->assertEquals("SHM", DriverType::getName($cfg->getType()));
     }
     
-    public function testGetDriverName2() {
-        
+    public function testGetDriverName2()
+    {
         $cfg = new DriverConnection();
-        $cfg->setType(DriverType::Modbus);
+        $cfg->setType(DriverType::MODBUS);
         
         $this->assertEquals("Modbus", DriverType::getName($cfg->getType()));
     }
     
-    public function testGetDriverName3() {
-        
+    public function testGetDriverName3()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('DriverType::getName: Invalid driver type identifier');
         

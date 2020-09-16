@@ -3,26 +3,25 @@
 namespace App\Entity\Admin;
 
 use Symfony\Component\Validator\Constraints as Assert;
-
 use App\Entity\Admin\Tag;
 
 /**
  * Class represents Tag object for Forms (add/edit)
- * 
+ *
  * @author Mateusz Mirosławski
  */
-class TagEntity {
-    
+class TagEntity
+{
     /**
      * Tag identifier
-     * 
+     *
      * @Assert\PositiveOrZero
      */
     private $tid;
     
     /**
      * Driver connection identifier
-     * 
+     *
      * @Assert\NotBlank()
      * @Assert\Positive
      */
@@ -30,7 +29,7 @@ class TagEntity {
     
     /**
      * Tag name
-     * 
+     *
      * @Assert\NotBlank()
      * @Assert\Regex(
      *     pattern="/[^A-Za-z0-9_]/",
@@ -43,7 +42,7 @@ class TagEntity {
     
     /**
      * Tag type
-     * 
+     *
      * @Assert\NotBlank()
      * @Assert\Type("integer")
      * @Assert\Range(
@@ -55,7 +54,7 @@ class TagEntity {
     
     /**
      * Tag area
-     * 
+     *
      * @Assert\NotBlank()
      * @Assert\Type("integer")
      * @Assert\Range(
@@ -67,7 +66,7 @@ class TagEntity {
     
     /**
      * Tag byte address
-     * 
+     *
      * @Assert\NotBlank()
      * @Assert\Type("integer")
      * @Assert\Range(
@@ -79,7 +78,7 @@ class TagEntity {
     
     /**
      * Tag bit address
-     * 
+     *
      * @Assert\NotBlank()
      * @Assert\Type("integer")
      * @Assert\Range(
@@ -91,7 +90,7 @@ class TagEntity {
     
     /**
      * Read access role
-     * 
+     *
      * @Assert\NotBlank()
      * @Assert\Length(max=20)
      */
@@ -99,14 +98,14 @@ class TagEntity {
     
     /**
      * Write access role
-     * 
+     *
      * @Assert\NotBlank()
      * @Assert\Length(max=20)
      */
     private $tWriteAccess;
     
-    public function __construct() {
-        
+    public function __construct()
+    {
         $this->tid = 0;
         $this->tConnId = 0;
         $this->tName = '';
@@ -118,103 +117,103 @@ class TagEntity {
         $this->tWriteAccess = 'ROLE_USER';
     }
     
-    public function gettid() {
-        
+    public function gettid()
+    {
         return $this->tid;
     }
     
-    public function settid($id) {
-        
+    public function settid($id)
+    {
         $this->tid = $id;
     }
     
-    public function gettConnId() {
-        
+    public function gettConnId()
+    {
         return $this->tConnId;
     }
     
-    public function settConnId($id) {
-        
+    public function settConnId($id)
+    {
         $this->tConnId = $id;
     }
     
-    public function gettName() {
-        
+    public function gettName()
+    {
         return $this->tName;
     }
     
-    public function settName($nm) {
-        
+    public function settName($nm)
+    {
         $this->tName = $nm;
     }
     
-    public function gettType() {
-        
+    public function gettType()
+    {
         return $this->tType;
     }
     
-    public function settType(int $type) {
-        
+    public function settType(int $type)
+    {
         $this->tType = $type;
     }
     
-    public function gettArea() {
-        
+    public function gettArea()
+    {
         return $this->tArea;
     }
     
-    public function settArea($area) {
-        
+    public function settArea($area)
+    {
         $this->tArea = $area;
     }
     
-    public function gettByteAddress() {
-        
+    public function gettByteAddress()
+    {
         return $this->tByteAddress;
     }
     
-    public function settByteAddress($byteA) {
-        
+    public function settByteAddress($byteA)
+    {
         $this->tByteAddress = $byteA;
     }
     
-    public function gettBitAddress() {
-        
+    public function gettBitAddress()
+    {
         return $this->tBitAddress;
     }
     
-    public function settBitAddress($bitA) {
-        
+    public function settBitAddress($bitA)
+    {
         $this->tBitAddress = $bitA;
     }
     
-    public function gettReadAccess() {
-        
+    public function gettReadAccess()
+    {
         return $this->tReadAccess;
     }
     
-    public function settReadAccess($readA) {
-        
+    public function settReadAccess($readA)
+    {
         $this->tReadAccess = $readA;
     }
     
-    public function gettWriteAccess() {
-        
+    public function gettWriteAccess()
+    {
         return $this->tWriteAccess;
     }
     
-    public function settWriteAccess($writeA) {
-        
+    public function settWriteAccess($writeA)
+    {
         $this->tWriteAccess = $writeA;
     }
     
     /**
      * Get Tag object
-     * 
+     *
      * @return Tag Tag object
      */
-    public function getFullTagObject() {
-        
+    public function getFullTagObject()
+    {
         // New tag
         $tag = new Tag();
         $tag->setId($this->tid);
@@ -232,11 +231,11 @@ class TagEntity {
     
     /**
      * Initialize from Tag object
-     * 
+     *
      * @param Tag $tag Tag object
      */
-    public function initFromTagObject(Tag $tag) {
-        
+    public function initFromTagObject(Tag $tag)
+    {
         // Check if Tag object is valid
         $tag->isValid(true);
         

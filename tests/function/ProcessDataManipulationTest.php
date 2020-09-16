@@ -11,13 +11,13 @@ use App\Service\Admin\Parser\ParserReplyCodes;
  *
  * @author Mateusz Mirosławski
  */
-class ProcessDataManipulationTest extends BaseFunctionTestCase {
-    
+class ProcessDataManipulationTest extends BaseFunctionTestCase
+{
     /**
      * Test GetBit function
      */
-    public function testGetBit() {
-        
+    public function testGetBit()
+    {
         // 0101 1011
         $pret1 = $this->parser->writeByte('TEST_BYTE10', 91);
         // 1101 1001
@@ -39,16 +39,16 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(1, $this->parser->getBit('MB_TEST_BIT3'));
     }
     
-    public function testGetBitWrong1() {
-        
+    public function testGetBitWrong1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag does not exist!');
         
         $this->parser->getBit('TEST_BITn');
     }
     
-    public function testGetBitWrong2() {
-        
+    public function testGetBitWrong2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag has wrong type!');
         
@@ -58,8 +58,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
     /**
      * Test GetBits function
      */
-    public function testGetBits() {
-        
+    public function testGetBits()
+    {
         // 0101 1011
         $pret1 = $this->parser->writeByte('TEST_BYTE10', 91);
         // 1101 1001
@@ -87,8 +87,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(1, $vals[7]);
     }
     
-    public function testGetBitsWrong1() {
-        
+    public function testGetBitsWrong1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag does not exist!');
         
@@ -97,8 +97,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->parser->getBits($tags);
     }
     
-    public function testGetBitsWrong2() {
-        
+    public function testGetBitsWrong2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag has wrong type!');
         
@@ -110,8 +110,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
     /**
      * Test SetBit function
      */
-    public function testSetBit() {
-        
+    public function testSetBit()
+    {
         // Check process byte
         $this->assertEquals(0, $this->parser->getByte('TEST_BYTE10'));
         $this->assertEquals(0, $this->parser->getByte('MB_TEST_BYTE40'));
@@ -128,16 +128,16 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(1, $this->parser->getBit('MB_TEST_BIT5'));
     }
     
-    public function testSetBitWrong1() {
-        
+    public function testSetBitWrong1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag does not exist!');
         
         $this->parser->setBit('TEST_BITn');
     }
     
-    public function testSetBitWrong2() {
-        
+    public function testSetBitWrong2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag has wrong type!');
         
@@ -147,8 +147,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
     /**
      * Test ResetBit function
      */
-    public function testResetBit() {
-        
+    public function testResetBit()
+    {
         // 0101 1011
         $pret_shm1 = $this->parser->writeByte('TEST_BYTE10', 91);
         // 1101 1001
@@ -176,16 +176,16 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(209, $this->parser->getByte('MB_TEST_BYTE40'));
     }
     
-    public function testResetBitWrong1() {
-        
+    public function testResetBitWrong1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag does not exist!');
         
         $this->parser->resetBit('TEST_BITn');
     }
     
-    public function testResetBitWrong2() {
-        
+    public function testResetBitWrong2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag has wrong type!');
         
@@ -195,8 +195,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
     /**
      * Test SetBits function
      */
-    public function testSetBits() {
-        
+    public function testSetBits()
+    {
         // Check process byte
         $this->assertEquals(0, $this->parser->getByte('TEST_BYTE10'));
         $this->assertEquals(0, $this->parser->getByte('MB_TEST_BYTE40'));
@@ -214,8 +214,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(84, $this->parser->getByte('MB_TEST_BYTE40'));
     }
     
-    public function testSetBitsWrong1() {
-        
+    public function testSetBitsWrong1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag does not exist!');
         
@@ -225,8 +225,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->parser->setBits($tags);
     }
     
-    public function testSetBitsWrong2() {
-        
+    public function testSetBitsWrong2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag has wrong type!');
         
@@ -239,8 +239,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
     /**
      * Test InvertBit function
      */
-    public function testInvertBit() {
-        
+    public function testInvertBit()
+    {
         // Check process byte
         $this->assertEquals(0, $this->parser->getByte('TEST_BYTE10'));
         $this->assertEquals(0, $this->parser->getByte('MB_TEST_BYTE40'));
@@ -257,16 +257,16 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(32, $this->parser->getByte('MB_TEST_BYTE40'));
     }
     
-    public function testInvertBitWrong1() {
-        
+    public function testInvertBitWrong1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag does not exist!');
                 
         $this->parser->invertBit('TEST_BIeT0');
     }
     
-    public function testInvertBitWrong2() {
-        
+    public function testInvertBitWrong2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag has wrong type!');
                 
@@ -276,8 +276,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
     /**
      * Test getByte function
      */
-    public function testGetByte() {
-        
+    public function testGetByte()
+    {
         // Check process byte
         $this->assertEquals(0, $this->parser->getByte('TEST_BYTE10'));
         $this->assertEquals(0, $this->parser->getByte('MB_TEST_BYTE40'));
@@ -294,8 +294,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(2, $this->parser->getByte('MB_TEST_BYTE40'));
     }
     
-    public function testGetByteWrong1() {
-        
+    public function testGetByteWrong1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag does not exist!');
         
@@ -303,8 +303,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(0, $this->parser->getByte('TEST_BYTEg10'));
     }
     
-    public function testGetByteWrong2() {
-        
+    public function testGetByteWrong2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag has wrong type!');
         
@@ -315,8 +315,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
     /**
      * Test writeByte function
      */
-    public function testWriteByte() {
-        
+    public function testWriteByte()
+    {
         // Check process byte
         $this->assertEquals(0, $this->parser->getByte('TEST_BYTE10'));
         $this->assertEquals(0, $this->parser->getByte('MB_TEST_BYTE40'));
@@ -333,8 +333,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(64, $this->parser->getByte('MB_TEST_BYTE40'));
     }
     
-    public function testWriteByteWrong1() {
-        
+    public function testWriteByteWrong1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag does not exist!');
         
@@ -344,8 +344,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->parser->writeByte('TEST_BYTrE10', 58);
     }
     
-    public function testWriteByteWrong2() {
-        
+    public function testWriteByteWrong2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag has wrong type!');
         
@@ -358,8 +358,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
     /**
      * Test getWord function
      */
-    public function testGetWord() {
-        
+    public function testGetWord()
+    {
         // Check process word
         $this->assertEquals(0, $this->parser->getWord('TEST_WORD10'));
         $this->assertEquals(0, $this->parser->getWord('MB_TEST_WORD40'));
@@ -376,8 +376,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(18944, $this->parser->getWord('MB_TEST_WORD40'));
     }
     
-    public function testGetWordWrong1() {
-        
+    public function testGetWordWrong1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag does not exist!');
         
@@ -385,8 +385,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(0, $this->parser->getWord('TEST_WORDd10'));
     }
     
-    public function testGetWordWrong2() {
-        
+    public function testGetWordWrong2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag has wrong type!');
         
@@ -397,8 +397,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
     /**
      * Test writeWord function
      */
-    public function testWriteWord() {
-        
+    public function testWriteWord()
+    {
         // Check process word
         $this->assertEquals(0, $this->parser->getWord('TEST_WORD10'));
         $this->assertEquals(0, $this->parser->getWord('MB_TEST_WORD40'));
@@ -420,8 +420,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(218, $this->parser->getByte('MB_TEST_BYTE41'));
     }
     
-    public function testWriteWordWrong1() {
-        
+    public function testWriteWordWrong1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag does not exist!');
         
@@ -431,8 +431,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->parser->writeWord('TEST_BYTrE10', 27901);
     }
     
-    public function testWriteWordWrong2() {
-        
+    public function testWriteWordWrong2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag has wrong type!');
         
@@ -445,8 +445,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
     /**
      * Test getDWord function
      */
-    public function testGetDWord() {
-        
+    public function testGetDWord()
+    {
         // Check process dword
         $this->assertEquals(0, $this->parser->getDWord('TEST_DWORD10'));
         $this->assertEquals(0, $this->parser->getDWord('MB_TEST_DWORD40'));
@@ -463,8 +463,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(1828651008, $this->parser->getDWord('MB_TEST_DWORD40'));
     }
     
-    public function testGetDWordWrong1() {
-        
+    public function testGetDWordWrong1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag does not exist!');
         
@@ -472,8 +472,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(0, $this->parser->getDWord('TEST_WORDd10'));
     }
     
-    public function testGetDWordWrong2() {
-        
+    public function testGetDWordWrong2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag has wrong type!');
         
@@ -484,8 +484,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
     /**
      * Test writeDWord function
      */
-    public function testWriteDWord() {
-        
+    public function testWriteDWord()
+    {
         // Check process dword
         $this->assertEquals(0, $this->parser->getDWord('TEST_DWORD10'));
         $this->assertEquals(0, $this->parser->getDWord('MB_TEST_DWORD40'));
@@ -507,8 +507,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(27903, $this->parser->getWord('MB_TEST_WORD42'));
     }
     
-    public function testWriteDWordWrong1() {
-        
+    public function testWriteDWordWrong1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag does not exist!');
         
@@ -518,8 +518,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->parser->writeDWord('TEST_DWOwRD10', 27934501);
     }
     
-    public function testWriteWordDWrong2() {
-        
+    public function testWriteWordDWrong2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag has wrong type!');
         
@@ -532,8 +532,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
     /**
      * Test getInt/writeInt function
      */
-    public function testGetInt() {
-        
+    public function testGetInt()
+    {
         // Check process int
         $this->assertEquals(0, $this->parser->getInt('TEST_INT14'));
         $this->assertEquals(0, $this->parser->getInt('MB_TEST_INT40'));
@@ -550,8 +550,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(-6773, $this->parser->getInt('MB_TEST_INT40'));
     }
     
-    public function testGetIntWrong1() {
-        
+    public function testGetIntWrong1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag does not exist!');
         
@@ -559,8 +559,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(0, $this->parser->getInt('TEST_INeT14'));
     }
     
-    public function testGetIntWrong2() {
-        
+    public function testGetIntWrong2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag has wrong type!');
         
@@ -568,8 +568,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(0, $this->parser->getInt('TEST_WORD12'));
     }
     
-    public function testWriteIntWrong1() {
-        
+    public function testWriteIntWrong1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag does not exist!');
         
@@ -577,8 +577,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(0, $this->parser->writeInt('TEST_INeT14', -1359));
     }
     
-    public function testWriteIntWrong2() {
-        
+    public function testWriteIntWrong2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag has wrong type!');
         
@@ -589,8 +589,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
     /**
      * Test getReal/writeReal function
      */
-    public function testGetReal() {
-        
+    public function testGetReal()
+    {
         // Check process real
         $this->assertEquals(0, $this->parser->getReal('TEST_REAL30'));
         $this->assertEquals(0, $this->parser->getReal('MB_TEST_REAL44'));
@@ -607,8 +607,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(-106.007, $this->parser->getReal('MB_TEST_REAL44'));
     }
     
-    public function testGetRealWrong1() {
-        
+    public function testGetRealWrong1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag does not exist!');
         
@@ -616,8 +616,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(0, $this->parser->getReal('TEST_REALe30'));
     }
     
-    public function testGetRealWrong2() {
-        
+    public function testGetRealWrong2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag has wrong type!');
         
@@ -625,8 +625,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(0, $this->parser->getReal('TEST_WORD12'));
     }
     
-    public function testWriteRealWrong1() {
-        
+    public function testWriteRealWrong1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag does not exist!');
         
@@ -634,8 +634,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(0, $this->parser->writeReal('TEST_REALe30', -1359.78));
     }
     
-    public function testWriteRealWrong2() {
-        
+    public function testWriteRealWrong2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag has wrong type!');
         
@@ -643,8 +643,8 @@ class ProcessDataManipulationTest extends BaseFunctionTestCase {
         $this->assertEquals(0, $this->parser->writeReal('TEST_WORD12', -1359.78));
     }
     
-    public function testInputData1() {
-        
+    public function testInputData1()
+    {
         // Check SHM input data
         $this->assertEquals(0, $this->parser->getBit('TEST_LOG_BIT2'));
         $this->assertEquals(0, $this->parser->getByte('TEST_LOG_BYTE1'));

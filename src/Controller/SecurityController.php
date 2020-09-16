@@ -6,13 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class SecurityController extends AbstractController {
-    
+class SecurityController extends AbstractController
+{
     /**
      * @Route("/login", name="app_login")
      */
-    public function login(AuthenticationUtils $authenticationUtils) {
-        
+    public function login(AuthenticationUtils $authenticationUtils)
+    {
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 
@@ -28,7 +28,7 @@ class SecurityController extends AbstractController {
     /**
      * @Route("/logout", name="app_logout")
      */
-    public function logout() {
-        
+    public function logout()
+    {
     }
 }

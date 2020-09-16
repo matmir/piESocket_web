@@ -3,28 +3,27 @@
 namespace App\Entity\Admin;
 
 use Symfony\Component\Validator\Constraints as Assert;
-
 use App\Entity\Admin\Tag;
 use App\Entity\Admin\TagType;
 use App\Entity\Admin\Alarm;
 
 /**
  * Class represents Alarm object for Forms (add/edit)
- * 
+ *
  * @author Mateusz Mirosławski
  */
-class AlarmEntity {
-    
+class AlarmEntity
+{
     /**
      * Alarm identifier
-     * 
+     *
      * @Assert\PositiveOrZero
      */
     private $adid;
     
     /**
      * Tag object name
-     * 
+     *
      * @Assert\NotBlank()
      * @Assert\Length(max=50)
      */
@@ -32,7 +31,7 @@ class AlarmEntity {
     
     /**
      * Alarm Priority
-     * 
+     *
      * @Assert\NotBlank()
      * @Assert\Type("integer")
      * @Assert\Range(
@@ -44,7 +43,7 @@ class AlarmEntity {
     
     /**
      * Alarm message
-     * 
+     *
      * @Assert\NotBlank()
      * @Assert\Length(max=200)
      */
@@ -52,7 +51,7 @@ class AlarmEntity {
     
     /**
      * Alarm trigger
-     * 
+     *
      * @Assert\NotBlank()
      * @Assert\Type("integer")
      * @Assert\Range(
@@ -64,7 +63,7 @@ class AlarmEntity {
     
     /**
      * Alarm trigger binary
-     * 
+     *
      * @Assert\NotBlank()
      * @Assert\Type("integer")
      * @Assert\Range(
@@ -76,7 +75,7 @@ class AlarmEntity {
     
     /**
      * Alarm trigger numeric
-     * 
+     *
      * @Assert\NotBlank()
      * @Assert\Type("integer")
      */
@@ -84,7 +83,7 @@ class AlarmEntity {
     
     /**
      * Alarm trigger real
-     * 
+     *
      * @Assert\NotBlank()
      * @Assert\Type("real")
      */
@@ -92,7 +91,7 @@ class AlarmEntity {
     
     /**
      * Alarm automatic acknowledgment flag
-     * 
+     *
      * @Assert\NotBlank()
      * @Assert\Type("integer")
      * @Assert\Range(
@@ -104,20 +103,20 @@ class AlarmEntity {
     
     /**
      * Feedback Tag informs controller that alarm is not acknowledgment
-     * 
+     *
      * @Assert\Length(max=50)
      */
     private $adFeedbackNotACK;
     
     /**
      * Tag HW alarm acknowledgment
-     * 
+     *
      * @Assert\Length(max=50)
      */
     private $adHWAck;
     
-    public function __construct() {
-        
+    public function __construct()
+    {
         $this->adid = 0;
         $this->adTagName = '';
         $this->adPriority = 0;
@@ -131,126 +130,126 @@ class AlarmEntity {
         $this->adHWAck = '';
     }
     
-    public function getadid() {
-        
+    public function getadid()
+    {
         return $this->adid;
     }
     
-    public function setadid($id) {
-        
+    public function setadid($id)
+    {
         $this->adid = $id;
     }
     
-    public function getadTagName() {
-        
+    public function getadTagName()
+    {
         return $this->adTagName;
     }
     
-    public function setadTagName($nm) {
-        
+    public function setadTagName($nm)
+    {
         $this->adTagName = $nm;
     }
     
-    public function getadPriority() {
-        
+    public function getadPriority()
+    {
         return $this->adPriority;
     }
     
-    public function setadPriority($prio) {
-        
+    public function setadPriority($prio)
+    {
         $this->adPriority = $prio;
     }
     
-    public function getadMessage() {
-        
+    public function getadMessage()
+    {
         return $this->adMessage;
     }
     
-    public function setadMessage($msg) {
-        
+    public function setadMessage($msg)
+    {
         $this->adMessage = $msg;
     }
     
-    public function getadTrigger() {
-        
+    public function getadTrigger()
+    {
         return $this->adTrigger;
     }
     
-    public function setadTrigger($tr) {
-        
+    public function setadTrigger($tr)
+    {
         $this->adTrigger = $tr;
     }
     
-    public function getadTriggerB() {
-        
+    public function getadTriggerB()
+    {
         return $this->adTriggerB;
     }
     
-    public function setadTriggerB($tr) {
-        
+    public function setadTriggerB($tr)
+    {
         $this->adTriggerB = $tr;
     }
     
-    public function getadTriggerN() {
-        
+    public function getadTriggerN()
+    {
         return $this->adTriggerN;
     }
     
-    public function setadTriggerN($tr) {
-        
+    public function setadTriggerN($tr)
+    {
         $this->adTriggerN = $tr;
     }
     
-    public function getadTriggerR() {
-        
+    public function getadTriggerR()
+    {
         return $this->adTriggerR;
     }
     
-    public function setadTriggerR($tr) {
-        
+    public function setadTriggerR($tr)
+    {
         $this->adTriggerR = $tr;
     }
     
-    public function getadAutoAck() {
-        
+    public function getadAutoAck()
+    {
         return $this->adAutoAck;
     }
     
-    public function setadAutoAck($flag) {
-        
+    public function setadAutoAck($flag)
+    {
         $this->adAutoAck = $flag;
     }
     
-    public function getadFeedbackNotACK() {
-        
+    public function getadFeedbackNotACK()
+    {
         return $this->adFeedbackNotACK;
     }
     
-    public function setadFeedbackNotACK($val) {
-        
+    public function setadFeedbackNotACK($val)
+    {
         $this->adFeedbackNotACK = $val;
     }
     
-    public function getadHWAck() {
-        
+    public function getadHWAck()
+    {
         return $this->adHWAck;
     }
     
-    public function setadHWAck($val) {
-        
+    public function setadHWAck($val)
+    {
         $this->adHWAck = $val;
     }
     
     /**
      * Get full Alarm object
-     * 
+     *
      * @param Tag $tag Tag connected to the alarm
      * @param Tag $feedbackTag Feedback Tag
      * @param Tag $HWAckTag HW acknowledgment Tag
      * @return Alarm Alarm object
      */
-    public function getFullAlarmObject(Tag $tag, Tag $feedbackTag=null, Tag $HWAckTag=null): Alarm {
-        
+    public function getFullAlarmObject(Tag $tag, Tag $feedbackTag = null, Tag $HWAckTag = null): Alarm
+    {
         // Check if Tag object is valid
         $tag->isValid(true);
         
@@ -261,20 +260,20 @@ class AlarmEntity {
         
         $alarm->setTrigger($this->adTrigger);
         
-        $alarm->setTriggerBin((($this->adTriggerB==0)?(false):(true)));
+        $alarm->setTriggerBin((($this->adTriggerB == 0) ? (false) : (true)));
         $alarm->setTriggerNumeric($this->adTriggerN);
         $alarm->setTriggerReal($this->adTriggerR);
-        $alarm->setAutoAck((($this->adAutoAck==0)?(false):(true)));
+        $alarm->setAutoAck((($this->adAutoAck == 0) ? (false) : (true)));
         
         // Check Feedback tag
         if ($feedbackTag instanceof Tag) {
-            $feedbackTag->isValid(true, true, TagType::Bit);
+            $feedbackTag->isValid(true, true, TagType::BIT);
             $alarm->setFeedbackNotAck($feedbackTag);
         }
         
         // Check HW ack tag
         if ($HWAckTag instanceof Tag) {
-            $HWAckTag->isValid(true, true, TagType::Bit);
+            $HWAckTag->isValid(true, true, TagType::BIT);
             $alarm->setHWAck($HWAckTag);
         }
         
@@ -283,11 +282,11 @@ class AlarmEntity {
     
     /**
      * Initialize from alarm object
-     * 
+     *
      * @param Alarm $alarm Alarm object
      */
-    public function initFromAlarmObject(Alarm $alarm) {
-        
+    public function initFromAlarmObject(Alarm $alarm)
+    {
         // Check if alarm is valid
         $alarm->isValid(true);
         

@@ -6,7 +6,6 @@ use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\Config\Definition\Exception\Exception;
-
 use App\Entity\Admin\Tag;
 use App\Entity\Admin\TagType;
 use App\Entity\Admin\TagLogger;
@@ -18,26 +17,26 @@ use App\Entity\AppException;
  *
  * @author Mateusz Mirosławski
  */
-class TagLoggerMapper {
-    
+class TagLoggerMapper
+{
     private $dbConn;
     
-    public function __construct(Connection $connection) {
-        
+    public function __construct(Connection $connection)
+    {
         $this->dbConn = $connection;
     }
     
     /**
      * Get Tag loggers
-     * 
+     *
      * @param int $area Tag logger area (0 - all, 1 - input, 2 - output, 3 - memory)
      * @param int $sort Tag logger sorting (0 - ID, 1 - tag name, 2 - interval, 3 - last update, 4 - enabled flag)
      * @param int $sortDESC Sorting direction (0 - ASC, 1 - DESC)
      * @param Paginator $paginator Paginator object
      * @return array Array with Tag loggers
      */
-    public function getLoggers(int $area = 0, int $sort = 0, int $sortDESC = 0, Paginator $paginator = null) {
-        
+    public function getLoggers(int $area = 0, int $sort = 0, int $sortDESC = 0, Paginator $paginator = null)
+    {
         // Basic query
         $sql = 'SELECT * FROM log_tags lt, tags t';
         $sql .= ' WHERE lt.lttid=t.tid';
@@ -48,21 +47,32 @@ class TagLoggerMapper {
         }
         
         // Order direction
-        $oDirection = ($sortDESC==1)?('DESC'):('ASC');
+        $oDirection = ($sortDESC == 1) ? ('DESC') : ('ASC');
         
         // Order
         switch ($sort) {
-            case 0: $sql .= ' ORDER BY lt.ltid '.$oDirection; break;
-            case 1: $sql .= ' ORDER BY t.tName '.$oDirection; break;
-            case 2: $sql .= ' ORDER BY lt.ltInterval '.$oDirection; break;
-            case 3: $sql .= ' ORDER BY lt.ltLastUPD '.$oDirection; break;
-            case 4: $sql .= ' ORDER BY lt.ltEnable '.$oDirection; break;
-            default: $sql .= ' ORDER BY lt.ltid '.$oDirection;
+            case 0:
+                $sql .= ' ORDER BY lt.ltid ' . $oDirection;
+                break;
+            case 1:
+                $sql .= ' ORDER BY t.tName ' . $oDirection;
+                break;
+            case 2:
+                $sql .= ' ORDER BY lt.ltInterval ' . $oDirection;
+                break;
+            case 3:
+                $sql .= ' ORDER BY lt.ltLastUPD ' . $oDirection;
+                break;
+            case 4:
+                $sql .= ' ORDER BY lt.ltEnable ' . $oDirection;
+                break;
+            default:
+                $sql .= ' ORDER BY lt.ltid ' . $oDirection;
         }
         
         // Check paginator
         if (!is_null($paginator)) {
-            $sql .= " ".$paginator->getSqlQuery();
+            $sql .= " " . $paginator->getSqlQuery();
         }
         
         // End query
@@ -79,8 +89,7 @@ class TagLoggerMapper {
         
         $ret = array();
         
-        foreach($items as $item) {
-            
+        foreach ($items as $item) {
             // New tag
             $tag = new Tag();
             $tag->setId($item['tid']);
@@ -97,13 +106,12 @@ class TagLoggerMapper {
             $tagLog->setId($item['ltid']);
             $tagLog->setInterval($item['ltInterval']);
             $tagLog->setIntervalS($item['ltIntervalS']);
-            $tagLog->setLastLogTime((($item['ltLastUPD']==null)?('none'):($item['ltLastUPD'])));
+            $tagLog->setLastLogTime((($item['ltLastUPD'] == null) ? ('none') : ($item['ltLastUPD'])));
             $tagLog->setLastValue($item['ltLastValue']);
-            $tagLog->setEnabled((($item['ltEnable']==1)?(true):(false)));
+            $tagLog->setEnabled((($item['ltEnable'] == 1) ? (true) : (false)));
             
             // Add to the array
             array_push($ret, $tagLog);
-            
         }
         
         return $ret;
@@ -111,13 +119,13 @@ class TagLoggerMapper {
     
     /**
      * Get number of all tag loggers in DB
-     * 
+     *
      * @param int $area Tag area
      * @return numeric Number of tag loggers in DB
      * @throws Exception
      */
-    public function getLoggersCount(int $area = 0) {
-        
+    public function getLoggersCount(int $area = 0)
+    {
         // Base query
         $sql = "SELECT count(*) AS 'cnt' FROM tags t, log_tags lt WHERE lt.lttid=t.tid";
         
@@ -149,13 +157,13 @@ class TagLoggerMapper {
     
     /**
      * Get Tag logger data
-     * 
+     *
      * @param numeric $loggerId Tag identifier
      * @return TagLogger Tag Logger object
      * @throws Exception Logger identifier invalid or Logger not exist
      */
-    public function getLogger($loggerId): TagLogger {
-        
+    public function getLogger($loggerId): TagLogger
+    {
         // Check logger identifier
         TagLogger::checkId($loggerId);
         
@@ -168,10 +176,10 @@ class TagLoggerMapper {
         $statement->bindValue(1, $loggerId, ParameterType::INTEGER);
         $statement->execute();
         
-        $items= $statement->fetchAll();
+        $items = $statement->fetchAll();
         
         if (empty($items)) {
-            throw new Exception("Logger with identifier ".$loggerId." does not exist!");
+            throw new Exception("Logger with identifier " . $loggerId . " does not exist!");
         }
         if (count($items) != 1) {
             throw new Exception("Query return more than one element!");
@@ -194,20 +202,20 @@ class TagLoggerMapper {
         $tagLog->setId($item['ltid']);
         $tagLog->setInterval($item['ltInterval']);
         $tagLog->setIntervalS($item['ltIntervalS']);
-        $tagLog->setLastLogTime((($item['ltLastUPD']==null)?('none'):($item['ltLastUPD'])));
+        $tagLog->setLastLogTime((($item['ltLastUPD'] == null) ? ('none') : ($item['ltLastUPD'])));
         $tagLog->setLastValue($item['ltLastValue']);
-        $tagLog->setEnabled((($item['ltEnable']==1)?(true):(false)));
+        $tagLog->setEnabled((($item['ltEnable'] == 1) ? (true) : (false)));
         
         return $tagLog;
     }
     
     /**
      * Add Tag logger to the DB
-     * 
+     *
      * @param TagLogger $newLogger Tag logger to add
      */
-    public function addLogger(TagLogger $newLogger) {
-        
+    public function addLogger(TagLogger $newLogger)
+    {
         // Check if Tag logger is valid
         $newLogger->isValid();
                 
@@ -221,7 +229,6 @@ class TagLoggerMapper {
         $stmt1->bindValue(3, $newLogger->getIntervalS(), ParameterType::INTEGER);
         
         try {
-            
             if (!$stmt1->execute()) {
                 $this->dbConn->rollBack();
                 throw new Exception("Error during execute sql add query!");
@@ -231,7 +238,7 @@ class TagLoggerMapper {
             $lastID = $this->dbConn->lastInsertId();
             
             // Prepare SQL statements for table and trigger
-            $q = $this->prepare_TagLogger_sql($newLogger, $lastID);
+            $q = $this->prepareTagLoggerSql($newLogger, $lastID);
             
             // Create logger table
             $stmt2 = $this->dbConn->prepare($q['table']);
@@ -249,46 +256,45 @@ class TagLoggerMapper {
             
             // Modify DB
             $this->dbConn->commit();
-            
         } catch (UniqueConstraintViolationException $ex) {
-            
             $this->dbConn->rollBack();
             
             throw new AppException(
-                "Tag logger with tag: ".$newLogger->getTag()->getName()." exist in DB!",
+                "Tag logger with tag: " . $newLogger->getTag()->getName() . " exist in DB!",
                 AppException::LOGGER_TAG_EXIST
             );
-            
         }
     }
     
     /**
      * Prepare BIT logger SQL statements for table and trigger
-     * 
+     *
      * @param int $logTagDefID Tag logger definition identifier
      * @return array Array with 'table' and 'trigger' SQL statements
      * @throws Exception
      */
-    private function prepare_BIT_sql(int $logTagDefID): array {
-        
+    private function prepareBITsql(int $logTagDefID): array
+    {
         // Check ID
         if ($logTagDefID < 1) {
             throw new Exception("Tag logger identifier wrong value!");
         }
         
         // Table SQL
-        $qTable = "CREATE TABLE `log_BIT_".$logTagDefID."` (";
+        $qTable = "CREATE TABLE `log_BIT_" . $logTagDefID . "` (";
         $qTable .= "`lbtid` int(11) unsigned NOT NULL COMMENT 'Tag identifier',";
         $qTable .= "`lbValue` tinyint(1) NOT NULL COMMENT 'Tag value',";
-        $qTable .= "`lbTimeStamp` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT 'Tag value timestamp',";
+        $qTable .= "`lbTimeStamp` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3)" .
+                    " ON UPDATE CURRENT_TIMESTAMP(3) COMMENT 'Tag value timestamp',";
         $qTable .= "PRIMARY KEY (`lbTimeStamp`),";
         $qTable .= "KEY `lbtid` (`lbtid`) USING BTREE,";
-        $qTable .= "CONSTRAINT `log_BIT_".$logTagDefID."_ibfk_1` FOREIGN KEY (`lbtid`) REFERENCES `tags` (`tid`)";
+        $qTable .= "CONSTRAINT `log_BIT_" . $logTagDefID . "_ibfk_1` FOREIGN KEY (`lbtid`) REFERENCES `tags` (`tid`)";
         $qTable .= ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         
         // Trigger SQL
-        $qTrigger = "CREATE TRIGGER `tr1_log_BIT_".$logTagDefID."` ";
-        $qTrigger .= "AFTER INSERT ON `log_BIT_".$logTagDefID."` FOR EACH ROW UPDATE log_tags SET ltLastUPD = NEW.lbTimeStamp, ";
+        $qTrigger = "CREATE TRIGGER `tr1_log_BIT_" . $logTagDefID . "` ";
+        $qTrigger .= "AFTER INSERT ON `log_BIT_" . $logTagDefID .
+                    "` FOR EACH ROW UPDATE log_tags SET ltLastUPD = NEW.lbTimeStamp, ";
         $qTrigger .= "ltLastValue = CAST(NEW.lbValue AS CHAR(50)) WHERE lttid = NEW.lbtid";
                 
         return array(
@@ -299,31 +305,33 @@ class TagLoggerMapper {
     
     /**
      * Prepare BYTE logger SQL statements for table and trigger
-     * 
+     *
      * @param int $logTagDefID Tag logger definition identifier
      * @return array Array with 'table' and 'trigger' SQL statements
      * @throws Exception
      */
-    private function prepare_BYTE_sql(int $logTagDefID): array {
-        
+    private function prepareBYTEsql(int $logTagDefID): array
+    {
         // Check ID
         if ($logTagDefID < 1) {
             throw new Exception("Tag logger identifier wrong value!");
         }
         
         // Table SQL
-        $qTable = "CREATE TABLE `log_BYTE_".$logTagDefID."` (";
+        $qTable = "CREATE TABLE `log_BYTE_" . $logTagDefID . "` (";
         $qTable .= "`lbytid` int(10) unsigned NOT NULL COMMENT 'Tag identifier',";
         $qTable .= "`lbyValue` tinyint(3) unsigned NOT NULL COMMENT 'Tag value',";
-        $qTable .= "`lbyTimeStamp` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT 'Tag value timestamp',";
+        $qTable .= "`lbyTimeStamp` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3)" .
+                    " ON UPDATE CURRENT_TIMESTAMP(3) COMMENT 'Tag value timestamp',";
         $qTable .= "PRIMARY KEY (`lbyTimeStamp`),";
         $qTable .= "KEY `lbytid` (`lbytid`),";
-        $qTable .= "CONSTRAINT `log_BYTE_".$logTagDefID."_ibfk_1` FOREIGN KEY (`lbytid`) REFERENCES `tags` (`tid`)";
+        $qTable .= "CONSTRAINT `log_BYTE_" . $logTagDefID . "_ibfk_1` FOREIGN KEY (`lbytid`) REFERENCES `tags` (`tid`)";
         $qTable .= ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         
         // Trigger SQL
-        $qTrigger = "CREATE TRIGGER `tr1_log_BYTE_".$logTagDefID."` ";
-        $qTrigger .= "AFTER INSERT ON `log_BYTE_".$logTagDefID."` FOR EACH ROW UPDATE log_tags SET ltLastUPD = NEW.lbyTimeStamp, ";
+        $qTrigger = "CREATE TRIGGER `tr1_log_BYTE_" . $logTagDefID . "` ";
+        $qTrigger .= "AFTER INSERT ON `log_BYTE_" . $logTagDefID .
+                    "` FOR EACH ROW UPDATE log_tags SET ltLastUPD = NEW.lbyTimeStamp, ";
         $qTrigger .= "ltLastValue = CAST(NEW.lbyValue AS CHAR(50)) WHERE lttid = NEW.lbytid;";
                 
         return array(
@@ -334,31 +342,33 @@ class TagLoggerMapper {
     
     /**
      * Prepare WORD logger SQL statements for table and trigger
-     * 
+     *
      * @param int $logTagDefID Tag logger definition identifier
      * @return array Array with 'table' and 'trigger' SQL statements
      * @throws Exception
      */
-    private function prepare_WORD_sql(int $logTagDefID): array {
-        
+    private function prepareWORDsql(int $logTagDefID): array
+    {
         // Check ID
         if ($logTagDefID < 1) {
             throw new Exception("Tag logger identifier wrong value!");
         }
         
         // Table SQL
-        $qTable = "CREATE TABLE `log_WORD_".$logTagDefID."` (";
+        $qTable = "CREATE TABLE `log_WORD_" . $logTagDefID . "` (";
         $qTable .= "`lwtid` int(10) unsigned NOT NULL COMMENT 'Tag identifier',";
         $qTable .= "`lwValue` smallint(5) unsigned NOT NULL COMMENT 'Tag value',";
-        $qTable .= "`lwTimeStamp` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT 'Tag value timestamp',";
+        $qTable .= "`lwTimeStamp` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3)" .
+                    " ON UPDATE CURRENT_TIMESTAMP(3) COMMENT 'Tag value timestamp',";
         $qTable .= "PRIMARY KEY (`lwTimeStamp`),";
         $qTable .= "KEY `lwtid` (`lwtid`),";
-        $qTable .= "CONSTRAINT `log_WORD_".$logTagDefID."_ibfk_1` FOREIGN KEY (`lwtid`) REFERENCES `tags` (`tid`)";
+        $qTable .= "CONSTRAINT `log_WORD_" . $logTagDefID . "_ibfk_1` FOREIGN KEY (`lwtid`) REFERENCES `tags` (`tid`)";
         $qTable .= ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         
         // Trigger SQL
-        $qTrigger = "CREATE TRIGGER `tr1_log_WORD_".$logTagDefID."` ";
-        $qTrigger .= "AFTER INSERT ON `log_WORD_".$logTagDefID."` FOR EACH ROW UPDATE log_tags SET ltLastUPD = NEW.lwTimeStamp, ";
+        $qTrigger = "CREATE TRIGGER `tr1_log_WORD_" . $logTagDefID . "` ";
+        $qTrigger .= "AFTER INSERT ON `log_WORD_" . $logTagDefID .
+                    "` FOR EACH ROW UPDATE log_tags SET ltLastUPD = NEW.lwTimeStamp, ";
         $qTrigger .= "ltLastValue = CAST(NEW.lwValue AS CHAR(50)) WHERE lttid = NEW.lwtid;";
                 
         return array(
@@ -369,31 +379,33 @@ class TagLoggerMapper {
     
     /**
      * Prepare DWORD logger SQL statements for table and trigger
-     * 
+     *
      * @param int $logTagDefID Tag logger definition identifier
      * @return array Array with 'table' and 'trigger' SQL statements
      * @throws Exception
      */
-    private function prepare_DWORD_sql(int $logTagDefID): array {
-        
+    private function prepareDWORDsql(int $logTagDefID): array
+    {
         // Check ID
         if ($logTagDefID < 1) {
             throw new Exception("Tag logger identifier wrong value!");
         }
         
         // Table SQL
-        $qTable = "CREATE TABLE `log_DWORD_".$logTagDefID."` (";
+        $qTable = "CREATE TABLE `log_DWORD_" . $logTagDefID . "` (";
         $qTable .= "`ldtid` int(10) unsigned NOT NULL COMMENT 'Tag identifier',";
         $qTable .= "`ldValue` int(10) unsigned NOT NULL COMMENT 'Tag value',";
-        $qTable .= "`ldTimeStamp` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT 'Tag value timestamp',";
+        $qTable .= "`ldTimeStamp` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3)" .
+                    " ON UPDATE CURRENT_TIMESTAMP(3) COMMENT 'Tag value timestamp',";
         $qTable .= "PRIMARY KEY (`ldTimeStamp`),";
         $qTable .= "KEY `ldtid` (`ldtid`),";
-        $qTable .= "CONSTRAINT `log_DWORD_".$logTagDefID."_ibfk_1` FOREIGN KEY (`ldtid`) REFERENCES `tags` (`tid`)";
+        $qTable .= "CONSTRAINT `log_DWORD_" . $logTagDefID . "_ibfk_1` FOREIGN KEY (`ldtid`) REFERENCES `tags` (`tid`)";
         $qTable .= ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         
         // Trigger SQL
-        $qTrigger = "CREATE TRIGGER `tr1_log_DWORD_".$logTagDefID."` ";
-        $qTrigger .= "AFTER INSERT ON `log_DWORD_".$logTagDefID."` FOR EACH ROW UPDATE log_tags SET ltLastUPD = NEW.ldTimeStamp, ";
+        $qTrigger = "CREATE TRIGGER `tr1_log_DWORD_" . $logTagDefID . "` ";
+        $qTrigger .= "AFTER INSERT ON `log_DWORD_" . $logTagDefID .
+                    "` FOR EACH ROW UPDATE log_tags SET ltLastUPD = NEW.ldTimeStamp, ";
         $qTrigger .= "ltLastValue = CAST(NEW.ldValue AS CHAR(50)) WHERE lttid = NEW.ldtid;";
                 
         return array(
@@ -404,31 +416,33 @@ class TagLoggerMapper {
     
     /**
      * Prepare INT logger SQL statements for table and trigger
-     * 
+     *
      * @param int $logTagDefID Tag logger definition identifier
      * @return array Array with 'table' and 'trigger' SQL statements
      * @throws Exception
      */
-    private function prepare_INT_sql(int $logTagDefID): array {
-        
+    private function prepareINTsql(int $logTagDefID): array
+    {
         // Check ID
         if ($logTagDefID < 1) {
             throw new Exception("Tag logger identifier wrong value!");
         }
         
         // Table SQL
-        $qTable = "CREATE TABLE `log_INT_".$logTagDefID."` (";
+        $qTable = "CREATE TABLE `log_INT_" . $logTagDefID . "` (";
         $qTable .= "`linttid` int(10) unsigned NOT NULL COMMENT 'Tag identifier',";
         $qTable .= "`lintValue` int(11) NOT NULL COMMENT 'Tag value',";
-        $qTable .= "`lintTimeStamp` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT 'Tag value timestamp',";
+        $qTable .= "`lintTimeStamp` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3)" .
+                    " ON UPDATE CURRENT_TIMESTAMP(3) COMMENT 'Tag value timestamp',";
         $qTable .= "PRIMARY KEY (`lintTimeStamp`),";
         $qTable .= "KEY `linttid` (`linttid`),";
-        $qTable .= "CONSTRAINT `log_INT_".$logTagDefID."_ibfk_1` FOREIGN KEY (`linttid`) REFERENCES `tags` (`tid`)";
+        $qTable .= "CONSTRAINT `log_INT_" . $logTagDefID . "_ibfk_1` FOREIGN KEY (`linttid`) REFERENCES `tags` (`tid`)";
         $qTable .= ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         
         // Trigger SQL
-        $qTrigger = "CREATE TRIGGER `tr1_log_INT_".$logTagDefID."` ";
-        $qTrigger .= "AFTER INSERT ON `log_INT_".$logTagDefID."` FOR EACH ROW UPDATE log_tags SET ltLastUPD = NEW.lintTimeStamp, ";
+        $qTrigger = "CREATE TRIGGER `tr1_log_INT_" . $logTagDefID . "` ";
+        $qTrigger .= "AFTER INSERT ON `log_INT_" . $logTagDefID .
+                    "` FOR EACH ROW UPDATE log_tags SET ltLastUPD = NEW.lintTimeStamp, ";
         $qTrigger .= "ltLastValue = CAST(NEW.lintValue AS CHAR(50)) WHERE lttid = NEW.linttid;";
                 
         return array(
@@ -439,31 +453,33 @@ class TagLoggerMapper {
     
     /**
      * Prepare REAL logger SQL statements for table and trigger
-     * 
+     *
      * @param int $logTagDefID Tag logger definition identifier
      * @return array Array with 'table' and 'trigger' SQL statements
      * @throws Exception
      */
-    private function prepare_REAL_sql(int $logTagDefID): array {
-        
+    private function prepareREALsql(int $logTagDefID): array
+    {
         // Check ID
         if ($logTagDefID < 1) {
             throw new Exception("Tag logger identifier wrong value!");
         }
         
         // Table SQL
-        $qTable = "CREATE TABLE `log_REAL_".$logTagDefID."` (";
+        $qTable = "CREATE TABLE `log_REAL_" . $logTagDefID . "` (";
         $qTable .= "`lrtid` int(10) unsigned NOT NULL COMMENT 'Tag identifier',";
         $qTable .= "`lrValue` double NOT NULL COMMENT 'Tag value',";
-        $qTable .= "`lrTimeStamp` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT 'Tag value timestamp',";
+        $qTable .= "`lrTimeStamp` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3)" .
+                    " ON UPDATE CURRENT_TIMESTAMP(3) COMMENT 'Tag value timestamp',";
         $qTable .= "PRIMARY KEY (`lrTimeStamp`),";
         $qTable .= "KEY `lrtid` (`lrtid`),";
-        $qTable .= "CONSTRAINT `log_REAL_".$logTagDefID."_ibfk_1` FOREIGN KEY (`lrtid`) REFERENCES `tags` (`tid`)";
+        $qTable .= "CONSTRAINT `log_REAL_" . $logTagDefID . "_ibfk_1` FOREIGN KEY (`lrtid`) REFERENCES `tags` (`tid`)";
         $qTable .= ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         
         // Trigger SQL
-        $qTrigger = "CREATE TRIGGER `tr1_log_REAL_".$logTagDefID."` ";
-        $qTrigger .= "AFTER INSERT ON `log_REAL_".$logTagDefID."` FOR EACH ROW UPDATE log_tags SET ltLastUPD = NEW.lrTimeStamp, ";
+        $qTrigger = "CREATE TRIGGER `tr1_log_REAL_" . $logTagDefID . "` ";
+        $qTrigger .= "AFTER INSERT ON `log_REAL_" . $logTagDefID .
+                    "` FOR EACH ROW UPDATE log_tags SET ltLastUPD = NEW.lrTimeStamp, ";
         $qTrigger .= "ltLastValue = CAST(NEW.lrValue AS CHAR(50)) WHERE lttid = NEW.lrtid;";
                 
         return array(
@@ -474,24 +490,37 @@ class TagLoggerMapper {
     
     /**
      * Prepare Tag logger SQL statement for table and trigger
-     * 
+     *
      * @param TagLogger $tagLogger Tag logger to add
      * @param int $logTagDefID Tag logger definition identifier
      * @return array Array with 'table' and 'trigger' SQL statements
      * @throws Exception
      */
-    private function prepare_TagLogger_sql(TagLogger $tagLogger, int $logTagDefID): array {
-        
+    private function prepareTagLoggerSql(TagLogger $tagLogger, int $logTagDefID): array
+    {
         $ret = array();
         
         switch ($tagLogger->getTag()->getType()) {
-            case TagType::Bit: $ret = $this->prepare_BIT_sql($logTagDefID); break;
-            case TagType::Byte: $ret = $this->prepare_BYTE_sql($logTagDefID); break;
-            case TagType::Word: $ret = $this->prepare_WORD_sql($logTagDefID); break;
-            case TagType::DWord: $ret = $this->prepare_DWORD_sql($logTagDefID); break;
-            case TagType::INT: $ret = $this->prepare_INT_sql($logTagDefID); break;
-            case TagType::REAL: $ret = $this->prepare_REAL_sql($logTagDefID); break;
-            default: throw new Exception("Unknow tag type");
+            case TagType::BIT:
+                $ret = $this->prepareBITsql($logTagDefID);
+                break;
+            case TagType::BYTE:
+                $ret = $this->prepareBYTEsql($logTagDefID);
+                break;
+            case TagType::WORD:
+                $ret = $this->prepareWORDsql($logTagDefID);
+                break;
+            case TagType::DWORD:
+                $ret = $this->prepareDWORDsql($logTagDefID);
+                break;
+            case TagType::INT:
+                $ret = $this->prepareINTsql($logTagDefID);
+                break;
+            case TagType::REAL:
+                $ret = $this->prepareREALsql($logTagDefID);
+                break;
+            default:
+                throw new Exception("Unknow tag type");
         }
         
         return $ret;
@@ -499,15 +528,16 @@ class TagLoggerMapper {
     
     /**
      * Edit Logger
-     * 
+     *
      * @param TagLogger $newLogger New Logger object
      */
-    public function editLogger(TagLogger $newLogger) {
-        
+    public function editLogger(TagLogger $newLogger)
+    {
         // Check if Tag is valid
         $newLogger->isValid(true);
         
-        $stmt = $this->dbConn->prepare('UPDATE log_tags SET lttid = ?, ltInterval = ?, ltIntervalS = ? WHERE ltid = ?;');
+        $q = 'UPDATE log_tags SET lttid = ?, ltInterval = ?, ltIntervalS = ? WHERE ltid = ?;';
+        $stmt = $this->dbConn->prepare($q);
         
         $stmt->bindValue(1, $newLogger->getTag()->getId(), ParameterType::INTEGER);
         $stmt->bindValue(2, $newLogger->getInterval(), ParameterType::INTEGER);
@@ -515,40 +545,49 @@ class TagLoggerMapper {
         $stmt->bindValue(4, $newLogger->getId(), ParameterType::INTEGER);
         
         try {
-            
             if (!$stmt->execute()) {
                 throw new Exception("Error during execute sql add query!");
             }
-            
         } catch (UniqueConstraintViolationException $ex) {
-            
             throw new AppException(
-                "Tag logger with tag: ".$newLogger->getTag()->getName()." exist in DB!",
+                "Tag logger with tag: " . $newLogger->getTag()->getName() . " exist in DB!",
                 AppException::LOGGER_TAG_EXIST
             );
-            
         }
     }
     
     /**
      * Prepare drop log table SQL statement
-     * 
+     *
      * @param TagLogger $tagLogger Tag logger to delete
      * @return string Drop SQL statement
      * @throws Exception
      */
-    private function prepare_dropSQL(TagLogger $tagLogger): string {
-        
+    private function prepareDropSql(TagLogger $tagLogger): string
+    {
         $q = "DROP TABLE log_";
         
         switch ($tagLogger->getTag()->getType()) {
-            case TagType::Bit: $q.="BIT_"; break;
-            case TagType::Byte: $q.="BYTE_"; break;
-            case TagType::Word: $q.="WORD_"; break;
-            case TagType::DWord: $q.="DWORD_"; break;
-            case TagType::INT: $q.="INT_"; break;
-            case TagType::REAL: $q.="REAL_"; break;
-            default: throw new Exception("Unknow tag type");
+            case TagType::BIT:
+                $q .= "BIT_";
+                break;
+            case TagType::BYTE:
+                $q .= "BYTE_";
+                break;
+            case TagType::WORD:
+                $q .= "WORD_";
+                break;
+            case TagType::DWORD:
+                $q .= "DWORD_";
+                break;
+            case TagType::INT:
+                $q .= "INT_";
+                break;
+            case TagType::REAL:
+                $q .= "REAL_";
+                break;
+            default:
+                throw new Exception("Unknow tag type");
         }
         
         $q .= $tagLogger->getId();
@@ -558,11 +597,11 @@ class TagLoggerMapper {
     
     /**
      * Delete Tag logger
-     * 
+     *
      * @param numeric $loggerId Tag logger identifier
      */
-    public function deleteLogger($loggerId) {
-                
+    public function deleteLogger($loggerId)
+    {
         // Check logger identifier
         TagLogger::checkId($loggerId);
         
@@ -579,7 +618,7 @@ class TagLoggerMapper {
             throw new Exception("Error during execute delete query!");
         }
         
-        $q = $this->prepare_dropSQL($logger);
+        $q = $this->prepareDropSql($logger);
         $statement2 = $this->dbConn->prepare($q);
         if (!$statement2->execute()) {
             $this->dbConn->rollBack();
@@ -592,18 +631,18 @@ class TagLoggerMapper {
     
     /**
      * Enable logger
-     * 
+     *
      * @param numeric $loggerId Tag logger identifier
      * @param bool $en Enable flag
      */
-    public function enableLogger($loggerId, bool $en = true) {
-        
+    public function enableLogger($loggerId, bool $en = true)
+    {
         // Check logger identifier
         TagLogger::checkId($loggerId);
         
         $stmt = $this->dbConn->prepare('UPDATE log_tags SET ltEnable = ? WHERE ltid = ?;');
         
-        $stmt->bindValue(1, (($en)?(1):(0)), ParameterType::INTEGER);
+        $stmt->bindValue(1, (($en) ? (1) : (0)), ParameterType::INTEGER);
         $stmt->bindValue(2, $loggerId, ParameterType::INTEGER);
         
         if (!$stmt->execute()) {

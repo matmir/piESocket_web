@@ -10,7 +10,6 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-
 use App\Entity\Admin\UserEntity;
 
 /**
@@ -18,10 +17,11 @@ use App\Entity\Admin\UserEntity;
  *
  * @author Mateusz Mirosławski
  */
-class UserForm extends AbstractType {
+class UserForm extends AbstractType
+{
     
-    public function buildForm(FormBuilderInterface $builder, array $options) {
-        
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
         $builder->add('id', HiddenType::class)
             ->add('username', null, array('label' => 'User name'))
             ->add('oldPassword', PasswordType::class, array('label' => 'Old password'))
@@ -37,8 +37,8 @@ class UserForm extends AbstractType {
             ->add('save', SubmitType::class, array('label' => 'Save'));
     }
     
-    public function configureOptions(OptionsResolver $resolver) {
-        
+    public function configureOptions(OptionsResolver $resolver)
+    {
         $resolver->setDefaults(array(
             'data_class' => UserEntity::class,
         ));

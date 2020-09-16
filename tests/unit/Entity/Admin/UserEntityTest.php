@@ -10,13 +10,13 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Mateusz Mirosławski
  */
-class UserEntityTest extends TestCase {
-    
+class UserEntityTest extends TestCase
+{
     /**
      * Test Default constructor
      */
-    public function testDefaultConstructor() {
-        
+    public function testDefaultConstructor()
+    {
         $usr = new UserEntity();
         
         $this->assertEquals(0, $usr->getid());
@@ -31,8 +31,8 @@ class UserEntityTest extends TestCase {
     /**
      * Test setId method
      */
-    public function testSetId() {
-        
+    public function testSetId()
+    {
         $usr = new UserEntity();
         $usr->setid(85);
         
@@ -48,8 +48,8 @@ class UserEntityTest extends TestCase {
     /**
      * Test setUsername method
      */
-    public function testSetUsername() {
-        
+    public function testSetUsername()
+    {
         $usr = new UserEntity();
         $usr->setusername('testUsr');
         
@@ -65,8 +65,8 @@ class UserEntityTest extends TestCase {
     /**
      * Test setUsername method
      */
-    public function testSetOldPassword() {
-        
+    public function testSetOldPassword()
+    {
         $usr = new UserEntity();
         $usr->setoldPassword('oldTestPass');
         
@@ -82,8 +82,8 @@ class UserEntityTest extends TestCase {
     /**
      * Test setPassword1 method
      */
-    public function testSetPassword1() {
-        
+    public function testSetPassword1()
+    {
         $usr = new UserEntity();
         $usr->setpassword1('pass1');
         
@@ -99,8 +99,8 @@ class UserEntityTest extends TestCase {
     /**
      * Test setPassword2 method
      */
-    public function testSetPassword2() {
-        
+    public function testSetPassword2()
+    {
         $usr = new UserEntity();
         $usr->setpassword2('pass2');
         
@@ -116,8 +116,8 @@ class UserEntityTest extends TestCase {
     /**
      * Test setEmail method
      */
-    public function testSetEmail() {
-        
+    public function testSetEmail()
+    {
         $usr = new UserEntity();
         $usr->setemail('mailtest');
         
@@ -133,8 +133,8 @@ class UserEntityTest extends TestCase {
     /**
      * Test setUserRole method
      */
-    public function testSetUserRole() {
-        
+    public function testSetUserRole()
+    {
         $usr = new UserEntity();
         $usr->setuserrole('test_role');
         

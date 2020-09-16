@@ -10,20 +10,20 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Mateusz Mirosławski
  */
-class TagAreaTest extends TestCase {
-    
+class TagAreaTest extends TestCase
+{
     /**
      * Test getName method
      */
-    public function testGetName1() {
-        
-        $this->assertEquals('Input', TagArea::getName(TagArea::input));
-        $this->assertEquals('Output', TagArea::getName(TagArea::output));
-        $this->assertEquals('Memory', TagArea::getName(TagArea::memory));
+    public function testGetName1()
+    {
+        $this->assertEquals('Input', TagArea::getName(TagArea::INPUT));
+        $this->assertEquals('Output', TagArea::getName(TagArea::OUTPUT));
+        $this->assertEquals('Memory', TagArea::getName(TagArea::MEMORY));
     }
     
-    public function testGetNameWrong1() {
-        
+    public function testGetNameWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('TagArea::getName: Invalid Tag area identifier');
         
@@ -33,15 +33,15 @@ class TagAreaTest extends TestCase {
     /**
      * Test getPrefix method
      */
-    public function testGetPrefix1() {
-        
-        $this->assertEquals('I', TagArea::getPrefix(TagArea::input));
-        $this->assertEquals('Q', TagArea::getPrefix(TagArea::output));
-        $this->assertEquals('M', TagArea::getPrefix(TagArea::memory));
+    public function testGetPrefix1()
+    {
+        $this->assertEquals('I', TagArea::getPrefix(TagArea::INPUT));
+        $this->assertEquals('Q', TagArea::getPrefix(TagArea::OUTPUT));
+        $this->assertEquals('M', TagArea::getPrefix(TagArea::MEMORY));
     }
     
-    public function testGetPrefixWrong1() {
-        
+    public function testGetPrefixWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('TagArea::getPrefix: Invalid Tag area identifier');
         
@@ -51,8 +51,8 @@ class TagAreaTest extends TestCase {
     /**
      * Test check method
      */
-    public function testCheck() {
-        
+    public function testCheck()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('TagArea::check: Invalid Tag area identifier');
         

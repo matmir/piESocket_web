@@ -7,7 +7,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-
 use App\Entity\Admin\DriverSHMEntity;
 
 /**
@@ -15,10 +14,11 @@ use App\Entity\Admin\DriverSHMEntity;
  *
  * @author Mateusz Mirosławski
  */
-class DriverSHMForm extends AbstractType {
+class DriverSHMForm extends AbstractType
+{
     
-    public function buildForm(FormBuilderInterface $builder, array $options) {
-        
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
         $builder->add('connId', HiddenType::class)
             ->add('connName', null, array('label' => 'Connection name'))
             ->add('id', HiddenType::class)
@@ -26,8 +26,8 @@ class DriverSHMForm extends AbstractType {
             ->add('save', SubmitType::class, array('label' => 'Save'));
     }
     
-    public function configureOptions(OptionsResolver $resolver) {
-        
+    public function configureOptions(OptionsResolver $resolver)
+    {
         $resolver->setDefaults(array(
             'data_class' => DriverSHMEntity::class,
         ));

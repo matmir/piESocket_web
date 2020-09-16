@@ -8,7 +8,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-
 use App\Entity\Admin\TagLoggerEntity;
 
 /**
@@ -16,10 +15,11 @@ use App\Entity\Admin\TagLoggerEntity;
  *
  * @author Mateusz Mirosławski
  */
-class TagLoggerForm extends AbstractType {
+class TagLoggerForm extends AbstractType
+{
     
-    public function buildForm(FormBuilderInterface $builder, array $options) {
-        
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
         $builder->add('ltid', HiddenType::class)
             ->add('ltTagName', null, array('label' => 'Tag name'))
             ->add('ltInterval', ChoiceType::class, array('choices'  => array(
@@ -36,8 +36,8 @@ class TagLoggerForm extends AbstractType {
             ->add('save', SubmitType::class, array('label' => 'Save'));
     }
     
-    public function configureOptions(OptionsResolver $resolver) {
-        
+    public function configureOptions(OptionsResolver $resolver)
+    {
         $resolver->setDefaults(array(
             'data_class' => TagLoggerEntity::class,
         ));

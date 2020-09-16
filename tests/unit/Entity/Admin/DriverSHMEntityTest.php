@@ -14,13 +14,13 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Mateusz Mirosławski
  */
-class DriverSHMEntityTest extends TestCase {
-    
+class DriverSHMEntityTest extends TestCase
+{
     /**
      * Test default constructor
      */
-    public function testDefaultConstructor() {
-        
+    public function testDefaultConstructor()
+    {
         $shmEntity = new DriverSHMEntity();
         
         $this->assertEquals(0, $shmEntity->getConnId());
@@ -29,8 +29,8 @@ class DriverSHMEntityTest extends TestCase {
         $this->assertEquals("shm_segment", $shmEntity->getSegmentName());
     }
     
-    public function testSetConnId() {
-        
+    public function testSetConnId()
+    {
         $shmEntity = new DriverSHMEntity();
         
         $shmEntity->setConnId(8);
@@ -41,8 +41,8 @@ class DriverSHMEntityTest extends TestCase {
         $this->assertEquals("shm_segment", $shmEntity->getSegmentName());
     }
     
-    public function testSetConnName() {
-        
+    public function testSetConnName()
+    {
         $shmEntity = new DriverSHMEntity();
         
         $shmEntity->setConnName("conn1");
@@ -53,8 +53,8 @@ class DriverSHMEntityTest extends TestCase {
         $this->assertEquals("shm_segment", $shmEntity->getSegmentName());
     }
     
-    public function testSetId() {
-        
+    public function testSetId()
+    {
         $shmEntity = new DriverSHMEntity();
         
         $shmEntity->setId(3);
@@ -65,8 +65,8 @@ class DriverSHMEntityTest extends TestCase {
         $this->assertEquals("shm_segment", $shmEntity->getSegmentName());
     }
     
-    public function testSetSegmentName() {
-        
+    public function testSetSegmentName()
+    {
         $shmEntity = new DriverSHMEntity();
         
         $shmEntity->setSegmentName("shm11");
@@ -77,8 +77,8 @@ class DriverSHMEntityTest extends TestCase {
         $this->assertEquals("shm11", $shmEntity->getSegmentName());
     }
     
-    public function testGetFullConnectionObject1() {
-        
+    public function testGetFullConnectionObject1()
+    {
         $shmEntity = new DriverSHMEntity();
         $shmEntity->setConnId(8);
         $shmEntity->setconnName("conn3");
@@ -98,8 +98,8 @@ class DriverSHMEntityTest extends TestCase {
         $this->assertEquals('shm11', $cfg->getSegmentName());
     }
     
-    public function testInitFromConnectionObject1() {
-        
+    public function testInitFromConnectionObject1()
+    {
         // SHM CFG
         $cfg = new DriverSHM();
         $cfg->setId(65);
@@ -122,8 +122,8 @@ class DriverSHMEntityTest extends TestCase {
         $this->assertEquals("seg_shm3", $shmEntity->getSegmentName());
     }
     
-    public function testInitFromConnectionObjectWrong1() {
-                
+    public function testInitFromConnectionObjectWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Missing SHM configuration in connection object');
         
@@ -142,4 +142,3 @@ class DriverSHMEntityTest extends TestCase {
         $shmEntity->initFromConnectionObject($conn);
     }
 }
-

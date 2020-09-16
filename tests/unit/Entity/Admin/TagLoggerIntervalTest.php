@@ -10,13 +10,13 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Mateusz Mirosławski
  */
-class TagLoggerIntervalTest extends TestCase {
-    
+class TagLoggerIntervalTest extends TestCase
+{
     /**
      * Test getName method
      */
-    public function testGetName1() {
-        
+    public function testGetName1()
+    {
         $this->assertEquals('100ms', TagLoggerInterval::getName(TagLoggerInterval::I_100MS));
         $this->assertEquals('200ms', TagLoggerInterval::getName(TagLoggerInterval::I_200MS));
         $this->assertEquals('500ms', TagLoggerInterval::getName(TagLoggerInterval::I_500MS));
@@ -25,8 +25,8 @@ class TagLoggerIntervalTest extends TestCase {
         $this->assertEquals('On change', TagLoggerInterval::getName(TagLoggerInterval::I_ON_CHANGE));
     }
     
-    public function testGetNameWrong1() {
-        
+    public function testGetNameWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('TagLoggerInterval::getName: Invalid interval identifier');
         
@@ -36,8 +36,8 @@ class TagLoggerIntervalTest extends TestCase {
     /**
      * Test check method
      */
-    public function testCheck() {
-        
+    public function testCheck()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('TagLoggerInterval::check: Invalid interval identifier');
         

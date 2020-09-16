@@ -8,7 +8,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-
 use App\Entity\Admin\AlarmEntity;
 
 /**
@@ -16,10 +15,11 @@ use App\Entity\Admin\AlarmEntity;
  *
  * @author Mateusz Mirosławski
  */
-class AlarmForm extends AbstractType {
+class AlarmForm extends AbstractType
+{
     
-    public function buildForm(FormBuilderInterface $builder, array $options) {
-        
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
         $builder->add('adid', HiddenType::class)
             ->add('adTagName', null, array('label' => 'Tag name'))
             ->add('adPriority', null, array('label' => 'Priority'))
@@ -54,8 +54,8 @@ class AlarmForm extends AbstractType {
             ->add('save', SubmitType::class, array('label' => 'Save'));
     }
     
-    public function configureOptions(OptionsResolver $resolver) {
-        
+    public function configureOptions(OptionsResolver $resolver)
+    {
         $resolver->setDefaults(array(
             'data_class' => AlarmEntity::class,
         ));

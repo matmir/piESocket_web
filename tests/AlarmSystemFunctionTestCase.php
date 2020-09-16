@@ -3,7 +3,6 @@
 namespace App\Tests;
 
 use Symfony\Component\Stopwatch\Stopwatch;
-
 use App\Tests\BaseFunctionTestCase;
 use App\Service\Admin\AlarmMapper;
 use App\Entity\Admin\Alarm;
@@ -13,15 +12,15 @@ use App\Entity\Admin\Alarm;
  *
  * @author Mateusz Mirosławski
  */
-abstract class AlarmSystemFunctionTestCase extends BaseFunctionTestCase {
-    
+abstract class AlarmSystemFunctionTestCase extends BaseFunctionTestCase
+{
     /**
      * AlarmMapper object
      */
     protected $alarmMapper;
     
-    public function setUp() {
-                
+    public function setUp()
+    {
         parent::setUp();
         
         $this->alarmMapper = self::$container->get(AlarmMapper::class);
@@ -30,8 +29,8 @@ abstract class AlarmSystemFunctionTestCase extends BaseFunctionTestCase {
         $this->alarmMapper->deleteArchivedAlarm();
     }
     
-    public function tearDown() {
-        
+    public function tearDown()
+    {
         $this->alarmMapper = null;
         
         parent::tearDown();
@@ -39,21 +38,19 @@ abstract class AlarmSystemFunctionTestCase extends BaseFunctionTestCase {
     
     /**
      * Get alarm definition
-     * 
+     *
      * @param int $type Alarm tag type
      * @return Alarm
      */
-    public function getAlarmDefinition(int $type): Alarm {
-        
+    public function getAlarmDefinition(int $type): Alarm
+    {
         // Get alarms
         $alarms = $this->alarmMapper->getAlarms();
         
         $alarm = null;
         
-        for ($i=0; $i<count($alarms); ++$i) {
-            
+        for ($i = 0; $i < count($alarms); ++$i) {
             if ($alarms[$i]->getTag()->getType() == $type) {
-                
                 $alarm = $alarms[$i];
                 // stop searching
                 break;
@@ -65,12 +62,12 @@ abstract class AlarmSystemFunctionTestCase extends BaseFunctionTestCase {
     
     /**
      * Get alarms data (definition, pending, archived)
-     * 
+     *
      * @param Alarm $alarmDef Alarm definition object
      * @return array
      */
-    public function getAlarmsData(Alarm $alarmDef): array {
-        
+    public function getAlarmsData(Alarm $alarmDef): array
+    {
         $ret['alarmDef'] = $this->alarmMapper->getAlarm($alarmDef->getId());
         $ret['pending'] = $this->alarmMapper->getPendingAlarms();
         $ret['archive'] = $this->alarmMapper->getArchivedAlarms();
@@ -85,12 +82,12 @@ abstract class AlarmSystemFunctionTestCase extends BaseFunctionTestCase {
     
     /**
      * Wait on alarm pending flag
-     * 
+     *
      * @param int $alarmId Alarm definition identifier
      * @param bool $state Alarm pending flag state
      */
-    public function waitOnAlarmPendingState(int $alarmId, bool $state = true) {
-                
+    public function waitOnAlarmPendingState(int $alarmId, bool $state = true)
+    {
         $alarm = $this->alarmMapper->getAlarm($alarmId);
         
         // Delay protection
@@ -125,12 +122,12 @@ abstract class AlarmSystemFunctionTestCase extends BaseFunctionTestCase {
     
     /**
      * Wait on alarm active flag
-     * 
+     *
      * @param int $alarmId Alarm definition identifier
      * @param bool $state Alarm active flag state
      */
-    public function waitOnAlarmActiveState(int $alarmId, bool $state = true) {
-        
+    public function waitOnAlarmActiveState(int $alarmId, bool $state = true)
+    {
         $alarm = $this->alarmMapper->getAlarm($alarmId);
         
         // Delay protection

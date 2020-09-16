@@ -8,7 +8,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-
 use App\Entity\Admin\TagEntity;
 
 /**
@@ -16,10 +15,11 @@ use App\Entity\Admin\TagEntity;
  *
  * @author Mateusz Mirosławski
  */
-class TagForm extends AbstractType {
+class TagForm extends AbstractType
+{
     
-    public function buildForm(FormBuilderInterface $builder, array $options) {
-        
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
         $builder->add('tid', HiddenType::class)
             ->add('tConnId', ChoiceType::class, array('choices'  => $options['connections'],
                                                     'label' => 'Connection'
@@ -72,8 +72,8 @@ class TagForm extends AbstractType {
             ->add('save', SubmitType::class, array('label' => 'Save'));
     }
     
-    public function configureOptions(OptionsResolver $resolver) {
-        
+    public function configureOptions(OptionsResolver $resolver)
+    {
         $resolver->setDefaults(array(
             'data_class' => TagEntity::class,
             'connections' => array(),

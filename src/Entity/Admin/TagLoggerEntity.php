@@ -3,27 +3,26 @@
 namespace App\Entity\Admin;
 
 use Symfony\Component\Validator\Constraints as Assert;
-
 use App\Entity\Admin\Tag;
 use App\Entity\Admin\TagLogger;
 
 /**
  * Class represents Tag logger object for Forms (add/edit)
- * 
+ *
  * @author Mateusz Mirosławski
  */
-class TagLoggerEntity {
-    
+class TagLoggerEntity
+{
     /**
      * Tag logger identifier
-     * 
+     *
      * @Assert\PositiveOrZero
      */
     private $ltid;
     
     /**
      * Tag object name
-     * 
+     *
      * @Assert\NotBlank()
      * @Assert\Length(max=50)
      */
@@ -31,7 +30,7 @@ class TagLoggerEntity {
     
     /**
      * Tag logger interval object
-     * 
+     *
      * @Assert\NotBlank()
      * @Assert\Type("integer")
      * @Assert\Range(
@@ -43,68 +42,68 @@ class TagLoggerEntity {
     
     /**
      * Tag logger interval seconds
-     * 
+     *
      * @Assert\Type("integer")
      * @Assert\GreaterThanOrEqual(0)
      */
     private $ltIntervalS;
     
-    public function __construct() {
-        
+    public function __construct()
+    {
         $this->ltid = 0;
         $this->ltTagName = '';
         $this->ltInterval = 0;
         $this->ltIntervalS = 0;
     }
     
-    public function getltid() {
-        
+    public function getltid()
+    {
         return $this->ltid;
     }
     
-    public function setltid($id) {
-        
+    public function setltid($id)
+    {
         $this->ltid = $id;
     }
     
-    public function getltTagName() {
-        
+    public function getltTagName()
+    {
         return $this->ltTagName;
     }
     
-    public function setltTagName($tagName) {
-        
+    public function setltTagName($tagName)
+    {
         $this->ltTagName = $tagName;
     }
     
-    public function getltInterval() {
-        
+    public function getltInterval()
+    {
         return $this->ltInterval;
     }
     
-    public function setltInterval($interval) {
-        
+    public function setltInterval($interval)
+    {
         $this->ltInterval = $interval;
     }
     
-    public function getltIntervalS() {
-        
+    public function getltIntervalS()
+    {
         return $this->ltIntervalS;
     }
     
-    public function setltIntervalS($intervalS) {
-        
+    public function setltIntervalS($intervalS)
+    {
         $this->ltIntervalS = $intervalS;
     }
     
     /**
      * Get full Tag logger object
-     * 
+     *
      * @param Tag $tag Tag object
      * @return TagLogger Tag logger object
      */
-    public function getFullLoggerObject(Tag $tag): TagLogger {
-        
+    public function getFullLoggerObject(Tag $tag): TagLogger
+    {
         // Check if Tag object is valid
         $tag->isValid(true);
         
@@ -119,11 +118,11 @@ class TagLoggerEntity {
     
     /**
      * Initialize from Logger object
-     * 
+     *
      * @param TagLogger $logger Tag logger object
      */
-    public function initFromLoggerObject(TagLogger $logger) {
-        
+    public function initFromLoggerObject(TagLogger $logger)
+    {
         // Check if logger is valid
         $logger->isValid(true);
         

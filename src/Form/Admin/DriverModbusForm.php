@@ -8,7 +8,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-
 use App\Entity\Admin\DriverModbusEntity;
 use App\Entity\Admin\DriverModbusMode;
 
@@ -17,10 +16,11 @@ use App\Entity\Admin\DriverModbusMode;
  *
  * @author Mateusz Mirosławski
  */
-class DriverModbusForm extends AbstractType {
+class DriverModbusForm extends AbstractType
+{
     
-    public function buildForm(FormBuilderInterface $builder, array $options) {
-        
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
         $builder->add('connId', HiddenType::class)
             ->add('connName', null, array('label' => 'Connection name'))
             ->add('id', HiddenType::class)
@@ -67,8 +67,8 @@ class DriverModbusForm extends AbstractType {
             ->add('save', SubmitType::class, array('label' => 'Save'));
     }
     
-    public function configureOptions(OptionsResolver $resolver) {
-        
+    public function configureOptions(OptionsResolver $resolver)
+    {
         $resolver->setDefaults(array(
             'data_class' => DriverModbusEntity::class,
         ));

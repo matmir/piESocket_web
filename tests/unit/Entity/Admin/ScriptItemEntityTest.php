@@ -14,13 +14,13 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Mateusz Mirosławski
  */
-class ScriptItemEntityTest extends TestCase {
-    
+class ScriptItemEntityTest extends TestCase
+{
     /**
      * Test Default constructor
      */
-    public function testDefaultConstructor() {
-        
+    public function testDefaultConstructor()
+    {
         $scriptE = new ScriptItemEntity();
         
         $this->assertEquals(0, $scriptE->getscid());
@@ -32,8 +32,8 @@ class ScriptItemEntityTest extends TestCase {
     /**
      * Test setscid method
      */
-    public function testSetId() {
-        
+    public function testSetId()
+    {
         $scriptE = new ScriptItemEntity();
         $scriptE->setscid(89);
         
@@ -46,8 +46,8 @@ class ScriptItemEntityTest extends TestCase {
     /**
      * Test setscTagName method
      */
-    public function testSetscTagName() {
-        
+    public function testSetscTagName()
+    {
         $scriptE = new ScriptItemEntity();
         $scriptE->setscTagName('ttt');
         
@@ -60,8 +60,8 @@ class ScriptItemEntityTest extends TestCase {
     /**
      * Test setscName method
      */
-    public function testSetscName() {
-        
+    public function testSetscName()
+    {
         $scriptE = new ScriptItemEntity();
         $scriptE->setscName('script');
         
@@ -74,8 +74,8 @@ class ScriptItemEntityTest extends TestCase {
     /**
      * Test setscFeedbackRun method
      */
-    public function testSetscFeedbackRun() {
-        
+    public function testSetscFeedbackRun()
+    {
         $scriptE = new ScriptItemEntity();
         $scriptE->setscFeedbackRun('fbTag');
         
@@ -88,16 +88,16 @@ class ScriptItemEntityTest extends TestCase {
     /**
      * Test getFullScriptObject method
      */
-    public function testGetFullScriptObject() {
-        
+    public function testGetFullScriptObject()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
-        $tag->setType(TagType::Bit);
+        $tag->setType(TagType::BIT);
         $tag->setId(5);
         
         $tagF = null;
         TagLoggerTest::createTag($tagF);
-        $tagF->setType(TagType::Bit);
+        $tagF->setType(TagType::BIT);
         $tagF->setId(54);
         
         $scriptE = new ScriptItemEntity();
@@ -119,16 +119,16 @@ class ScriptItemEntityTest extends TestCase {
     /**
      * Test initFromAlarmObject method
      */
-    public function testInitFromScriptObject1() {
-        
+    public function testInitFromScriptObject1()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
-        $tag->setType(TagType::Bit);
+        $tag->setType(TagType::BIT);
         $tag->setId(3);
         
         $tagF = null;
         TagLoggerTest::createTag($tagF);
-        $tagF->setType(TagType::Bit);
+        $tagF->setType(TagType::BIT);
         $tagF->setName('testFB');
         $tagF->setId(34);
         
@@ -146,11 +146,11 @@ class ScriptItemEntityTest extends TestCase {
         $this->assertEquals('testFB', $scriptE->getscFeedbackRun());
     }
     
-    public function testInitFromScriptObject2() {
-        
+    public function testInitFromScriptObject2()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
-        $tag->setType(TagType::Bit);
+        $tag->setType(TagType::BIT);
         $tag->setId(3);
         
         $script = new ScriptItem($tag);
