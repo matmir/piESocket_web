@@ -2,6 +2,7 @@
 
 namespace App\Entity\Admin;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use App\Entity\Admin\Tag;
 use App\Entity\Admin\TagLoggerInterval;
@@ -17,9 +18,10 @@ class TagLogger
     /**
      * Tag logger identifier
      *
+     * @Assert\PositiveOrZero
      */
     private $ltid;
-    
+        
     /**
      * Tag object
      *
@@ -29,15 +31,22 @@ class TagLogger
     /**
      * Tag logger interval object
      *
+     * @Assert\NotBlank()
+     * @Assert\Type("integer")
+     * @Assert\Range(
+     *      min = 1,
+     *      max = 6
+     * )
      */
     private $ltInterval;
     
     /**
      * Tag logger interval seconds
      *
+     * @Assert\Type("integer")
+     * @Assert\GreaterThanOrEqual(0)
      */
     private $ltIntervalS;
-    
     
     /**
      * Tag last log time
@@ -61,16 +70,25 @@ class TagLogger
      * Default constructor
      *
      * @param Tag $tag Tag object
+     * @param int $id Tag logger identifier
+     * @param int $interval Tag logger interval identifier
+     * @param int $intervalS Tag logger interval seconds
      */
-    public function __construct(Tag $tag)
-    {
+    public function __construct(
+        Tag $tag = null,
+        int $id = 0,
+        int $interval = TagLoggerInterval::I_1S,
+        int $intervalS = 0
+    ) {
         // Check Tag
-        $tag->isValid(true);
+        if ($tag instanceof Tag) {
+            $tag->isValid(true);
+        }
         
-        $this->ltid = 0;
+        $this->ltid = $id;
         $this->ltTag = $tag;
-        $this->ltInterval = TagLoggerInterval::I_1S;
-        $this->ltIntervalS = 0;
+        $this->ltInterval = $interval;
+        $this->ltIntervalS = $intervalS;
         $this->ltLastUPD = null;
         $this->ltLastValue = 0;
         $this->ltEnable = false;
@@ -118,7 +136,7 @@ class TagLogger
     /**
      * Get Tag object
      *
-     * @return Tag Tag object
+     * @return Tag Tag object or null
      */
     public function getTag(): Tag
     {
@@ -136,6 +154,22 @@ class TagLogger
         $tag->isValid(true);
         
         $this->ltTag = $tag;
+    }
+    
+    /**
+     * Check if tag exist
+     *
+     * @return bool True if Tag exist
+     */
+    public function isTag(): bool
+    {
+        $ret = false;
+        
+        if ($this->ltTag instanceof Tag) {
+            $ret = true;
+        }
+        
+        return $ret;
     }
     
     /**
@@ -327,7 +361,11 @@ class TagLogger
         }
         
         // Check Tag
-        $this->ltTag->isValid(true);
+        if ($this->isTag()) {
+            $this->ltTag->isValid(true);
+        } else {
+            throw new Exception("Missing Tag object");
+        }
         
         // Check Interval
         TagLoggerInterval::check($this->ltInterval);

@@ -11,7 +11,7 @@ use App\Service\Admin\TagsMapper;
 use App\Service\Admin\TagLoggerMapper;
 use App\Entity\Paginator;
 use App\Form\Admin\TagLoggerForm;
-use App\Entity\Admin\TagLoggerEntity;
+use App\Entity\Admin\TagLogger;
 use App\Entity\AppException;
 
 class TagLoggerController extends AbstractController
@@ -111,23 +111,17 @@ class TagLoggerController extends AbstractController
      */
     public function add(TagLoggerMapper $tagLoggerMapper, TagsMapper $tagsMapper, Request $request)
     {
-        $tagLoggerE = new TagLoggerEntity();
+        $tagLogger = new TagLogger();
         
-        $form = $this->createForm(TagLoggerForm::class, $tagLoggerE);
+        $form = $this->createForm(TagLoggerForm::class, $tagLogger);
         
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Get Form data
-            $tagLoggerE = $form->getData();
+            $tagLogger = $form->getData();
             
             try {
-                // Get tag object
-                $tag = $tagsMapper->getTagByName($tagLoggerE->getltTagName());
-                
-                // Get real Tag logger object
-                $tagLogger = $tagLoggerE->getFullLoggerObject($tag);
-                
                 // Add to the DB
                 $tagLoggerMapper->addLogger($tagLogger);
                 
@@ -158,26 +152,17 @@ class TagLoggerController extends AbstractController
         // Get logger from DB
         $tagLogger = $tagLoggerMapper->getLogger($loggerID);
         
-        $tagLoggerE = new TagLoggerEntity();
-        $tagLoggerE->initFromLoggerObject($tagLogger);
-        
-        $form = $this->createForm(TagLoggerForm::class, $tagLoggerE);
+        $form = $this->createForm(TagLoggerForm::class, $tagLogger);
         
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Get Form data
-            $tagLoggerE = $form->getData();
+            $tagLoggerN = $form->getData();
             
             try {
-                // Get tag object
-                $tag = $tagsMapper->getTagByName($tagLoggerE->getltTagName());
-                
-                // Get real Tag logger object
-                $tagLogger = $tagLoggerE->getFullLoggerObject($tag);
-                
                 // Write to the DB
-                $tagLoggerMapper->editLogger($tagLogger);
+                $tagLoggerMapper->editLogger($tagLoggerN);
                 
                 $this->addFlash(
                     'tag-msg-ok',

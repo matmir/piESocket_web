@@ -8,38 +8,117 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use App\Entity\Admin\TagLoggerEntity;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\DataMapperInterface;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use App\Entity\AppException;
+use App\Entity\Admin\TagLogger;
+use App\Entity\Admin\TagLoggerInterval;
+use App\Service\Admin\TagsMapper;
 
 /**
  * Form class for write Tag logger
  *
  * @author Mateusz Mirosławski
  */
-class TagLoggerForm extends AbstractType
+class TagLoggerForm extends AbstractType implements DataMapperInterface
 {
+    /**
+     * Tag mapper
+     */
+    private $tagMapper;
+    
+    public function __construct(TagsMapper $tm)
+    {
+        $this->tagMapper = $tm;
+    }
     
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('ltid', HiddenType::class)
-            ->add('ltTagName', null, array('label' => 'Tag name'))
+            ->add('ltTagName', TextType::class, array('label' => 'Tag name',
+                                            'constraints' => [
+                                                new NotBlank(),
+                                                new Length(['max' => 50]),
+                                            ]))
             ->add('ltInterval', ChoiceType::class, array('choices'  => array(
-                                                        '100ms' => 1,
-                                                        '200ms' => 2,
-                                                        '500ms' => 3,
-                                                        '1s' => 4,
-                                                        'Xs' => 5,
-                                                        'On change' => 6,
+                                                TagLoggerInterval::N_I_100MS => TagLoggerInterval::I_100MS,
+                                                TagLoggerInterval::N_I_200MS => TagLoggerInterval::I_200MS,
+                                                TagLoggerInterval::N_I_500MS => TagLoggerInterval::I_500MS,
+                                                TagLoggerInterval::N_I_1S => TagLoggerInterval::I_1S,
+                                                TagLoggerInterval::N_I_XS => TagLoggerInterval::I_XS,
+                                                TagLoggerInterval::N_I_ON_CHANGE => TagLoggerInterval::I_ON_CHANGE,
                                                         ),
                                                     'label' => 'Log interval'
                                             ))
-            ->add('ltIntervalS', null, array('label' => 'Seconds interval'))
-            ->add('save', SubmitType::class, array('label' => 'Save'));
+            ->add('ltIntervalS', IntegerType::class, array('label' => 'Seconds interval'))
+            ->add('save', SubmitType::class, array('label' => 'Save'))
+            ->setDataMapper($this);
+    }
+    
+    /**
+     * @param Color|null $viewData
+     */
+    public function mapDataToForms($viewData, $forms)
+    {
+        // there is no data yet, so nothing to prepopulate
+        if (null === $viewData) {
+            return;
+        }
+
+        // invalid data type
+        if (!$viewData instanceof TagLogger) {
+            throw new UnexpectedTypeException($viewData, TagLogger::class);
+        }
+
+        /** @var FormInterface[] $forms */
+        $aforms = iterator_to_array($forms);
+
+        // initialize form field values
+        $aforms['ltid']->setData($viewData->getId());
+        // Tag name
+        if ($viewData->isTag()) {
+            $aforms['ltTagName']->setData($viewData->getTag()->getName());
+        } else {
+            $aforms['ltTagName']->setData('');
+        }
+        $aforms['ltInterval']->setData($viewData->getInterval());
+        $aforms['ltIntervalS']->setData($viewData->getIntervalS());
+    }
+
+    public function mapFormsToData($forms, &$viewData)
+    {
+        /** @var FormInterface[] $forms */
+        $aforms = iterator_to_array($forms);
+        
+        // Get tag object
+        $tag = null;
+        if ($aforms['ltTagName'] != '') {
+            try {
+                $tag = $this->tagMapper->getTagByName($aforms['ltTagName']->getData());
+            } catch (AppException $ex) {
+                if ($ex->getCode() == AppException::TAG_NOT_EXIST) {
+                    $aforms['ltTagName']->addError(new FormError($ex->getMessage()));
+                }
+            }
+        }
+
+        $viewData = new TagLogger(
+            $tag,
+            $aforms['ltid']->getData(),
+            $aforms['ltInterval']->getData(),
+            $aforms['ltIntervalS']->getData(),
+        );
     }
     
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => TagLoggerEntity::class,
+            'data_class' => TagLogger::class,
         ));
     }
 }

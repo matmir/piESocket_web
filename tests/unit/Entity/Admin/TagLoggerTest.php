@@ -296,4 +296,15 @@ class TagLoggerTest extends TestCase
         
         $this->assertTrue($tagLog->isValid(true));
     }
+    
+    public function testIsValidErr1()
+    {
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
+        $this->expectExceptionMessage('Missing Tag object');
+        
+        $tag = null;
+        $tagLog = new TagLogger($tag);
+        
+        $this->assertTrue($tagLog->isValid(true));
+    }
 }
