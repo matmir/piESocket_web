@@ -10,7 +10,6 @@ use Symfony\Component\Form\Form;
 use App\Service\Admin\TagsMapper;
 use App\Service\Admin\DriverConnectionMapper;
 use App\Form\Admin\TagForm;
-use App\Entity\Admin\TagEntity;
 use App\Entity\Paginator;
 use App\Entity\Admin\Tag;
 use App\Entity\Admin\TagType;
@@ -122,21 +121,18 @@ class TagController extends AbstractController
      */
     public function add(TagsMapper $tagsMapper, DriverConnectionMapper $connMapper, Request $request)
     {
-        $tagE = new TagEntity();
+        $tag = new Tag();
         
         // Get connection names
         $connections = $connMapper->getConnectionsName();
         
-        $form = $this->createForm(TagForm::class, $tagE, ['connections' => $connections]);
+        $form = $this->createForm(TagForm::class, $tag, ['connections' => $connections]);
         
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Get Form data
-            $tagE = $form->getData();
-            
-            // Get real Tag object
-            $tag = $tagE->getFullTagObject();
+            $tag = $form->getData();
             
             try {
                 // Add to the DB
@@ -171,20 +167,14 @@ class TagController extends AbstractController
         
         // Get connection names
         $connections = $connMapper->getConnectionsName();
-        
-        $tagE = new TagEntity();
-        $tagE->initFromTagObject($tag);
-        
-        $form = $this->createForm(TagForm::class, $tagE, ['connections' => $connections]);
+                
+        $form = $this->createForm(TagForm::class, $tag, ['connections' => $connections]);
         
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Get Form data
-            $tagE = $form->getData();
-            
-            // Get real Tag object
-            $tagN = $tagE->getFullTagObject();
+            $tagN = $form->getData();
             
             try {
                 // Save Tag

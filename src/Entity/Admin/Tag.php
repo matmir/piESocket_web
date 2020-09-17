@@ -2,6 +2,7 @@
 
 namespace App\Entity\Admin;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use App\Entity\Admin\TagArea;
 use App\Entity\Admin\TagType;
@@ -17,11 +18,16 @@ class Tag
 {
     /**
      * Tag identifier
+     *
+     * @Assert\PositiveOrZero
      */
     private $tid;
     
     /**
      * Driver connection identifier
+     *
+     * @Assert\NotBlank()
+     * @Assert\Positive
      */
     private $connId;
     
@@ -32,54 +38,117 @@ class Tag
     
     /**
      * Tag name
+     *
+     * @Assert\NotBlank()
+     * @Assert\Regex(
+     *     pattern="/[^A-Za-z0-9_]/",
+     *     match=false,
+     *     message="Tag name contain invalid characters"
+     * )
+     * @Assert\Length(max=50)
      */
     private $tName;
     
     /**
      * Tag type
+     *
+     * @Assert\NotBlank()
+     * @Assert\Type("integer")
+     * @Assert\Range(
+     *      min = 1,
+     *      max = 6
+     * )
      */
     private $tType;
     
     /**
      * Tag area
+     *
+     * @Assert\NotBlank()
+     * @Assert\Type("integer")
+     * @Assert\Range(
+     *      min = 1,
+     *      max = 3
+     * )
      */
     private $tArea;
     
     /**
      * Tag byte address
+     *
+     * @Assert\NotBlank()
+     * @Assert\Type("integer")
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 10000
+     * )
      */
     private $tByteAddress;
     
     /**
      * Tag bit address
+     *
+     * @Assert\NotBlank()
+     * @Assert\Type("integer")
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 7
+     * )
      */
     private $tBitAddress;
     
     /**
      * Tag read access role name
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(max=20)
      */
     private $tReadAccess;
     
     /**
      * Tag write access role name
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(max=20)
      */
     private $tWriteAccess;
     
     /**
      * Default constructor
+     *
+     * @param int $id Tag identifier
+     * @param int $cid Connection identifier
+     * @param string $cName Connection name
+     * @param string $tName Tag name
+     * @param int $type Tag type
+     * @param int $area Tag area
+     * @param int $byteAddr Tag byte address
+     * @param int $bit Tag bit address
+     * @param string $readAccess Read access
+     * @param string $writeAccess Write access
      */
-    public function __construct()
-    {
-        $this->tid = 0;
-        $this->connId = 0;
-        $this->connName = '';
-        $this->tName = '';
-        $this->tType = TagType::BIT;
-        $this->tArea = TagArea::INPUT;
-        $this->tByteAddress = 0;
-        $this->tBitAddress = 0;
-        $this->tReadAccess = 'ROLE_USER';
-        $this->tWriteAccess = 'ROLE_USER';
+    public function __construct(
+        int $id = 0,
+        int $cid = 0,
+        string $cName = '',
+        string $tName = '',
+        int $type = TagType::BIT,
+        int $area = TagArea::INPUT,
+        int $byteAddr = 0,
+        int $bit = 0,
+        string $readAccess = 'ROLE_USER',
+        string $writeAccess = 'ROLE_USER'
+    ) {
+        $this->tid = $id;
+        $this->connId = $cid;
+        $this->connName = $cName;
+        $this->tName = $tName;
+        $this->tType = $type;
+        $this->tArea = $area;
+        $this->tByteAddress = $byteAddr;
+        $this->tBitAddress = $bit;
+        $this->tReadAccess = $readAccess;
+        $this->tWriteAccess = $writeAccess;
     }
     
     /**
