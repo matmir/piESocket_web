@@ -227,8 +227,8 @@ class TagTest extends TestCase
     
     public function testIsValidWithTagType()
     {
-        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
-        $this->expectExceptionMessage('Tag type is Byte but required is Word');
+        $this->expectException(\App\Entity\AppException::class);
+        $this->expectExceptionMessage('Tag (TestTag) type is Byte but required is Word');
         
         $tag = new Tag();
         $tag->setId(780);

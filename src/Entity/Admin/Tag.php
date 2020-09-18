@@ -4,6 +4,7 @@ namespace App\Entity\Admin;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use App\Entity\AppException;
 use App\Entity\Admin\TagArea;
 use App\Entity\Admin\TagType;
 use App\Entity\Admin\User;
@@ -457,8 +458,11 @@ class Tag
         TagType::check($tagType);
             
         if ($this->tType != $tagType) {
-            throw new Exception("Tag type is " . TagType::getName($this->tType) .
-                                " but required is " . TagType::getName($tagType));
+            throw new AppException(
+                "Tag (" . $this->tName . ") type is " . TagType::getName($this->tType) .
+                                " but required is " . TagType::getName($tagType),
+                AppException::TAG_WRONG_TYPE
+            );
         }
         
         return true;

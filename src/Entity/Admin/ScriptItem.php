@@ -53,17 +53,28 @@ class ScriptItem
      *
      * @param Tag $tag Tag object
      */
-    public function __construct(Tag $tag)
-    {
+    public function __construct(
+        Tag $tag = null,
+        Tag $fb = null,
+        int $id = 0,
+        string $sName = ''
+    ) {
         // Check Tag
-        $tag->isValid(true, true, TagType::BIT);
+        if ($tag instanceof Tag) {
+            $tag->isValid(true, true, TagType::BIT);
+        }
         
-        $this->scid = 0;
+        // Check feedback Tag
+        if ($fb instanceof Tag) {
+            $fb->isValid(true, true, TagType::BIT);
+        }
+        
+        $this->scid = $id;
         $this->scTag = $tag;
-        $this->scName = '';
+        $this->scName = $sName;
         $this->scRun = false;
         $this->scLock = false;
-        $this->scFeedbackRun = null;
+        $this->scFeedbackRun = $fb;
         $this->scEnable = false;
     }
     
@@ -127,6 +138,22 @@ class ScriptItem
         $tag->isValid(true, true, TagType::BIT);
         
         $this->scTag = $tag;
+    }
+    
+    /**
+     * Check if script tag exist
+     *
+     * @return bool True if script Tag exist
+     */
+    public function isTag(): bool
+    {
+        $ret = false;
+        
+        if ($this->scTag instanceof Tag) {
+            $ret = true;
+        }
+        
+        return $ret;
     }
     
     /**
@@ -300,7 +327,11 @@ class ScriptItem
         }
         
         // Check Tag
-        $this->scTag->isValid(true, true, TagType::BIT);
+        if ($this->isTag()) {
+            $this->scTag->isValid(true, true, TagType::BIT);
+        } else {
+            throw new Exception("Missing Tag object");
+        }
         
         // Check Name
         $this->checkName($this->scName);

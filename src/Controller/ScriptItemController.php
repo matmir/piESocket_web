@@ -9,9 +9,8 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\Form;
 use App\Service\Admin\ScriptItemMapper;
 use App\Service\Admin\ConfigGeneralMapper;
-use App\Service\Admin\TagsMapper;
 use App\Form\Admin\ScriptItemForm;
-use App\Entity\Admin\ScriptItemEntity;
+use App\Entity\Admin\ScriptItem;
 use App\Entity\Paginator;
 use App\Entity\AppException;
 use App\Command\RunScriptCommand;
@@ -116,34 +115,20 @@ class ScriptItemController extends AbstractController
      */
     public function add(
         ScriptItemMapper $scriptMapper,
-        TagsMapper $tagsMapper,
         Request $request,
         ConfigGeneralMapper $cfg
     ) {
-        $scriptE = new ScriptItemEntity();
+        $script = new ScriptItem();
         
-        $form = $this->createForm(ScriptItemForm::class, $scriptE);
+        $form = $this->createForm(ScriptItemForm::class, $script);
         
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Get Form data
-            $scriptE = $form->getData();
+            $script = $form->getData();
             
             try {
-                // Get tag object
-                $tag = $tagsMapper->getTagByName($scriptE->getscTagName());
-                
-                $tagFB = null;
-                
-                // Feedback tag
-                if (trim($scriptE->getscFeedbackRun()) != '') {
-                    $tagFB = $tagsMapper->getTagByName($scriptE->getscFeedbackRun());
-                }
-                
-                // Get real Script item object
-                $script = $scriptE->getFullScriptObject($tag, $tagFB);
-                
                 // Check if file exist on disk
                 if (!file_exists(RunScriptCommand::buildScriptPath($cfg->getUserScriptsPath(), $script->getName()))) {
                     throw new AppException("Script: " . $script->getName() .
@@ -178,46 +163,29 @@ class ScriptItemController extends AbstractController
     public function edit(
         $scriptID,
         ScriptItemMapper $scriptMapper,
-        TagsMapper $tagsMapper,
         Request $request,
         ConfigGeneralMapper $cfg
     ) {
         // Get script from DB
         $script = $scriptMapper->getScript($scriptID);
         
-        $scriptE = new ScriptItemEntity();
-        $scriptE->initFromScriptObject($script);
-        
-        $form = $this->createForm(ScriptItemForm::class, $scriptE);
+        $form = $this->createForm(ScriptItemForm::class, $script);
         
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Get Form data
-            $scriptE = $form->getData();
+            $scriptN = $form->getData();
             
             try {
-                // Get tag object
-                $tag = $tagsMapper->getTagByName($scriptE->getscTagName());
-                
-                $tagFB = null;
-                
-                // Feedback tag
-                if (trim($scriptE->getscFeedbackRun()) != '') {
-                    $tagFB = $tagsMapper->getTagByName($scriptE->getscFeedbackRun());
-                }
-                
-                // Get real Script item object
-                $script = $scriptE->getFullScriptObject($tag, $tagFB);
-                
                 // Check if file exist on disk
-                if (!file_exists(RunScriptCommand::buildScriptPath($cfg->getUserScriptsPath(), $script->getName()))) {
-                    throw new AppException("Script: " . $script->getName() .
+                if (!file_exists(RunScriptCommand::buildScriptPath($cfg->getUserScriptsPath(), $scriptN->getName()))) {
+                    throw new AppException("Script: " . $scriptN->getName() .
                             " does not exist on disk!", AppException::SCRIPT_FILE_NOT_EXIST);
                 }
                 
                 // Add to the DB
-                $scriptMapper->editScript($script);
+                $scriptMapper->editScript($scriptN);
                 
                 $this->addFlash(
                     'script-msg-ok',

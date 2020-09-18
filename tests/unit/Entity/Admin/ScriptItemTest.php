@@ -247,6 +247,23 @@ class ScriptItemTest extends TestCase
         TagLoggerTest::createTag($tag);
         $tag->setType(TagType::BIT);
         
+        $tagFB = null;
+        TagLoggerTest::createTag($tagFB);
+        $tagFB->setName('tettt');
+        $tagFB->setType(TagType::BIT);
+        
+        $script = new ScriptItem($tag, $tagFB);
+        $script->setName('test');
+        
+        $this->assertTrue($script->isValid(true));
+    }
+    
+    public function testIsValidErr1()
+    {
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
+        $this->expectExceptionMessage('Missing Tag object');
+        
+        $tag = null;
         $script = new ScriptItem($tag);
         $script->setName('test');
         

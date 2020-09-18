@@ -39,6 +39,7 @@ class AppException extends Exception
     public const TAG_WRITE_ACCESS_DENIED = 55;
     public const TAG_ACCESS_ARRAY_WRONG = 56;
     public const TAG_BYTE_ADDRESS_WRONG = 57;
+    public const TAG_WRONG_TYPE = 58;
     
     public const USER_NAME_EXIST = 60;
     public const USER_ADDRESS_EXIST = 61;
