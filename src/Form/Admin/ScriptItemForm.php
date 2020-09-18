@@ -60,7 +60,7 @@ class ScriptItemForm extends AbstractType implements DataMapperInterface
     }
     
     /**
-     * @param Color|null $viewData
+     * @param ScriptItem|null $viewData
      */
     public function mapDataToForms($viewData, $forms)
     {

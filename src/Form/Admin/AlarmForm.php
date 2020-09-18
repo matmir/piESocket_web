@@ -124,7 +124,7 @@ class AlarmForm extends AbstractType implements DataMapperInterface
     }
     
     /**
-     * @param Color|null $viewData
+     * @param Alarm|null $viewData
      */
     public function mapDataToForms($viewData, $forms)
     {

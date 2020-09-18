@@ -80,7 +80,7 @@ class TagForm extends AbstractType implements DataMapperInterface
     }
     
     /**
-     * @param Color|null $viewData
+     * @param Tag|null $viewData
      */
     public function mapDataToForms($viewData, $forms)
     {

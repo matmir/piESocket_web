@@ -61,7 +61,7 @@ class TagLoggerForm extends AbstractType implements DataMapperInterface
     }
     
     /**
-     * @param Color|null $viewData
+     * @param TagLogger|null $viewData
      */
     public function mapDataToForms($viewData, $forms)
     {
