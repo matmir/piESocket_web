@@ -79,27 +79,54 @@ class DriverModbus
     
     /**
      * Default constructor
+     *
+     * @param int $id Configuration identifier
+     * @param int $mode Modbus mode
+     * @param int $regCnt Modbus register count
+     * @param int $polling Modbus polling interval
+     * @param int $slaveId Modbus slave identifier
+     * @param string $TCPaddr TCP address
+     * @param int $TCPport TCP port
+     * @param bool $useSlaveId Flag for using slave id in TCP mode
+     * @param string $RTUport RTU port name
+     * @param int $RTUbaud RTU baud rate
+     * @param string $RTUparity RTU parity
+     * @param int $RTUdataBit RTU data bits
+     * @param int $RTUstopBit RTU stop bits
      */
-    public function __construct()
-    {
+    public function __construct(
+        int $id = 0,
+        int $mode = DriverModbusMode::TCP,
+        int $regCnt = 1,
+        int $polling = 50,
+        int $slaveId = 2,
+        string $TCPaddr = '192.168.0.5',
+        int $TCPport = 502,
+        bool $useSlaveId = false,
+        string $RTUport = '/dev/ttyACM1',
+        int $RTUbaud = 57600,
+        string $RTUparity = 'N',
+        int $RTUdataBit = 8,
+        int $RTUstopBit = 1
+    ) {
         // Common data
-        $this->id = 0;
-        $this->mode = DriverModbusMode::TCP;
-        $this->registerCount = 1;
-        $this->driverPolling = 50;
-        $this->slaveID = 2;
+        $this->id = $id;
+        $this->mode = $mode;
+        $this->registerCount = $regCnt;
+        $this->driverPolling = $polling;
+        $this->slaveID = $slaveId;
         
         // Modbus TCP
-        $this->TCP_addr = "192.168.0.5";
-        $this->TCP_port = 502;
-        $this->TCP_use_slaveID = false;
+        $this->TCP_addr = $TCPaddr;
+        $this->TCP_port = $TCPport;
+        $this->TCP_use_slaveID = $useSlaveId;
         
         // Modbus RTU
-        $this->RTU_port = "/dev/ttyACM1";
-        $this->RTU_baud = 57600;
-        $this->RTU_parity = 'N';
-        $this->RTU_dataBit = 8;
-        $this->RTU_stopBit = 1;
+        $this->RTU_port = $RTUport;
+        $this->RTU_baud = $RTUbaud;
+        $this->RTU_parity = $RTUparity;
+        $this->RTU_dataBit = $RTUdataBit;
+        $this->RTU_stopBit = $RTUstopBit;
     }
     
     /**
@@ -168,7 +195,7 @@ class DriverModbus
      *
      * @return int Driver polling interval
      */
-    public function getDriverPolling()
+    public function getDriverPolling(): int
     {
         return $this->driverPolling;
     }
@@ -479,7 +506,7 @@ class DriverModbus
      *
      * @return string Modbus slave IP address
      */
-    public function getTCPaddr()
+    public function getTCPaddr(): string
     {
         return $this->TCP_addr;
     }

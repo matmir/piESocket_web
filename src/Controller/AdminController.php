@@ -13,9 +13,10 @@ use App\Form\Admin\DriverSHMForm;
 use App\Service\Admin\ConfigGeneralMapper;
 use App\Service\Admin\DriverConnectionMapper;
 use App\Service\Admin\SystemScripts;
-use App\Entity\Admin\DriverModbusEntity;
-use App\Entity\Admin\DriverSHMEntity;
+use App\Entity\Admin\DriverModbus;
+use App\Entity\Admin\DriverSHM;
 use App\Entity\Admin\DriverType;
+use App\Entity\Admin\DriverConnection;
 use App\Entity\AppException;
 
 class AdminController extends AbstractController
@@ -121,25 +122,24 @@ class AdminController extends AbstractController
             $type = 0;
         }
                 
-        $connE = 0;
+        $conn = new DriverConnection();
                 
         // Select driver form
         if ($type == DriverType::SHM) {
-            $connE = new DriverSHMEntity();
-            $form = $this->createForm(DriverSHMForm::class, $connE);
+            $conn->setType(DriverType::SHM);
+            $conn->setShmConfig(new DriverSHM());
+            $form = $this->createForm(DriverSHMForm::class, $conn);
         } else {
-            $connE = new DriverModbusEntity();
-            $form = $this->createForm(DriverModbusForm::class, $connE);
+            $conn->setType(DriverType::MODBUS);
+            $conn->setModbusConfig(new DriverModbus());
+            $form = $this->createForm(DriverModbusForm::class, $conn);
         }
         
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Get Form data
-            $connE = $form->getData();
-            
-            // Get real connection object
-            $conn = $connE->getFullConnectionObject();
+            $conn = $form->getData();
                         
             try {
                 // Add to the DB
@@ -171,36 +171,27 @@ class AdminController extends AbstractController
         $conn = $connMapper->getConnection($connId);
         
         $type = $conn->getType();
-                
-        $connE = 0;
-                
+        
         // Select driver form
         if ($conn->getType() == DriverType::SHM) {
-            $connE = new DriverSHMEntity();
-            $connE->initFromConnectionObject($conn);
-            $form = $this->createForm(DriverSHMForm::class, $connE);
+            $form = $this->createForm(DriverSHMForm::class, $conn);
         } else {
-            $connE = new DriverModbusEntity();
-            $connE->initFromConnectionObject($conn);
-            $form = $this->createForm(DriverModbusForm::class, $connE);
+            $form = $this->createForm(DriverModbusForm::class, $conn);
         }
         
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Get Form data
-            $connE = $form->getData();
-            
-            // Get real connection object
-            $newConn = $connE->getFullConnectionObject();
+            $connN = $form->getData();
             
             try {
                 // Add to the DB
-                $connMapper->editConnection($newConn);
+                $connMapper->editConnection($connN);
                 
                 $this->addFlash(
                     'driver-msg-ok',
-                    'New connection was saved!'
+                    'Connection was saved!'
                 );
                 
                 return $this->redirect($this->generateUrl('admin_config_driver'));

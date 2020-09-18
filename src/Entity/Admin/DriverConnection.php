@@ -46,14 +46,25 @@ class DriverConnection
     
     /**
      * Default constructor
+     *
+     * @param int $id Connection identifier
+     * @param string $name Connection name
+     * @param int $type Connection type
+     * @param DriverModbus $mb DriverModbus object
+     * @param DriverSHM $shm DriverSHM object
      */
-    public function __construct()
-    {
-        $this->id = 0;
-        $this->name = 'conn1';
-        $this->type = DriverType::SHM;
-        $this->configModbus = null;
-        $this->configShm = null;
+    public function __construct(
+        int $id = 0,
+        string $name = 'conn1',
+        int $type = DriverType::SHM,
+        DriverModbus $mb = null,
+        DriverSHM $shm = null
+    ) {
+        $this->id = $id;
+        $this->name = $name;
+        $this->type = $type;
+        $this->configModbus = $mb;
+        $this->configShm = $shm;
         $this->enable = false;
     }
     

@@ -30,11 +30,16 @@ class DriverSHM
     
     /**
      * Default constructor
+     *
+     * @param int $id Configuration identifier
+     * @param string $segment SHM segment name
      */
-    public function __construct()
-    {
-        $this->id = 0;
-        $this->segmentName = 'shm_segment';
+    public function __construct(
+        int $id = 0,
+        string $segment = 'shm_segment'
+    ) {
+        $this->id = $id;
+        $this->segmentName = $segment;
     }
     
     /**
@@ -81,7 +86,7 @@ class DriverSHM
      *
      * @return string SHM segment name
      */
-    public function getSegmentName()
+    public function getSegmentName(): string
     {
         return $this->segmentName;
     }
