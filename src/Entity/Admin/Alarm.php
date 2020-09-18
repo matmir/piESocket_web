@@ -90,24 +90,43 @@ class Alarm
      *
      * @param Tag $tag Tag connected to the alarm
      */
-    public function __construct(Tag $tag)
-    {
+    public function __construct(
+        Tag $tag = null,
+        Tag $fbTag = null,
+        Tag $hwTag = null,
+        int $id = 0,
+        int $prio = 1,
+        string $msg = '',
+        int $trig = AlarmTrigger::TR_BIN,
+        bool $trigBin = false,
+        int $trigN = 0,
+        float $trigR = 0,
+        bool $autoAck = false
+    ) {
         // Check Tag
-        $tag->isValid(true);
+        if ($tag instanceof Tag) {
+            $tag->isValid(true);
+        }
+        if ($fbTag instanceof Tag) {
+            $fbTag->isValid(true, true, TagType::BIT);
+        }
+        if ($hwTag instanceof Tag) {
+            $hwTag->isValid(true, true, TagType::BIT);
+        }
         
-        $this->adid = 0;
+        $this->adid = $id;
         $this->adTag = $tag;
-        $this->adPriority = 0;
-        $this->adMessage = 'none';
-        $this->adTrigger = AlarmTrigger::TR_BIN;
-        $this->adTriggerB = false;
-        $this->adTriggerN = 0;
-        $this->adTriggerR = 0;
-        $this->adAutoAck = false;
+        $this->adPriority = $prio;
+        $this->adMessage = $msg;
+        $this->adTrigger = $trig;
+        $this->adTriggerB = $trigBin;
+        $this->adTriggerN = $trigN;
+        $this->adTriggerR = $trigR;
+        $this->adAutoAck = $autoAck;
         $this->adActive = false;
         $this->adPending = false;
-        $this->adFeedbackNotACK = null;
-        $this->adHWAck = null;
+        $this->adFeedbackNotACK = $fbTag;
+        $this->adHWAck = $hwTag;
         $this->adEnable = false;
     }
     
@@ -171,6 +190,22 @@ class Alarm
         $tag->isValid(true);
         
         $this->adTag = $tag;
+    }
+    
+    /**
+     * Check if alarm tag exist
+     *
+     * @return bool True if alarm Tag exist
+     */
+    public function isTag(): bool
+    {
+        $ret = false;
+        
+        if ($this->adTag instanceof Tag) {
+            $ret = true;
+        }
+        
+        return $ret;
     }
     
     /**
@@ -571,7 +606,11 @@ class Alarm
         }
         
         // Check Tag
-        $this->adTag->isValid($checkID);
+        if ($this->isTag()) {
+            $this->adTag->isValid($checkID);
+        } else {
+            throw new Exception("Missing Tag object");
+        }
         
         // Check priority
         $this->checkPriority($this->adPriority);

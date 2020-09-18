@@ -10,9 +10,8 @@ use Symfony\Component\Form\Form;
 use App\Entity\Paginator;
 use App\Entity\AppException;
 use App\Service\Admin\AlarmMapper;
-use App\Service\Admin\TagsMapper;
 use App\Form\Admin\AlarmForm;
-use App\Entity\Admin\AlarmEntity;
+use App\Entity\Admin\Alarm;
 use App\Entity\Admin\Tag;
 use App\Entity\Admin\TagType;
 
@@ -137,11 +136,11 @@ class AlarmController extends AbstractController
     /**
      * @Route("/admin/alarm/add", name="admin_alarm_add")
      */
-    public function add(AlarmMapper $alarmMapper, TagsMapper $tagsMapper, Request $request)
+    public function add(AlarmMapper $alarmMapper, Request $request)
     {
-        $alarmE = new AlarmEntity();
+        $alarm = new Alarm();
         
-        $form = $this->createForm(AlarmForm::class, $alarmE);
+        $form = $this->createForm(AlarmForm::class, $alarm);
         
         $form->handleRequest($request);
         
@@ -149,31 +148,11 @@ class AlarmController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Get Form data
-            $alarmE = $form->getData();
+            $alarm = $form->getData();
             
             try {
-                // Get tag object
-                $tag = $tagsMapper->getTagByName($alarmE->getadTagName());
-                
                 // Tag type
-                $tagType = $this->prepareTagType($tag);
-                
-                $tagFB = null;
-                
-                // Feedback tag
-                if (trim($alarmE->getadFeedbackNotACK()) != '') {
-                    $tagFB = $tagsMapper->getTagByName($alarmE->getadFeedbackNotACK());
-                }
-                
-                $tagHW = null;
-                
-                // HW tag
-                if (trim($alarmE->getadHWAck()) != '') {
-                    $tagHW = $tagsMapper->getTagByName($alarmE->getadHWAck());
-                }
-                
-                // Get real Alarm object
-                $alarm = $alarmE->getFullAlarmObject($tag, $tagFB, $tagHW);
+                $tagType = $this->prepareTagType($alarm->getTag());
                 
                 // Add to the DB
                 $alarmMapper->addAlarm($alarm);
@@ -201,15 +180,12 @@ class AlarmController extends AbstractController
     /**
      * @Route("/admin/alarm/edit/{alarmID}", name="admin_alarm_edit")
      */
-    public function edit($alarmID, AlarmMapper $alarmMapper, TagsMapper $tagsMapper, Request $request)
+    public function edit($alarmID, AlarmMapper $alarmMapper, Request $request)
     {
         // Get alarm from DB
         $alarm = $alarmMapper->getAlarm($alarmID);
         
-        $alarmE = new AlarmEntity();
-        $alarmE->initFromAlarmObject($alarm);
-        
-        $form = $this->createForm(AlarmForm::class, $alarmE);
+        $form = $this->createForm(AlarmForm::class, $alarm);
         
         $form->handleRequest($request);
         
@@ -217,34 +193,14 @@ class AlarmController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Get Form data
-            $alarmE = $form->getData();
+            $alarmN = $form->getData();
             
             try {
-                // Get tag object
-                $tag = $tagsMapper->getTagByName($alarmE->getadTagName());
-                
                 // Tag type
-                $tagType = $this->prepareTagType($tag);
-                
-                $tagFB = null;
-                
-                // Feedback tag
-                if (trim($alarmE->getadFeedbackNotACK()) != '') {
-                    $tagFB = $tagsMapper->getTagByName($alarmE->getadFeedbackNotACK());
-                }
-                
-                $tagHW = null;
-                //TODO: Add checkbox in form (yes/no)?
-                // HW tag
-                if (trim($alarmE->getadHWAck()) != '') {
-                    $tagHW = $tagsMapper->getTagByName($alarmE->getadHWAck());
-                }
-                
-                // Get real Alarm object
-                $alarm = $alarmE->getFullAlarmObject($tag, $tagFB, $tagHW);
+                $tagType = $this->prepareTagType($alarmN->getTag());
                 
                 // Add to the DB
-                $alarmMapper->editAlarm($alarm);
+                $alarmMapper->editAlarm($alarmN);
                 
                 $this->addFlash(
                     'alarm-msg-ok',

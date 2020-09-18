@@ -32,8 +32,8 @@ class AlarmTest extends TestCase
         $this->assertInstanceOf(Tag::class, $alarm->getTag());
         $this->assertEquals(14, $alarm->getTag()->getId());
         
-        $this->assertEquals(0, $alarm->getPriority());
-        $this->assertEquals('none', $alarm->getMessage());
+        $this->assertEquals(1, $alarm->getPriority());
+        $this->assertEquals('', $alarm->getMessage());
         
         $this->assertEquals(AlarmTrigger::TR_BIN, $alarm->getTrigger());
         
@@ -459,9 +459,31 @@ class AlarmTest extends TestCase
     {
         $tag = null;
         TagLoggerTest::createTag($tag);
+        
+        $tagFB = null;
+        TagLoggerTest::createTag($tagFB);
+        $tagFB->setName('tettt');
+        $tagFB->setType(TagType::BIT);
+        
+        $tagHW = null;
+        TagLoggerTest::createTag($tagHW);
+        $tagHW->setName('tetttw');
+        $tagHW->setType(TagType::BIT);
                                 
-        $alarm = new Alarm($tag);
+        $alarm = new Alarm($tag, $tagFB, $tagHW);
+        $alarm->setMessage("Test message");
         $alarm->setTrigger(AlarmTrigger::TR_TAG_EQ_VAL);
+        
+        $this->assertTrue($alarm->isValid(true));
+    }
+    
+    public function testIsValidErr1()
+    {
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
+        $this->expectExceptionMessage('Missing Tag object');
+        
+        $alarm = new Alarm();
+        $alarm->setMessage("Test message");
         
         $this->assertTrue($alarm->isValid(true));
     }
@@ -477,6 +499,7 @@ class AlarmTest extends TestCase
         $tag->setType(TagType::BIT);
                                 
         $alarm = new Alarm($tag);
+        $alarm->setMessage("test msg");
         $alarm->setTrigger(AlarmTrigger::TR_TAG_EQ_VAL);
         
         $alarm->isValid(true);
@@ -492,6 +515,7 @@ class AlarmTest extends TestCase
         TagLoggerTest::createTag($tag);
                                 
         $alarm = new Alarm($tag);
+        $alarm->setMessage("test msg");
         $alarm->setTrigger(AlarmTrigger::TR_BIN);
         
         $alarm->isValid(true);
