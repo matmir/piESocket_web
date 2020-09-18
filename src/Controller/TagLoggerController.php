@@ -7,7 +7,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\Form;
-use App\Service\Admin\TagsMapper;
 use App\Service\Admin\TagLoggerMapper;
 use App\Entity\Paginator;
 use App\Form\Admin\TagLoggerForm;
@@ -109,7 +108,7 @@ class TagLoggerController extends AbstractController
     /**
      * @Route("/admin/logger/add", name="admin_logger_add")
      */
-    public function add(TagLoggerMapper $tagLoggerMapper, TagsMapper $tagsMapper, Request $request)
+    public function add(TagLoggerMapper $tagLoggerMapper, Request $request)
     {
         $tagLogger = new TagLogger();
         
@@ -147,7 +146,7 @@ class TagLoggerController extends AbstractController
     /**
      * @Route("/admin/logger/edit/{loggerID}", name="admin_logger_edit")
      */
-    public function edit($loggerID, TagLoggerMapper $tagLoggerMapper, TagsMapper $tagsMapper, Request $request)
+    public function edit($loggerID, TagLoggerMapper $tagLoggerMapper, Request $request)
     {
         // Get logger from DB
         $tagLogger = $tagLoggerMapper->getLogger($loggerID);

@@ -97,7 +97,7 @@ class TagLoggerForm extends AbstractType implements DataMapperInterface
         
         // Get tag object
         $tag = null;
-        if ($aforms['ltTagName'] != '') {
+        if ($aforms['ltTagName']->getData() != '') {
             try {
                 $tag = $this->tagMapper->getTagByName($aforms['ltTagName']->getData());
             } catch (AppException $ex) {
