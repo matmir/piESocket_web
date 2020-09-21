@@ -38,7 +38,9 @@ class UserForm extends AbstractType implements DataMapperInterface
                                             'constraints' => [
                                                 new NotBlank(),
                                                 new Length(['max' => 25]),
-                                            ]))
+                                            ],
+                                            'empty_data' => ''
+                                            ))
             ->add('oldPassword', PasswordType::class, array('label' => 'Old password',
                                             'constraints' => [
                                                 new Length(['max' => 200]),
@@ -100,6 +102,9 @@ class UserForm extends AbstractType implements DataMapperInterface
         $aforms = iterator_to_array($forms);
         
         try {
+            // Add user flag
+            $addUsr = ($aforms['id']->getData() == 0) ? (true) : (false);
+            
             // Check password
             $pass = '';
             $p1 = trim($aforms['password1']->getData());
@@ -114,6 +119,13 @@ class UserForm extends AbstractType implements DataMapperInterface
                         AppException::USER_PASSWORD_NOT_EQUAL
                     );
                 }
+            }
+            
+            if ($addUsr && $p1 == '' && $p2 == '') {
+                throw new AppException(
+                    "Missing user password!",
+                    AppException::USER_PASSWORD_NOT_EQUAL
+                );
             }
 
             // Create object
