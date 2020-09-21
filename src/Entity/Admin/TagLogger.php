@@ -2,8 +2,8 @@
 
 namespace App\Entity\Admin;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use App\Entity\AppException;
 use App\Entity\Admin\Tag;
 use App\Entity\Admin\TagLoggerInterval;
 
@@ -17,52 +17,36 @@ class TagLogger
        
     /**
      * Tag logger identifier
-     *
-     * @Assert\PositiveOrZero
      */
     private $ltid;
         
     /**
      * Tag object
-     *
      */
     private $ltTag;
     
     /**
      * Tag logger interval object
-     *
-     * @Assert\NotBlank()
-     * @Assert\Type("integer")
-     * @Assert\Range(
-     *      min = 1,
-     *      max = 6
-     * )
      */
     private $ltInterval;
     
     /**
      * Tag logger interval seconds
-     *
-     * @Assert\Type("integer")
-     * @Assert\GreaterThanOrEqual(0)
      */
     private $ltIntervalS;
     
     /**
      * Tag last log time
-     *
      */
     private $ltLastUPD;
     
     /**
      * Tag last value
-     *
      */
     private $ltLastValue;
     
     /**
      * Tag logger enabled flag
-     *
      */
     private $ltEnable;
     
@@ -214,7 +198,10 @@ class TagLogger
     private function checkIntervalS(int $sec): bool
     {
         if ($sec < 1 && $this->ltInterval == TagLoggerInterval::I_XS) {
-            throw new Exception("Wrong Tag logger interval seconds value");
+            throw new AppException(
+                "Tag logger interval seconds should be greater than 0",
+                AppException::LOGGER_INTERVALS_WRONG
+            );
         }
         
         return true;

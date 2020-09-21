@@ -30,6 +30,7 @@ class AppException extends Exception
     public const SOCKET_ERROR = 34;
     
     public const LOGGER_TAG_EXIST = 40;
+    public const LOGGER_INTERVALS_WRONG = 41;
     
     public const TAG_NAME_EXIST = 50;
     public const TAG_ADDRESS_EXIST = 51;

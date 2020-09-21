@@ -98,6 +98,9 @@ class TagLoggerController extends AbstractController
             if ($code == AppException::LOGGER_TAG_EXIST || $code == AppException::TAG_NOT_EXIST) {
                 // Add error
                 $form->get('ltTagName')->addError(new FormError($errorObj->getMessage()));
+            } elseif ($code == AppException::LOGGER_INTERVALS_WRONG) {
+                // Add error
+                $form->get('ltIntervalS')->addError(new FormError($errorObj->getMessage()));
             } else {
                 // Unknown error
                 $form->get('ltTagName')->addError(new FormError('Unknown exception!'));

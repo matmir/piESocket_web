@@ -164,8 +164,8 @@ class TagLoggerTest extends TestCase
     
     public function testSetIntervalSWrong()
     {
-        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
-        $this->expectExceptionMessage('Wrong Tag logger interval seconds value');
+        $this->expectException(\App\Entity\AppException::class);
+        $this->expectExceptionMessage('Tag logger interval seconds should be greater than 0');
         
         $tag = null;
         $this->createTag($tag);

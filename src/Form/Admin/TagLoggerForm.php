@@ -13,8 +13,10 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Validator\Constraints\PositiveOrZero;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Range;
 use App\Entity\AppException;
 use App\Entity\Admin\TagLogger;
 use App\Entity\Admin\TagLoggerInterval;
@@ -39,23 +41,32 @@ class TagLoggerForm extends AbstractType implements DataMapperInterface
     
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('ltid', HiddenType::class)
+        $builder->add('ltid', HiddenType::class, array('constraints' => [
+                                                new PositiveOrZero()
+                                            ]))
             ->add('ltTagName', TextType::class, array('label' => 'Tag name',
                                             'constraints' => [
                                                 new NotBlank(),
                                                 new Length(['max' => 50]),
                                             ]))
-            ->add('ltInterval', ChoiceType::class, array('choices'  => array(
+            ->add('ltInterval', ChoiceType::class, array('label' => 'Log interval',
+                                            'choices'  => array(
                                                 TagLoggerInterval::N_I_100MS => TagLoggerInterval::I_100MS,
                                                 TagLoggerInterval::N_I_200MS => TagLoggerInterval::I_200MS,
                                                 TagLoggerInterval::N_I_500MS => TagLoggerInterval::I_500MS,
                                                 TagLoggerInterval::N_I_1S => TagLoggerInterval::I_1S,
                                                 TagLoggerInterval::N_I_XS => TagLoggerInterval::I_XS,
                                                 TagLoggerInterval::N_I_ON_CHANGE => TagLoggerInterval::I_ON_CHANGE,
-                                                        ),
-                                                    'label' => 'Log interval'
-                                            ))
-            ->add('ltIntervalS', IntegerType::class, array('label' => 'Seconds interval'))
+                                            ),
+                                            'constraints' => [
+                                                new NotBlank(),
+                                                new Range(['min' => 1,
+                                                            'max' => 6]),
+                                            ]))
+            ->add('ltIntervalS', IntegerType::class, array('label' => 'Seconds interval',
+                                            'constraints' => [
+                                                new PositiveOrZero()
+                                            ]))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->setDataMapper($this);
     }

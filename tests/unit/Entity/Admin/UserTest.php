@@ -10,12 +10,14 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Mateusz Mirosławski
  */
-class UserTest extends TestCase {
+class UserTest extends TestCase
+{
     
     /**
      * Test Default constructor
      */
-    public function testDefaultConstructor() {
+    public function testDefaultConstructor()
+    {
         
         $usr = new User();
         
@@ -30,7 +32,8 @@ class UserTest extends TestCase {
     /**
      * Test setId method
      */
-    public function testSetId() {
+    public function testSetId()
+    {
         
         $usr = new User();
         $usr->setId(85);
@@ -55,7 +58,8 @@ class UserTest extends TestCase {
     /**
      * Test setUsername method
      */
-    public function testSetUsername() {
+    public function testSetUsername()
+    {
         
         $usr = new User();
         $usr->setUsername('testU');
@@ -80,7 +84,8 @@ class UserTest extends TestCase {
     /**
      * Test setPassword method
      */
-    public function testSetPassword() {
+    public function testSetPassword()
+    {
         
         $usr = new User();
         $usr->setPassword('pass1');
@@ -105,7 +110,8 @@ class UserTest extends TestCase {
     /**
      * Test setEmail method
      */
-    public function testSetEmail() {
+    public function testSetEmail()
+    {
         
         $usr = new User();
         $usr->setEmail('mailtest');
@@ -130,7 +136,8 @@ class UserTest extends TestCase {
     /**
      * Test setUserRole method
      */
-    public function testSetUserRole() {
+    public function testSetUserRole()
+    {
         
         $usr = new User();
         $usr->setRoles('ROLE_test');
