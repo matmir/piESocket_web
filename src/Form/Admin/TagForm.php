@@ -12,6 +12,12 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\PositiveOrZero;
+use Symfony\Component\Validator\Constraints\Positive;
+use Symfony\Component\Validator\Constraints\Range;
+use Symfony\Component\Validator\Constraints\Regex;
 use App\Entity\Admin\Tag;
 use App\Entity\Admin\TagArea;
 use App\Entity\Admin\TagType;
@@ -26,55 +32,89 @@ class TagForm extends AbstractType implements DataMapperInterface
     
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('tid', HiddenType::class)
-            ->add('tConnId', ChoiceType::class, array('choices'  => $options['connections'],
-                                                    'label' => 'Connection'
-                                            ))
-            ->add('tName', TextType::class, array('label' => 'Name'))
-            ->add('tType', ChoiceType::class, array('choices'  => array(
-                                                        TagType::N_BIT => TagType::BIT,
-                                                        TagType::N_BYTE => TagType::BYTE,
-                                                        TagType::N_WORD => TagType::WORD,
-                                                        TagType::N_DWORD => TagType::DWORD,
-                                                        TagType::N_INT => TagType::INT,
-                                                        TagType::N_REAL => TagType::REAL,
-                                                        ),
-                                                    'label' => 'Tag type'
-                                            ))
-            ->add('tArea', ChoiceType::class, array('choices'  => array(
-                                                        TagArea::N_INPUT => TagArea::INPUT,
-                                                        TagArea::N_OUTPUT => TagArea::OUTPUT,
-                                                        TagArea::N_MEMORY => TagArea::MEMORY,
-                                                        ),
-                                                    'label' => 'Area'
-                                            ))
-            ->add('tByteAddress', IntegerType::class, array('label' => 'Byte address'))
-            ->add('tBitAddress', ChoiceType::class, array('choices'  => array(
-                                                            '0' => 0,
-                                                            '1' => 1,
-                                                            '2' => 2,
-                                                            '3' => 3,
-                                                            '4' => 4,
-                                                            '5' => 5,
-                                                            '6' => 6,
-                                                            '7' => 7,
-                                                            ),
-                                                        'label' => 'Bit address'
-                                            ))
-            ->add('tReadAccess', ChoiceType::class, array('choices'  => array(
-                                                        'ADMIN' => 'ROLE_ADMIN',
-                                                        'USER' => 'ROLE_USER',
-                                                        'GUEST' => 'ROLE_GUEST',
-                                                        ),
-                                                    'label' => 'Read access'
-                                            ))
-            ->add('tWriteAccess', ChoiceType::class, array('choices'  => array(
-                                                        'ADMIN' => 'ROLE_ADMIN',
-                                                        'USER' => 'ROLE_USER',
-                                                        'GUEST' => 'ROLE_GUEST',
-                                                        ),
-                                                    'label' => 'Write access'
-                                            ))
+        $builder->add('tid', HiddenType::class, array('constraints' => [
+                                                new PositiveOrZero()
+                                            ]))
+            ->add('tConnId', ChoiceType::class, array('label' => 'Connection',
+                                        'choices'  => $options['connections'],
+                                        'constraints' => [
+                                            new NotBlank(),
+                                            new Positive()
+                                        ]))
+            ->add('tName', TextType::class, array('label' => 'Name',
+                                        'constraints' => [
+                                            new NotBlank(),
+                                            new Length(['max' => 50]),
+                                            new Regex(['pattern' => "/[^A-Za-z0-9_]/",
+                                                        'match' => false,
+                                                        'message' => "Tag name contain invalid characters"])
+                                        ]))
+            ->add('tType', ChoiceType::class, array('label' => 'Tag type',
+                                        'choices'  => array(
+                                            TagType::N_BIT => TagType::BIT,
+                                            TagType::N_BYTE => TagType::BYTE,
+                                            TagType::N_WORD => TagType::WORD,
+                                            TagType::N_DWORD => TagType::DWORD,
+                                            TagType::N_INT => TagType::INT,
+                                            TagType::N_REAL => TagType::REAL,
+                                        ),
+                                        'constraints' => [
+                                            new NotBlank(),
+                                            new Range(['min' => 1,
+                                                        'max' => 6]),
+                                        ]))
+            ->add('tArea', ChoiceType::class, array('label' => 'Area',
+                                        'choices'  => array(
+                                            TagArea::N_INPUT => TagArea::INPUT,
+                                            TagArea::N_OUTPUT => TagArea::OUTPUT,
+                                            TagArea::N_MEMORY => TagArea::MEMORY,
+                                        ),
+                                        'constraints' => [
+                                            new NotBlank(),
+                                            new Range(['min' => 1,
+                                                        'max' => 3]),
+                                        ]))
+            ->add('tByteAddress', IntegerType::class, array('label' => 'Byte address',
+                                        'constraints' => [
+                                            new NotBlank(),
+                                            new Range(['min' => 0]),
+                                        ]))
+            ->add('tBitAddress', ChoiceType::class, array('label' => 'Bit address',
+                                        'choices'  => array(
+                                            '0' => 0,
+                                            '1' => 1,
+                                            '2' => 2,
+                                            '3' => 3,
+                                            '4' => 4,
+                                            '5' => 5,
+                                            '6' => 6,
+                                            '7' => 7,
+                                        ),
+                                        'constraints' => [
+                                            new NotBlank(),
+                                            new Range(['min' => 0,
+                                                        'max' => 7]),
+                                        ]))
+            ->add('tReadAccess', ChoiceType::class, array('label' => 'Read access',
+                                        'choices'  => array(
+                                            'ADMIN' => 'ROLE_ADMIN',
+                                            'USER' => 'ROLE_USER',
+                                            'GUEST' => 'ROLE_GUEST',
+                                        ),
+                                        'constraints' => [
+                                            new NotBlank(),
+                                            new Length(['max' => 20]),
+                                        ]))
+            ->add('tWriteAccess', ChoiceType::class, array('label' => 'Write access',
+                                        'choices'  => array(
+                                            'ADMIN' => 'ROLE_ADMIN',
+                                            'USER' => 'ROLE_USER',
+                                            'GUEST' => 'ROLE_GUEST',
+                                        ),
+                                        'constraints' => [
+                                            new NotBlank(),
+                                            new Length(['max' => 20]),
+                                        ]))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->setDataMapper($this);
     }
@@ -118,7 +158,7 @@ class TagForm extends AbstractType implements DataMapperInterface
             $aforms['tid']->getData(),
             $aforms['tConnId']->getData(),
             '',
-            $aforms['tName']->getData(),
+            trim($aforms['tName']->getData()),
             $aforms['tType']->getData(),
             $aforms['tArea']->getData(),
             $aforms['tByteAddress']->getData(),

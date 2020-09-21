@@ -2,7 +2,6 @@
 
 namespace App\Entity\Admin;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use App\Entity\AppException;
 use App\Entity\Admin\TagArea;
@@ -19,16 +18,11 @@ class Tag
 {
     /**
      * Tag identifier
-     *
-     * @Assert\PositiveOrZero
      */
     private $tid;
     
     /**
      * Driver connection identifier
-     *
-     * @Assert\NotBlank()
-     * @Assert\Positive
      */
     private $connId;
     
@@ -39,78 +33,36 @@ class Tag
     
     /**
      * Tag name
-     *
-     * @Assert\NotBlank()
-     * @Assert\Regex(
-     *     pattern="/[^A-Za-z0-9_]/",
-     *     match=false,
-     *     message="Tag name contain invalid characters"
-     * )
-     * @Assert\Length(max=50)
      */
     private $tName;
     
     /**
      * Tag type
-     *
-     * @Assert\NotBlank()
-     * @Assert\Type("integer")
-     * @Assert\Range(
-     *      min = 1,
-     *      max = 6
-     * )
      */
     private $tType;
     
     /**
      * Tag area
-     *
-     * @Assert\NotBlank()
-     * @Assert\Type("integer")
-     * @Assert\Range(
-     *      min = 1,
-     *      max = 3
-     * )
      */
     private $tArea;
     
     /**
      * Tag byte address
-     *
-     * @Assert\NotBlank()
-     * @Assert\Type("integer")
-     * @Assert\Range(
-     *      min = 0,
-     *      max = 10000
-     * )
      */
     private $tByteAddress;
     
     /**
      * Tag bit address
-     *
-     * @Assert\NotBlank()
-     * @Assert\Type("integer")
-     * @Assert\Range(
-     *      min = 0,
-     *      max = 7
-     * )
      */
     private $tBitAddress;
     
     /**
      * Tag read access role name
-     *
-     * @Assert\NotBlank()
-     * @Assert\Length(max=20)
      */
     private $tReadAccess;
     
     /**
      * Tag write access role name
-     *
-     * @Assert\NotBlank()
-     * @Assert\Length(max=20)
      */
     private $tWriteAccess;
     
