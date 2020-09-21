@@ -39,7 +39,8 @@ class DriverModbusForm extends AbstractType implements DataMapperInterface
                                             'constraints' => [
                                                 new NotBlank(),
                                                 new Length(['max' => 100]),
-                                            ]))
+                                            ],
+                                            'empty_data' => ''))
             ->add('id', HiddenType::class, array('constraints' => [
                                                 new PositiveOrZero()
                                             ]))
@@ -70,7 +71,8 @@ class DriverModbusForm extends AbstractType implements DataMapperInterface
                                             'constraints' => [
                                                 new NotBlank(),
                                                 new Length(['max' => 15]),
-                                            ]))
+                                            ],
+                                            'empty_data' => ''))
             ->add('TCP_port', IntegerType::class, array('label' => 'Port',
                                             'constraints' => [
                                                 new NotBlank(),
@@ -98,7 +100,8 @@ class DriverModbusForm extends AbstractType implements DataMapperInterface
                                             'constraints' => [
                                                 new NotBlank(),
                                                 new Length(['max' => 200]),
-                                            ]))
+                                            ],
+                                            'empty_data' => ''))
             ->add('RTU_baud', IntegerType::class, array('label' => 'COM baud rate',
                                             'constraints' => [
                                                 new NotBlank(),

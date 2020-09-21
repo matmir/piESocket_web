@@ -35,7 +35,9 @@ class DriverSHMForm extends AbstractType implements DataMapperInterface
                                             'constraints' => [
                                                 new NotBlank(),
                                                 new Length(['max' => 100]),
-                                            ]))
+                                            ],
+                                            'empty_data' => '',
+                                            ))
             ->add('id', HiddenType::class, array('constraints' => [
                                                 new PositiveOrZero()
                                             ]))
@@ -43,7 +45,9 @@ class DriverSHMForm extends AbstractType implements DataMapperInterface
                                             'constraints' => [
                                                 new NotBlank(),
                                                 new Length(['max' => 200]),
-                                            ]))
+                                            ],
+                                            'empty_data' => ''
+                                            ))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->setDataMapper($this);
     }
