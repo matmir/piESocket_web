@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\Form;
 use App\Service\Admin\UserMapper;
-use App\Entity\Admin\UserEntity;
+use App\Entity\Admin\User;
 use App\Entity\Paginator;
 use App\Entity\AppException;
 use App\Form\Admin\UserForm;
@@ -110,20 +110,17 @@ class UserController extends AbstractController
      */
     public function add(UserMapper $userMapper, Request $request)
     {
-        $userE = new UserEntity();
+        $user = new User();
         
-        $form = $this->createForm(UserForm::class, $userE);
+        $form = $this->createForm(UserForm::class, $user);
         
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Get Form data
-            $userE = $form->getData();
+            $user = $form->getData();
             
             try {
-                // Get real Tag object
-                $user = $userE->getFullUserObject();
-                
                 // Add to the DB
                 $userMapper->addUser($user);
                 
@@ -153,24 +150,18 @@ class UserController extends AbstractController
     {
         // Get user data from DB
         $oldUser = $userMapper->getUser($userID);
-        
-        $userE = new UserEntity();
-        $userE->initFromUserObject($oldUser);
-        
-        $form = $this->createForm(UserForm::class, $userE);
+                
+        $form = $this->createForm(UserForm::class, $oldUser);
         
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Get Form data
-            $newUserE = $form->getData();
+            $newUser = $form->getData();
             
             try {
-                // Get real User object
-                $newUser = $newUserE->getFullUserObject(false);
-                
                 // Save User
-                $userMapper->editUser($newUser, $oldUser, $newUserE->getoldPassword());
+                $userMapper->editUser($newUser, $oldUser, $form->get('oldPassword')->getData());
                 
                 $this->addFlash(
                     'usr-msg-ok',

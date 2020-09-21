@@ -3,6 +3,7 @@
 namespace App\Entity\Admin;
 
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Class represents User object
@@ -41,14 +42,19 @@ class User implements UserInterface
      */
     private $isActive;
 
-    public function __construct()
-    {
-        $this->id = 0;
-        $this->username = '';
-        $this->password = '';
-        $this->email = '';
-        $this->userRole = '';
-        $this->isActive = true;
+    public function __construct(
+        int $id = 0,
+        string $name = '',
+        string $pass = '',
+        string $email = '',
+        string $role = ''
+    ) {
+        $this->id = $id;
+        $this->username = $name;
+        $this->password = $pass;
+        $this->email = $email;
+        $this->userRole = $role;
+        $this->isActive = false;
     }
     
     /**
@@ -270,10 +276,11 @@ class User implements UserInterface
      * Check if User object is valid
      *
      * @param bool $checkID Flag validating User identifier
+     * @param bool $checkPass Flag validating User password
      * @return bool True if User is valid
      * @throws Exception Throws when User is invalid
      */
-    public function isValid(bool $checkID = false): bool
+    public function isValid(bool $checkID = false, bool $checkPass = true): bool
     {
         // Check identifier
         if ($checkID) {
@@ -281,7 +288,9 @@ class User implements UserInterface
         }
         
         $this->checkName($this->username);
-        $this->checkPassword($this->password);
+        if ($checkPass) {
+            $this->checkPassword($this->password);
+        }
         $this->checkEmail($this->email);
         $this->checkRole($this->userRole);
         

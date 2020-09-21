@@ -244,6 +244,8 @@ class UserMapper
      */
     public function addUser(User $newUser)
     {
+        $newUser->isValid();
+        
         // Check User address
         if ($this->isEmailAddressExist($newUser)) {
             throw new AppException(
@@ -335,6 +337,17 @@ class UserMapper
      */
     public function editUser(User $newUser, User $oldUser, $oldPass)
     {
+        // Check old user data
+        $oldUser->isValid(true);
+        
+        // Check if user changed password
+        $passwordChange = $this->userChangedPassword($newUser);
+        if ($passwordChange) {
+            $newUser->isValid(true);
+        } else {
+            $newUser->isValid(true, false);
+        }
+        
         // Check User address
         if ($this->isAddressChanged($newUser, $oldUser) && $this->isEmailAddressExist($newUser)) {
             throw new AppException(
@@ -357,7 +370,6 @@ class UserMapper
         }
         
         // Check if user changed password
-        $passwordChange = $this->userChangedPassword($newUser);
         if ($passwordChange) {
             // Prepare query with password
             $q = 'UPDATE app_users SET username = ?, password = ?, email = ?, userRole = ? WHERE id = ?;';
