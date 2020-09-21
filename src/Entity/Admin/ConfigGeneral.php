@@ -268,7 +268,7 @@ class ConfigGeneral
      *
      * @param string $val Server application path
      */
-    public function setServerAppPath(string $val)
+    public function setServerAppPath($val)
     {
         $this->serverAppPath = $val;
     }
@@ -288,7 +288,7 @@ class ConfigGeneral
      *
      * @param string $val Web application path
      */
-    public function setWebAppPath(string $val)
+    public function setWebAppPath($val)
     {
         $this->webAppPath = $val;
     }
@@ -328,7 +328,7 @@ class ConfigGeneral
      *
      * @param string $val Script system execute script
      */
-    public function setScriptSystemExecuteScript(string $val)
+    public function setScriptSystemExecuteScript($val)
     {
         $this->scriptSystemExecuteScript = $val;
     }
@@ -348,7 +348,7 @@ class ConfigGeneral
      *
      * @param string $val User scripts path
      */
-    public function setUserScriptsPath(string $val)
+    public function setUserScriptsPath($val)
     {
         $this->userScriptsPath = $val;
     }
