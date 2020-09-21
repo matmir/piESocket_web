@@ -130,7 +130,7 @@ class ScriptItemForm extends AbstractType implements DataMapperInterface
                 $sTag,
                 $fbTag,
                 $aforms['scid']->getData(),
-                $aforms['scName']->getData()
+                trim($aforms['scName']->getData())
             );
         } catch (AppException $ex) {
             if ($ex->getCode() == AppException::TAG_WRONG_TYPE) {
