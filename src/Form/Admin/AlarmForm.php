@@ -221,7 +221,7 @@ class AlarmForm extends AbstractType implements DataMapperInterface
                 $hwTag,
                 $aforms['adid']->getData(),
                 $aforms['adPriority']->getData(),
-                $aforms['adMessage']->getData(),
+                trim($aforms['adMessage']->getData()),
                 $aforms['adTrigger']->getData(),
                 $aforms['adTriggerB']->getData(),
                 $aforms['adTriggerN']->getData(),
