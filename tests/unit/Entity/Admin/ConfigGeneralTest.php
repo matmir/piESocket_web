@@ -26,10 +26,10 @@ class ConfigGeneralTest extends TestCase
         
         $this->assertEquals(3, $cfg->getSocketMaxConn());
         $this->assertEquals(8080, $cfg->getSocketPort());
-        $this->assertEquals('none', $cfg->getServerAppPath());
-        $this->assertEquals('none', $cfg->getWebAppPath());
-        $this->assertEquals('none', $cfg->getScriptSystemExecuteScript());
-        $this->assertEquals('none', $cfg->getUserScriptsPath());
+        $this->assertEquals('', $cfg->getServerAppPath());
+        $this->assertEquals('', $cfg->getWebAppPath());
+        $this->assertEquals('', $cfg->getScriptSystemExecuteScript());
+        $this->assertEquals('', $cfg->getUserScriptsPath());
         $this->assertEquals('ROLE_USER', $cfg->getAckAccessRole());
     }
     
@@ -42,6 +42,15 @@ class ConfigGeneralTest extends TestCase
         $cfg->setAlarmingUpdateInterval(45);
         
         $this->assertEquals(45, $cfg->getAlarmingUpdateInterval());
+    }
+    
+    public function testSetAlarmingUpdateIntervalWrong()
+    {
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
+        $this->expectExceptionMessage('Wrong update interval value');
+        
+        $cfg = new ConfigGeneral();
+        $cfg->setAlarmingUpdateInterval(9);
     }
     
     /**
@@ -77,6 +86,15 @@ class ConfigGeneralTest extends TestCase
         $this->assertEquals(5, $cfg->getSocketMaxConn());
     }
     
+    public function testSetSocketMaxConnWrong()
+    {
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
+        $this->expectExceptionMessage('Socket max connection wrong value');
+        
+        $cfg = new ConfigGeneral();
+        $cfg->setSocketMaxConn(0);
+    }
+    
     /**
      * Test setSocketPort method
      */
@@ -86,6 +104,15 @@ class ConfigGeneralTest extends TestCase
         $cfg->setSocketPort(5060);
         
         $this->assertEquals(5060, $cfg->getSocketPort());
+    }
+    
+    public function testSetSocketPortWrong()
+    {
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
+        $this->expectExceptionMessage('Socket port wrong value');
+        
+        $cfg = new ConfigGeneral();
+        $cfg->setSocketPort(0);
     }
     
     /**
@@ -110,6 +137,15 @@ class ConfigGeneralTest extends TestCase
         $this->assertEquals('path3', $cfg->getServerAppPath());
     }
     
+    public function testSetServerAppPathWrong()
+    {
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
+        $this->expectExceptionMessage('Server application path can not be empty');
+        
+        $cfg = new ConfigGeneral();
+        $cfg->setServerAppPath(' ');
+    }
+    
     /**
      * Test setWebAppPath method
      */
@@ -119,6 +155,15 @@ class ConfigGeneralTest extends TestCase
         $cfg->setWebAppPath('testPathWeb');
         
         $this->assertEquals('testPathWeb', $cfg->getWebAppPath());
+    }
+    
+    public function testSetWebAppPathWrong()
+    {
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
+        $this->expectExceptionMessage('Web application path can not be empty');
+        
+        $cfg = new ConfigGeneral();
+        $cfg->setWebAppPath(' ');
     }
     
     /**
@@ -132,6 +177,15 @@ class ConfigGeneralTest extends TestCase
         $this->assertEquals('testPath', $cfg->getScriptSystemExecuteScript());
     }
     
+    public function testSetScriptSystemExecuteScriptWrong()
+    {
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
+        $this->expectExceptionMessage('Script system execute script can not be empty');
+        
+        $cfg = new ConfigGeneral();
+        $cfg->setScriptSystemExecuteScript(' ');
+    }
+    
     /**
      * Test setUserScriptsPath method
      */
@@ -143,6 +197,15 @@ class ConfigGeneralTest extends TestCase
         $this->assertEquals('testScriptPth', $cfg->getUserScriptsPath());
     }
     
+    public function testSetUserScriptsPathWrong()
+    {
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
+        $this->expectExceptionMessage('User scripts path can not be empty');
+        
+        $cfg = new ConfigGeneral();
+        $cfg->setUserScriptsPath(' ');
+    }
+    
     /**
      * Test setAckAccessRole method
      */
@@ -152,5 +215,41 @@ class ConfigGeneralTest extends TestCase
         $cfg->setAckAccessRole('ROLE_ADMIN');
         
         $this->assertEquals('ROLE_ADMIN', $cfg->getAckAccessRole());
+    }
+    
+    public function testSetAckAccessRoleWrong()
+    {
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
+        $this->expectExceptionMessage('Role name is invalid');
+        
+        $cfg = new ConfigGeneral();
+        $cfg->setAckAccessRole('adm');
+    }
+    
+    /**
+     * Test isValid method
+     */
+    public function testIsValid()
+    {
+        $cfg = new ConfigGeneral();
+        $cfg->setScriptSystemExecuteScript('scr1');
+        $cfg->setServerAppPath('serverApp');
+        $cfg->setUserScriptsPath('usrScripts');
+        $cfg->setWebAppPath('webApp');
+        
+        $this->assertTrue($cfg->isValid(true));
+    }
+    
+    public function testIsValidWrong()
+    {
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
+        $this->expectExceptionMessage('User scripts path can not be empty');
+        
+        $cfg = new ConfigGeneral();
+        $cfg->setScriptSystemExecuteScript('scr1');
+        $cfg->setServerAppPath('serverApp');
+        $cfg->setWebAppPath('webApp');
+        
+        $this->assertTrue($cfg->isValid(true));
     }
 }

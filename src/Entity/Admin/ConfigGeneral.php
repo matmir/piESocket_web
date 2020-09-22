@@ -2,7 +2,8 @@
 
 namespace App\Entity\Admin;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Config\Definition\Exception\Exception;
+use App\Entity\Admin\User;
 
 /**
  * Class for general configuration
@@ -23,134 +24,117 @@ class ConfigGeneral
     
     /**
      * Alarmin system update interval (milliseconds)
-     *
-     * @Assert\NotBlank()
-     * @Assert\Type("integer")
-     * @Assert\Range(
-     *      min = 10,
-     *      max = 10000
-     * )
      */
     private $alarmingUpdateInterval;
     
     /**
      * Process data update interval (milliseconds)
-     *
-     * @Assert\NotBlank()
-     * @Assert\Type("integer")
-     * @Assert\Range(
-     *      min = 10,
-     *      max = 10000
-     * )
      */
     private $processUpdateInterval;
     
     /**
      * Network socket maximal number of connections
-     *
-     * @Assert\NotBlank()
-     * @Assert\Type("integer")
-     * @Assert\Range(
-     *      min = 1,
-     *      max = 100
-     * )
      */
     private $socketMaxConn;
     
     /**
      * Network socket port
-     *
-     * @Assert\NotBlank()
-     * @Assert\Type("integer")
-     * @Assert\Range(
-     *      min = 1,
-     *      max = 65535
-     * )
      */
     private $socketPort;
     
     /**
      * Tag logger system update interval (milliseconds)
-     *
-     * @Assert\NotBlank()
-     * @Assert\Type("integer")
-     * @Assert\Range(
-     *      min = 10,
-     *      max = 10000
-     * )
      */
     private $tagLoggerUpdateInterval;
     
     /**
      * Server application path
-     *
-     * @Assert\NotBlank()
-     * @Assert\Length(max=200)
      */
     private $serverAppPath;
     
     /**
      * Web application path
-     *
-     * @Assert\NotBlank()
-     * @Assert\Length(max=200)
      */
     private $webAppPath;
     
     /**
      * Script system execute script
-     *
-     * @Assert\NotBlank()
-     * @Assert\Length(max=200)
      */
     private $scriptSystemExecuteScript;
     
     /**
      * Script system update interval (milliseconds)
-     *
-     * @Assert\NotBlank()
-     * @Assert\Type("integer")
-     * @Assert\Range(
-     *      min = 10,
-     *      max = 10000
-     * )
      */
     private $scriptSystemUpdateInterval;
     
     /**
      * User scripts path
-     *
-     * @Assert\NotBlank()
-     * @Assert\Length(max=200)
      */
     private $userScriptsPath;
     
     /**
      * Alarm acknowledgement rights role
-     *
-     * @Assert\NotBlank()
-     * @Assert\Length(max=20)
      */
     private $ackAccessRole;
     
     /**
      * Default constructor
+     *
+     * @param int $alarmInt Alarm update interval
+     * @param int $procInt Process updater interval
+     * @param int $tagLoggerInt Tag logger update interval
+     * @param int $scriptInt Script system update interval
+     * @param int $sockMaxXonn Socket max connections
+     * @param int $sockPort Socket port
+     * @param string $serverApp Server app path
+     * @param string $webApp Web app path
+     * @param string $scriptExecPath Execute script path
+     * @param string $usrScripts User scripts path
+     * @param string $ack Ack permission role
      */
-    public function __construct()
+    public function __construct(
+        int $alarmInt = self::UPDATE_INTERVAL_MAX,
+        int $procInt = self::UPDATE_INTERVAL_MAX,
+        int $tagLoggerInt = self::UPDATE_INTERVAL_MAX,
+        int $scriptInt = self::UPDATE_INTERVAL_MAX,
+        int $sockMaxXonn = 3,
+        int $sockPort = 8080,
+        string $serverApp = '',
+        string $webApp = '',
+        string $scriptExecPath = '',
+        string $usrScripts = '',
+        string $ack = 'ROLE_USER'
+    ) {
+        $this->alarmingUpdateInterval = $alarmInt;
+        $this->processUpdateInterval = $procInt;
+        $this->tagLoggerUpdateInterval = $tagLoggerInt;
+        $this->scriptSystemUpdateInterval = $scriptInt;
+        
+        $this->socketMaxConn = $sockMaxXonn;
+        $this->socketPort = $sockPort;
+        
+        $this->serverAppPath = $serverApp;
+        $this->webAppPath = $webApp;
+        $this->scriptSystemExecuteScript = $scriptExecPath;
+        $this->userScriptsPath = $usrScripts;
+        $this->ackAccessRole = $ack;
+    }
+    
+    /**
+     * Check Update interval
+     *
+     * @param int $interval Update interval value
+     * @return bool True if Update interval is valid
+     * @throws Exception if Update interval is invalid
+     */
+    public static function checkInterval(int $interval): bool
     {
-        $this->alarmingUpdateInterval = self::UPDATE_INTERVAL_MAX;
-        $this->processUpdateInterval = self::UPDATE_INTERVAL_MAX;
-        $this->tagLoggerUpdateInterval = self::UPDATE_INTERVAL_MAX;
-        $this->scriptSystemUpdateInterval = self::UPDATE_INTERVAL_MAX;
+        // Check values
+        if (!($interval >= self::UPDATE_INTERVAL_MIN && $interval <= self::UPDATE_INTERVAL_MAX)) {
+            throw new Exception("Wrong update interval value");
+        }
         
-        $this->socketMaxConn = 3;
-        $this->socketPort = 8080;
-        
-        $this->serverAppPath = 'none';
-        $this->webAppPath = 'none';
-        $this->scriptSystemExecuteScript = 'none';
-        $this->userScriptsPath = 'none';
-        $this->ackAccessRole = 'ROLE_USER';
+        return true;
     }
     
     /**
@@ -158,7 +142,7 @@ class ConfigGeneral
      *
      * @return int Alarming update interval (milliseconds)
      */
-    public function getAlarmingUpdateInterval()
+    public function getAlarmingUpdateInterval(): int
     {
         return $this->alarmingUpdateInterval;
     }
@@ -170,6 +154,8 @@ class ConfigGeneral
      */
     public function setAlarmingUpdateInterval(int $val)
     {
+        $this->checkInterval($val);
+        
         $this->alarmingUpdateInterval = $val;
     }
     
@@ -178,7 +164,7 @@ class ConfigGeneral
      *
      * @return int Process update interval (milliseconds)
      */
-    public function getProcessUpdateInterval()
+    public function getProcessUpdateInterval(): int
     {
         return $this->processUpdateInterval;
     }
@@ -190,7 +176,26 @@ class ConfigGeneral
      */
     public function setProcessUpdateInterval(int $val)
     {
+        $this->checkInterval($val);
+        
         $this->processUpdateInterval = $val;
+    }
+    
+    /**
+     * Check maximum number of connections to the socket
+     *
+     * @param int $conn Number of connections to the socket
+     * @return bool True if Number of connections to the socket is valid
+     * @throws Exception If Number of connections to the socket invalid
+     */
+    public static function checkSocketMaxConn(int $conn): bool
+    {
+        // Check values
+        if ($conn <= 0) {
+            throw new Exception("Socket max connection wrong value");
+        }
+        
+        return true;
     }
     
     /**
@@ -198,7 +203,7 @@ class ConfigGeneral
      *
      * @return int Maximum number of connections to the socket
      */
-    public function getSocketMaxConn()
+    public function getSocketMaxConn(): int
     {
         return $this->socketMaxConn;
     }
@@ -210,7 +215,26 @@ class ConfigGeneral
      */
     public function setSocketMaxConn(int $val)
     {
+        $this->checkSocketMaxConn($val);
+        
         $this->socketMaxConn = $val;
+    }
+    
+    /**
+     * Check socket connection port
+     *
+     * @param int $prt socket connection port
+     * @return bool True if socket connection port is valid
+     * @throws Exception If socket connection port invalid
+     */
+    public static function checkSocketPort(int $prt): bool
+    {
+        // Check values
+        if ($prt < 1 || $prt > 65535) {
+            throw new Exception("Socket port wrong value");
+        }
+        
+        return true;
     }
     
     /**
@@ -218,7 +242,7 @@ class ConfigGeneral
      *
      * @return int Socket connection port
      */
-    public function getSocketPort()
+    public function getSocketPort(): int
     {
         return $this->socketPort;
     }
@@ -230,6 +254,8 @@ class ConfigGeneral
      */
     public function setSocketPort(int $val)
     {
+        $this->checkSocketPort($val);
+        
         $this->socketPort = $val;
     }
     
@@ -238,7 +264,7 @@ class ConfigGeneral
      *
      * @return int Tag logger update interval (milliseconds)
      */
-    public function getTagLoggerUpdateInterval()
+    public function getTagLoggerUpdateInterval(): int
     {
         return $this->tagLoggerUpdateInterval;
     }
@@ -250,7 +276,25 @@ class ConfigGeneral
      */
     public function setTagLoggerUpdateInterval(int $val)
     {
+        $this->checkInterval($val);
+        
         $this->tagLoggerUpdateInterval = $val;
+    }
+    
+    /**
+     * Check server application path
+     *
+     * @param string $pth server application path
+     * @return bool True if server application path valid
+     * @throws Exception if server application path invalid
+     */
+    public static function checkServerAppPath(string $pth): bool
+    {
+        if (trim($pth) == false) {
+            throw new Exception("Server application path can not be empty");
+        }
+        
+        return true;
     }
     
     /**
@@ -258,7 +302,7 @@ class ConfigGeneral
      *
      * @return string Path to the server application
      */
-    public function getServerAppPath()
+    public function getServerAppPath(): string
     {
         return $this->serverAppPath;
     }
@@ -268,9 +312,27 @@ class ConfigGeneral
      *
      * @param string $val Server application path
      */
-    public function setServerAppPath($val)
+    public function setServerAppPath(string $val)
     {
+        $this->checkServerAppPath($val);
+        
         $this->serverAppPath = $val;
+    }
+    
+    /**
+     * Check web application path
+     *
+     * @param string $pth web application path
+     * @return bool True if web application path valid
+     * @throws Exception if web application path invalid
+     */
+    public static function checkWebAppPath(string $pth): bool
+    {
+        if (trim($pth) == false) {
+            throw new Exception("Web application path can not be empty");
+        }
+        
+        return true;
     }
     
     /**
@@ -278,7 +340,7 @@ class ConfigGeneral
      *
      * @return string Web application path
      */
-    public function getWebAppPath()
+    public function getWebAppPath(): string
     {
         return $this->webAppPath;
     }
@@ -288,8 +350,10 @@ class ConfigGeneral
      *
      * @param string $val Web application path
      */
-    public function setWebAppPath($val)
+    public function setWebAppPath(string $val)
     {
+        $this->checkWebAppPath($val);
+        
         $this->webAppPath = $val;
     }
     
@@ -298,7 +362,7 @@ class ConfigGeneral
      *
      * @return int Script system update interval (milliseconds)
      */
-    public function getScriptSystemUpdateInterval()
+    public function getScriptSystemUpdateInterval(): int
     {
         return $this->scriptSystemUpdateInterval;
     }
@@ -310,7 +374,25 @@ class ConfigGeneral
      */
     public function setScriptSystemUpdateInterval(int $val)
     {
+        $this->checkInterval($val);
+        
         $this->scriptSystemUpdateInterval = $val;
+    }
+    
+    /**
+     * Check script system execute script
+     *
+     * @param string $scr script system execute script
+     * @return bool True if script system execute script
+     * @throws Exception if script system execute script
+     */
+    public static function checkScriptSystemExecuteScript(string $scr): bool
+    {
+        if (trim($scr) == false) {
+            throw new Exception("Script system execute script can not be empty");
+        }
+        
+        return true;
     }
     
     /**
@@ -318,7 +400,7 @@ class ConfigGeneral
      *
      * @return string Script system execute script
      */
-    public function getScriptSystemExecuteScript()
+    public function getScriptSystemExecuteScript(): string
     {
         return $this->scriptSystemExecuteScript;
     }
@@ -328,9 +410,27 @@ class ConfigGeneral
      *
      * @param string $val Script system execute script
      */
-    public function setScriptSystemExecuteScript($val)
+    public function setScriptSystemExecuteScript(string $val)
     {
+        $this->checkScriptSystemExecuteScript($val);
+        
         $this->scriptSystemExecuteScript = $val;
+    }
+    
+    /**
+     * Check user scripts path
+     *
+     * @param string $uscr user scripts path
+     * @return bool True if user scripts path
+     * @throws Exception if user scripts path
+     */
+    public static function checkUserScriptsPath(string $uscr): bool
+    {
+        if (trim($uscr) == false) {
+            throw new Exception("User scripts path can not be empty");
+        }
+        
+        return true;
     }
     
     /**
@@ -338,7 +438,7 @@ class ConfigGeneral
      *
      * @return string User scripts path
      */
-    public function getUserScriptsPath()
+    public function getUserScriptsPath(): string
     {
         return $this->userScriptsPath;
     }
@@ -348,8 +448,10 @@ class ConfigGeneral
      *
      * @param string $val User scripts path
      */
-    public function setUserScriptsPath($val)
+    public function setUserScriptsPath(string $val)
     {
+        $this->checkUserScriptsPath($val);
+        
         $this->userScriptsPath = $val;
     }
     
@@ -358,7 +460,7 @@ class ConfigGeneral
      *
      * @return string Alarm acknowledgement rights role
      */
-    public function getAckAccessRole()
+    public function getAckAccessRole(): string
     {
         return $this->ackAccessRole;
     }
@@ -370,6 +472,33 @@ class ConfigGeneral
      */
     public function setAckAccessRole(string $role)
     {
+        User::checkRole($role);
+        
         $this->ackAccessRole = $role;
+    }
+    
+    /**
+     * Check if config object is valid
+     *
+     * @return bool True if config is valid
+     * @throws Exception Throws when config is invalid
+     */
+    public function isValid(): bool
+    {
+        // Check update intervals
+        $this->checkInterval($this->alarmingUpdateInterval);
+        $this->checkInterval($this->tagLoggerUpdateInterval);
+        $this->checkInterval($this->processUpdateInterval);
+        $this->checkInterval($this->scriptSystemUpdateInterval);
+        
+        // Check cfg
+        $this->checkScriptSystemExecuteScript($this->scriptSystemExecuteScript);
+        $this->checkServerAppPath($this->serverAppPath);
+        $this->checkSocketMaxConn($this->socketMaxConn);
+        $this->checkSocketPort($this->socketPort);
+        $this->checkUserScriptsPath($this->userScriptsPath);
+        $this->checkWebAppPath($this->webAppPath);
+        
+        return true;
     }
 }

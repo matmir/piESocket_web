@@ -70,6 +70,9 @@ class ConfigGeneralMapper extends BaseConfigMapper
      */
     public function setConfig(ConfigGeneral $newCFG)
     {
+        // Check config
+        $newCFG->isValid();
+        
         // Get current configuration
         $currentCFG = $this->getConfig();
         
