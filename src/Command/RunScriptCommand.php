@@ -74,6 +74,8 @@ class RunScriptCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $ret = 0;
+        
         try {
             // Check if script definition exists in DB
             if ($this->scriptItemMapper->exist($input->getArgument('script'))) {
@@ -121,8 +123,9 @@ class RunScriptCommand extends Command
             }
         } catch (Exception $ex) {
             $output->writeln($ex->getMessage());
+            $ret = 1;
         }
         
-        return 0;
+        return $ret;
     }
 }

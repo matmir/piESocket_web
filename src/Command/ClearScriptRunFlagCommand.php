@@ -45,6 +45,8 @@ class ClearScriptRunFlagCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $ret = 0;
+        
         $output->writeln("Clear run flag for " . $input->getArgument('script'));
         
         try {
@@ -59,8 +61,9 @@ class ClearScriptRunFlagCommand extends Command
             }
         } catch (Exception $ex) {
             $output->writeln($ex->getMessage());
+            $ret = 1;
         }
         
-        return 0;
+        return $ret;
     }
 }

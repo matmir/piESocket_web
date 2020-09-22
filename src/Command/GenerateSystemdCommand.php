@@ -42,6 +42,8 @@ class GenerateSystemdCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $ret = 0;
+        
         try {
             // Get server application path
             $serverAppPath = $this->cfg->getServerAppPath();
@@ -82,8 +84,9 @@ class GenerateSystemdCommand extends Command
             $output->writeln("Done");
         } catch (Exception $ex) {
             $output->writeln($ex->getMessage());
+            $ret = 1;
         }
         
-        return 0;
+        return $ret;
     }
 }

@@ -41,12 +41,15 @@ class ServerPortCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $ret = 0;
+        
         try {
             $output->writeln($this->port);
         } catch (Exception $ex) {
             $output->writeln($ex->getMessage());
+            $ret = 1;
         }
         
-        return 0;
+        return $ret;
     }
 }

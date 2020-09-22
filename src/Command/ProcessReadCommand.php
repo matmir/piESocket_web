@@ -54,6 +54,7 @@ class ProcessReadCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $ret = 0;
         try {
             // Get tag data
             $tag = $this->tagsMapper->getTagByName($input->getArgument('tag'));
@@ -62,9 +63,10 @@ class ProcessReadCommand extends Command
             $output->writeln($this->getValue($tag));
         } catch (Exception $ex) {
             $output->writeln($ex->getMessage());
+            $ret = 1;
         }
         
-        return 0;
+        return $ret;
     }
     
     /**

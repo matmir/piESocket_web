@@ -42,15 +42,18 @@ class ServiceExitCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $ret = 0;
+        
         try {
             // Exit service
-            $ret = $this->parser->exit();
+            $retc = $this->parser->exit();
             
-            $output->writeln(($ret == ParserReplyCodes::OK) ? ('OK') : ('NOK'));
+            $output->writeln(($retc == ParserReplyCodes::OK) ? ('OK') : ('NOK'));
         } catch (Exception $ex) {
             $output->writeln($ex->getMessage());
+            $ret = 1;
         }
         
-        return 0;
+        return $ret;
     }
 }
