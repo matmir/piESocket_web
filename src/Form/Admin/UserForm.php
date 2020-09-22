@@ -33,7 +33,8 @@ class UserForm extends AbstractType implements DataMapperInterface
     {
         $builder->add('id', HiddenType::class, array('constraints' => [
                                                 new PositiveOrZero()
-                                            ]))
+                                            ],
+                                            'empty_data' => '0'))
             ->add('username', TextType::class, array('label' => 'User name',
                                             'constraints' => [
                                                 new NotBlank(),
@@ -44,20 +45,25 @@ class UserForm extends AbstractType implements DataMapperInterface
             ->add('oldPassword', PasswordType::class, array('label' => 'Old password',
                                             'constraints' => [
                                                 new Length(['max' => 200]),
-                                            ]))
+                                            ],
+                                            'empty_data' => ''))
             ->add('password1', PasswordType::class, array('label' => 'Password',
                                             'constraints' => [
                                                 new Length(['max' => 200]),
-                                            ]))
+                                            ],
+                                            'empty_data' => ''))
             ->add('password2', PasswordType::class, array('label' => 'Repeat password',
                                             'constraints' => [
                                                 new Length(['max' => 200]),
-                                            ]))
+                                            ],
+                                            'empty_data' => ''))
             ->add('email', EmailType::class, array('label' => 'e-mail',
                                         'constraints' => [
+                                            new NotBlank(),
                                             new Email(['message' => "The email '{{ value }}' is not a valid email"]),
                                             new Length(['max' => 254]),
-                                        ]))
+                                        ],
+                                        'empty_data' => ''))
             ->add('userRole', ChoiceType::class, array('label' => 'Role',
                                             'choices'  => array(
                                                 'ADMIN' => 'ROLE_ADMIN',
@@ -66,7 +72,8 @@ class UserForm extends AbstractType implements DataMapperInterface
                                             'constraints' => [
                                                 new NotBlank(),
                                                 new Length(['max' => 20]),
-                                            ]))
+                                            ],
+                                            'empty_data' => 'ROLE_ADMIN'))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->setDataMapper($this);
     }

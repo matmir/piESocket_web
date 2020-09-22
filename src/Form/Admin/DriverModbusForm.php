@@ -34,7 +34,8 @@ class DriverModbusForm extends AbstractType implements DataMapperInterface
     {
         $builder->add('connId', HiddenType::class, array('constraints' => [
                                                 new PositiveOrZero()
-                                            ]))
+                                            ],
+                                            'empty_data' => '0'))
             ->add('connName', TextType::class, array('label' => 'Connection name',
                                             'constraints' => [
                                                 new NotBlank(),
@@ -43,7 +44,8 @@ class DriverModbusForm extends AbstractType implements DataMapperInterface
                                             'empty_data' => ''))
             ->add('id', HiddenType::class, array('constraints' => [
                                                 new PositiveOrZero()
-                                            ]))
+                                            ],
+                                            'empty_data' => '0'))
             ->add('mode', ChoiceType::class, array('label' => 'Mode',
                                             'choices'  => array(
                                                     DriverModbusMode::N_TCP => DriverModbusMode::TCP,
@@ -53,20 +55,23 @@ class DriverModbusForm extends AbstractType implements DataMapperInterface
                                                 new NotBlank(),
                                                 new Range(['min' => 0,
                                                             'max' => 1]),
-                                            ]
+                                            ],
+                                            'empty_data' => '0'
                                             ))
             ->add('registerCount', IntegerType::class, array('label' => 'Registers to read [words]',
                                             'constraints' => [
                                                 new NotBlank(),
                                                 new Range(['min' => 1,
                                                             'max' => 4096]),
-                                            ]))
+                                            ],
+                                            'empty_data' => '0'))
             ->add('driverPolling', IntegerType::class, array('label' => 'Driver polling interval [ms]',
                                             'constraints' => [
                                                 new NotBlank(),
                                                 new Range(['min' => 10,
                                                             'max' => 5000]),
-                                            ]))
+                                            ],
+                                            'empty_data' => '0'))
             ->add('TCP_addr', TextType::class, array('label' => 'Slave IP address',
                                             'constraints' => [
                                                 new NotBlank(),
@@ -78,7 +83,8 @@ class DriverModbusForm extends AbstractType implements DataMapperInterface
                                                 new NotBlank(),
                                                 new Range(['min' => 1,
                                                             'max' => 65535]),
-                                            ]))
+                                            ],
+                                            'empty_data' => '0'))
             ->add('TCP_use_slaveID', ChoiceType::class, array('label' => 'Use SlaveID',
                                             'choices'  => array(
                                                 'No' => 0,
@@ -88,14 +94,16 @@ class DriverModbusForm extends AbstractType implements DataMapperInterface
                                                 new NotBlank(),
                                                 new Range(['min' => 0,
                                                             'max' => 1]),
-                                            ]
+                                            ],
+                                            'empty_data' => '0'
                                             ))
             ->add('slaveID', IntegerType::class, array('label' => 'Slave ID',
                                             'constraints' => [
                                                 new NotBlank(),
                                                 new Range(['min' => 1,
                                                             'max' => 247]),
-                                            ]))
+                                            ],
+                                            'empty_data' => '0'))
             ->add('RTU_port', TextType::class, array('label' => 'COM port name',
                                             'constraints' => [
                                                 new NotBlank(),
@@ -107,7 +115,8 @@ class DriverModbusForm extends AbstractType implements DataMapperInterface
                                                 new NotBlank(),
                                                 new Range(['min' => 1,
                                                             'max' => 1000000]),
-                                            ]))
+                                            ],
+                                            'empty_data' => '0'))
             ->add('RTU_parity', ChoiceType::class, array('label' => 'Parity',
                                             'choices'  => array(
                                                 'none' => 'N',
@@ -117,7 +126,8 @@ class DriverModbusForm extends AbstractType implements DataMapperInterface
                                             'constraints' => [
                                                 new NotBlank(),
                                                 new Length(['max' => 1]),
-                                            ]
+                                            ],
+                                            'empty_data' => 'N'
                                             ))
             ->add('RTU_dataBit', ChoiceType::class, array('label' => 'Data bit',
                                             'choices'  => array(
@@ -130,7 +140,8 @@ class DriverModbusForm extends AbstractType implements DataMapperInterface
                                                 new NotBlank(),
                                                 new Range(['min' => 5,
                                                             'max' => 8]),
-                                            ]
+                                            ],
+                                            'empty_data' => '5'
                                             ))
             ->add('RTU_stopBit', ChoiceType::class, array('label' => 'Stop bit',
                                             'choices'  => array(
@@ -141,7 +152,8 @@ class DriverModbusForm extends AbstractType implements DataMapperInterface
                                                 new NotBlank(),
                                                 new Range(['min' => 1,
                                                             'max' => 2]),
-                                            ]
+                                            ],
+                                            'empty_data' => '1'
                                             ))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->setDataMapper($this);

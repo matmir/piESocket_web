@@ -30,7 +30,8 @@ class DriverSHMForm extends AbstractType implements DataMapperInterface
     {
         $builder->add('connId', HiddenType::class, array('constraints' => [
                                                 new PositiveOrZero()
-                                            ]))
+                                            ],
+                                            'empty_data' => '0'))
             ->add('connName', TextType::class, array('label' => 'Connection name',
                                             'constraints' => [
                                                 new NotBlank(),
@@ -40,7 +41,8 @@ class DriverSHMForm extends AbstractType implements DataMapperInterface
                                             ))
             ->add('id', HiddenType::class, array('constraints' => [
                                                 new PositiveOrZero()
-                                            ]))
+                                            ],
+                                            'empty_data' => '0'))
             ->add('segmentName', TextType::class, array('label' => 'Shared memory segment name',
                                             'constraints' => [
                                                 new NotBlank(),

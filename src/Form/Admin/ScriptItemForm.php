@@ -39,22 +39,26 @@ class ScriptItemForm extends AbstractType implements DataMapperInterface
     {
         $builder->add('scid', HiddenType::class, array('constraints' => [
                                                 new PositiveOrZero()
-                                            ]))
+                                            ],
+                                            'empty_data' => '0'))
             ->add('scTagName', TextType::class, array('label' => 'Tag name',
                                             'constraints' => [
                                                 new NotBlank(),
                                                 new Length(['max' => 50]),
-                                            ]))
+                                            ],
+                                            'empty_data' => ''))
             ->add('scName', TextType::class, array('label' => 'Script name',
                                             'constraints' => [
                                                 new NotBlank(),
                                                 new Length(['max' => 50]),
-                                            ]))
+                                            ],
+                                            'empty_data' => ''))
             ->add('scFeedbackRun', TextType::class, array('label' => 'Feedback tag (script running)',
                                             'required' => false,
                                             'constraints' => [
                                                 new Length(['max' => 50]),
-                                            ]))
+                                            ],
+                                            'empty_data' => ''))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->setDataMapper($this);
     }
@@ -130,7 +134,7 @@ class ScriptItemForm extends AbstractType implements DataMapperInterface
                 $sTag,
                 $fbTag,
                 $aforms['scid']->getData(),
-                trim($aforms['scName']->getData())
+                $aforms['scName']->getData()
             );
         } catch (AppException $ex) {
             if ($ex->getCode() == AppException::TAG_WRONG_TYPE) {

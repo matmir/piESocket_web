@@ -43,12 +43,14 @@ class TagLoggerForm extends AbstractType implements DataMapperInterface
     {
         $builder->add('ltid', HiddenType::class, array('constraints' => [
                                                 new PositiveOrZero()
-                                            ]))
+                                            ],
+                                            'empty_data' => '0'))
             ->add('ltTagName', TextType::class, array('label' => 'Tag name',
                                             'constraints' => [
                                                 new NotBlank(),
                                                 new Length(['max' => 50]),
-                                            ]))
+                                            ],
+                                            'empty_data' => ''))
             ->add('ltInterval', ChoiceType::class, array('label' => 'Log interval',
                                             'choices'  => array(
                                                 TagLoggerInterval::N_I_100MS => TagLoggerInterval::I_100MS,
@@ -62,11 +64,13 @@ class TagLoggerForm extends AbstractType implements DataMapperInterface
                                                 new NotBlank(),
                                                 new Range(['min' => 1,
                                                             'max' => 6]),
-                                            ]))
+                                            ],
+                                            'empty_data' => '1'))
             ->add('ltIntervalS', IntegerType::class, array('label' => 'Seconds interval',
                                             'constraints' => [
                                                 new PositiveOrZero()
-                                            ]))
+                                            ],
+                                            'empty_data' => '0'))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->setDataMapper($this);
     }

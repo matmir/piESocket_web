@@ -34,13 +34,15 @@ class TagForm extends AbstractType implements DataMapperInterface
     {
         $builder->add('tid', HiddenType::class, array('constraints' => [
                                                 new PositiveOrZero()
-                                            ]))
+                                            ],
+                                            'empty_data' => '0'))
             ->add('tConnId', ChoiceType::class, array('label' => 'Connection',
                                         'choices'  => $options['connections'],
                                         'constraints' => [
                                             new NotBlank(),
                                             new Positive()
-                                        ]))
+                                        ],
+                                        'empty_data' => '1'))
             ->add('tName', TextType::class, array('label' => 'Name',
                                         'constraints' => [
                                             new NotBlank(),
@@ -48,7 +50,8 @@ class TagForm extends AbstractType implements DataMapperInterface
                                             new Regex(['pattern' => "/[^A-Za-z0-9_]/",
                                                         'match' => false,
                                                         'message' => "Tag name contain invalid characters"])
-                                        ]))
+                                        ],
+                                        'empty_data' => ''))
             ->add('tType', ChoiceType::class, array('label' => 'Tag type',
                                         'choices'  => array(
                                             TagType::N_BIT => TagType::BIT,
@@ -62,7 +65,8 @@ class TagForm extends AbstractType implements DataMapperInterface
                                             new NotBlank(),
                                             new Range(['min' => 1,
                                                         'max' => 6]),
-                                        ]))
+                                        ],
+                                        'empty_data' => '1'))
             ->add('tArea', ChoiceType::class, array('label' => 'Area',
                                         'choices'  => array(
                                             TagArea::N_INPUT => TagArea::INPUT,
@@ -73,12 +77,14 @@ class TagForm extends AbstractType implements DataMapperInterface
                                             new NotBlank(),
                                             new Range(['min' => 1,
                                                         'max' => 3]),
-                                        ]))
+                                        ],
+                                        'empty_data' => '1'))
             ->add('tByteAddress', IntegerType::class, array('label' => 'Byte address',
                                         'constraints' => [
                                             new NotBlank(),
                                             new Range(['min' => 0]),
-                                        ]))
+                                        ],
+                                        'empty_data' => '0'))
             ->add('tBitAddress', ChoiceType::class, array('label' => 'Bit address',
                                         'choices'  => array(
                                             '0' => 0,
@@ -94,7 +100,8 @@ class TagForm extends AbstractType implements DataMapperInterface
                                             new NotBlank(),
                                             new Range(['min' => 0,
                                                         'max' => 7]),
-                                        ]))
+                                        ],
+                                        'empty_data' => '0'))
             ->add('tReadAccess', ChoiceType::class, array('label' => 'Read access',
                                         'choices'  => array(
                                             'ADMIN' => 'ROLE_ADMIN',
@@ -104,7 +111,8 @@ class TagForm extends AbstractType implements DataMapperInterface
                                         'constraints' => [
                                             new NotBlank(),
                                             new Length(['max' => 20]),
-                                        ]))
+                                        ],
+                                        'empty_data' => 'ROLE_ADMIN'))
             ->add('tWriteAccess', ChoiceType::class, array('label' => 'Write access',
                                         'choices'  => array(
                                             'ADMIN' => 'ROLE_ADMIN',
@@ -114,7 +122,8 @@ class TagForm extends AbstractType implements DataMapperInterface
                                         'constraints' => [
                                             new NotBlank(),
                                             new Length(['max' => 20]),
-                                        ]))
+                                        ],
+                                        'empty_data' => 'ROLE_ADMIN'))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->setDataMapper($this);
     }
@@ -158,7 +167,7 @@ class TagForm extends AbstractType implements DataMapperInterface
             $aforms['tid']->getData(),
             $aforms['tConnId']->getData(),
             '',
-            trim($aforms['tName']->getData()),
+            $aforms['tName']->getData(),
             $aforms['tType']->getData(),
             $aforms['tArea']->getData(),
             $aforms['tByteAddress']->getData(),

@@ -44,23 +44,27 @@ class AlarmForm extends AbstractType implements DataMapperInterface
     {
         $builder->add('adid', HiddenType::class, array('constraints' => [
                                                 new PositiveOrZero()
-                                            ]))
+                                            ],
+                                            'empty_data' => '0'))
             ->add('adTagName', TextType::class, array('label' => 'Tag name',
                                             'constraints' => [
                                                 new NotBlank(),
                                                 new Length(['max' => 50]),
-                                            ]))
+                                            ],
+                                            'empty_data' => ''))
             ->add('adPriority', IntegerType::class, array('label' => 'Priority',
                                             'constraints' => [
                                                 new NotBlank(),
                                                 new Range(['min' => 1,
                                                             'max' => 5]),
-                                            ]))
+                                            ],
+                                            'empty_data' => '0'))
             ->add('adMessage', TextType::class, array('label' => 'Message',
                                             'constraints' => [
                                                 new NotBlank(),
                                                 new Length(['max' => 200]),
-                                            ]))
+                                            ],
+                                            'empty_data' => ''))
             ->add('adTrigger', ChoiceType::class, array('label' => 'Trigger mode',
                                             'choices'  => array(
                                                 AlarmTrigger::N_TR_BIN => AlarmTrigger::TR_BIN,
@@ -75,7 +79,8 @@ class AlarmForm extends AbstractType implements DataMapperInterface
                                                 new NotBlank(),
                                                 new Range(['min' => 1,
                                                             'max' => 7]),
-                                            ]
+                                            ],
+                                            'empty_data' => '1'
                                             ))
             ->add('adTriggerB', ChoiceType::class, array('label' => 'Binary value',
                                             'choices'  => array(
@@ -86,17 +91,20 @@ class AlarmForm extends AbstractType implements DataMapperInterface
                                                 new NotBlank(),
                                                 new Range(['min' => 0,
                                                             'max' => 1]),
-                                            ]
+                                            ],
+                                            'empty_data' => '0'
                                             ))
             ->add('adTriggerN', IntegerType::class, array('label' => 'Numeric value',
                                             'constraints' => [
                                                 new NotBlank()
-                                            ]
+                                            ],
+                                            'empty_data' => '0'
                                             ))
             ->add('adTriggerR', NumberType::class, array('label' => 'Real value',
                                             'constraints' => [
                                                 new NotBlank()
-                                            ]
+                                            ],
+                                            'empty_data' => '0'
                                             ))
             ->add('adAutoAck', ChoiceType::class, array('label' => 'Auto ack',
                                             'choices'  => array(
@@ -107,18 +115,23 @@ class AlarmForm extends AbstractType implements DataMapperInterface
                                                 new NotBlank(),
                                                 new Range(['min' => 0,
                                                             'max' => 1]),
-                                            ]
+                                            ],
+                                            'empty_data' => '0'
                                             ))
             ->add('adFeedbackNotACK', TextType::class, array('label' => 'Feedback tag (alarm not ack)',
                                             'required' => false,
                                             'constraints' => [
                                                 new Length(['max' => 50]),
-                                            ]))
+                                            ],
+                                            'empty_data' => ''
+                                            ))
             ->add('adHWAck', TextType::class, array('label' => 'Tag for alarm ack',
                                             'required' => false,
                                             'constraints' => [
                                                 new Length(['max' => 50]),
-                                            ]))
+                                            ],
+                                            'empty_data' => ''
+                                            ))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->setDataMapper($this);
     }
@@ -221,7 +234,7 @@ class AlarmForm extends AbstractType implements DataMapperInterface
                 $hwTag,
                 $aforms['adid']->getData(),
                 $aforms['adPriority']->getData(),
-                trim($aforms['adMessage']->getData()),
+                $aforms['adMessage']->getData(),
                 $aforms['adTrigger']->getData(),
                 $aforms['adTriggerB']->getData(),
                 $aforms['adTriggerN']->getData(),
