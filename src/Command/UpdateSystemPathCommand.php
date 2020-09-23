@@ -76,7 +76,6 @@ class UpdateSystemPathCommand extends Command
         $scriptsPathDetect = str_replace('openNetworkHMI_web/src/Command', 'userScripts/', $commandPath);
         
         try {
-            
             $webAppPath = '';
             $servicePath = '';
             $scriptsPath = '';

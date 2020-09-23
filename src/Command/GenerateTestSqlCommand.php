@@ -77,7 +77,6 @@ class GenerateTestSqlCommand extends Command
         $scriptsPathDetect = str_replace('openNetworkHMI_web/src/Command', 'tests/scripts/', $commandPath);
         
         try {
-            
             $webAppPath = '';
             $servicePath = '';
             $scriptsPath = '';
@@ -100,8 +99,11 @@ class GenerateTestSqlCommand extends Command
             }
 
             if ($ask) {
-                $question2 = new Question("Please enter full test path to the service application directory\nDefault [" .
-                                            $servicePathDetect . "]:", $servicePathDetect);
+                $question2 = new Question(
+                    "Please enter full test path to the service application" .
+                                            " directory\nDefault [" . $servicePathDetect . "]:",
+                    $servicePathDetect
+                );
                 $servicePath = $helper->ask($input, $output, $question2);
             } else {
                 $servicePath = $servicePathDetect;
