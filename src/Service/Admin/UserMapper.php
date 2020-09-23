@@ -185,7 +185,10 @@ class UserMapper
         $items = $statement->fetchAll();
         
         if (empty($items)) {
-            throw new AppException("User with name " . $userNm . " does not exist!");
+            throw new AppException(
+                "User with name " . $userNm . " does not exist!",
+                AppException::USER_NOT_EXIST
+            );
         }
         if (count($items) != 1) {
             throw new Exception("Query return more than one element!");

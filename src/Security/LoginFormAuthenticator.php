@@ -17,6 +17,11 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use App\Entity\AppException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
@@ -26,17 +31,20 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     private $router;
     private $csrfTokenManager;
     private $passwordEncoder;
+    private $validator;
 
     public function __construct(
         UserMapper $userMapper,
         RouterInterface $router,
         CsrfTokenManagerInterface $csrfTokenManager,
-        UserPasswordEncoderInterface $passwordEncoder
+        UserPasswordEncoderInterface $passwordEncoder,
+        ValidatorInterface $validator
     ) {
         $this->userMapper = $userMapper;
         $this->router = $router;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;
+        $this->validator = $validator;
     }
 
     public function supports(Request $request)
@@ -44,9 +52,48 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return 'app_login' === $request->attributes->get('_route')
             && $request->isMethod('POST');
     }
+    
+    private function validate(Request $request): array
+    {
+        $errorsUser = $this->validator->validate(
+            $request->request->get('username'),
+            array(
+                                    new NotBlank(['message' => 'Username can not be empty']),
+                                    new Length(['max' => 25,
+                                                'maxMessage' => 'Username should have 25 characters or less.']),
+                                    new Regex(['pattern' => "/[^A-Za-z0-9_]/",
+                                                'match' => false,
+                                                'message' => "Username contain invalid characters"])
+                                )
+        );
+        
+        $errorsPass = $this->validator->validate(
+            $request->request->get('password'),
+            array(
+                                    new NotBlank(['message' => 'Password can not be empty']),
+                                    new Length(['max' => 200,
+                                                'maxMessage' => 'Password should have 200 characters or less.'])
+                                )
+        );
+        
+        return array(
+            'uErr' => $errorsUser,
+            'pErr' => $errorsPass
+        );
+    }
 
     public function getCredentials(Request $request)
     {
+        // Check data
+        $err = $this->validate($request);
+        
+        if (count($err['uErr']) > 0) {
+            throw new CustomUserMessageAuthenticationException($err['uErr'][0]->getMessage());
+        }
+        if (count($err['pErr']) > 0) {
+            throw new CustomUserMessageAuthenticationException($err['pErr'][0]->getMessage());
+        }
+        
         $credentials = [
             'username' => $request->request->get('username'),
             'password' => $request->request->get('password'),
@@ -67,11 +114,14 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             throw new InvalidCsrfTokenException();
         }
 
-        $user = $this->userMapper->getUserByName($credentials['username']);
-
-        if (!$user) {
-            // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Username could not be found.');
+        try {
+            $user = $this->userMapper->getUserByName($credentials['username']);
+        } catch (AppException $ex) {
+            if ($ex->getCode() == AppException::USER_NOT_EXIST) {
+                throw new CustomUserMessageAuthenticationException('Username could not be found.');
+            } else {
+                throw new CustomUserMessageAuthenticationException($ex->getMessage());
+            }
         }
         
         // User is activated?

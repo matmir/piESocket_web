@@ -32,7 +32,16 @@ class UserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
-        $user = $this->userMapper->getUserByName($username);
+        
+        try {
+            $user = $this->userMapper->getUserByName($username);
+        } catch (AppException $ex) {
+            if ($ex->getCode() == AppException::USER_NOT_EXIST) {
+                throw new UsernameNotFoundException();
+            } else {
+                throw new UnsupportedUserException($ex->getMessage());
+            }
+        }
         
         return $user;
     }
@@ -55,10 +64,18 @@ class UserProvider implements UserProviderInterface
         if (!$user instanceof User) {
             throw new UnsupportedUserException(sprintf('Invalid user class "%s".', get_class($user)));
         }
-
+        
         // Return a User object after making sure its data is "fresh".
         // Or throw a UsernameNotFoundException if the user no longer exists.
-        $userN = $this->userMapper->getUser($user->getId());
+        try {
+            $userN = $this->userMapper->getUser($user->getId());
+        } catch (AppException $ex) {
+            if ($ex->getCode() == AppException::USER_NOT_EXIST) {
+                throw new UsernameNotFoundException();
+            } else {
+                throw new UnsupportedUserException($ex->getMessage());
+            }
+        }
         
         return $userN;
     }
