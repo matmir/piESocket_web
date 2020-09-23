@@ -165,7 +165,7 @@ class TagForm extends AbstractType implements DataMapperInterface
 
         $viewData = new Tag(
             $aforms['tid']->getData(),
-            $aforms['tConnId']->getData(),
+            ($aforms['tConnId']->getData() === null) ? (0) : ($aforms['tConnId']->getData()),
             '',
             $aforms['tName']->getData(),
             $aforms['tType']->getData(),
