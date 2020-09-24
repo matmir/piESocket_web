@@ -11,13 +11,13 @@ use App\Entity\Admin\TagType;
  *
  * @author Mateusz Mirosławski
  */
-class AlarmSystemIntTest extends AlarmSystemFunctionTestCase {
-    
+class AlarmSystemIntTest extends AlarmSystemFunctionTestCase
+{
     /**
      * Test INT alarm Tag>value
      */
-    public function testInt1() {
-        
+    public function testInt1()
+    {
         // Get alarm definition
         $alarmDef = $this->getAlarmDefinition(TagType::INT);
         
@@ -117,8 +117,8 @@ class AlarmSystemIntTest extends AlarmSystemFunctionTestCase {
     /**
      * Test INT alarm Tag<value
      */
-    public function testInt2() {
-        
+    public function testInt2()
+    {
         // Get alarm definition
         $alarmDef = $this->getAlarmDefinition(TagType::INT);
         // Change trigger
@@ -223,8 +223,8 @@ class AlarmSystemIntTest extends AlarmSystemFunctionTestCase {
     /**
      * Test INT alarm Tag>=value
      */
-    public function testInt3() {
-        
+    public function testInt3()
+    {
         // Get alarm definition
         $alarmDef = $this->getAlarmDefinition(TagType::INT);
         // Change trigger
@@ -329,8 +329,8 @@ class AlarmSystemIntTest extends AlarmSystemFunctionTestCase {
     /**
      * Test INT alarm Tag<=value
      */
-    public function testInt4() {
-        
+    public function testInt4()
+    {
         // Get alarm definition
         $alarmDef = $this->getAlarmDefinition(TagType::INT);
         // Change trigger
@@ -435,8 +435,8 @@ class AlarmSystemIntTest extends AlarmSystemFunctionTestCase {
     /**
      * Test INT alarm Tag=value
      */
-    public function testInt5() {
-        
+    public function testInt5()
+    {
         // Get alarm definition
         $alarmDef = $this->getAlarmDefinition(TagType::INT);
         // Change trigger
@@ -541,8 +541,8 @@ class AlarmSystemIntTest extends AlarmSystemFunctionTestCase {
     /**
      * Test INT alarm Tag!=value
      */
-    public function testInt6() {
-        
+    public function testInt6()
+    {
         // Get alarm definition
         $alarmDef = $this->getAlarmDefinition(TagType::INT);
         // Change trigger
@@ -647,8 +647,8 @@ class AlarmSystemIntTest extends AlarmSystemFunctionTestCase {
     /**
      * Test INT alarm - AutoAck
      */
-    public function testInt7() {
-        
+    public function testInt7()
+    {
         // Get alarm definition
         $alarmDef = $this->getAlarmDefinition(TagType::INT);
         // Set AutoAck flag
@@ -730,8 +730,8 @@ class AlarmSystemIntTest extends AlarmSystemFunctionTestCase {
     /**
      * Test INT alarm - no feedback tag
      */
-    public function testInt8() {
-        
+    public function testInt8()
+    {
         // Get alarm definition
         $alarmDef = $this->getAlarmDefinition(TagType::INT);
         // Set AutoAck flag
@@ -837,8 +837,8 @@ class AlarmSystemIntTest extends AlarmSystemFunctionTestCase {
     /**
      * Test INT alarm - no HW ack tag
      */
-    public function testInt9() {
-        
+    public function testInt9()
+    {
         // Get alarm definition
         $alarmDef = $this->getAlarmDefinition(TagType::INT);
         // Delete HW ack tag

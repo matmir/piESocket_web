@@ -9,6 +9,6 @@ use Symfony\Component\Config\Definition\Exception\Exception;
  *
  * @author Mateusz Mirosławski
  */
-class ParserException extends Exception {
-    
+class ParserException extends Exception
+{
 }

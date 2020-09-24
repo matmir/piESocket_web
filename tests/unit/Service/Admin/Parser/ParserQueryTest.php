@@ -12,13 +12,13 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Mateusz Mirosławski
  */
-class ParserQueryTest extends TestCase {
-    
+class ParserQueryTest extends TestCase
+{
     /**
      * Test query method
      */
-    public function testQuerry_err1() {
-        
+    public function testQuerryErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('query: Missing command field in array!');
         
@@ -33,8 +33,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuerry_err2() {
-        
+    public function testQuerryErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('query: Wrong command number!');
         
@@ -52,8 +52,8 @@ class ParserQueryTest extends TestCase {
     /**
      * Test query method for GET_BIT function
      */
-    public function testQuery_GET_BIT() {
-        
+    public function testQueryGetBit()
+    {
         // Prepare command
         $cmd = array(
             'cmd' => ParserCommands::GET_BIT,
@@ -73,8 +73,8 @@ class ParserQueryTest extends TestCase {
         $this->assertTrue($ta[0]['read']);
     }
     
-    public function testQuery_GET_BIT_err1() {
-        
+    public function testQueryGetBitErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_GET_BIT: Missing tag field in array!');
         
@@ -89,8 +89,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_GET_BIT_err2() {
-        
+    public function testQueryGetBitErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('parseTagName: Tag name is empty!');
         
@@ -108,8 +108,8 @@ class ParserQueryTest extends TestCase {
     /**
      * Test query method for SET_BIT function
      */
-    public function testQuery_SET_BIT() {
-        
+    public function testQuerySetBit()
+    {
         // Prepare command
         $cmd = array(
             'cmd' => ParserCommands::SET_BIT,
@@ -129,8 +129,8 @@ class ParserQueryTest extends TestCase {
         $this->assertFalse($ta[0]['read']);
     }
     
-    public function testQuery_SET_BIT_err1() {
-        
+    public function testQuerySetBitErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_SET_BIT: Missing tag field in array!');
         
@@ -148,8 +148,8 @@ class ParserQueryTest extends TestCase {
     /**
      * Test query method for RESET_BIT function
      */
-    public function testQuery_RESET_BIT() {
-        
+    public function testQueryResetBit()
+    {
         // Prepare command
         $cmd = array(
             'cmd' => ParserCommands::RESET_BIT,
@@ -169,8 +169,8 @@ class ParserQueryTest extends TestCase {
         $this->assertFalse($ta[0]['read']);
     }
     
-    public function testQuery_RESET_BIT_err1() {
-        
+    public function testQueryResetBitErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_RESET_BIT: Missing tag field in array!');
         
@@ -188,8 +188,8 @@ class ParserQueryTest extends TestCase {
     /**
      * Test query method for INVERT_BIT function
      */
-    public function testQuery_INVERT_BIT() {
-        
+    public function testQueryInvertBit()
+    {
         // Prepare command
         $cmd = array(
             'cmd' => ParserCommands::INVERT_BIT,
@@ -209,8 +209,8 @@ class ParserQueryTest extends TestCase {
         $this->assertFalse($ta[0]['read']);
     }
     
-    public function testQuery_INVERT_BIT_err1() {
-        
+    public function testQueryInvertBitErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_INVERT_BIT: Missing tag field in array!');
         
@@ -228,8 +228,8 @@ class ParserQueryTest extends TestCase {
     /**
      * Test query method for GET_BITS function
      */
-    public function testQuery_GET_BITS() {
-        
+    public function testQueryGetBits()
+    {
         // Prepare command
         $cmd = array(
             'cmd' => ParserCommands::GET_BITS,
@@ -245,14 +245,14 @@ class ParserQueryTest extends TestCase {
         
         $this->assertEquals('20|TestTag1,TestTag2,TestTag3', $str);
         $this->assertEquals(3, count($ta));
-        for ($i=0; $i<count($ta); ++$i) {
+        for ($i = 0; $i < count($ta); ++$i) {
             $this->assertEquals($cmd['tags'][$i], $ta[$i]['tagName']);
             $this->assertTrue($ta[$i]['read']);
         }
     }
     
-    public function testQuery_GET_BITS_err1() {
-        
+    public function testQueryGetBitsErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_GET_BITS: Missing tags field in array!');
         
@@ -267,8 +267,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_GET_BITS_err2() {
-        
+    public function testQueryGetBitsErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_GET_BITS: Tags field is not array!');
         
@@ -286,8 +286,8 @@ class ParserQueryTest extends TestCase {
     /**
      * Test query method for SET_BITS function
      */
-    public function testQuery_SET_BITS() {
-        
+    public function testQuerySetBits()
+    {
         // Prepare command
         $cmd = array(
             'cmd' => ParserCommands::SET_BITS,
@@ -303,14 +303,14 @@ class ParserQueryTest extends TestCase {
         
         $this->assertEquals('21|TestTag1,TestTag2,TestTag3', $str);
         $this->assertEquals(3, count($ta));
-        for ($i=0; $i<count($ta); ++$i) {
+        for ($i = 0; $i < count($ta); ++$i) {
             $this->assertEquals($cmd['tags'][$i], $ta[$i]['tagName']);
             $this->assertFalse($ta[$i]['read']);
         }
     }
     
-    public function testQuery_SET_BITS_err1() {
-        
+    public function testQuerySetBitsErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_SET_BITS: Missing tags field in array!');
         
@@ -325,8 +325,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_SET_BITS_err2() {
-        
+    public function testQuerySetBitsErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_SET_BITS: Tags field is not array!');
         
@@ -344,8 +344,8 @@ class ParserQueryTest extends TestCase {
     /**
      * Test query method for GET_BYTE function
      */
-    public function testQuery_GET_BYTE() {
-        
+    public function testQueryGetByte()
+    {
         // Prepare command
         $cmd = array(
             'cmd' => ParserCommands::GET_BYTE,
@@ -365,8 +365,8 @@ class ParserQueryTest extends TestCase {
         $this->assertTrue($ta[0]['read']);
     }
     
-    public function testQuery_GET_BYTE_err1() {
-        
+    public function testQueryGetByteErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_GET_BYTE: Missing tag field in array!');
         
@@ -384,8 +384,8 @@ class ParserQueryTest extends TestCase {
     /**
      * Test query method for WRITE_BYTE function
      */
-    public function testQuery_WRITE_BYTE() {
-        
+    public function testQueryWriteByte()
+    {
         // Prepare command
         $cmd = array(
             'cmd' => ParserCommands::WRITE_BYTE,
@@ -406,8 +406,8 @@ class ParserQueryTest extends TestCase {
         $this->assertFalse($ta[0]['read']);
     }
     
-    public function testQuery_WRITE_BYTE_err1() {
-        
+    public function testQueryWriteByteErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_WRITE_BYTE: Missing tag field in array!');
         
@@ -423,8 +423,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_WRITE_BYTE_err2() {
-        
+    public function testQueryWriteByteErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_WRITE_BYTE: Missing value field in array!');
         
@@ -440,8 +440,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_WRITE_BYTE_err3() {
-        
+    public function testQueryWriteByteErr3()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_WRITE_BYTE: Value need to be numeric!');
         
@@ -457,8 +457,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_WRITE_BYTE_err4() {
-        
+    public function testQueryWriteByteErr4()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_WRITE_BYTE: Value is out of range!');
         
@@ -477,8 +477,8 @@ class ParserQueryTest extends TestCase {
     /**
      * Test query method for GET_WORD function
      */
-    public function testQuery_GET_WORD() {
-        
+    public function testQueryGetWord()
+    {
         // Prepare command
         $cmd = array(
             'cmd' => ParserCommands::GET_WORD,
@@ -498,8 +498,8 @@ class ParserQueryTest extends TestCase {
         $this->assertTrue($ta[0]['read']);
     }
     
-    public function testQuery_GET_WORD_err1() {
-        
+    public function testQueryGetWordErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_GET_WORD: Missing tag field in array!');
         
@@ -517,8 +517,8 @@ class ParserQueryTest extends TestCase {
     /**
      * Test query method for WRITE_WORD function
      */
-    public function testQuery_WRITE_WORD() {
-        
+    public function testQueryWriteWord()
+    {
         // Prepare command
         $cmd = array(
             'cmd' => ParserCommands::WRITE_WORD,
@@ -539,8 +539,8 @@ class ParserQueryTest extends TestCase {
         $this->assertFalse($ta[0]['read']);
     }
     
-    public function testQuery_WRITE_WORD_err1() {
-        
+    public function testQueryWriteWordErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_WRITE_WORD: Missing tag field in array!');
         
@@ -556,8 +556,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_WRITE_WORD_err2() {
-        
+    public function testQueryWriteWordErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_WRITE_WORD: Missing value field in array!');
         
@@ -573,8 +573,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_WRITE_WORD_err3() {
-        
+    public function testQueryWriteWordErr3()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_WRITE_WORD: Value need to be numeric!');
         
@@ -590,8 +590,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_WRITE_WORD_err4() {
-        
+    public function testQueryWriteWordErr4()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_WRITE_WORD: Value is out of range!');
         
@@ -610,8 +610,8 @@ class ParserQueryTest extends TestCase {
     /**
      * Test query method for GET_DWORD function
      */
-    public function testQuery_GET_DWORD() {
-        
+    public function testQueryGetDWord()
+    {
         // Prepare command
         $cmd = array(
             'cmd' => ParserCommands::GET_DWORD,
@@ -631,8 +631,8 @@ class ParserQueryTest extends TestCase {
         $this->assertTrue($ta[0]['read']);
     }
     
-    public function testQuery_GET_DWORD_err1() {
-        
+    public function testQueryGetDWordErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_GET_DWORD: Missing tag field in array!');
         
@@ -650,8 +650,8 @@ class ParserQueryTest extends TestCase {
     /**
      * Test query method for WRITE_DWORD function
      */
-    public function testQuery_WRITE_DWORD() {
-        
+    public function testQueryWriteDWord()
+    {
         // Prepare command
         $cmd = array(
             'cmd' => ParserCommands::WRITE_DWORD,
@@ -672,8 +672,8 @@ class ParserQueryTest extends TestCase {
         $this->assertFalse($ta[0]['read']);
     }
     
-    public function testQuery_WRITE_DWORD_err1() {
-        
+    public function testQueryWriteDWordErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_WRITE_DWORD: Missing tag field in array!');
         
@@ -689,8 +689,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_WRITE_DWORD_err2() {
-        
+    public function testQueryWriteDWordErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_WRITE_DWORD: Missing value field in array!');
         
@@ -706,8 +706,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_WRITE_DWORD_err3() {
-        
+    public function testQueryWriteDWordErr3()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_WRITE_DWORD: Value need to be numeric!');
         
@@ -723,8 +723,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_WRITE_DWORD_err4() {
-        
+    public function testQueryWriteDWordErr4()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_WRITE_DWORD: Value is out of range!');
         
@@ -743,8 +743,8 @@ class ParserQueryTest extends TestCase {
     /**
      * Test query method for GET_INT function
      */
-    public function testQuery_GET_INT() {
-        
+    public function testQueryGetInt()
+    {
         // Prepare command
         $cmd = array(
             'cmd' => ParserCommands::GET_INT,
@@ -764,8 +764,8 @@ class ParserQueryTest extends TestCase {
         $this->assertTrue($ta[0]['read']);
     }
     
-    public function testQuery_GET_INT_err1() {
-        
+    public function testQueryGetIntErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_GET_INT: Missing tag field in array!');
         
@@ -783,8 +783,8 @@ class ParserQueryTest extends TestCase {
     /**
      * Test query method for WRITE_INT function
      */
-    public function testQuery_WRITE_INT() {
-        
+    public function testQueryWriteInt()
+    {
         // Prepare command
         $cmd = array(
             'cmd' => ParserCommands::WRITE_INT,
@@ -805,8 +805,8 @@ class ParserQueryTest extends TestCase {
         $this->assertFalse($ta[0]['read']);
     }
     
-    public function testQuery_WRITE_INT_err1() {
-        
+    public function testQueryWriteIntErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_WRITE_INT: Missing tag field in array!');
         
@@ -822,8 +822,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_WRITE_INT_err2() {
-        
+    public function testQueryWriteIntErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_WRITE_INT: Missing value field in array!');
         
@@ -839,8 +839,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_WRITE_INT_err3() {
-        
+    public function testQueryWriteIntErr3()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_WRITE_INT: Value need to be numeric!');
         
@@ -856,8 +856,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_WRITE_INT_err4() {
-        
+    public function testQueryWriteIntErr4()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_WRITE_INT: Value is out of range!');
         
@@ -876,8 +876,8 @@ class ParserQueryTest extends TestCase {
     /**
      * Test query method for GET_REAL function
      */
-    public function testQuery_GET_REAL() {
-        
+    public function testQueryGetReal()
+    {
         // Prepare command
         $cmd = array(
             'cmd' => ParserCommands::GET_REAL,
@@ -897,8 +897,8 @@ class ParserQueryTest extends TestCase {
         $this->assertTrue($ta[0]['read']);
     }
     
-    public function testQuery_GET_REAL_err1() {
-        
+    public function testQueryGetRealErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_GET_REAL: Missing tag field in array!');
         
@@ -916,8 +916,8 @@ class ParserQueryTest extends TestCase {
     /**
      * Test query method for WRITE_REAL function
      */
-    public function testQuery_WRITE_REAL() {
-        
+    public function testQueryWriteReal()
+    {
         // Prepare command
         $cmd = array(
             'cmd' => ParserCommands::WRITE_REAL,
@@ -938,8 +938,8 @@ class ParserQueryTest extends TestCase {
         $this->assertFalse($ta[0]['read']);
     }
     
-    public function testQuery_WRITE_REAL_err1() {
-        
+    public function testQueryWriteRealErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_WRITE_REAL: Missing tag field in array!');
         
@@ -955,8 +955,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_WRITE_REAL_err2() {
-        
+    public function testQueryWriteRealErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_WRITE_REAL: Missing value field in array!');
         
@@ -972,8 +972,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_WRITE_REAL_err3() {
-        
+    public function testQueryWriteRealErr3()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_WRITE_REAL: Value need to be numeric!');
         
@@ -989,8 +989,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_WRITE_REAL_err4() {
-        
+    public function testQueryWriteRealErr4()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_WRITE_REAL: Value is out of range!');
         
@@ -1009,8 +1009,8 @@ class ParserQueryTest extends TestCase {
     /**
      * Test query method for ACK_ALARM function
      */
-    public function testQuery_ACK_ALARM1() {
-        
+    public function testQueryAckAlarm1()
+    {
         // Prepare command
         $cmd = array(
             'cmd' => ParserCommands::ACK_ALARM,
@@ -1030,8 +1030,8 @@ class ParserQueryTest extends TestCase {
         $this->assertEquals('ROLE_USER', $ta[0]['role']);
     }
     
-    public function testQuery_ACK_ALARM2() {
-        
+    public function testQueryAckAlarm2()
+    {
         // Prepare command
         $cmd = array(
             'cmd' => ParserCommands::ACK_ALARM,
@@ -1053,8 +1053,8 @@ class ParserQueryTest extends TestCase {
         $this->assertEquals('ROLE_GUEST', $ta[0]['role']);
     }
     
-    public function testQuery_ACK_ALARM_err1() {
-        
+    public function testQueryAckAlarmErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_ACK_ALARM: Missing alarm_id field in array!');
         
@@ -1069,8 +1069,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_ACK_ALARM_err2() {
-        
+    public function testQueryAckAlarmErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_ACK_ALARM: alarm_id need to be numeric!');
         
@@ -1088,8 +1088,8 @@ class ParserQueryTest extends TestCase {
     /**
      * Test query method for EXIT_APP function
      */
-    public function testQuery_EXIT_APP() {
-        
+    public function testQueryExitApp()
+    {
         // Prepare command
         $cmd = array(
             'cmd' => ParserCommands::EXIT_APP
@@ -1111,8 +1111,8 @@ class ParserQueryTest extends TestCase {
     /**
      * Test query method for GET_THREAD_CYCLE_TIME function
      */
-    public function testQuery_GET_THREAD_CYCLE_TIME() {
-        
+    public function testQueryGetThreadCycleTime()
+    {
         // Prepare command
         $cmd = array(
             'cmd' => ParserCommands::GET_THREAD_CYCLE_TIME
@@ -1134,8 +1134,8 @@ class ParserQueryTest extends TestCase {
     /**
      * Test query method for MULTI_CMD function
      */
-    public function testQuery_MULTI_CMD_1() {
-        
+    public function testQueryMultiCmd1()
+    {
         // Prepare command
         $cmd = array(
             'cmd' => ParserCommands::MULTI_CMD,
@@ -1168,8 +1168,8 @@ class ParserQueryTest extends TestCase {
         $this->assertFalse($ta[4]['read']);
     }
     
-    public function testQuery_MULTI_CMD_2() {
-        
+    public function testQueryMultiCmd2()
+    {
         // Prepare command
         $cmd = array(
             'cmd' => ParserCommands::MULTI_CMD,
@@ -1205,8 +1205,8 @@ class ParserQueryTest extends TestCase {
         $this->assertTrue($ta[5]['read']);
     }
     
-    public function testQuery_MULTI_CMD_3() {
-        
+    public function testQueryMultiCmd3()
+    {
         // Prepare command
         $cmd = array(
             'cmd' => ParserCommands::MULTI_CMD,
@@ -1244,8 +1244,8 @@ class ParserQueryTest extends TestCase {
         $this->assertFalse($ta[5]['read']);
     }
     
-    public function testQuery_MULTI_CMD_4() {
-        
+    public function testQueryMultiCmd4()
+    {
         // Prepare command
         $cmd = array(
             'cmd' => ParserCommands::MULTI_CMD,
@@ -1280,8 +1280,8 @@ class ParserQueryTest extends TestCase {
         $this->assertEquals('ROLE_ADMIN', $ta[4]['role']);
     }
     
-    public function testQuery_MULTI_CMD_err1() {
-        
+    public function testQueryMultiCmdErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_MULTI_CMD: Missing value field in array!');
         
@@ -1300,8 +1300,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_MULTI_CMD_err2() {
-        
+    public function testQueryMultiCmdErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_MULTI_CMD: Value need to be an array!');
         
@@ -1316,8 +1316,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_MULTI_CMD_err3() {
-        
+    public function testQueryMultiCmdErr3()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_MULTI_CMD: Data is not array!');
         
@@ -1334,8 +1334,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_MULTI_CMD_err4() {
-        
+    public function testQueryMultiCmdErr4()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_MULTI_CMD: Missing command field in array!');
         
@@ -1354,8 +1354,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_MULTI_CMD_err5() {
-        
+    public function testQueryMultiCmdErr5()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_MULTI_CMD: Wrong command number!');
         
@@ -1374,8 +1374,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_MULTI_CMD_err6() {
-        
+    public function testQueryMultiCmdErr6()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_MULTI_CMD: Can not call MULTI_CMD inside MULTI_CMD!');
         
@@ -1394,8 +1394,8 @@ class ParserQueryTest extends TestCase {
         $query->query($cmd);
     }
     
-    public function testQuery_MULTI_CMD_err7() {
-        
+    public function testQueryMultiCmdErr7()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('CMD_MULTI_CMD: Can not call GET_THREAD_CYCLE_TIME inside MULTI_CMD!');
         

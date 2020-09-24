@@ -12,21 +12,21 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Mateusz Mirosławski
  */
-class TagTest extends TestCase {
-    
+class TagTest extends TestCase
+{
     /**
      * Test Default constructor
      */
-    public function testDefaultConstructor() {
-        
+    public function testDefaultConstructor()
+    {
         $tag = new Tag();
         
         $this->assertEquals(0, $tag->getId());
         $this->assertEquals(0, $tag->getConnId());
         $this->assertEquals('', $tag->getConnName());
         $this->assertEquals('', $tag->getName());
-        $this->assertEquals(TagArea::input, $tag->getArea());
-        $this->assertEquals(TagType::Bit, $tag->getType());
+        $this->assertEquals(TagArea::INPUT, $tag->getArea());
+        $this->assertEquals(TagType::BIT, $tag->getType());
         $this->assertEquals(0, $tag->getByteAddress());
         $this->assertEquals(0, $tag->getBitAddress());
         $this->assertEquals('ROLE_USER', $tag->getReadAccess());
@@ -36,16 +36,16 @@ class TagTest extends TestCase {
     /**
      * Test setId method
      */
-    public function testSetId() {
-        
+    public function testSetId()
+    {
         $tag = new Tag();
         $tag->setId(65);
         
         $this->assertEquals(65, $tag->getId());
     }
     
-    public function testSetIdWrong1() {
-        
+    public function testSetIdWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Tag identifier wrong value');
         
@@ -56,16 +56,16 @@ class TagTest extends TestCase {
     /**
      * Test setConnId method
      */
-    public function testSetConnId() {
-        
+    public function testSetConnId()
+    {
         $tag = new Tag();
         $tag->setConnId(33);
         
         $this->assertEquals(33, $tag->getConnId());
     }
     
-    public function testSetConnIdWrong1() {
-        
+    public function testSetConnIdWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Driver connection identifier wrong value');
         
@@ -76,16 +76,16 @@ class TagTest extends TestCase {
     /**
      * Test setConnName method
      */
-    public function testSetConnName() {
-        
+    public function testSetConnName()
+    {
         $tag = new Tag();
         $tag->setConnName('testConn');
         
         $this->assertEquals('testConn', $tag->getConnName());
     }
     
-    public function testSetConnNameWrong1() {
-        
+    public function testSetConnNameWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Driver connection name can not be empty');
         
@@ -96,16 +96,16 @@ class TagTest extends TestCase {
     /**
      * Test setName method
      */
-    public function testSetName() {
-        
+    public function testSetName()
+    {
         $tag = new Tag();
         $tag->setName('TestTag');
         
         $this->assertEquals('TestTag', $tag->getName());
     }
     
-    public function testSetNameWrong1() {
-        
+    public function testSetNameWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Tag name can not be empty');
         
@@ -116,38 +116,38 @@ class TagTest extends TestCase {
     /**
      * Test setType method
      */
-    public function testSetType() {
-        
+    public function testSetType()
+    {
         $tag = new Tag();
-        $tag->setType(TagType::Byte);
+        $tag->setType(TagType::BYTE);
         
-        $this->assertEquals(TagType::Byte, $tag->getType());
+        $this->assertEquals(TagType::BYTE, $tag->getType());
     }
     
     /**
      * Test setArea method
      */
-    public function testSetArea() {
-        
+    public function testSetArea()
+    {
         $tag = new Tag();
-        $tag->setArea(TagArea::memory);
+        $tag->setArea(TagArea::MEMORY);
         
-        $this->assertEquals(TagArea::memory, $tag->getArea());
+        $this->assertEquals(TagArea::MEMORY, $tag->getArea());
     }
     
     /**
      * Test setByteAddress method
      */
-    public function testSetByteAddress() {
-        
+    public function testSetByteAddress()
+    {
         $tag = new Tag();
         $tag->setByteAddress(400);
         
         $this->assertEquals(400, $tag->getByteAddress());
     }
     
-    public function testSetByteAddressWrong() {
-        
+    public function testSetByteAddressWrong()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Tag byte address can not be lower than 0');
         
@@ -158,16 +158,16 @@ class TagTest extends TestCase {
     /**
      * Test setBitAddress method
      */
-    public function testSetBitAddress() {
-        
+    public function testSetBitAddress()
+    {
         $tag = new Tag();
         $tag->setBitAddress(4);
         
         $this->assertEquals(4, $tag->getBitAddress());
     }
     
-    public function testSetBitAddressWrong() {
-        
+    public function testSetBitAddressWrong()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Tag bit address is invalid');
         
@@ -178,8 +178,8 @@ class TagTest extends TestCase {
     /**
      * Test setReadAccess method
      */
-    public function testSetReadAccess() {
-        
+    public function testSetReadAccess()
+    {
         $tag = new Tag();
         $tag->setReadAccess('ROLE_GUEST');
         
@@ -189,8 +189,8 @@ class TagTest extends TestCase {
     /**
      * Test setWriteAccess method
      */
-    public function testSetWriteAccess() {
-        
+    public function testSetWriteAccess()
+    {
         $tag = new Tag();
         $tag->setWriteAccess('ROLE_GUEST');
         
@@ -200,44 +200,44 @@ class TagTest extends TestCase {
     /**
      * Test isValid method
      */
-    public function testIsValidWithoutID() {
-        
+    public function testIsValidWithoutID()
+    {
         $tag = new Tag();
         $tag->setName('TestTag');
-        $tag->setType(TagType::Byte);
-        $tag->setArea(TagArea::memory);
+        $tag->setType(TagType::BYTE);
+        $tag->setArea(TagArea::MEMORY);
         $tag->setByteAddress(400);
         $tag->setBitAddress(0);
         
         $this->assertTrue($tag->isValid());
     }
     
-    public function testIsValidWithID() {
-        
+    public function testIsValidWithID()
+    {
         $tag = new Tag();
         $tag->setId(780);
         $tag->setName('TestTag');
-        $tag->setType(TagType::Byte);
-        $tag->setArea(TagArea::memory);
+        $tag->setType(TagType::BYTE);
+        $tag->setArea(TagArea::MEMORY);
         $tag->setByteAddress(400);
         $tag->setBitAddress(0);
         
         $this->assertTrue($tag->isValid(true));
     }
     
-    public function testIsValidWithTagType() {
-        
-        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
-        $this->expectExceptionMessage('Tag type is Byte but required is Word');
+    public function testIsValidWithTagType()
+    {
+        $this->expectException(\App\Entity\AppException::class);
+        $this->expectExceptionMessage('Tag (TestTag) type is Byte but required is Word');
         
         $tag = new Tag();
         $tag->setId(780);
         $tag->setName('TestTag');
-        $tag->setType(TagType::Byte);
-        $tag->setArea(TagArea::memory);
+        $tag->setType(TagType::BYTE);
+        $tag->setArea(TagArea::MEMORY);
         $tag->setByteAddress(400);
         $tag->setBitAddress(0);
         
-        $tag->isValid(true, true, TagType::Word);
+        $tag->isValid(true, true, TagType::WORD);
     }
 }

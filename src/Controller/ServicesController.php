@@ -4,21 +4,20 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-
 use App\Service\Admin\SystemScripts;
 use App\Service\Admin\ConfigGeneralMapper;
 use App\Entity\AppException;
 
-class ServicesController extends AbstractController {
-    
+class ServicesController extends AbstractController
+{
     /**
      * Check if logged user is Admin
-     * 
+     *
      * @param type $err Error array
      * @return bool True if admin
      */
-    private function isAdmin(&$err): bool {
-        
+    private function isAdmin(&$err): bool
+    {
         $ret = false;
         
         if (!$this->isGranted('ROLE_ADMIN')) {
@@ -37,8 +36,8 @@ class ServicesController extends AbstractController {
     /**
      * @Route("/services/status", name="services_status")
      */
-    public function servicesStatus(SystemScripts $scripts, ConfigGeneralMapper $cfgMapper) {
-        
+    public function servicesStatus(SystemScripts $scripts, ConfigGeneralMapper $cfgMapper)
+    {
         $error = array(
             'state' => false,
             'msg' => 'none',
@@ -50,19 +49,15 @@ class ServicesController extends AbstractController {
         $restart = false;
                     
         try {
-
             // Get service status
             $services = $scripts->getServiceStatus();
             
             // Server restart flag
             $restart = $cfgMapper->serverNeedRestart();
-
         } catch (AppException $ex) {
-
             $error['state'] = true;
             $error['msg'] = $ex->getMessage();
             $error['code'] = $ex->getCode();
-
         }
         
         return $this->json(array(
@@ -75,10 +70,10 @@ class ServicesController extends AbstractController {
     /**
      * @Route("/services/autoload/{flag}", name="services_autoload")
      */
-    public function servicesAutoload(SystemScripts $scripts, $flag=0) {
-        
+    public function servicesAutoload(SystemScripts $scripts, $flag = 0)
+    {
         // Check parameters
-        if ($flag > 1 || $flag <0) {
+        if ($flag > 1 || $flag < 0) {
             $flag = 0;
         }
         
@@ -92,23 +87,17 @@ class ServicesController extends AbstractController {
         
         // Check if logged user is Admin
         if ($this->isAdmin($error)) {
-            
             try {
-            
                 // Enable flag
-                $en = ($flag==1)?(true):(false);
+                $en = ($flag == 1) ? (true) : (false);
                 
                 // Set autoload
                 $cmdExecState = $scripts->setServicesAutoload($en);
-
             } catch (AppException $ex) {
-
                 $error['state'] = true;
                 $error['msg'] = $ex->getMessage();
                 $error['code'] = $ex->getCode();
-
             }
-            
         }
         
         return $this->json(array(
@@ -120,10 +109,10 @@ class ServicesController extends AbstractController {
     /**
      * @Route("/services/onh/{flag}", name="services_onh")
      */
-    public function servicesOnhStart(SystemScripts $scripts, $flag=0) {
-        
+    public function servicesOnhStart(SystemScripts $scripts, $flag = 0)
+    {
         // Check parameters
-        if ($flag > 1 || $flag <0) {
+        if ($flag > 1 || $flag < 0) {
             $flag = 0;
         }
         
@@ -137,23 +126,17 @@ class ServicesController extends AbstractController {
         
         // Check if logged user is Admin
         if ($this->isAdmin($error)) {
-            
             try {
-            
                 // Start flag
-                $start = ($flag==1)?(true):(false);
+                $start = ($flag == 1) ? (true) : (false);
                 
                 // Start/Stop client
                 $cmdExecState = $scripts->startONH($start);
-
             } catch (AppException $ex) {
-
                 $error['state'] = true;
                 $error['msg'] = $ex->getMessage();
                 $error['code'] = $ex->getCode();
-
             }
-            
         }
         
         return $this->json(array(

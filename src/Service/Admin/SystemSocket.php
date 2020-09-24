@@ -9,33 +9,32 @@ use App\Entity\AppException;
  *
  * @author Mateusz Mirosławski
  */
-class SystemSocket {
-    
+class SystemSocket
+{
     /**
      * Server app address
      */
-    const ADDRESS = 'localhost';
+    public const ADDRESS = 'localhost';
     
     /**
      * Max bytes to send
      */
-    const MAX_BYTES = 10000;
+    public const MAX_BYTES = 10000;
     
     /**
      * Socket resource
      */
     private $socket;
     
-    public function __construct(int $port) {
-        
+    public function __construct(int $port)
+    {
         try {
-            
             // Create socket
             $this->socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 
             if ($this->socket === false) {
                 throw new AppException(
-                    "Failed: ". socket_strerror(socket_last_error($this->socket)),
+                    "Failed: " . socket_strerror(socket_last_error($this->socket)),
                     AppException::SOCKET_CREATE
                 );
             }
@@ -49,11 +48,10 @@ class SystemSocket {
 
             if ($result === false) {
                 throw new AppException(
-                    "Failed: ". socket_strerror(socket_last_error($this->socket)),
+                    "Failed: " . socket_strerror(socket_last_error($this->socket)),
                     AppException::SOCKET_CONNECT
                 );
             }
-            
         } catch (\ErrorException $ex) {
             throw new AppException(
                 $ex->getMessage(),
@@ -62,25 +60,25 @@ class SystemSocket {
         }
     }
     
-    function __destruct() {
-        
+    public function __destruct()
+    {
         // Close socket
         socket_close($this->socket);
     }
     
     /**
      * Send message to the server
-     * 
+     *
      * @param string $msg Message to send
      * @return string Reply from server
      * @throws AppException
      */
-    public function send(string $msg): string {
-        
+    public function send(string $msg): string
+    {
         // Check message length
         if (strlen($msg) > self::MAX_BYTES) {
             throw new AppException(
-                "Socket message is too long - allowed ".self::MAX_BYTES." chars",
+                "Socket message is too long - allowed " . self::MAX_BYTES . " chars",
                 AppException::SOCKET_SEND
             );
         }
@@ -90,20 +88,20 @@ class SystemSocket {
         
         if ($sendRes === false) {
             throw new AppException(
-                "Failed: ". socket_strerror(socket_last_error($this->socket)),
+                "Failed: " . socket_strerror(socket_last_error($this->socket)),
                 AppException::SOCKET_SEND
             );
         }
         
         $reply = '';
         // Read reply from server
-	while ($reply = socket_read($this->socket, self::MAX_BYTES)) {
+        while ($reply = socket_read($this->socket, self::MAX_BYTES)) {
             break;
         }
         
         if ($reply === false) {
             throw new AppException(
-                "Failed: ". socket_strerror(socket_last_error($this->socket)),
+                "Failed: " . socket_strerror(socket_last_error($this->socket)),
                 AppException::SOCKET_READ
             );
         }

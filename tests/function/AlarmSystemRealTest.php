@@ -11,13 +11,13 @@ use App\Entity\Admin\TagType;
  *
  * @author Mateusz Mirosławski
  */
-class AlarmSystemRealTest extends AlarmSystemFunctionTestCase {
-    
+class AlarmSystemRealTest extends AlarmSystemFunctionTestCase
+{
     /**
      * Test REAL alarm Tag>value
      */
-    public function testReal1() {
-        
+    public function testReal1()
+    {
         // Get alarm definition
         $alarmDef = $this->getAlarmDefinition(TagType::REAL);
         
@@ -117,8 +117,8 @@ class AlarmSystemRealTest extends AlarmSystemFunctionTestCase {
     /**
      * Test REAL alarm Tag<value
      */
-    public function testReal2() {
-        
+    public function testReal2()
+    {
         // Get alarm definition
         $alarmDef = $this->getAlarmDefinition(TagType::REAL);
         // Change trigger
@@ -223,8 +223,8 @@ class AlarmSystemRealTest extends AlarmSystemFunctionTestCase {
     /**
      * Test REAL alarm Tag>=value
      */
-    public function testReal3() {
-        
+    public function testReal3()
+    {
         // Get alarm definition
         $alarmDef = $this->getAlarmDefinition(TagType::REAL);
         // Change trigger
@@ -329,8 +329,8 @@ class AlarmSystemRealTest extends AlarmSystemFunctionTestCase {
     /**
      * Test REAL alarm Tag<=value
      */
-    public function testReal4() {
-        
+    public function testReal4()
+    {
         // Get alarm definition
         $alarmDef = $this->getAlarmDefinition(TagType::REAL);
         // Change trigger
@@ -435,8 +435,8 @@ class AlarmSystemRealTest extends AlarmSystemFunctionTestCase {
     /**
      * Test REAL alarm Tag=value
      */
-    public function testReal5() {
-        
+    public function testReal5()
+    {
         // Get alarm definition
         $alarmDef = $this->getAlarmDefinition(TagType::REAL);
         // Change trigger
@@ -541,8 +541,8 @@ class AlarmSystemRealTest extends AlarmSystemFunctionTestCase {
     /**
      * Test REAL alarm Tag!=value
      */
-    public function testReal6() {
-        
+    public function testReal6()
+    {
         // Get alarm definition
         $alarmDef = $this->getAlarmDefinition(TagType::REAL);
         // Change trigger
@@ -647,8 +647,8 @@ class AlarmSystemRealTest extends AlarmSystemFunctionTestCase {
     /**
      * Test REAL alarm - AutoAck
      */
-    public function testReal7() {
-        
+    public function testReal7()
+    {
         // Get alarm definition
         $alarmDef = $this->getAlarmDefinition(TagType::REAL);
         // Set AutoAck flag
@@ -730,8 +730,8 @@ class AlarmSystemRealTest extends AlarmSystemFunctionTestCase {
     /**
      * Test REAL alarm - no feedback tag
      */
-    public function testReal8() {
-        
+    public function testReal8()
+    {
         // Get alarm definition
         $alarmDef = $this->getAlarmDefinition(TagType::REAL);
         // Set AutoAck flag
@@ -837,8 +837,8 @@ class AlarmSystemRealTest extends AlarmSystemFunctionTestCase {
     /**
      * Test REAL alarm - no HW ack tag
      */
-    public function testReal9() {
-        
+    public function testReal9()
+    {
         // Get alarm definition
         $alarmDef = $this->getAlarmDefinition(TagType::REAL);
         // Delete HW ack tag

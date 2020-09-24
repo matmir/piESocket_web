@@ -6,7 +6,6 @@ use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\ParameterType;
 use App\Entity\Admin\ConfigGeneral;
 use App\Service\Admin\BaseConfigMapper;
-
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
@@ -14,72 +13,51 @@ use Symfony\Component\Config\Definition\Exception\Exception;
  *
  * @author Mateusz Mirosławski
  */
-class ConfigGeneralMapper extends BaseConfigMapper {
-        
-    public function __construct(Connection $connection) {
-        
+class ConfigGeneralMapper extends BaseConfigMapper
+{
+    
+    public function __construct(Connection $connection)
+    {
         parent::__construct($connection);
     }
     
     /**
      * Get system configuration
-     * 
+     *
      * @return ConfigGeneral Object with system configuration
      */
-    public function getConfig(): ConfigGeneral {
-        
+    public function getConfig(): ConfigGeneral
+    {
         $statement = $this->dbConn->prepare('SELECT * FROM configuration;');
         $statement->execute();
         $items = $statement->fetchAll();
         
         $cg = new ConfigGeneral();
         
-        for ($i=0; $i<count($items); ++$i) {
-            
+        for ($i = 0; $i < count($items); ++$i) {
             if ($items[$i]['cName'] == 'alarmingUpdateInterval') {
-                
                 $cg->setAlarmingUpdateInterval($items[$i]['cValue']);
-                
-            } else if ($items[$i]['cName'] == 'processUpdateInterval') {
-                
+            } elseif ($items[$i]['cName'] == 'processUpdateInterval') {
                 $cg->setProcessUpdateInterval($items[$i]['cValue']);
-                
-            }else if ($items[$i]['cName'] == 'tagLoggerUpdateInterval') {
-                
+            } elseif ($items[$i]['cName'] == 'tagLoggerUpdateInterval') {
                 $cg->setTagLoggerUpdateInterval($items[$i]['cValue']);
-                
-            } else if ($items[$i]['cName'] == 'serverAppPath') {
-                
+            } elseif ($items[$i]['cName'] == 'serverAppPath') {
                 $cg->setServerAppPath($items[$i]['cValue']);
-                
-            } else if ($items[$i]['cName'] == 'socketMaxConn') {
-                
+            } elseif ($items[$i]['cName'] == 'socketMaxConn') {
                 $cg->setSocketMaxConn($items[$i]['cValue']);
-                
-            } else if ($items[$i]['cName'] == 'socketPort') {
-                
+            } elseif ($items[$i]['cName'] == 'socketPort') {
                 $cg->setSocketPort($items[$i]['cValue']);
-                
-            } else if ($items[$i]['cName'] == 'webAppPath') {
-                
+            } elseif ($items[$i]['cName'] == 'webAppPath') {
                 $cg->setWebAppPath($items[$i]['cValue']);
-                
-            } else if ($items[$i]['cName'] == 'scriptSystemExecuteScript') {
-                
+            } elseif ($items[$i]['cName'] == 'scriptSystemExecuteScript') {
                 $cg->setScriptSystemExecuteScript($items[$i]['cValue']);
-                
-            } else if ($items[$i]['cName'] == 'scriptSystemUpdateInterval') {
-                
+            } elseif ($items[$i]['cName'] == 'scriptSystemUpdateInterval') {
                 $cg->setScriptSystemUpdateInterval($items[$i]['cValue']);
-            } else if ($items[$i]['cName'] == 'userScriptsPath') {
-                
+            } elseif ($items[$i]['cName'] == 'userScriptsPath') {
                 $cg->setUserScriptsPath($items[$i]['cValue']);
-                
-            } else if ($items[$i]['cName'] == 'ackAccessRole') {
-                
+            } elseif ($items[$i]['cName'] == 'ackAccessRole') {
                 $cg->setAckAccessRole($items[$i]['cValue']);
             }
-            
         }
         
         return $cg;
@@ -87,10 +65,13 @@ class ConfigGeneralMapper extends BaseConfigMapper {
     
     /**
      * Write system configuration to the DB
-     * 
+     *
      * @param ConfigGeneral $newCFG Configuration object
      */
-    public function setConfig(ConfigGeneral $newCFG) {
+    public function setConfig(ConfigGeneral $newCFG)
+    {
+        // Check config
+        $newCFG->isValid();
         
         // Get current configuration
         $currentCFG = $this->getConfig();
@@ -101,7 +82,6 @@ class ConfigGeneralMapper extends BaseConfigMapper {
         
         // alarmingUpdateInterval
         if ($newCFG->getAlarmingUpdateInterval() <> $currentCFG->getAlarmingUpdateInterval()) {
-            
             $sql = "UPDATE configuration SET cValue = ? WHERE cName = 'alarmingUpdateInterval';";
             array_push($sqls, $sql);
             array_push($vals, $newCFG->getAlarmingUpdateInterval());
@@ -109,7 +89,6 @@ class ConfigGeneralMapper extends BaseConfigMapper {
         
         // processUpdateInterval
         if ($newCFG->getProcessUpdateInterval() <> $currentCFG->getProcessUpdateInterval()) {
-            
             $sql = "UPDATE configuration SET cValue = ? WHERE cName = 'processUpdateInterval';";
             array_push($sqls, $sql);
             array_push($vals, $newCFG->getProcessUpdateInterval());
@@ -117,7 +96,6 @@ class ConfigGeneralMapper extends BaseConfigMapper {
         
         // tagLoggerUpdateInterval
         if ($newCFG->getTagLoggerUpdateInterval() <> $currentCFG->getTagLoggerUpdateInterval()) {
-            
             $sql = "UPDATE configuration SET cValue = ? WHERE cName = 'tagLoggerUpdateInterval';";
             array_push($sqls, $sql);
             array_push($vals, $newCFG->getTagLoggerUpdateInterval());
@@ -125,7 +103,6 @@ class ConfigGeneralMapper extends BaseConfigMapper {
         
         // serverAppPath
         if ($newCFG->getServerAppPath() <> $currentCFG->getServerAppPath()) {
-            
             $sql = "UPDATE configuration SET cValue = ? WHERE cName = 'serverAppPath';";
             array_push($sqls, $sql);
             array_push($vals, $newCFG->getServerAppPath());
@@ -133,7 +110,6 @@ class ConfigGeneralMapper extends BaseConfigMapper {
         
         // webAppPath
         if ($newCFG->getWebAppPath() <> $currentCFG->getWebAppPath()) {
-            
             $sql = "UPDATE configuration SET cValue = ? WHERE cName = 'webAppPath';";
             array_push($sqls, $sql);
             array_push($vals, $newCFG->getWebAppPath());
@@ -141,7 +117,6 @@ class ConfigGeneralMapper extends BaseConfigMapper {
         
         // socketMaxConn
         if ($newCFG->getSocketMaxConn() <> $currentCFG->getSocketMaxConn()) {
-            
             $sql = "UPDATE configuration SET cValue = ? WHERE cName = 'socketMaxConn';";
             array_push($sqls, $sql);
             array_push($vals, $newCFG->getSocketMaxConn());
@@ -149,7 +124,6 @@ class ConfigGeneralMapper extends BaseConfigMapper {
         
         // socketPort
         if ($newCFG->getSocketPort() <> $currentCFG->getSocketPort()) {
-            
             $sql = "UPDATE configuration SET cValue = ? WHERE cName = 'socketPort';";
             array_push($sqls, $sql);
             array_push($vals, $newCFG->getSocketPort());
@@ -157,7 +131,6 @@ class ConfigGeneralMapper extends BaseConfigMapper {
         
         // scriptSystemExecuteScript
         if ($newCFG->getScriptSystemExecuteScript() <> $currentCFG->getScriptSystemExecuteScript()) {
-            
             $sql = "UPDATE configuration SET cValue = ? WHERE cName = 'scriptSystemExecuteScript';";
             array_push($sqls, $sql);
             array_push($vals, $newCFG->getScriptSystemExecuteScript());
@@ -165,7 +138,6 @@ class ConfigGeneralMapper extends BaseConfigMapper {
         
         // scriptSystemUpdateInterval
         if ($newCFG->getScriptSystemUpdateInterval() <> $currentCFG->getScriptSystemUpdateInterval()) {
-            
             $sql = "UPDATE configuration SET cValue = ? WHERE cName = 'scriptSystemUpdateInterval';";
             array_push($sqls, $sql);
             array_push($vals, $newCFG->getScriptSystemUpdateInterval());
@@ -173,7 +145,6 @@ class ConfigGeneralMapper extends BaseConfigMapper {
         
         // userScriptsPath
         if ($newCFG->getUserScriptsPath() <> $currentCFG->getUserScriptsPath()) {
-            
             $sql = "UPDATE configuration SET cValue = ? WHERE cName = 'userScriptsPath';";
             array_push($sqls, $sql);
             array_push($vals, $newCFG->getUserScriptsPath());
@@ -181,7 +152,6 @@ class ConfigGeneralMapper extends BaseConfigMapper {
         
         // ackAccessRole
         if ($newCFG->getAckAccessRole() <> $currentCFG->getAckAccessRole()) {
-            
             $sql = "UPDATE configuration SET cValue = ? WHERE cName = 'ackAccessRole';";
             array_push($sqls, $sql);
             array_push($vals, $newCFG->getAckAccessRole());
@@ -191,25 +161,23 @@ class ConfigGeneralMapper extends BaseConfigMapper {
         $this->setServerRestartFlag();
         
         // Update DB
-        for ($i=0; $i<count($sqls); ++$i) {
-            
+        for ($i = 0; $i < count($sqls); ++$i) {
             $stmt = $this->dbConn->prepare($sqls[$i]);
         
             $stmt->bindValue(1, $vals[$i], ParameterType::STRING);
         
             $stmt->execute();
-            
         }
     }
     
     /**
      * Get web application path
-     * 
+     *
      * @return string Web application path
      * @throws Exception
      */
-    public function getWebAppPath(): string {
-        
+    public function getWebAppPath(): string
+    {
         $statement = $this->dbConn->prepare("SELECT * FROM configuration WHERE cName = 'webAppPath';");
         $statement->execute();
         $items = $statement->fetchAll();
@@ -226,12 +194,12 @@ class ConfigGeneralMapper extends BaseConfigMapper {
     
     /**
      * Get system socket port
-     * 
+     *
      * @return int System socket port
      * @throws Exception
      */
-    public function getSystemSocketPort(): int {
-        
+    public function getSystemSocketPort(): int
+    {
         $statement = $this->dbConn->prepare("SELECT * FROM configuration WHERE cName = 'socketPort';");
         $statement->execute();
         $items = $statement->fetchAll();
@@ -248,12 +216,12 @@ class ConfigGeneralMapper extends BaseConfigMapper {
     
     /**
      * Get server application path
-     * 
+     *
      * @return string Server application directory
      * @throws Exception
      */
-    public function getServerAppPath(): string {
-        
+    public function getServerAppPath(): string
+    {
         $statement = $this->dbConn->prepare("SELECT * FROM configuration WHERE cName = 'serverAppPath';");
         $statement->execute();
         $items = $statement->fetchAll();
@@ -270,12 +238,12 @@ class ConfigGeneralMapper extends BaseConfigMapper {
     
     /**
      * Get user scripts directory
-     * 
+     *
      * @return string User scripts directory
      * @throws Exception
      */
-    public function getUserScriptsPath(): string {
-        
+    public function getUserScriptsPath(): string
+    {
         $statement = $this->dbConn->prepare("SELECT * FROM configuration WHERE cName = 'userScriptsPath';");
         $statement->execute();
         $items = $statement->fetchAll();
@@ -292,12 +260,12 @@ class ConfigGeneralMapper extends BaseConfigMapper {
     
     /**
      * Get alarm acknowledgement rights role
-     * 
+     *
      * @return string Alarm acknowledgement rights role
      * @throws Exception
      */
-    public function getAckAccessRole(): string {
-        
+    public function getAckAccessRole(): string
+    {
         $statement = $this->dbConn->prepare("SELECT * FROM configuration WHERE cName = 'ackAccessRole';");
         $statement->execute();
         $items = $statement->fetchAll();

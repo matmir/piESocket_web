@@ -7,20 +7,20 @@ namespace App\Service\Admin\Parser;
  *
  * @author Mateusz Mirosławski
  */
-abstract class ParserReplyCodes {
-    
-    const OK=0;
-    const NOK=-1;
+abstract class ParserReplyCodes
+{
+    public const OK = 0;
+    public const NOK = -1;
 
-    const NOT_EXIST=5;
-    const WRONG_VALUE=6;
-    const WRONG_TAG_TYPE=7;
-    const WRONG_TAG_AREA=8;
-    const WRONG_ADDR=9;
+    public const NOT_EXIST = 5;
+    public const WRONG_VALUE = 6;
+    public const WRONG_TAG_TYPE = 7;
+    public const WRONG_TAG_AREA = 8;
+    public const WRONG_ADDR = 9;
 
-    const INTERNAL_ERR=20;
+    public const INTERNAL_ERR = 20;
 
-    const SQL_ERROR=50;
+    public const SQL_ERROR = 50;
 
-    const UNKNOWN_CMD=99;
+    public const UNKNOWN_CMD = 99;
 }

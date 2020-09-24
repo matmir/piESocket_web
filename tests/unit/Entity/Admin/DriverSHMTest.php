@@ -10,13 +10,13 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Mateusz Mirosławski
  */
-class DriverSHMTest extends TestCase {
-    
+class DriverSHMTest extends TestCase
+{
     /**
      * Test Default constructor
      */
-    public function testDefaultConstructor() {
-        
+    public function testDefaultConstructor()
+    {
         $cfg = new DriverSHM();
         
         $this->assertEquals(0, $cfg->getId());
@@ -26,8 +26,8 @@ class DriverSHMTest extends TestCase {
     /**
      * Test setId method
      */
-    public function testSetId() {
-        
+    public function testSetId()
+    {
         $cfg = new DriverSHM();
         $cfg->setId(65);
         
@@ -35,8 +35,8 @@ class DriverSHMTest extends TestCase {
         $this->assertEquals('shm_segment', $cfg->getSegmentName());
     }
     
-    public function testSetIdWrong1() {
-        
+    public function testSetIdWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('SHM driver identifier wrong value');
         
@@ -47,8 +47,8 @@ class DriverSHMTest extends TestCase {
     /**
      * Test setSegmentName method
      */
-    public function testSetSegmentName() {
-        
+    public function testSetSegmentName()
+    {
         $cfg = new DriverSHM();
         $cfg->setSegmentName('test');
         
@@ -56,8 +56,8 @@ class DriverSHMTest extends TestCase {
         $this->assertEquals('test', $cfg->getSegmentName());
     }
     
-    public function testSetSegmentNameWrong1() {
-        
+    public function testSetSegmentNameWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('SHM segment name can not be empty');
         
@@ -68,15 +68,15 @@ class DriverSHMTest extends TestCase {
     /**
      * Test isValid method
      */
-    public function testIsValidWithoutID() {
-        
+    public function testIsValidWithoutID()
+    {
         $cfg = new DriverSHM();
         
         $this->assertTrue($cfg->isValid());
     }
     
-    public function testIsValidWithID() {
-        
+    public function testIsValidWithID()
+    {
         $cfg = new DriverSHM();
         $cfg->setId(56);
         

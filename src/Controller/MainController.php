@@ -6,8 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Yaml\Yaml;
 
-class MainController extends AbstractController {
-    
+class MainController extends AbstractController
+{
     /**
      * @Route("/", name="main_index")
      */

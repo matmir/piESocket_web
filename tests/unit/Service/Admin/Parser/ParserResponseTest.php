@@ -13,13 +13,13 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Mateusz Mirosławski
  */
-class ParserResponseTest extends TestCase {
-    
+class ParserResponseTest extends TestCase
+{
     /**
      * Test response method
      */
-    public function testResponse_err1() {
-        
+    public function testResponseErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('response: Server response is empty!');
         
@@ -31,8 +31,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_err2() {
-        
+    public function testResponseErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('response: Server response is not valid!');
         
@@ -44,8 +44,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_err3() {
-        
+    public function testResponseErr3()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('response: Command response need to be numeric!');
         
@@ -57,8 +57,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_err4() {
-        
+    public function testResponseErr4()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Tag does not exist!');
         
@@ -70,8 +70,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_err6() {
-        
+    public function testResponseErr6()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('responseERROR: Error code need to be numeric!');
         
@@ -83,8 +83,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_err7() {
-        
+    public function testResponseErr7()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('response: Wrong command number!');
         
@@ -99,8 +99,8 @@ class ParserResponseTest extends TestCase {
     /**
      * Test response method for GET_BIT function
      */
-    public function testResponse_GET_BIT() {
-        
+    public function testResponseGetBit()
+    {
         // Server response
         $sres = '10|0';
         
@@ -115,8 +115,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(0, $dt['value']);
     }
     
-    public function testResponse_GET_BIT_err1() {
-        
+    public function testResponseGetBitErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_BIT: Data response need to be numeric!');
         
@@ -128,8 +128,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_BIT_err2() {
-        
+    public function testResponseGetBitErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_BIT: Data response has invalid values!');
         
@@ -144,8 +144,8 @@ class ParserResponseTest extends TestCase {
     /**
      * Test response method for SET_BIT function
      */
-    public function testResponse_SET_BIT() {
-        
+    public function testResponseSetBit()
+    {
         // Server response
         $sres = '11|0';
         
@@ -160,8 +160,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(ParserReplyCodes::OK, $dt['value']);
     }
     
-    public function testResponse_SET_BIT_err1() {
-        
+    public function testResponseSetBitErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('res_ok: Data response need to be numeric!');
         
@@ -173,8 +173,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_SET_BIT_err2() {
-        
+    public function testResponseSetBitErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('res_ok: Data response has invalid value!');
         
@@ -189,8 +189,8 @@ class ParserResponseTest extends TestCase {
     /**
      * Test response method for RESET_BIT function
      */
-    public function testResponse_RESET_BIT() {
-        
+    public function testResponseResetBit()
+    {
         // Server response
         $sres = '12|0';
         
@@ -205,8 +205,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(ParserReplyCodes::OK, $dt['value']);
     }
     
-    public function testResponse_RESET_BIT_err1() {
-        
+    public function testResponseResetBitErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('res_ok: Data response need to be numeric!');
         
@@ -218,8 +218,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_RESET_BIT_err2() {
-        
+    public function testResponseResetBitErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('res_ok: Data response has invalid value!');
         
@@ -234,8 +234,8 @@ class ParserResponseTest extends TestCase {
     /**
      * Test response method for INVERT_BIT function
      */
-    public function testResponse_INVERT_BIT() {
-        
+    public function testResponseInvertBit()
+    {
         // Server response
         $sres = '13|0';
         
@@ -250,8 +250,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(ParserReplyCodes::OK, $dt['value']);
     }
     
-    public function testResponse_INVERT_BIT_err1() {
-        
+    public function testResponseInvertBitErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('res_ok: Data response need to be numeric!');
         
@@ -263,8 +263,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_INVERT_BIT_err2() {
-        
+    public function testResponseInvertBitErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('res_ok: Data response has invalid value!');
         
@@ -279,8 +279,8 @@ class ParserResponseTest extends TestCase {
     /**
      * Test response method for GET_BITS function
      */
-    public function testResponse_GET_BITS() {
-        
+    public function testResponseGetBits()
+    {
         // Server response
         $sres = '20|0,1,1';
         
@@ -299,8 +299,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(1, $dt['values'][2]);
     }
     
-    public function testResponse_GET_BITS_err1() {
-        
+    public function testResponseGetBitsErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_BITS: Data is empty!');
         
@@ -312,8 +312,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_BITS_err2() {
-        
+    public function testResponseGetBitsErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_BITS: Error during data explode!');
         
@@ -325,8 +325,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_BITS_err3() {
-        
+    public function testResponseGetBitsErr3()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_BITS: Bit value is not numeric!');
         
@@ -338,8 +338,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_BITS_err4() {
-        
+    public function testResponseGetBitsErr4()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_BITS: Bit has invalid value!');
         
@@ -354,8 +354,8 @@ class ParserResponseTest extends TestCase {
     /**
      * Test response method for SET_BITS function
      */
-    public function testResponse_SET_BITS() {
-        
+    public function testResponseSetBits()
+    {
         // Server response
         $sres = '21|0';
         
@@ -370,8 +370,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(ParserReplyCodes::OK, $dt['value']);
     }
     
-    public function testResponse_SET_BITS_err1() {
-        
+    public function testResponseSetBitsErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('res_ok: Data response need to be numeric!');
         
@@ -383,8 +383,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_SET_BITS_err2() {
-        
+    public function testResponseSetBitsErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('res_ok: Data response has invalid value!');
         
@@ -396,8 +396,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_SET_BITS_err3() {
-        
+    public function testResponseSetBitsErr3()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('res_ok: Data response need to be numeric!');
         
@@ -412,8 +412,8 @@ class ParserResponseTest extends TestCase {
     /**
      * Test response method for GET_BYTE function
      */
-    public function testResponse_GET_BYTE_1() {
-        
+    public function testResponseGetByte1()
+    {
         // Server response
         $sres = '30|150';
         
@@ -428,8 +428,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(150, $dt['value']);
     }
     
-    public function testResponse_GET_BYTE_2() {
-        
+    public function testResponseGetByte2()
+    {
         // Server response
         $sres = '30|0';
         
@@ -444,8 +444,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(0, $dt['value']);
     }
     
-    public function testResponse_GET_BYTE_err1() {
-        
+    public function testResponseGetByteErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_BYTE: Data is empty!');
         
@@ -457,8 +457,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_BYTE_err2() {
-        
+    public function testResponseGetByteErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_BYTE: Data value is not numeric!');
         
@@ -470,8 +470,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_BYTE_err3() {
-        
+    public function testResponseGetByteErr3()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_BYTE: Data value is not numeric!');
         
@@ -483,8 +483,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_BYTE_err4() {
-        
+    public function testResponseGetByteErr4()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_BYTE: Data value is out of range!');
         
@@ -499,8 +499,8 @@ class ParserResponseTest extends TestCase {
     /**
      * Test response method for WRITE_BYTE function
      */
-    public function testResponse_WRITE_BYTE() {
-        
+    public function testResponseWriteByte()
+    {
         // Server response
         $sres = '31|0';
         
@@ -515,8 +515,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(ParserReplyCodes::OK, $dt['value']);
     }
     
-    public function testResponse_WRITE_BYTE_err1() {
-        
+    public function testResponseWriteByteErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('res_ok: Data response need to be numeric!');
         
@@ -528,8 +528,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_WRITE_BYTE_err2() {
-        
+    public function testResponseWriteByteErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('res_ok: Data response has invalid value!');
         
@@ -544,8 +544,8 @@ class ParserResponseTest extends TestCase {
     /**
      * Test response method for GET_WORD function
      */
-    public function testResponse_GET_WORD_1() {
-        
+    public function testResponseGetWord1()
+    {
         // Server response
         $sres = '32|1500';
         
@@ -560,8 +560,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(1500, $dt['value']);
     }
     
-    public function testResponse_GET_WORD_2() {
-        
+    public function testResponseGetWord2()
+    {
         // Server response
         $sres = '32|0';
         
@@ -576,8 +576,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(0, $dt['value']);
     }
     
-    public function testResponse_GET_WORD_err1() {
-        
+    public function testResponseGetWordErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_WORD: Data is empty!');
         
@@ -589,8 +589,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_WORD_err2() {
-        
+    public function testResponseGetWordErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_WORD: Data value is not numeric!');
         
@@ -602,8 +602,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_WORD_err3() {
-        
+    public function testResponseGetWordErr3()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_WORD: Data value is not numeric!');
         
@@ -615,8 +615,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_WORD_err4() {
-        
+    public function testResponseGetWordErr4()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_WORD: Data value is out of range!');
         
@@ -631,8 +631,8 @@ class ParserResponseTest extends TestCase {
     /**
      * Test response method for WRITE_WORD function
      */
-    public function testResponse_WRITE_WORD() {
-        
+    public function testResponseWriteWord()
+    {
         // Server response
         $sres = '33|0';
         
@@ -647,8 +647,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(ParserReplyCodes::OK, $dt['value']);
     }
     
-    public function testResponse_WRITE_WORD_err1() {
-        
+    public function testResponseWriteWordErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('res_ok: Data response need to be numeric!');
         
@@ -660,8 +660,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_WRITE_WORD_err2() {
-        
+    public function testResponseWriteWordErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('res_ok: Data response has invalid value!');
         
@@ -676,8 +676,8 @@ class ParserResponseTest extends TestCase {
     /**
      * Test response method for GET_DWORD function
      */
-    public function testResponse_GET_DWORD_1() {
-        
+    public function testResponseGetDWord1()
+    {
         // Server response
         $sres = '34|1500000';
         
@@ -692,8 +692,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(1500000, $dt['value']);
     }
     
-    public function testResponse_GET_DWORD_2() {
-        
+    public function testResponseGetDWord2()
+    {
         // Server response
         $sres = '34|0';
         
@@ -708,8 +708,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(0, $dt['value']);
     }
     
-    public function testResponse_GET_DWORD_err1() {
-        
+    public function testResponseGetDWordErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_DWORD: Data is empty!');
         
@@ -721,8 +721,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_DWORD_err2() {
-        
+    public function testResponseGetDWordErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_DWORD: Data value is not numeric!');
         
@@ -734,8 +734,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_DWORD_err3() {
-        
+    public function testResponseGetDWordErr3()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_DWORD: Data value is not numeric!');
         
@@ -747,8 +747,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_DWORD_err4() {
-        
+    public function testResponseGetDWordErr4()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_DWORD: Data value is out of range!');
         
@@ -763,8 +763,8 @@ class ParserResponseTest extends TestCase {
     /**
      * Test response method for WRITE_DWORD function
      */
-    public function testResponse_WRITE_DWORD() {
-        
+    public function testResponseWriteDWord()
+    {
         // Server response
         $sres = '35|0';
         
@@ -779,8 +779,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(ParserReplyCodes::OK, $dt['value']);
     }
     
-    public function testResponse_WRITE_DWORD_err1() {
-        
+    public function testResponseWriteDWordErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('res_ok: Data response need to be numeric!');
         
@@ -792,8 +792,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_WRITE_DWORD_err2() {
-        
+    public function testResponseWriteDWordErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('res_ok: Data response has invalid value!');
         
@@ -808,8 +808,8 @@ class ParserResponseTest extends TestCase {
     /**
      * Test response method for GET_INT function
      */
-    public function testResponse_GET_INT_1() {
-        
+    public function testResponseGetInt1()
+    {
         // Server response
         $sres = '36|-850';
         
@@ -824,8 +824,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(-850, $dt['value']);
     }
     
-    public function testResponse_GET_INT_2() {
-        
+    public function testResponseGetInt2()
+    {
         // Server response
         $sres = '36|0';
         
@@ -840,8 +840,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(0, $dt['value']);
     }
     
-    public function testResponse_GET_INT_err1() {
-        
+    public function testResponseGetIntErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_INT: Data is empty!');
         
@@ -853,8 +853,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_INT_err2() {
-        
+    public function testResponseGetIntErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_INT: Data value is not numeric!');
         
@@ -866,8 +866,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_INT_err3() {
-        
+    public function testResponseGetIntErr3()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_INT: Data value is not numeric!');
         
@@ -879,8 +879,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_INT_err4() {
-        
+    public function testResponseGetIntErr4()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_INT: Data value is out of range!');
         
@@ -895,8 +895,8 @@ class ParserResponseTest extends TestCase {
     /**
      * Test response method for WRITE_INT function
      */
-    public function testResponse_WRITE_INT() {
-        
+    public function testResponseWriteInt()
+    {
         // Server response
         $sres = '37|0';
         
@@ -911,8 +911,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(ParserReplyCodes::OK, $dt['value']);
     }
     
-    public function testResponse_WRITE_INT_err1() {
-        
+    public function testResponseWriteIntErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('res_ok: Data response need to be numeric!');
         
@@ -924,8 +924,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_WRITE_INT_err2() {
-        
+    public function testResponseWriteIntErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('res_ok: Data response has invalid value!');
         
@@ -940,8 +940,8 @@ class ParserResponseTest extends TestCase {
     /**
      * Test response method for GET_REAL function
      */
-    public function testResponse_GET_REAL_1() {
-        
+    public function testResponseGetReal1()
+    {
         // Server response
         $sres = '38|-85.8';
         
@@ -956,8 +956,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(-85.8, $dt['value']);
     }
     
-    public function testResponse_GET_REAL_2() {
-        
+    public function testResponseGetReal2()
+    {
         // Server response
         $sres = '38|0';
         
@@ -972,8 +972,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(0, $dt['value']);
     }
     
-    public function testResponse_GET_REAL_err1() {
-        
+    public function testResponseGetRealErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_REAL: Data is empty!');
         
@@ -988,8 +988,8 @@ class ParserResponseTest extends TestCase {
     /**
      * Test response method for WRITE_REAL function
      */
-    public function testResponse_WRITE_REAL() {
-        
+    public function testResponseWriteReal()
+    {
         // Server response
         $sres = '39|0';
         
@@ -1004,8 +1004,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(ParserReplyCodes::OK, $dt['value']);
     }
     
-    public function testResponse_WRITE_REAL_err1() {
-        
+    public function testResponseWriteRealErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('res_ok: Data response need to be numeric!');
         
@@ -1017,8 +1017,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_WRITE_REAL_err2() {
-        
+    public function testResponseWriteRealErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('res_ok: Data response has invalid value!');
         
@@ -1033,8 +1033,8 @@ class ParserResponseTest extends TestCase {
     /**
      * Test response method for ACK_ALARM function
      */
-    public function testResponse_ACK_ALARM() {
-        
+    public function testResponseAckAlarm()
+    {
         // Server response
         $sres = '90|0';
         
@@ -1049,8 +1049,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(ParserReplyCodes::OK, $dt['value']);
     }
     
-    public function testResponse_ACK_ALARM_err1() {
-        
+    public function testResponseAckAlarmErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('res_ok: Data response need to be numeric!');
         
@@ -1062,8 +1062,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_ACK_ALARM_err2() {
-        
+    public function testResponseAckAlarmErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('res_ok: Data response has invalid value!');
         
@@ -1078,8 +1078,8 @@ class ParserResponseTest extends TestCase {
     /**
      * Test response method for EXIT_APP function
      */
-    public function testResponse_EXIT_APP() {
-        
+    public function testResponseExitApp()
+    {
         // Server response
         $sres = '600|0';
         
@@ -1094,8 +1094,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(ParserReplyCodes::OK, $dt['value']);
     }
     
-    public function testResponse_EXIT_APP_err1() {
-        
+    public function testResponseExitAppErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('res_ok: Data response need to be numeric!');
         
@@ -1107,8 +1107,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_EXIT_APP_err2() {
-        
+    public function testResponseExitAppErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('res_ok: Data response has invalid value!');
         
@@ -1123,8 +1123,8 @@ class ParserResponseTest extends TestCase {
     /**
      * Test response method for GET_THREAD_CYCLE_TIME function
      */
-    public function testResponse_GET_THREAD_CYCLE_TIME_1() {
-        
+    public function testResponseGetThreadCycleTime1()
+    {
         // Server response
         $sres = '500|3?2!Updater_1:1.0?1.1?1.2!Updater_2:2.0?2.1?2.2!Updater_3:3.0?3.1?3.2!';
         $sres .= 'DriverBuffer_1:1.3?1.4?1.5!DriverBuffer_2:2.3?2.4?2.5!';
@@ -1166,7 +1166,7 @@ class ParserResponseTest extends TestCase {
         $this->assertArrayHasKey('Updater_2', $val['Updater']);
         $this->assertArrayHasKey('Updater_3', $val['Updater']);
         
-        foreach($val['Updater'] as $key => $value) {
+        foreach ($val['Updater'] as $key => $value) {
             $upd = $val['Updater'][$key];
             $this->assertEquals($upd, $value);
             $this->assertInternalType('array', $upd);
@@ -1179,7 +1179,7 @@ class ParserResponseTest extends TestCase {
         $this->assertArrayHasKey('DriverBuffer_1', $val['Polling']);
         $this->assertArrayHasKey('DriverBuffer_2', $val['Polling']);
         
-        foreach($val['Polling'] as $key => $value) {
+        foreach ($val['Polling'] as $key => $value) {
             $upd = $val['Polling'][$key];
             $this->assertEquals($upd, $value);
             $this->assertInternalType('array', $upd);
@@ -1242,8 +1242,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(40.2, $val['Script']['current']);
     }
     
-    public function testResponse_GET_THREAD_CYCLE_TIME_err1() {
-        
+    public function testResponseGetThreadCycleTimeErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_THREAD_CYCLE_TIME: Data is empty!');
         
@@ -1255,8 +1255,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_THREAD_CYCLE_TIME_err2() {
-        
+    public function testResponseGetThreadCycleTimeErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_THREAD_CYCLE_TIME: Error during data explode!');
         
@@ -1268,8 +1268,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_THREAD_CYCLE_TIME_err3() {
-        
+    public function testResponseGetThreadCycleTimeErr3()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_THREAD_CYCLE_TIME: Error during count data explode!');
         
@@ -1283,8 +1283,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_THREAD_CYCLE_TIME_err4() {
-        
+    public function testResponseGetThreadCycleTimeErr4()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_THREAD_CYCLE_TIME: Error during Process Updater data explode!');
         
@@ -1298,8 +1298,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_THREAD_CYCLE_TIME_err5() {
-        
+    public function testResponseGetThreadCycleTimeErr5()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_THREAD_CYCLE_TIME: Error during Driver polling data explode!');
         
@@ -1313,8 +1313,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_THREAD_CYCLE_TIME_err6() {
-        
+    public function testResponseGetThreadCycleTimeErr6()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_THREAD_CYCLE_TIME: Error during Tag logger data explode!');
         
@@ -1328,8 +1328,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_THREAD_CYCLE_TIME_err7() {
-        
+    public function testResponseGetThreadCycleTimeErr7()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_THREAD_CYCLE_TIME: Error during Tag logger writer data explode!');
         
@@ -1343,8 +1343,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_THREAD_CYCLE_TIME_err8() {
-        
+    public function testResponseGetThreadCycleTimeErr8()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_THREAD_CYCLE_TIME: Error during Alarming data explode!');
         
@@ -1358,8 +1358,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_THREAD_CYCLE_TIME_err9() {
-        
+    public function testResponseGetThreadCycleTimeErr9()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_THREAD_CYCLE_TIME: Error during Script system data explode!');
         
@@ -1373,8 +1373,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_THREAD_CYCLE_TIME_err10() {
-        
+    public function testResponseGetThreadCycleTimeErr10()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_THREAD_CYCLE_TIME: Error during thread values explode!');
         
@@ -1388,8 +1388,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_THREAD_CYCLE_TIME_err11() {
-        
+    public function testResponseGetThreadCycleTimeErr11()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_THREAD_CYCLE_TIME: Error during thread values parsing!');
         
@@ -1403,8 +1403,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_GET_THREAD_CYCLE_TIME_err12() {
-        
+    public function testResponseGetThreadCycleTimeErr12()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_GET_THREAD_CYCLE_TIME: Error during count data parsing!');
         
@@ -1421,8 +1421,8 @@ class ParserResponseTest extends TestCase {
     /**
      * Test response method for MULTI_CMD function
      */
-    public function testResponse_MULTI_CMD_1() {
-        
+    public function testResponseMultiCmd1()
+    {
         // Server response
         $sres = '50|10?1!11?0!12?0!13?0';
         
@@ -1466,8 +1466,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(ParserReplyCodes::OK, $cmd4['value']);
     }
     
-    public function testResponse_MULTI_CMD_2() {
-        
+    public function testResponseMultiCmd2()
+    {
         // Server response
         $sres = '50|20?1,0,1,1!21?0!30?200!31?0';
         
@@ -1515,8 +1515,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(ParserReplyCodes::OK, $cmd4['value']);
     }
     
-    public function testResponse_MULTI_CMD_3() {
-        
+    public function testResponseMultiCmd3()
+    {
         // Server response
         $sres = '50|32?500!33?0!34?200000!35?0';
         
@@ -1560,8 +1560,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(ParserReplyCodes::OK, $cmd4['value']);
     }
     
-    public function testResponse_MULTI_CMD_4() {
-        
+    public function testResponseMultiCmd4()
+    {
         // Server response
         $sres = '50|36?-500!37?0!38?-3.14!39?0';
         
@@ -1605,8 +1605,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(ParserReplyCodes::OK, $cmd4['value']);
     }
     
-    public function testResponse_MULTI_CMD_5() {
-        
+    public function testResponseMultiCmd5()
+    {
         // Server response
         $sres = '50|90?0!600?0';
         
@@ -1636,8 +1636,8 @@ class ParserResponseTest extends TestCase {
         $this->assertEquals(ParserReplyCodes::OK, $cmd2['value']);
     }
     
-    public function testResponse_MULTI_CMD_err1() {
-        
+    public function testResponseMultiCmdErr1()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_MULTI_CMD: Data is empty!');
         
@@ -1649,8 +1649,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_MULTI_CMD_err2() {
-        
+    public function testResponseMultiCmdErr2()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_MULTI_CMD: Error during data explode!');
         
@@ -1662,8 +1662,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_MULTI_CMD_err3() {
-        
+    public function testResponseMultiCmdErr3()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_MULTI_CMD: Server response is invalid!');
         
@@ -1675,8 +1675,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_MULTI_CMD_err4() {
-        
+    public function testResponseMultiCmdErr4()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_MULTI_CMD: Command response need to be numeric!');
         
@@ -1688,8 +1688,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_MULTI_CMD_err5() {
-        
+    public function testResponseMultiCmdErr5()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_MULTI_CMD: Wrong command number!');
         
@@ -1701,8 +1701,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_MULTI_CMD_err6() {
-        
+    public function testResponseMultiCmdErr6()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_MULTI_CMD: Can not call MULTI_CMD inside MULTI_CMD!');
         
@@ -1714,8 +1714,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_MULTI_CMD_err7() {
-        
+    public function testResponseMultiCmdErr7()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('RES_MULTI_CMD: Can not call GET_THREAD_CYCLE_TIME inside MULTI_CMD!');
         
@@ -1727,8 +1727,8 @@ class ParserResponseTest extends TestCase {
         $response->response($sres);
     }
     
-    public function testResponse_MULTI_CMD_err8() {
-        
+    public function testResponseMultiCmdErr8()
+    {
         $this->expectException(ParserException::class);
         $this->expectExceptionMessage('ServerError: Unknown reply');
         

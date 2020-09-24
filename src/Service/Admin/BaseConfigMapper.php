@@ -9,32 +9,32 @@ use Doctrine\DBAL\Driver\Connection;
  *
  * @author Mateusz Mirosławski
  */
-abstract class BaseConfigMapper {
-    
+abstract class BaseConfigMapper
+{
     protected $dbConn;
     
-    public function __construct(Connection $connection) {
-        
+    public function __construct(Connection $connection)
+    {
         $this->dbConn = $connection;
     }
     
     /**
      * Set server restart flag
      */
-    protected function setServerRestartFlag() {
-        
+    protected function setServerRestartFlag()
+    {
         $stmt = $this->dbConn->prepare("UPDATE configuration SET cValue = '1' WHERE cName = 'serverRestart';");
         $stmt->execute();
     }
     
     /**
      * Check if server application need to be restarted
-     * 
+     *
      * @return bool True if server application need to be restarted
      * @throws Exception
      */
-    public function serverNeedRestart(): bool {
-        
+    public function serverNeedRestart(): bool
+    {
         $statement = $this->dbConn->prepare("SELECT * FROM configuration WHERE cName = 'serverRestart';");
         $statement->execute();
         $items = $statement->fetchAll();

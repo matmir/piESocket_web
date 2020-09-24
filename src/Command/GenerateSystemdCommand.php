@@ -7,16 +7,15 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Console\Question\Question;
-
 use App\Service\Admin\ConfigGeneralMapper;
 
 /**
  * Command Class for generation systemd service file
- * 
+ *
  * @author Mateusz Mirosławski
  */
-class GenerateSystemdCommand extends Command {
-    
+class GenerateSystemdCommand extends Command
+{
     /**
      * Command name
      */
@@ -27,30 +26,31 @@ class GenerateSystemdCommand extends Command {
      */
     private $cfg;
     
-    public function __construct(ConfigGeneralMapper $cfg) {
-        
+    public function __construct(ConfigGeneralMapper $cfg)
+    {
         $this->cfg = $cfg;
 
         parent::__construct();
     }
     
-    protected function configure() {
-        
+    protected function configure()
+    {
         // Help
         $this->setDescription('Generate systemd service file.')
                 ->setHelp('This command generates systemd service file.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $ret = 0;
         
         try {
-            
             // Get server application path
             $serverAppPath = $this->cfg->getServerAppPath();
             
             // Check '/' at the end of the path
             $size = strlen($serverAppPath);
-            if ($serverAppPath[$size-1] != '/') {
+            if ($serverAppPath[$size - 1] != '/') {
                 $serverAppPath .= "/";
             }
             
@@ -65,29 +65,28 @@ class GenerateSystemdCommand extends Command {
             $serviceFile = str_replace('.dist', '', $distFile);
             
             if (!file_exists($distFile) || is_dir($distFile)) {
-                throw new Exception("Systemd distribution file (".$distFile.") does not exist");
+                throw new Exception("Systemd distribution file (" . $distFile . ") does not exist");
             }
             
             // Open dist file
             $f = file_get_contents($distFile);
             if ($f === false) {
-                throw new Exception("Can not open systemd distribution file: ".$distFile);
+                throw new Exception("Can not open systemd distribution file: " . $distFile);
             }
             // Prepare service content
             $srv = str_replace('[onh_full_path]', $serverAppPath, $f);
             // Write service file
             $r = file_put_contents($serviceFile, $srv);
             if ($r === false) {
-                throw new Exception("Can not write systemd file: ".$serviceFile);
+                throw new Exception("Can not write systemd file: " . $serviceFile);
             }
             
             $output->writeln("Done");
-            
         } catch (Exception $ex) {
-            
             $output->writeln($ex->getMessage());
+            $ret = 1;
         }
         
-        return 0;
+        return $ret;
     }
 }

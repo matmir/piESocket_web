@@ -10,13 +10,13 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Mateusz Mirosławski
  */
-class AlarmTriggerTest extends TestCase {
-    
+class AlarmTriggerTest extends TestCase
+{
     /**
      * Test getName method
      */
-    public function testGetName1() {
-        
+    public function testGetName1()
+    {
         $this->assertEquals('BIN', AlarmTrigger::getName(AlarmTrigger::TR_BIN));
         $this->assertEquals('Tag>value', AlarmTrigger::getName(AlarmTrigger::TR_TAG_GT_VAL));
         $this->assertEquals('Tag<value', AlarmTrigger::getName(AlarmTrigger::TR_TAG_LT_VAL));
@@ -26,8 +26,8 @@ class AlarmTriggerTest extends TestCase {
         $this->assertEquals('Tag!=value', AlarmTrigger::getName(AlarmTrigger::TR_TAG_NEQ_VAL));
     }
     
-    public function testGetNameWrong1() {
-        
+    public function testGetNameWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('AlarmTrigger::getName: Invalid trigger identifier');
         
@@ -37,8 +37,8 @@ class AlarmTriggerTest extends TestCase {
     /**
      * Test check method
      */
-    public function testCheck() {
-        
+    public function testCheck()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('AlarmTrigger::check: Invalid trigger identifier');
         

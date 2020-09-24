@@ -11,13 +11,13 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Mateusz Mirosławski
  */
-class DriverModbusTest extends TestCase {
-    
+class DriverModbusTest extends TestCase
+{
     /**
      * Test Default constructor
      */
-    public function testDefaultConstructor() {
-        
+    public function testDefaultConstructor()
+    {
         $cfg = new DriverModbus();
         
         $this->assertEquals(0, $cfg->getId());
@@ -39,8 +39,8 @@ class DriverModbusTest extends TestCase {
     /**
      * Test setId method
      */
-    public function testSetId() {
-        
+    public function testSetId()
+    {
         $cfg = new DriverModbus();
         $cfg->setId(65);
         
@@ -60,8 +60,8 @@ class DriverModbusTest extends TestCase {
         $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
-    public function testSetIdWrong1() {
-        
+    public function testSetIdWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Modbus driver identifier wrong value');
         
@@ -72,8 +72,8 @@ class DriverModbusTest extends TestCase {
     /**
      * Test setMode method
      */
-    public function testSetMode() {
-        
+    public function testSetMode()
+    {
         $cfg = new DriverModbus();
         $cfg->setMode(DriverModbusMode::RTU);
         
@@ -94,8 +94,8 @@ class DriverModbusTest extends TestCase {
         $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
-    public function testSetModeWrong1() {
-        
+    public function testSetModeWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('DriverModbusMode::check: Invalid modbus driver mode identifier');
         
@@ -106,8 +106,8 @@ class DriverModbusTest extends TestCase {
     /**
      * Test setDriverPolling method
      */
-    public function testSetDriverPolling() {
-        
+    public function testSetDriverPolling()
+    {
         $cfg = new DriverModbus();
         $cfg->setDriverPolling(105);
         
@@ -128,8 +128,8 @@ class DriverModbusTest extends TestCase {
         $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
-    public function testSetDriverPollingWrong1() {
-        
+    public function testSetDriverPollingWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Modbus driver polling interval wrong value');
         
@@ -140,8 +140,8 @@ class DriverModbusTest extends TestCase {
     /**
      * Test setRegisterCount method
      */
-    public function testSetRegisterCount() {
-        
+    public function testSetRegisterCount()
+    {
         $cfg = new DriverModbus();
         $cfg->setRegisterCount(10);
         
@@ -162,8 +162,8 @@ class DriverModbusTest extends TestCase {
         $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
-    public function testSetRegisterCountWrong1() {
-        
+    public function testSetRegisterCountWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Modbus register count wrong value');
         
@@ -174,8 +174,8 @@ class DriverModbusTest extends TestCase {
     /**
      * Test setRTU_baud method
      */
-    public function testSetRTUBaud() {
-        
+    public function testSetRTUBaud()
+    {
         $cfg = new DriverModbus();
         $cfg->setRTUbaud(11800);
         
@@ -196,8 +196,8 @@ class DriverModbusTest extends TestCase {
         $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
-    public function testSetRTUBaudWrong1() {
-        
+    public function testSetRTUBaudWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Modbus baud rate wrong value');
         
@@ -208,8 +208,8 @@ class DriverModbusTest extends TestCase {
     /**
      * Test setRTU_dataBit method
      */
-    public function testSetRTUDataBit() {
-        
+    public function testSetRTUDataBit()
+    {
         $cfg = new DriverModbus();
         $cfg->setRTUdataBit(5);
         
@@ -230,8 +230,8 @@ class DriverModbusTest extends TestCase {
         $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
-    public function testSetRTUDataBitWrong1() {
-        
+    public function testSetRTUDataBitWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Modbus data bit wrong value');
         
@@ -242,8 +242,8 @@ class DriverModbusTest extends TestCase {
     /**
      * Test setRTU_parity method
      */
-    public function testSetRTUParity() {
-        
+    public function testSetRTUParity()
+    {
         $cfg = new DriverModbus();
         $cfg->setRTUparity('O');
         
@@ -264,8 +264,8 @@ class DriverModbusTest extends TestCase {
         $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
-    public function testSetRTUParityWrong1() {
-        
+    public function testSetRTUParityWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Modbus RTU parity wrong value');
         
@@ -276,8 +276,8 @@ class DriverModbusTest extends TestCase {
     /**
      * Test setRTU_port method
      */
-    public function testSetRTUPort() {
-        
+    public function testSetRTUPort()
+    {
         $cfg = new DriverModbus();
         $cfg->setRTUport('/dev/ttyACM2');
         
@@ -298,8 +298,8 @@ class DriverModbusTest extends TestCase {
         $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
-    public function testSetRTUPortWrong1() {
-        
+    public function testSetRTUPortWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Modbus RTU port can not be empty');
         
@@ -310,8 +310,8 @@ class DriverModbusTest extends TestCase {
     /**
      * Test setRTU_stopBit method
      */
-    public function testSetRTUStopBit() {
-        
+    public function testSetRTUStopBit()
+    {
         $cfg = new DriverModbus();
         $cfg->setRTUstopBit(2);
         
@@ -332,8 +332,8 @@ class DriverModbusTest extends TestCase {
         $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
-    public function testSetRTUStopBitWrong1() {
-        
+    public function testSetRTUStopBitWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Modbus stop bit wrong value');
         
@@ -344,8 +344,8 @@ class DriverModbusTest extends TestCase {
     /**
      * Test setSlaveID method
      */
-    public function testSetSlaveID() {
-        
+    public function testSetSlaveID()
+    {
         $cfg = new DriverModbus();
         $cfg->setSlaveID(34);
         
@@ -366,8 +366,8 @@ class DriverModbusTest extends TestCase {
         $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
-    public function testSetSlaveIDWrong1() {
-        
+    public function testSetSlaveIDWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Modbus slave ID wrong value');
         
@@ -378,8 +378,8 @@ class DriverModbusTest extends TestCase {
     /**
      * Test setTCP_addr method
      */
-    public function testSetTCPAddr() {
-        
+    public function testSetTCPAddr()
+    {
         $cfg = new DriverModbus();
         $cfg->setTCPaddr('127.0.0.1');
         
@@ -400,8 +400,8 @@ class DriverModbusTest extends TestCase {
         $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
-    public function testSetTCPAddrWrong1() {
-        
+    public function testSetTCPAddrWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Modbus slave IP address can not be empty');
         
@@ -412,8 +412,8 @@ class DriverModbusTest extends TestCase {
     /**
      * Test setTCP_port method
      */
-    public function testSetTCPPort() {
-        
+    public function testSetTCPPort()
+    {
         $cfg = new DriverModbus();
         $cfg->setTCPport(45);
         
@@ -434,8 +434,8 @@ class DriverModbusTest extends TestCase {
         $this->assertFalse($cfg->useSlaveIdInTCP());
     }
     
-    public function testSetTCPPortWrong1() {
-        
+    public function testSetTCPPortWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Modbus TCP port wrong value');
         
@@ -446,8 +446,8 @@ class DriverModbusTest extends TestCase {
     /**
      * Test setSlaveIdUsageInTCP method
      */
-    public function testSetSlaveIdUsageInTCP() {
-        
+    public function testSetSlaveIdUsageInTCP()
+    {
         $cfg = new DriverModbus();
         $cfg->setSlaveIdUsageInTCP(true);
         
@@ -470,38 +470,38 @@ class DriverModbusTest extends TestCase {
     /**
      * Test isValid method
      */
-    public function testIsValidWithoutID() {
-        
+    public function testIsValidWithoutID()
+    {
         $cfg = new DriverModbus();
         
         $this->assertTrue($cfg->isValid());
     }
     
-    public function testIsValidWithID() {
-        
+    public function testIsValidWithID()
+    {
         $cfg = new DriverModbus();
         $cfg->setId(56);
         
         $this->assertTrue($cfg->isValid(true));
     }
     
-    public function testGetModeName1() {
-        
+    public function testGetModeName1()
+    {
         $cfg = new DriverModbus();
         
         $this->assertEquals("TCP", DriverModbusMode::getName($cfg->getMode()));
     }
     
-    public function testGetModeName2() {
-        
+    public function testGetModeName2()
+    {
         $cfg = new DriverModbus();
         $cfg->setMode(DriverModbusMode::RTU);
         
         $this->assertEquals("RTU", DriverModbusMode::getName($cfg->getMode()));
     }
     
-    public function testGetModeName3() {
-        
+    public function testGetModeName3()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('DriverModbusMode::getName: Invalid modbus driver mode identifier');
         

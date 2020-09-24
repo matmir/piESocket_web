@@ -10,37 +10,152 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-
-use App\Entity\Admin\UserEntity;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\DataMapperInterface;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\PositiveOrZero;
+use Symfony\Component\Validator\Constraints\Email;
+use App\Entity\AppException;
+use App\Entity\Admin\User;
 
 /**
  * Form class for write User
  *
  * @author Mateusz Mirosławski
  */
-class UserForm extends AbstractType {
-    
-    public function buildForm(FormBuilderInterface $builder, array $options) {
-        
-        $builder->add('id', HiddenType::class)
-            ->add('username', null, array('label' => 'User name'))
-            ->add('oldPassword', PasswordType::class, array('label' => 'Old password'))
-            ->add('password1', PasswordType::class, array('label' => 'Password'))
-            ->add('password2', PasswordType::class, array('label' => 'Repeat password'))
-            ->add('email', EmailType::class, array('label' => 'e-mail'))
-            ->add('userRole', ChoiceType::class, array('choices'  => array(
-                                                        'ADMIN' => 'ROLE_ADMIN',
-                                                        'USER' => 'ROLE_USER',
-                                                        ),
-                                                    'label' => 'Role'
+class UserForm extends AbstractType implements DataMapperInterface
+{
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('id', HiddenType::class, array('constraints' => [
+                                                new PositiveOrZero()
+                                            ],
+                                            'empty_data' => '0'))
+            ->add('username', TextType::class, array('label' => 'User name',
+                                            'constraints' => [
+                                                new NotBlank(),
+                                                new Length(['max' => 25]),
+                                            ],
+                                            'empty_data' => ''
                                             ))
-            ->add('save', SubmitType::class, array('label' => 'Save'));
+            ->add('oldPassword', PasswordType::class, array('label' => 'Old password',
+                                            'constraints' => [
+                                                new Length(['max' => 200]),
+                                            ],
+                                            'empty_data' => ''))
+            ->add('password1', PasswordType::class, array('label' => 'Password',
+                                            'constraints' => [
+                                                new Length(['max' => 200]),
+                                            ],
+                                            'empty_data' => ''))
+            ->add('password2', PasswordType::class, array('label' => 'Repeat password',
+                                            'constraints' => [
+                                                new Length(['max' => 200]),
+                                            ],
+                                            'empty_data' => ''))
+            ->add('email', EmailType::class, array('label' => 'e-mail',
+                                        'constraints' => [
+                                            new NotBlank(),
+                                            new Email(['message' => "The email '{{ value }}' is not a valid email"]),
+                                            new Length(['max' => 254]),
+                                        ],
+                                        'empty_data' => ''))
+            ->add('userRole', ChoiceType::class, array('label' => 'Role',
+                                            'choices'  => array(
+                                                'ADMIN' => 'ROLE_ADMIN',
+                                                'USER' => 'ROLE_USER',
+                                            ),
+                                            'constraints' => [
+                                                new NotBlank(),
+                                                new Length(['max' => 20]),
+                                            ],
+                                            'empty_data' => 'ROLE_ADMIN'))
+            ->add('save', SubmitType::class, array('label' => 'Save'))
+            ->setDataMapper($this);
     }
     
-    public function configureOptions(OptionsResolver $resolver) {
+    /**
+     * @param User|null $viewData
+     */
+    public function mapDataToForms($viewData, $forms)
+    {
+        // there is no data yet, so nothing to prepopulate
+        if (null === $viewData) {
+            return;
+        }
+
+        // invalid data type
+        if (!$viewData instanceof User) {
+            throw new UnexpectedTypeException($viewData, User::class);
+        }
+
+        /** @var FormInterface[] $forms */
+        $aforms = iterator_to_array($forms);
+
+        // initialize form field values
+        $aforms['id']->setData($viewData->getId());
+        $aforms['username']->setData($viewData->getUsername());
+        $aforms['email']->setData($viewData->getEmail());
+        $aforms['userRole']->setData($viewData->getRoles()[0]);
+    }
+
+    public function mapFormsToData($forms, &$viewData)
+    {
+        /** @var FormInterface[] $forms */
+        $aforms = iterator_to_array($forms);
         
+        try {
+            // Add user flag
+            $addUsr = ($aforms['id']->getData() == 0) ? (true) : (false);
+            
+            // Check password
+            $pass = '';
+            $p1 = trim($aforms['password1']->getData());
+            $p2 = trim($aforms['password2']->getData());
+            
+            if ($p1 != '' || $p2 != '') {
+                if ($p1 == $p2) {
+                    $pass = $p1;
+                } else {
+                    throw new AppException(
+                        "Given passwords are not equal!",
+                        AppException::USER_PASSWORD_NOT_EQUAL
+                    );
+                }
+            }
+            
+            if ($addUsr && $p1 == '' && $p2 == '') {
+                throw new AppException(
+                    "Missing user password!",
+                    AppException::USER_PASSWORD_NOT_EQUAL
+                );
+            }
+
+            // Create object
+            $viewData = new User(
+                $aforms['id']->getData(),
+                $aforms['username']->getData(),
+                $pass,
+                $aforms['email']->getData(),
+                $aforms['userRole']->getData()
+            );
+        } catch (AppException $ex) {
+            if ($ex->getCode() == AppException::USER_OLD_PASSWORD_WRONG) {
+                $aforms['oldPassword']->addError(new FormError($ex->getMessage()));
+            } elseif ($ex->getCode() == AppException::USER_PASSWORD_NOT_EQUAL) {
+                $aforms['password1']->addError(new FormError($ex->getMessage()));
+            }
+        }
+    }
+    
+    public function configureOptions(OptionsResolver $resolver)
+    {
         $resolver->setDefaults(array(
-            'data_class' => UserEntity::class,
+            'data_class' => User::class,
         ));
     }
 }

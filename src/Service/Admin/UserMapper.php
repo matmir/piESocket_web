@@ -5,11 +5,9 @@ namespace App\Service\Admin;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-
 use App\Entity\Admin\User;
 use App\Entity\Paginator;
 use App\Entity\AppException;
@@ -19,16 +17,19 @@ use App\Entity\AppException;
  *
  * @author Mateusz Mirosławski
  */
-class UserMapper {
-    
+class UserMapper
+{
     private $dbConn;
     
     private $encoder;
     
     private $authChecker;
     
-    public function __construct(Connection $connection, UserPasswordEncoderInterface $enc, AuthorizationCheckerInterface $aci) {
-        
+    public function __construct(
+        Connection $connection,
+        UserPasswordEncoderInterface $enc,
+        AuthorizationCheckerInterface $aci
+    ) {
         $this->dbConn = $connection;
         
         $this->encoder = $enc;
@@ -38,32 +39,41 @@ class UserMapper {
     
     /**
      * Get Users
-     * 
+     *
      * @param int $sort User sorting (0 - ID, 1 - user name, 2 - email, 3 - active flag)
      * @param int $sortDESC Sorting direction (0 - ASC, 1 - DESC)
      * @param Paginator $paginator Paginator object
      * @return array Array with Users
      */
-    public function getUsers(int $sort = 0, int $sortDESC = 0, Paginator $paginator = null): array {
-        
+    public function getUsers(int $sort = 0, int $sortDESC = 0, Paginator $paginator = null): array
+    {
         // Basic query
         $sql = 'SELECT * FROM app_users u';
         
         // Order direction
-        $oDirection = ($sortDESC==1)?('DESC'):('ASC');
+        $oDirection = ($sortDESC == 1) ? ('DESC') : ('ASC');
         
         // Order
         switch ($sort) {
-            case 0: $sql .= ' ORDER BY u.id '.$oDirection; break;
-            case 1: $sql .= ' ORDER BY u.username '.$oDirection; break;
-            case 2: $sql .= ' ORDER BY u.email '.$oDirection; break;
-            case 3: $sql .= ' ORDER BY u.isActive '.$oDirection; break;
-            default: $sql .= ' ORDER BY u.id '.$oDirection;
+            case 0:
+                $sql .= ' ORDER BY u.id ' . $oDirection;
+                break;
+            case 1:
+                $sql .= ' ORDER BY u.username ' . $oDirection;
+                break;
+            case 2:
+                $sql .= ' ORDER BY u.email ' . $oDirection;
+                break;
+            case 3:
+                $sql .= ' ORDER BY u.isActive ' . $oDirection;
+                break;
+            default:
+                $sql .= ' ORDER BY u.id ' . $oDirection;
         }
         
         // Check paginator
         if (!is_null($paginator)) {
-            $sql .= " ".$paginator->getSqlQuery();
+            $sql .= " " . $paginator->getSqlQuery();
         }
         
         // End query
@@ -76,8 +86,7 @@ class UserMapper {
         
         $ret = array();
         
-        foreach($items as $item) {
-            
+        foreach ($items as $item) {
             // New user
             $user = new User();
             $user->setId($item['id']);
@@ -85,11 +94,10 @@ class UserMapper {
             $user->setPassword($item['password']);
             $user->setEmail($item['email']);
             $user->setRoles($item['userRole']);
-            $user->setActive((($item['isActive']==1)?(true):(false)));
+            $user->setActive((($item['isActive'] == 1) ? (true) : (false)));
             
             // Add to the array
             array_push($ret, $user);
-            
         }
         
         return $ret;
@@ -97,12 +105,12 @@ class UserMapper {
     
     /**
      * Get number of all users in DB
-     * 
+     *
      * @return numeric Number of users in DB
      * @throws Exception
      */
-    public function getUsersCount() {
-        
+    public function getUsersCount()
+    {
         // Base query
         $sql = "SELECT count(*) AS 'cnt' FROM app_users;";
         
@@ -122,13 +130,13 @@ class UserMapper {
     
     /**
      * Get User data
-     * 
+     *
      * @param int $userId User identifier
      * @return User User object
      * @throws Exception
      */
-    public function getUser(int $userId): User {
-        
+    public function getUser(int $userId): User
+    {
         // Check user identifier
         User::checkId($userId);
         
@@ -136,10 +144,10 @@ class UserMapper {
         $statement->bindValue(1, $userId, ParameterType::INTEGER);
         $statement->execute();
         
-        $items= $statement->fetchAll();
+        $items = $statement->fetchAll();
         
         if (empty($items)) {
-            throw new Exception("User with identifier ".$userId." does not exist!");
+            throw new Exception("User with identifier " . $userId . " does not exist!");
         }
         if (count($items) != 1) {
             throw new Exception("Query return more than one element!");
@@ -153,20 +161,20 @@ class UserMapper {
         $user->setPassword($item['password']);
         $user->setEmail($item['email']);
         $user->setRoles($item['userRole']);
-        $user->setActive((($item['isActive']==1)?(true):(false)));
+        $user->setActive((($item['isActive'] == 1) ? (true) : (false)));
         
         return $user;
     }
     
     /**
      * Get User data
-     * 
+     *
      * @param string $userNm User name
      * @return User User object
      * @throws Exception
      */
-    public function getUserByName(string $userNm): User {
-        
+    public function getUserByName(string $userNm): User
+    {
         // Check user identifier
         User::checkName($userNm);
         
@@ -174,10 +182,13 @@ class UserMapper {
         $statement->bindValue(1, $userNm, ParameterType::STRING);
         $statement->execute();
         
-        $items= $statement->fetchAll();
+        $items = $statement->fetchAll();
         
         if (empty($items)) {
-            throw new AppException("User with name ".$userNm." does not exist!");
+            throw new AppException(
+                "User with name " . $userNm . " does not exist!",
+                AppException::USER_NOT_EXIST
+            );
         }
         if (count($items) != 1) {
             throw new Exception("Query return more than one element!");
@@ -191,20 +202,20 @@ class UserMapper {
         $user->setPassword($item['password']);
         $user->setEmail($item['email']);
         $user->setRoles($item['userRole']);
-        $user->setActive((($item['isActive']==1)?(true):(false)));
+        $user->setActive((($item['isActive'] == 1) ? (true) : (false)));
         
         return $user;
     }
     
     /**
      * Check if given User has unique email
-     * 
+     *
      * @param User $user User object
      * @return boolean True if address exist in DB
      * @throws Exception
      */
-    private function isEmailAddressExist(User $user) {
-        
+    private function isEmailAddressExist(User $user)
+    {
         $ret = false;
         
         $sql = "SELECT count(*) AS 'cnt' FROM app_users u WHERE u.email = ?;";
@@ -231,15 +242,17 @@ class UserMapper {
     
     /**
      * Add User to the DB
-     * 
+     *
      * @param User $newUser User to add
      */
-    public function addUser(User $newUser) {
-                
+    public function addUser(User $newUser)
+    {
+        $newUser->isValid();
+        
         // Check User address
         if ($this->isEmailAddressExist($newUser)) {
             throw new AppException(
-                "User ".$newUser->getUsername()." address: ".$newUser->getEmail()." exist in DB!",
+                "User " . $newUser->getUsername() . " address: " . $newUser->getEmail() . " exist in DB!",
                 AppException::USER_ADDRESS_EXIST
             );
         }
@@ -247,7 +260,9 @@ class UserMapper {
         // Encode password
         $encoded = $this->encoder->encodePassword($newUser, $newUser->getPassword());
         
-        $stmt = $this->dbConn->prepare('INSERT INTO app_users (username, password, email, userRole) VALUES(?, ?, ?, ?);');
+        // Query
+        $q = 'INSERT INTO app_users (username, password, email, userRole) VALUES(?, ?, ?, ?);';
+        $stmt = $this->dbConn->prepare($q);
         
         $stmt->bindValue(1, $newUser->getUsername(), ParameterType::STRING);
         $stmt->bindValue(2, $encoded, ParameterType::STRING);
@@ -255,30 +270,26 @@ class UserMapper {
         $stmt->bindValue(4, $newUser->getRoles()[0], ParameterType::STRING);
         
         try {
-            
             if (!$stmt->execute()) {
                 throw new Exception("Error during execute sql add query!");
             }
-            
         } catch (UniqueConstraintViolationException $ex) {
-            
             throw new AppException(
-                "User ".$newUser->getusername()." exist in DB!",
+                "User " . $newUser->getusername() . " exist in DB!",
                 AppException::USER_NAME_EXIST
             );
-            
         }
     }
     
     /**
      * Check if user changed email
-     * 
+     *
      * @param User $newUser New User object
      * @param User $oldUser Old User object
      * @return bool
      */
-    private function isAddressChanged(User $newUser, User $oldUser): bool {
-        
+    private function isAddressChanged(User $newUser, User $oldUser): bool
+    {
         $ret = false;
         
         if ($newUser->getEmail() != $oldUser->getEmail()) {
@@ -290,13 +301,13 @@ class UserMapper {
     
     /**
      * Verify user old passwords
-     * 
+     *
      * @param User $oldUser Old user object
      * @param string $oldPass Old user password
      * @return bool True if old password is valid
      */
-    private function verifyOldPassword(User $oldUser, $oldPass): bool {
-        
+    private function verifyOldPassword(User $oldUser, $oldPass): bool
+    {
         // Check password
         $valid = $this->encoder->isPasswordValid($oldUser, $oldPass);
         
@@ -305,12 +316,12 @@ class UserMapper {
     
     /**
      * Check if user changed password
-     * 
+     *
      * @param User $newUser New user object
      * @return bool True if user changed password
      */
-    private function userChangedPassword(User $newUser): bool {
-        
+    private function userChangedPassword(User $newUser): bool
+    {
         $ret = false;
         
         if ($newUser->getPassword() != '') {
@@ -322,17 +333,28 @@ class UserMapper {
     
     /**
      * Edit User
-     * 
+     *
      * @param User $newUser New User object
      * @param User $oldUser Old User object
      * @param string $oldPass Old user password
      */
-    public function editUser(User $newUser, User $oldUser, $oldPass) {
+    public function editUser(User $newUser, User $oldUser, $oldPass)
+    {
+        // Check old user data
+        $oldUser->isValid(true);
+        
+        // Check if user changed password
+        $passwordChange = $this->userChangedPassword($newUser);
+        if ($passwordChange) {
+            $newUser->isValid(true);
+        } else {
+            $newUser->isValid(true, false);
+        }
         
         // Check User address
         if ($this->isAddressChanged($newUser, $oldUser) && $this->isEmailAddressExist($newUser)) {
             throw new AppException(
-                "User ".$newUser->getUsername()." address: ".$newUser->getEmail()." exist in DB!",
+                "User " . $newUser->getUsername() . " address: " . $newUser->getEmail() . " exist in DB!",
                 AppException::USER_ADDRESS_EXIST
             );
         }
@@ -351,9 +373,7 @@ class UserMapper {
         }
         
         // Check if user changed password
-        $passwordChange = $this->userChangedPassword($newUser);
         if ($passwordChange) {
-            
             // Prepare query with password
             $q = 'UPDATE app_users SET username = ?, password = ?, email = ?, userRole = ? WHERE id = ?;';
         } else {
@@ -364,7 +384,6 @@ class UserMapper {
         $stmt = $this->dbConn->prepare($q);
         
         if ($passwordChange) {
-            
             // Encode new password
             $encoded = $this->encoder->encodePassword($newUser, $newUser->getPassword());
             
@@ -381,28 +400,24 @@ class UserMapper {
         }
         
         try {
-            
             if (!$stmt->execute()) {
                 throw new Exception("Error during execute sql add query!");
             }
-            
         } catch (UniqueConstraintViolationException $ex) {
-
             throw new AppException(
-                "User ".$newUser->getusername()." exist in DB!",
+                "User " . $newUser->getusername() . " exist in DB!",
                 AppException::USER_NAME_EXIST
             );
-            
         }
     }
     
     /**
      * Delete User
-     * 
+     *
      * @param int $userId User identifier
      */
-    public function deleteUser(int $userId) {
-                
+    public function deleteUser(int $userId)
+    {
         // Check User identifier
         User::checkId($userId);
         
@@ -416,18 +431,18 @@ class UserMapper {
     
     /**
      * Enable User
-     * 
+     *
      * @param int $userId User identifier
      * @param bool $en Enable flag
      */
-    public function enableUser(int $userId, bool $en = true) {
-        
+    public function enableUser(int $userId, bool $en = true)
+    {
         // Check user identifier
         User::checkId($userId);
         
         $stmt = $this->dbConn->prepare('UPDATE app_users SET isActive = ? WHERE id = ?;');
         
-        $stmt->bindValue(1, (($en)?(1):(0)), ParameterType::INTEGER);
+        $stmt->bindValue(1, (($en) ? (1) : (0)), ParameterType::INTEGER);
         $stmt->bindValue(2, $userId, ParameterType::INTEGER);
         
         if (!$stmt->execute()) {

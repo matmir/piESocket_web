@@ -6,16 +6,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Config\Definition\Exception\Exception;
-
 use App\Service\Admin\ChartDataReader;
 
-class ChartController extends AbstractController {
-    
+class ChartController extends AbstractController
+{
     /**
      * @Route("/admin/chart/show/{loggerID}", name="admin_chart_show")
      */
-    public function index(int $loggerID = 0) {
-        
+    public function index(int $loggerID = 0)
+    {
         // Check values
         if ($loggerID < 0) {
             $loggerID = 0;
@@ -29,8 +28,8 @@ class ChartController extends AbstractController {
     /**
      * @Route("/admin/chart/get", name="admin_chart_get")
      */
-    public function data(Request $request, ChartDataReader $dataReader) {
-        
+    public function data(Request $request, ChartDataReader $dataReader)
+    {
         $error = array(
             'state' => false,
             'msg' => 'none',
@@ -41,21 +40,17 @@ class ChartController extends AbstractController {
         
         // Check request
         if ($request->request->get('json') !== null) {
-            
             // Get data from POST
             $data = json_decode($request->request->get('json'), true);
             
             try {
-                
                 // Get chart data
                 $reply = $dataReader->getData($data);
-                
             } catch (Exception $ex) {
                 $error['state'] = true;
                 $error['msg'] = $ex->getMessage();
                 $error['code'] = $ex->getCode();
             }
-            
         }
         
         return $this->json(array(

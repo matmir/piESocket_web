@@ -7,32 +7,30 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\Form;
-
-use App\Service\Admin\TagsMapper;
 use App\Service\Admin\TagLoggerMapper;
 use App\Entity\Paginator;
 use App\Form\Admin\TagLoggerForm;
-use App\Entity\Admin\TagLoggerEntity;
+use App\Entity\Admin\TagLogger;
 use App\Entity\AppException;
 
-class TagLoggerController extends AbstractController {
-    
+class TagLoggerController extends AbstractController
+{
     /**
      * Check tag logger list router parameters
-     * 
+     *
      * @param int $page Page number
      * @param int $perPage Rows per page
      * @param int $area Tag area (0 - all, 1 - input, 2 - output, 3 - memory)
      * @param int $sort Tag logger sorting (0 - ID, 1 - tag name, 2 - interval, 3 - last update, 4 - enabled flag)
      * @param int $sortDESC Sorting direction (0 - ASC, 1 - DESC)
      */
-    private function checkParams(int &$page, int &$perPage, int &$area, int &$sort, int &$sortDESC) {
-        
+    private function checkParams(int &$page, int &$perPage, int &$area, int &$sort, int &$sortDESC)
+    {
         // Check page params
         if ($page <= 0) {
             $page = 1;
         }
-        if ($perPage <10) {
+        if ($perPage < 10) {
             $perPage = 10;
         }
         
@@ -55,8 +53,15 @@ class TagLoggerController extends AbstractController {
     /**
      * @Route("/admin/logger/list/{page}/{perPage}/{area}/{sort}/{sortDESC}", name="admin_logger_list")
      */
-    public function index(TagLoggerMapper $tagLoggerMapper, Request $request, $page=1, $perPage=20, $area=0, $sort=0, $sortDESC=0) {
-        
+    public function index(
+        TagLoggerMapper $tagLoggerMapper,
+        Request $request,
+        $page = 1,
+        $perPage = 20,
+        $area = 0,
+        $sort = 0,
+        $sortDESC = 0
+    ) {
         // Check parameters
         $this->checkParams($page, $perPage, $area, $sort, $sortDESC);
         
@@ -81,55 +86,44 @@ class TagLoggerController extends AbstractController {
     
     /**
      * Parse Tag logger exception
-     * 
+     *
      * @param $errorObj Error object
      * @param Form $form Form object
      */
-    private function parseTagLoggerError($errorObj, Form $form) {
-        
+    private function parseTagLoggerError($errorObj, Form $form)
+    {
         $code = $errorObj->getCode();
         
         if ($errorObj instanceof AppException) {
-            
             if ($code == AppException::LOGGER_TAG_EXIST || $code == AppException::TAG_NOT_EXIST) {
-                
                 // Add error
                 $form->get('ltTagName')->addError(new FormError($errorObj->getMessage()));
-                
+            } elseif ($code == AppException::LOGGER_INTERVALS_WRONG) {
+                // Add error
+                $form->get('ltIntervalS')->addError(new FormError($errorObj->getMessage()));
             } else {
-                
                 // Unknown error
                 $form->get('ltTagName')->addError(new FormError('Unknown exception!'));
-                
             }
-            
         }
     }
     
     /**
      * @Route("/admin/logger/add", name="admin_logger_add")
      */
-    public function add(TagLoggerMapper $tagLoggerMapper, TagsMapper $tagsMapper, Request $request) {
-                
-        $tagLoggerE = new TagLoggerEntity();
+    public function add(TagLoggerMapper $tagLoggerMapper, Request $request)
+    {
+        $tagLogger = new TagLogger();
         
-        $form = $this->createForm(TagLoggerForm::class, $tagLoggerE);
+        $form = $this->createForm(TagLoggerForm::class, $tagLogger);
         
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
             // Get Form data
-            $tagLoggerE = $form->getData();
+            $tagLogger = $form->getData();
             
             try {
-                
-                // Get tag object
-                $tag = $tagsMapper->getTagByName($tagLoggerE->getltTagName());
-                
-                // Get real Tag logger object
-                $tagLogger = $tagLoggerE->getFullLoggerObject($tag);
-                
                 // Add to the DB
                 $tagLoggerMapper->addLogger($tagLogger);
                 
@@ -142,11 +136,8 @@ class TagLoggerController extends AbstractController {
                 $lastUrl = $this->get('session')->get('tagLoggersListURL', $this->generateUrl('admin_logger_list'));
 
                 return $this->redirect($lastUrl);
-                
             } catch (AppException $ex) {
-                
                 $this->parseTagLoggerError($ex, $form);
-                
             }
         }
         
@@ -158,33 +149,22 @@ class TagLoggerController extends AbstractController {
     /**
      * @Route("/admin/logger/edit/{loggerID}", name="admin_logger_edit")
      */
-    public function edit($loggerID, TagLoggerMapper $tagLoggerMapper, TagsMapper $tagsMapper, Request $request) {
-        
+    public function edit($loggerID, TagLoggerMapper $tagLoggerMapper, Request $request)
+    {
         // Get logger from DB
         $tagLogger = $tagLoggerMapper->getLogger($loggerID);
         
-        $tagLoggerE = new TagLoggerEntity();
-        $tagLoggerE->initFromLoggerObject($tagLogger);
-        
-        $form = $this->createForm(TagLoggerForm::class, $tagLoggerE);
+        $form = $this->createForm(TagLoggerForm::class, $tagLogger);
         
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
             // Get Form data
-            $tagLoggerE = $form->getData();
+            $tagLoggerN = $form->getData();
             
             try {
-                
-                // Get tag object
-                $tag = $tagsMapper->getTagByName($tagLoggerE->getltTagName());
-                
-                // Get real Tag logger object
-                $tagLogger = $tagLoggerE->getFullLoggerObject($tag);
-                
                 // Write to the DB
-                $tagLoggerMapper->editLogger($tagLogger);
+                $tagLoggerMapper->editLogger($tagLoggerN);
                 
                 $this->addFlash(
                     'tag-msg-ok',
@@ -195,13 +175,9 @@ class TagLoggerController extends AbstractController {
                 $lastUrl = $this->get('session')->get('tagLoggersListURL', $this->generateUrl('admin_logger_list'));
 
                 return $this->redirect($lastUrl);
-                
             } catch (AppException $ex) {
-                
                 $this->parseTagLoggerError($ex, $form);
-                
             }
-            
         }
         
         return $this->render('admin/tagsLogger/tagsLoggerEdit.html.twig', array(
@@ -212,8 +188,8 @@ class TagLoggerController extends AbstractController {
     /**
      * @Route("/admin/logger/delete/{loggerID}", name="admin_logger_delete")
      */
-    public function delete($loggerID, TagLoggerMapper $tagLoggerMapper) {
-        
+    public function delete($loggerID, TagLoggerMapper $tagLoggerMapper)
+    {
         // Delete logger
         $tagLoggerMapper->deleteLogger($loggerID);
 
@@ -231,8 +207,8 @@ class TagLoggerController extends AbstractController {
     /**
      * @Route("/admin/logger/enable/{loggerID}/{en}", name="admin_logger_enable")
      */
-    public function enable($loggerID, $en, TagLoggerMapper $tagLoggerMapper) {
-        
+    public function enable($loggerID, $en, TagLoggerMapper $tagLoggerMapper)
+    {
         if ($en < 0 || $en > 1) {
             $en = 0;
         }

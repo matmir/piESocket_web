@@ -11,15 +11,15 @@ use App\Entity\Admin\TagType;
  *
  * @author Mateusz Mirosławski
  */
-class AlarmSystemBinTest extends AlarmSystemFunctionTestCase {
-    
+class AlarmSystemBinTest extends AlarmSystemFunctionTestCase
+{
     /**
      * Test BIN alarm
      */
-    public function testBin1() {
-        
+    public function testBin1()
+    {
         // Get alarm definition
-        $alarmDef = $this->getAlarmDefinition(TagType::Bit);
+        $alarmDef = $this->getAlarmDefinition(TagType::BIT);
         
         $data1 = $this->getAlarmsData($alarmDef);
         
@@ -57,7 +57,7 @@ class AlarmSystemBinTest extends AlarmSystemFunctionTestCase {
         // Deactivate alarm definition
         $this->alarmMapper->enableAlarm($alarmDef->getId(), false);
         
-        $this->assertEquals(TagType::Bit, $alarmDef->getTag()->getType());
+        $this->assertEquals(TagType::BIT, $alarmDef->getTag()->getType());
         $this->assertEquals(AlarmTrigger::TR_BIN, $alarmDef->getTrigger());
         $this->assertEquals('TEST_ALARM_BIN', $alarmDef->getTag()->getName());
         $this->assertEquals('ALARM_BIN_NACK', $alarmDef->getFeedbackNotAck()->getName());
@@ -116,10 +116,10 @@ class AlarmSystemBinTest extends AlarmSystemFunctionTestCase {
     /**
      * Test BIN alarm - AutoAck
      */
-    public function testBin2() {
-        
+    public function testBin2()
+    {
         // Get alarm definition
-        $alarmDef = $this->getAlarmDefinition(TagType::Bit);
+        $alarmDef = $this->getAlarmDefinition(TagType::BIT);
         // Set AutoAck flag
         $alarmDef->setAutoAck(true);
         // Save alarm definition
@@ -149,7 +149,7 @@ class AlarmSystemBinTest extends AlarmSystemFunctionTestCase {
         // Deactivate alarm definition
         $this->alarmMapper->enableAlarm($alarmDef->getId(), false);
         
-        $this->assertEquals(TagType::Bit, $alarmDef->getTag()->getType());
+        $this->assertEquals(TagType::BIT, $alarmDef->getTag()->getType());
         $this->assertEquals(AlarmTrigger::TR_BIN, $alarmDef->getTrigger());
         $this->assertEquals('TEST_ALARM_BIN', $alarmDef->getTag()->getName());
         $this->assertEquals('ALARM_BIN_NACK', $alarmDef->getFeedbackNotAck()->getName());
@@ -195,10 +195,10 @@ class AlarmSystemBinTest extends AlarmSystemFunctionTestCase {
     /**
      * Test BIN alarm - no feedback tag
      */
-    public function testBin3() {
-        
+    public function testBin3()
+    {
         // Get alarm definition
-        $alarmDef = $this->getAlarmDefinition(TagType::Bit);
+        $alarmDef = $this->getAlarmDefinition(TagType::BIT);
         // Delete feedback tag
         $alarmDef->setFeedbackNotAck();
         // Set AutoAck flag
@@ -242,7 +242,7 @@ class AlarmSystemBinTest extends AlarmSystemFunctionTestCase {
         // Deactivate alarm definition
         $this->alarmMapper->enableAlarm($alarmDef->getId(), false);
         
-        $this->assertEquals(TagType::Bit, $alarmDef->getTag()->getType());
+        $this->assertEquals(TagType::BIT, $alarmDef->getTag()->getType());
         $this->assertEquals(AlarmTrigger::TR_BIN, $alarmDef->getTrigger());
         $this->assertEquals('TEST_ALARM_BIN', $alarmDef->getTag()->getName());
         $this->assertNull($alarmDef->getFeedbackNotAck());
@@ -301,10 +301,10 @@ class AlarmSystemBinTest extends AlarmSystemFunctionTestCase {
     /**
      * Test BIN alarm - no HW ack tag
      */
-    public function testBin4() {
-        
+    public function testBin4()
+    {
         // Get alarm definition
-        $alarmDef = $this->getAlarmDefinition(TagType::Bit);
+        $alarmDef = $this->getAlarmDefinition(TagType::BIT);
         // Delete HW ack tag
         $alarmDef->setHWAck();
         // Save alarm definition
@@ -342,7 +342,7 @@ class AlarmSystemBinTest extends AlarmSystemFunctionTestCase {
         // Deactivate alarm definition
         $this->alarmMapper->enableAlarm($alarmDef->getId(), false);
         
-        $this->assertEquals(TagType::Bit, $alarmDef->getTag()->getType());
+        $this->assertEquals(TagType::BIT, $alarmDef->getTag()->getType());
         $this->assertEquals(AlarmTrigger::TR_BIN, $alarmDef->getTrigger());
         $this->assertEquals('TEST_ALARM_BIN', $alarmDef->getTag()->getName());
         $this->assertNull($alarmDef->getFeedbackNotAck());

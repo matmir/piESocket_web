@@ -10,8 +10,8 @@ use App\Entity\Admin\Alarm;
  *
  * @author Mateusz Mirosławski
  */
-class AlarmItem {
-    
+class AlarmItem
+{
     /**
      * Pending alarm identifier
      */
@@ -60,8 +60,8 @@ class AlarmItem {
     /**
      * Default constructor
      */
-    public function __construct() {
-        
+    public function __construct()
+    {
         $this->apid = 0;
         $this->apadid = 0;
         $this->alarmPriority = 0;
@@ -75,21 +75,21 @@ class AlarmItem {
     
     /**
      * Get Pending alarm identifier
-     * 
+     *
      * @return int Pending alarm identifier
      */
-    public function getId(): int {
-        
+    public function getId(): int
+    {
         return $this->apid;
     }
     
     /**
      * Set Pending alarm identifier
-     * 
+     *
      * @param int $id Pending alarm identifier
      */
-    public function setId(int $id) {
-        
+    public function setId(int $id)
+    {
         Alarm::checkId($id);
         
         $this->apid = $id;
@@ -97,21 +97,21 @@ class AlarmItem {
     
     /**
      * Get Alarm definition identifier
-     * 
+     *
      * @return int Alarm definition identifier
      */
-    public function getDefinitionId(): int {
-        
+    public function getDefinitionId(): int
+    {
         return $this->apadid;
     }
     
     /**
      * Set Alarm definition identifier
-     * 
+     *
      * @param int $id Alarm definition identifier
      */
-    public function setDefinitionId(int $id) {
-        
+    public function setDefinitionId(int $id)
+    {
         Alarm::checkId($id);
         
         $this->apadid = $id;
@@ -119,21 +119,21 @@ class AlarmItem {
     
     /**
      * Get Alarm priority
-     * 
+     *
      * @return int Alarm priority
      */
-    public function getPriority(): int {
-        
+    public function getPriority(): int
+    {
         return $this->alarmPriority;
     }
     
     /**
      * Set Alarm priority
-     * 
+     *
      * @param int $priority Alarm priority
      */
-    public function setPriority(int $priority) {
-        
+    public function setPriority(int $priority)
+    {
         Alarm::checkPriority($priority);
         
         $this->alarmPriority = $priority;
@@ -141,21 +141,21 @@ class AlarmItem {
     
     /**
      * Get Alarm message
-     * 
+     *
      * @return string Alarm message
      */
-    public function getMessage(): string {
-        
+    public function getMessage(): string
+    {
         return $this->alarmMessage;
     }
     
     /**
      * Set Alarm message
-     * 
+     *
      * @param string $msg Alarm message
      */
-    public function setMessage(string $msg) {
-        
+    public function setMessage(string $msg)
+    {
         // Check value
         Alarm::checkMessage($msg);
         
@@ -164,53 +164,53 @@ class AlarmItem {
     
     /**
      * Get Alarm active flag
-     * 
+     *
      * @return bool Alarm active flag
      */
-    public function isActive(): bool {
-        
+    public function isActive(): bool
+    {
         return $this->apActive;
     }
     
     /**
      * Set Alarm active flag
-     * 
+     *
      * @param bool $val Alarm active flag
      */
-    public function setActive(bool $val) {
-        
+    public function setActive(bool $val)
+    {
         $this->apActive = $val;
     }
     
     /**
      * Get Alarm acknowledgment flag
-     * 
+     *
      * @return bool Alarm acknowledgment flag
      */
-    public function isAck(): bool {
-        
+    public function isAck(): bool
+    {
         return $this->apAck;
     }
     
     /**
      * Set Alarm acknowledgment flag
-     * 
+     *
      * @param bool $val Alarm acknowledgment flag
      */
-    public function setAck(bool $val) {
-        
+    public function setAck(bool $val)
+    {
         $this->apAck = $val;
     }
     
     /**
      * Get Alarm on timestamp
-     * 
+     *
      * @return string Alarm on timestamp
      * @throws Exception
      */
-    public function getOnTimestamp(): string {
-        
-        if ($this->apOnTimestamp===null) {
+    public function getOnTimestamp(): string
+    {
+        if ($this->apOnTimestamp === null) {
             throw new Exception("Alarm on timestamp is NULL");
         }
         
@@ -219,12 +219,12 @@ class AlarmItem {
     
     /**
      * Set Alarm on timestamp
-     * 
+     *
      * @param string $timeStamp Alarm on timestamp
      * @throws Exception
      */
-    public function setOnTimestamp(string $timeStamp) {
-        
+    public function setOnTimestamp(string $timeStamp)
+    {
         if (trim($timeStamp) == false) {
             throw new Exception("Alarm on timestamp can not be empty");
         }
@@ -232,7 +232,7 @@ class AlarmItem {
         // Create DateTime
         $dt = \DateTime::createFromFormat('Y-m-d H:i:s', $timeStamp);
         
-        if ($dt===false) {
+        if ($dt === false) {
             throw new Exception("Alarm on timestamp wrong format");
         }
         
@@ -241,11 +241,11 @@ class AlarmItem {
     
     /**
      * Check if off timestamp exist
-     * 
+     *
      * @return bool True if off timestamp exist
      */
-    public function isOffTimestamp(): bool {
-        
+    public function isOffTimestamp(): bool
+    {
         $ret = false;
         
         if ($this->apOffTimestamp instanceof \DateTime) {
@@ -257,13 +257,13 @@ class AlarmItem {
     
     /**
      * Get Alarm off timestamp
-     * 
+     *
      * @return string Alarm off timestamp
      * @throws Exception
      */
-    public function getOffTimestamp(): string {
-        
-        if ($this->apOffTimestamp===null) {
+    public function getOffTimestamp(): string
+    {
+        if ($this->apOffTimestamp === null) {
             throw new Exception("Alarm off timestamp is NULL");
         }
         
@@ -272,12 +272,12 @@ class AlarmItem {
     
     /**
      * Set Alarm off timestamp
-     * 
+     *
      * @param string $timeStamp Alarm off timestamp
      * @throws Exception
      */
-    public function setOffTimestamp(string $timeStamp) {
-        
+    public function setOffTimestamp(string $timeStamp)
+    {
         if (trim($timeStamp) == false) {
             throw new Exception("Alarm off timestamp can not be empty");
         }
@@ -285,7 +285,7 @@ class AlarmItem {
         // Create DateTime
         $dt = \DateTime::createFromFormat('Y-m-d H:i:s', $timeStamp);
         
-        if ($dt===false) {
+        if ($dt === false) {
             throw new Exception("Alarm off timestamp wrong format");
         }
         
@@ -294,13 +294,13 @@ class AlarmItem {
     
     /**
      * Get Alarm ack timestamp
-     * 
+     *
      * @return string Alarm ack timestamp
      * @throws Exception
      */
-    public function getAckTimestamp(): string {
-        
-        if ($this->apAckTimestamp===null) {
+    public function getAckTimestamp(): string
+    {
+        if ($this->apAckTimestamp === null) {
             throw new Exception("Alarm ack timestamp is NULL");
         }
         
@@ -309,12 +309,12 @@ class AlarmItem {
     
     /**
      * Set Alarm ack timestamp
-     * 
+     *
      * @param string $timeStamp Alarm ack timestamp
      * @throws Exception
      */
-    public function setAckTimestamp(string $timeStamp) {
-        
+    public function setAckTimestamp(string $timeStamp)
+    {
         if (trim($timeStamp) == false) {
             throw new Exception("Alarm ack timestamp can not be empty");
         }
@@ -322,7 +322,7 @@ class AlarmItem {
         // Create DateTime
         $dt = \DateTime::createFromFormat('Y-m-d H:i:s', $timeStamp);
         
-        if ($dt===false) {
+        if ($dt === false) {
             throw new Exception("Alarm ack timestamp wrong format");
         }
         

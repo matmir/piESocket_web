@@ -12,11 +12,11 @@ use App\Entity\Admin\User;
  *
  * @author Mateusz Mirosławski
  */
-class ParserQuery {
-    
+class ParserQuery
+{
     /**
      * Array with access rights to query.
-     * 
+     *
      * Eg:
      * array(
      *  [0] => array('tagName' => 'TestTag1', 'read' => true),
@@ -34,19 +34,19 @@ class ParserQuery {
     /**
      * Default constructor
      */
-    public function __construct() {
-        
+    public function __construct()
+    {
         $this->accessRights = [];
         $this->ackRights = 'ROLE_USER';
     }
     
     /**
      * Set alarm acknowledgement rights
-     * 
+     *
      * @param string $role Role name
      */
-    public function setAckRights(string $role) {
-        
+    public function setAckRights(string $role)
+    {
         // Check role name
         User::checkRole($role);
         
@@ -55,30 +55,30 @@ class ParserQuery {
     
     /**
      * Get alarm acknowledgement rights
-     * 
+     *
      * @return string Role name
      */
-    public function getAckRights(): string {
-        
+    public function getAckRights(): string
+    {
         return $this->ackRights;
     }
     
     /**
      * Clear access rights array
      */
-    private function clearAccessRights() {
-        
+    private function clearAccessRights()
+    {
         $this->accessRights = [];
     }
     
     /**
      * Add tag to tag access rights array
-     * 
+     *
      * @param string $tagName Tag name
      * @param bool $cmd Command number
      */
-    private function addTagAccess(string $tagName, int $cmd) {
-        
+    private function addTagAccess(string $tagName, int $cmd)
+    {
         $ar = array(
             'tagName' => $tagName,
             'read' => $this->getReadAccessFlag($cmd)
@@ -90,12 +90,12 @@ class ParserQuery {
     
     /**
      * Add special access rights to array
-     * 
+     *
      * @param string $roleName Role name
      * @param string $funcName Function name
      */
-    private function addSpecialAccess(string $roleName, string $funcName) {
-        
+    private function addSpecialAccess(string $roleName, string $funcName)
+    {
         $ar = array(
             'specialFunc' => $funcName,
             'role' => $roleName
@@ -107,32 +107,64 @@ class ParserQuery {
     
     /**
      * Get read access flag from command number
-     * 
+     *
      * @param int $cmd Command number
      * @return bool Read access flag
      */
-    private function getReadAccessFlag(int $cmd): bool {
-        
+    private function getReadAccessFlag(int $cmd): bool
+    {
         // true - read access/ false - write access
         $ret = true;
         
         switch ($cmd) {
-            case ParserCommands::GET_BIT: $ret = true; break;
-            case ParserCommands::SET_BIT: $ret = false; break;
-            case ParserCommands::RESET_BIT: $ret = false; break;
-            case ParserCommands::INVERT_BIT: $ret = false; break;
-            case ParserCommands::GET_BITS: $ret = true; break;
-            case ParserCommands::SET_BITS: $ret = false; break;
-            case ParserCommands::GET_BYTE: $ret = true; break;
-            case ParserCommands::WRITE_BYTE: $ret = false; break;
-            case ParserCommands::GET_WORD: $ret = true; break;
-            case ParserCommands::WRITE_WORD: $ret = false; break;
-            case ParserCommands::GET_DWORD: $ret = true; break;
-            case ParserCommands::WRITE_DWORD: $ret = false; break;
-            case ParserCommands::GET_INT: $ret = true; break;
-            case ParserCommands::WRITE_INT: $ret = false; break;
-            case ParserCommands::GET_REAL: $ret = true; break;
-            case ParserCommands::WRITE_REAL: $ret = false; break;
+            case ParserCommands::GET_BIT:
+                $ret = true;
+                break;
+            case ParserCommands::SET_BIT:
+                $ret = false;
+                break;
+            case ParserCommands::RESET_BIT:
+                $ret = false;
+                break;
+            case ParserCommands::INVERT_BIT:
+                $ret = false;
+                break;
+            case ParserCommands::GET_BITS:
+                $ret = true;
+                break;
+            case ParserCommands::SET_BITS:
+                $ret = false;
+                break;
+            case ParserCommands::GET_BYTE:
+                $ret = true;
+                break;
+            case ParserCommands::WRITE_BYTE:
+                $ret = false;
+                break;
+            case ParserCommands::GET_WORD:
+                $ret = true;
+                break;
+            case ParserCommands::WRITE_WORD:
+                $ret = false;
+                break;
+            case ParserCommands::GET_DWORD:
+                $ret = true;
+                break;
+            case ParserCommands::WRITE_DWORD:
+                $ret = false;
+                break;
+            case ParserCommands::GET_INT:
+                $ret = true;
+                break;
+            case ParserCommands::WRITE_INT:
+                $ret = false;
+                break;
+            case ParserCommands::GET_REAL:
+                $ret = true;
+                break;
+            case ParserCommands::WRITE_REAL:
+                $ret = false;
+                break;
         }
         
         return $ret;
@@ -140,47 +172,47 @@ class ParserQuery {
     
     /**
      * Get access rights to query
-     * 
+     *
      * @return array Array with access rights to query
      */
-    public function getAccessRights(): array {
-        
+    public function getAccessRights(): array
+    {
         return $this->accessRights;
     }
     
     /**
      * Parse tag name (remove white spaces and special characters)
-     * 
+     *
      * @param string $tag Tag name
      * @return string Tag name
      * @throws ParserException
      */
-    private function parseTagName(string $tag): string {
-
+    private function parseTagName(string $tag): string
+    {
         // Check tag name
         if (empty($tag)) {
             throw new ParserException('parseTagName: Tag name is empty!');
         }
 
         // Remove white spaces
-        $ret = preg_replace('/\s+/','',$tag);
+        $ret = preg_replace('/\s+/', '', $tag);
 
         // Remove special characters (allow _ )
-        $ret = preg_replace('/[^A-Za-z0-9_]/','',$ret);
+        $ret = preg_replace('/[^A-Za-z0-9_]/', '', $ret);
 
         return $ret;
     }
     
     /**
      * Prepare string with CMD|Tag
-     * 
+     *
      * @param array $data data
      * @param string $func Function name
      * @return string
      * @throws ParserException
      */
-    private function cmd_TAG_C1(array $data, string $func): string {
-
+    private function cmdTagC1(array $data, string $func): string
+    {
         // Check function name
         if (empty($func)) {
             throw new ParserException('cmd_TAG_C1: Function name is empty!');
@@ -190,7 +222,7 @@ class ParserQuery {
 
         // Check if array has 'tag' field
         if (!array_key_exists('tag', $data)) {
-            throw new ParserException($func.': Missing tag field in array!');
+            throw new ParserException($func . ': Missing tag field in array!');
         }
 
         // Get tag name
@@ -199,19 +231,19 @@ class ParserQuery {
         // Tag access
         $this->addTagAccess($tag, $cmd);
 
-        return $cmd.ParserSeparators::cvS.$tag;
+        return $cmd . ParserSeparators::CVS . $tag;
     }
     
     /**
      * Prepare string with CMD|Tag1,Tag2,Tag3,...
-     * 
+     *
      * @param array $data data
      * @param string $func Function name
      * @return string
      * @throws ParserException
      */
-    private function cmd_TAG_C2(array $data, string $func): string {
-
+    private function cmdTagC2(array $data, string $func): string
+    {
         // Check function name
         if (empty($func)) {
             throw new ParserException('cmd_TAG_C2: Function name is empty!');
@@ -221,45 +253,43 @@ class ParserQuery {
 
         // Check if array has 'tags' field
         if (!array_key_exists('tags', $data)) {
-            throw new ParserException($func.': Missing tags field in array!');
+            throw new ParserException($func . ': Missing tags field in array!');
         }
 
         // Tags need to be array
         if (!is_array($data['tags'])) {
-            throw new ParserException($func.': Tags field is not array!');
+            throw new ParserException($func . ': Tags field is not array!');
         }
 
         $tags = '';
         $cn = count($data['tags']);
 
         // Get tag names
-        for ($i=0; $i<$cn; ++$i) {
-
-            $tags = $tags.$this->parseTagName($data['tags'][$i]);
+        for ($i = 0; $i < $cn; ++$i) {
+            $tags = $tags . $this->parseTagName($data['tags'][$i]);
             
             // Tag access
             $this->addTagAccess($data['tags'][$i], $cmd);
 
             // Add ',' to the string
-            if ($i != ($cn-1)) {
-                $tags = $tags.ParserSeparators::vS;
+            if ($i != ($cn - 1)) {
+                $tags = $tags . ParserSeparators::VS;
             }
-
         }
 
-        return $cmd.ParserSeparators::cvS.$tags;
+        return $cmd . ParserSeparators::CVS . $tags;
     }
     
     /**
      * Prepare string with CMD|Tag,value
-     * 
+     *
      * @param array $data data
      * @param string $func Function name
      * @return string
      * @throws ParserException
      */
-    private function cmd_TAG_C3(array $data, string $func): string {
-
+    private function cmdTagC3(array $data, string $func): string
+    {
         // Check function name
         if (empty($func)) {
             throw new ParserException('cmd_TAG_C3: Function name is empty!');
@@ -269,47 +299,47 @@ class ParserQuery {
 
         // Check if array has 'tag' field
         if (!array_key_exists('tag', $data)) {
-            throw new ParserException($func.': Missing tag field in array!');
+            throw new ParserException($func . ': Missing tag field in array!');
         }
 
         // Check if array has 'value' field
         if (!array_key_exists('value', $data)) {
-            throw new ParserException($func.': Missing value field in array!');
+            throw new ParserException($func . ': Missing value field in array!');
         }
 
         // Check if value is number
         if (!is_numeric($data['value'])) {
-            throw new ParserException($func.': Value need to be numeric!');
+            throw new ParserException($func . ': Value need to be numeric!');
         }
 
         // Check value range BYTE
         if ($func == 'CMD_WRITE_BYTE') {
             if (!($data['value'] >= 0 && $data['value'] < 256 && is_int($data['value']))) {
-                throw new ParserException($func.': Value is out of range!');
+                throw new ParserException($func . ': Value is out of range!');
             }
         }
         // Check value range WORD
         if ($func == 'CMD_WRITE_WORD') {
             if (!($data['value'] >= 0 && $data['value'] < 65535 && is_int($data['value']))) {
-                throw new ParserException($func.': Value is out of range!');
+                throw new ParserException($func . ': Value is out of range!');
             }
         }
         // Check value range DWORD
         if ($func == 'CMD_WRITE_DWORD') {
             if (!($data['value'] >= 0 && is_numeric($data['value']))) {
-                throw new ParserException($func.': Value is out of range!');
+                throw new ParserException($func . ': Value is out of range!');
             }
         }
         // Check value range INT
         if ($func == 'CMD_WRITE_INT') {
             if (!($data['value'] >= -2147483648 && $data['value'] < 2147483647 && is_int($data['value']))) {
-                throw new ParserException($func.': Value is out of range!');
+                throw new ParserException($func . ': Value is out of range!');
             }
         }
         // Check value range REAL
         if ($func == 'CMD_WRITE_REAL') {
             if (!(is_real($data['value']))) {
-                throw new ParserException($func.': Value is out of range!');
+                throw new ParserException($func . ': Value is out of range!');
             }
         }
 
@@ -322,193 +352,193 @@ class ParserQuery {
         // Get value
         $value = $data['value'];
 
-        return $cmd.ParserSeparators::cvS.$tag.ParserSeparators::vS.$value;
+        return $cmd . ParserSeparators::CVS . $tag . ParserSeparators::VS . $value;
     }
     
     /**
      * Prepare string with GET_BIT command
-     * 
+     *
      * @param array $data Command data
      * @return string
      */
-    private function CMD_GET_BIT(array $data): string {
-
-        return $this->cmd_TAG_C1($data, 'CMD_GET_BIT');
+    private function cmdGetBit(array $data): string
+    {
+        return $this->cmdTagC1($data, 'CMD_GET_BIT');
     }
     
     /**
      * Prepare string with SET_BIT command
-     * 
+     *
      * @param array $data Command data
      * @return string
      */
-    private function CMD_SET_BIT(array $data): string {
-
-        return $this->cmd_TAG_C1($data, 'CMD_SET_BIT');
+    private function cmdSetBit(array $data): string
+    {
+        return $this->cmdTagC1($data, 'CMD_SET_BIT');
     }
     
     /**
      * Prepare string with RESET_BIT command
-     * 
+     *
      * @param array $data Command data
      * @return string
      */
-    private function CMD_RESET_BIT(array $data): string {
-
-        return $this->cmd_TAG_C1($data, 'CMD_RESET_BIT');
+    private function cmdResetBit(array $data): string
+    {
+        return $this->cmdTagC1($data, 'CMD_RESET_BIT');
     }
     
     /**
      * Prepare string with INVERT_BIT command
-     * 
+     *
      * @param array $data Command data
      * @return string
      */
-    private function CMD_INVERT_BIT(array $data): string {
-
-        return $this->cmd_TAG_C1($data, 'CMD_INVERT_BIT');
+    private function cmdInvertBit(array $data): string
+    {
+        return $this->cmdTagC1($data, 'CMD_INVERT_BIT');
     }
     
     /**
      * Prepare string with GET_BITS command
-     * 
+     *
      * @param array $data Command data
      * @return string
      */
-    private function CMD_GET_BITS(array $data): string {
-
-        return $this->cmd_TAG_C2($data, 'CMD_GET_BITS');
+    private function cmdGetBits(array $data): string
+    {
+        return $this->cmdTagC2($data, 'CMD_GET_BITS');
     }
     
     /**
      * Prepare string with SET_BITS command
-     * 
+     *
      * @param array $data Command data
      * @return string
      */
-    private function CMD_SET_BITS(array $data): string {
-
-        return $this->cmd_TAG_C2($data, 'CMD_SET_BITS');
+    private function cmdSetBits(array $data): string
+    {
+        return $this->cmdTagC2($data, 'CMD_SET_BITS');
     }
     
     /**
      * Prepare string with GET_BYTE command
-     * 
+     *
      * @param array $data Command data
      * @return string
      */
-    private function CMD_GET_BYTE(array $data): string {
-
-        return $this->cmd_TAG_C1($data, 'CMD_GET_BYTE');
+    private function cmdGetByte(array $data): string
+    {
+        return $this->cmdTagC1($data, 'CMD_GET_BYTE');
     }
     
     /**
      * Prepare string with WRITE_BYTE command
-     * 
+     *
      * @param array $data Command data
      * @return string
      */
-    private function CMD_WRITE_BYTE(array $data): string {
-
-        return $this->cmd_TAG_C3($data, 'CMD_WRITE_BYTE');
+    private function cmdWriteByte(array $data): string
+    {
+        return $this->cmdTagC3($data, 'CMD_WRITE_BYTE');
     }
     
     /**
      * Prepare string with GET_WORD command
-     * 
+     *
      * @param array $data Command data
      * @return string
      */
-    private function CMD_GET_WORD(array $data): string {
-
-        return $this->cmd_TAG_C1($data, 'CMD_GET_WORD');
+    private function cmdGetWord(array $data): string
+    {
+        return $this->cmdTagC1($data, 'CMD_GET_WORD');
     }
     
     /**
      * Prepare string with WRITE_WORD command
-     * 
+     *
      * @param array $data Command data
      * @return string
      */
-    private function CMD_WRITE_WORD(array $data): string {
-
-        return $this->cmd_TAG_C3($data, 'CMD_WRITE_WORD');
+    private function cmdWriteWord(array $data): string
+    {
+        return $this->cmdTagC3($data, 'CMD_WRITE_WORD');
     }
     
     /**
      * Prepare string with GET_DWORD command
-     * 
+     *
      * @param array $data Command data
      * @return string
      */
-    private function CMD_GET_DWORD(array $data): string {
-
-        return $this->cmd_TAG_C1($data, 'CMD_GET_DWORD');
+    private function cmdGetDWord(array $data): string
+    {
+        return $this->cmdTagC1($data, 'CMD_GET_DWORD');
     }
     
     /**
      * Prepare string with WRITE_DWORD command
-     * 
+     *
      * @param array $data Command data
      * @return string
      */
-    private function CMD_WRITE_DWORD(array $data): string {
-
-        return $this->cmd_TAG_C3($data, 'CMD_WRITE_DWORD');
+    private function cmdWriteDWord(array $data): string
+    {
+        return $this->cmdTagC3($data, 'CMD_WRITE_DWORD');
     }
     
     /**
      * Prepare string with GET_INT command
-     * 
+     *
      * @param array $data Command data
      * @return string
      */
-    private function CMD_GET_INT(array $data): string {
-
-        return $this->cmd_TAG_C1($data, 'CMD_GET_INT');
+    private function cmdGetInt(array $data): string
+    {
+        return $this->cmdTagC1($data, 'CMD_GET_INT');
     }
     
     /**
      * Prepare string with WRITE_INT command
-     * 
+     *
      * @param array $data Command data
      * @return string
      */
-    private function CMD_WRITE_INT(array $data): string {
-
-        return $this->cmd_TAG_C3($data, 'CMD_WRITE_INT');
+    private function cmdWriteInt(array $data): string
+    {
+        return $this->cmdTagC3($data, 'CMD_WRITE_INT');
     }
     
     /**
      * Prepare string with GET_REAL command
-     * 
+     *
      * @param array $data Command data
      * @return string
      */
-    private function CMD_GET_REAL(array $data): string {
-
-        return $this->cmd_TAG_C1($data, 'CMD_GET_REAL');
+    private function cmdGetReal(array $data): string
+    {
+        return $this->cmdTagC1($data, 'CMD_GET_REAL');
     }
     
     /**
      * Prepare string with WRITE_REAL command
-     * 
+     *
      * @param array $data Command data
      * @return string
      */
-    private function CMD_WRITE_REAL(array $data): string {
-
-        return $this->cmd_TAG_C3($data, 'CMD_WRITE_REAL');
+    private function cmdWriteReal(array $data): string
+    {
+        return $this->cmdTagC3($data, 'CMD_WRITE_REAL');
     }
     
     /**
      * Prepare string with MULTI_CMD command
-     * 
+     *
      * @param array $data Command data
      * @return string
      */
-    private function CMD_MULTI_CMD(array $data): string {
-
+    private function cmdMultiCmd(array $data): string
+    {
         $cmd = $data['cmd'];
 
         // Check if array has 'value' field
@@ -525,8 +555,7 @@ class ParserQuery {
         $cn = count($data['value']);
 
         // Parse commands
-        for ($i=0; $i<$cn; ++$i) {
-
+        for ($i = 0; $i < $cn; ++$i) {
             $item = $data['value'][$i];
 
             // Check if item is array
@@ -556,47 +585,82 @@ class ParserQuery {
 
             // Parse values
             switch ($icmd) {
-                case ParserCommands::GET_BIT: $ret = $this->CMD_GET_BIT($item); break;
-                case ParserCommands::SET_BIT: $ret = $this->CMD_SET_BIT($item); break;
-                case ParserCommands::RESET_BIT: $ret = $this->CMD_RESET_BIT($item); break;
-                case ParserCommands::INVERT_BIT: $ret = $this->CMD_INVERT_BIT($item); break;
-                case ParserCommands::GET_BITS: $ret = $this->CMD_GET_BITS($item); break;
-                case ParserCommands::SET_BITS: $ret = $this->CMD_SET_BITS($item); break;
-                case ParserCommands::GET_BYTE: $ret = $this->CMD_GET_BYTE($item); break;
-                case ParserCommands::WRITE_BYTE: $ret = $this->CMD_WRITE_BYTE($item); break;
-                case ParserCommands::GET_WORD: $ret = $this->CMD_GET_WORD($item); break;
-                case ParserCommands::WRITE_WORD: $ret = $this->CMD_WRITE_WORD($item); break;
-                case ParserCommands::GET_DWORD: $ret = $this->CMD_GET_DWORD($item); break;
-                case ParserCommands::WRITE_DWORD: $ret = $this->CMD_WRITE_DWORD($item); break;
-                case ParserCommands::GET_INT: $ret = $this->CMD_GET_INT($item); break;
-                case ParserCommands::WRITE_INT: $ret = $this->CMD_WRITE_INT($item); break;
-                case ParserCommands::GET_REAL: $ret = $this->CMD_GET_REAL($item); break;
-                case ParserCommands::WRITE_REAL: $ret = $this->CMD_WRITE_REAL($item); break;
-                case ParserCommands::ACK_ALARM: $ret = $this->CMD_ACK_ALARM($item); break;
-                case ParserCommands::EXIT_APP: $ret = $this->CMD_EXIT_APP($item); break;
+                case ParserCommands::GET_BIT:
+                    $ret = $this->cmdGetBit($item);
+                    break;
+                case ParserCommands::SET_BIT:
+                    $ret = $this->cmdSetBit($item);
+                    break;
+                case ParserCommands::RESET_BIT:
+                    $ret = $this->cmdResetBit($item);
+                    break;
+                case ParserCommands::INVERT_BIT:
+                    $ret = $this->cmdInvertBit($item);
+                    break;
+                case ParserCommands::GET_BITS:
+                    $ret = $this->cmdGetBits($item);
+                    break;
+                case ParserCommands::SET_BITS:
+                    $ret = $this->cmdSetBits($item);
+                    break;
+                case ParserCommands::GET_BYTE:
+                    $ret = $this->cmdGetByte($item);
+                    break;
+                case ParserCommands::WRITE_BYTE:
+                    $ret = $this->cmdWriteByte($item);
+                    break;
+                case ParserCommands::GET_WORD:
+                    $ret = $this->cmdGetWord($item);
+                    break;
+                case ParserCommands::WRITE_WORD:
+                    $ret = $this->cmdWriteWord($item);
+                    break;
+                case ParserCommands::GET_DWORD:
+                    $ret = $this->cmdGetDWord($item);
+                    break;
+                case ParserCommands::WRITE_DWORD:
+                    $ret = $this->cmdWriteDWord($item);
+                    break;
+                case ParserCommands::GET_INT:
+                    $ret = $this->cmdGetInt($item);
+                    break;
+                case ParserCommands::WRITE_INT:
+                    $ret = $this->cmdWriteInt($item);
+                    break;
+                case ParserCommands::GET_REAL:
+                    $ret = $this->cmdGetReal($item);
+                    break;
+                case ParserCommands::WRITE_REAL:
+                    $ret = $this->cmdWriteReal($item);
+                    break;
+                case ParserCommands::ACK_ALARM:
+                    $ret = $this->cmdAckAlarm($item);
+                    break;
+                case ParserCommands::EXIT_APP:
+                    $ret = $this->cmdExitApp($item);
+                    break;
             }
 
             // Add commands
-            $commands = $commands.str_replace(ParserSeparators::cvS, ParserSeparators::cvMS, $ret);
+            $commands = $commands . str_replace(ParserSeparators::CVS, ParserSeparators::CVMS, $ret);
 
             // Add '!' to the string
-            if ($i != ($cn-1)) {
-                $commands = $commands.ParserSeparators::cMS;
+            if ($i != ($cn - 1)) {
+                $commands = $commands . ParserSeparators::CMS;
             }
-
         }
 
-        return $cmd.ParserSeparators::cvS.$commands;
+        return $cmd . ParserSeparators::CVS . $commands;
     }
     
     /**
      * Prepare string with ACK_ALARM command
-     * 
+     *
      * @param array $data Command data
      * @return string
      */
-    private function CMD_ACK_ALARM(array $data): string {
-
+    private function cmdAckAlarm(array $data): string
+    {
         $cmd = $data['cmd'];
 
         // Check if array has 'alarm_id' field
@@ -612,50 +676,50 @@ class ParserQuery {
         // Special access rights
         $this->addSpecialAccess($this->ackRights, 'CMD_ACK_ALARM');
 
-        return $cmd.ParserSeparators::cvS.$data['alarm_id'];
+        return $cmd . ParserSeparators::CVS . $data['alarm_id'];
     }
     
     /**
      * Prepare string with GET_THREAD_CYCLE_TIME command
-     * 
+     *
      * @param array $data Command data
      * @return string
      */
-    private function CMD_GET_THREAD_CYCLE_TIME(array $data): string {
-
+    private function cmdGetThreadCycleTime(array $data): string
+    {
         $cmd = $data['cmd'];
         
         // Special access rights
         $this->addSpecialAccess('ROLE_ADMIN', 'CMD_GET_THREAD_CYCLE_TIME');
 
-        return $cmd.ParserSeparators::cvS.'1';
+        return $cmd . ParserSeparators::CVS . '1';
     }
     
     /**
      * Prepare string with EXIT_APP command
-     * 
+     *
      * @param array $data Command data
      * @return string
      */
-    private function CMD_EXIT_APP(array $data): string {
-
+    private function cmdExitApp(array $data): string
+    {
         $cmd = $data['cmd'];
         
         // Special access rights
         $this->addSpecialAccess('ROLE_ADMIN', 'CMD_EXIT_APP');
 
-        return $cmd.ParserSeparators::cvS.'1';
+        return $cmd . ParserSeparators::CVS . '1';
     }
     
     /**
      * Prepare query for C++ application
-     * 
+     *
      * @param array $data Data with query
      * @return string
      * @throws ParserException
      */
-    public function query(array $data): string {
-
+    public function query(array $data): string
+    {
         // Check if array has 'cmd' field
         if (!array_key_exists('cmd', $data)) {
             throw new ParserException('query: Missing command field in array!');
@@ -675,26 +739,66 @@ class ParserQuery {
 
         // Parse values
         switch ($cmd) {
-            case ParserCommands::GET_BIT: $ret = $this->CMD_GET_BIT($data); break;
-            case ParserCommands::SET_BIT: $ret = $this->CMD_SET_BIT($data); break;
-            case ParserCommands::RESET_BIT: $ret = $this->CMD_RESET_BIT($data); break;
-            case ParserCommands::INVERT_BIT: $ret = $this->CMD_INVERT_BIT($data); break;
-            case ParserCommands::GET_BITS: $ret = $this->CMD_GET_BITS($data); break;
-            case ParserCommands::SET_BITS: $ret = $this->CMD_SET_BITS($data); break;
-            case ParserCommands::GET_BYTE: $ret = $this->CMD_GET_BYTE($data); break;
-            case ParserCommands::WRITE_BYTE: $ret = $this->CMD_WRITE_BYTE($data); break;
-            case ParserCommands::GET_WORD: $ret = $this->CMD_GET_WORD($data); break;
-            case ParserCommands::WRITE_WORD: $ret = $this->CMD_WRITE_WORD($data); break;
-            case ParserCommands::GET_DWORD: $ret = $this->CMD_GET_DWORD($data); break;
-            case ParserCommands::WRITE_DWORD: $ret = $this->CMD_WRITE_DWORD($data); break;
-            case ParserCommands::GET_INT: $ret = $this->CMD_GET_INT($data); break;
-            case ParserCommands::WRITE_INT: $ret = $this->CMD_WRITE_INT($data); break;
-            case ParserCommands::GET_REAL: $ret = $this->CMD_GET_REAL($data); break;
-            case ParserCommands::WRITE_REAL: $ret = $this->CMD_WRITE_REAL($data); break;
-            case ParserCommands::MULTI_CMD: $ret = $this->CMD_MULTI_CMD($data); break;
-            case ParserCommands::ACK_ALARM: $ret = $this->CMD_ACK_ALARM($data); break;
-            case ParserCommands::GET_THREAD_CYCLE_TIME: $ret = $this->CMD_GET_THREAD_CYCLE_TIME($data); break;
-            case ParserCommands::EXIT_APP: $ret = $this->CMD_EXIT_APP($data); break;
+            case ParserCommands::GET_BIT:
+                $ret = $this->cmdGetBit($data);
+                break;
+            case ParserCommands::SET_BIT:
+                $ret = $this->cmdSetBit($data);
+                break;
+            case ParserCommands::RESET_BIT:
+                $ret = $this->cmdResetBit($data);
+                break;
+            case ParserCommands::INVERT_BIT:
+                $ret = $this->cmdInvertBit($data);
+                break;
+            case ParserCommands::GET_BITS:
+                $ret = $this->cmdGetBits($data);
+                break;
+            case ParserCommands::SET_BITS:
+                $ret = $this->cmdSetBits($data);
+                break;
+            case ParserCommands::GET_BYTE:
+                $ret = $this->cmdGetByte($data);
+                break;
+            case ParserCommands::WRITE_BYTE:
+                $ret = $this->cmdWriteByte($data);
+                break;
+            case ParserCommands::GET_WORD:
+                $ret = $this->cmdGetWord($data);
+                break;
+            case ParserCommands::WRITE_WORD:
+                $ret = $this->cmdWriteWord($data);
+                break;
+            case ParserCommands::GET_DWORD:
+                $ret = $this->cmdGetDWord($data);
+                break;
+            case ParserCommands::WRITE_DWORD:
+                $ret = $this->cmdWriteDWord($data);
+                break;
+            case ParserCommands::GET_INT:
+                $ret = $this->cmdGetInt($data);
+                break;
+            case ParserCommands::WRITE_INT:
+                $ret = $this->cmdWriteInt($data);
+                break;
+            case ParserCommands::GET_REAL:
+                $ret = $this->cmdGetReal($data);
+                break;
+            case ParserCommands::WRITE_REAL:
+                $ret = $this->cmdWriteReal($data);
+                break;
+            case ParserCommands::MULTI_CMD:
+                $ret = $this->cmdMultiCmd($data);
+                break;
+            case ParserCommands::ACK_ALARM:
+                $ret = $this->cmdAckAlarm($data);
+                break;
+            case ParserCommands::GET_THREAD_CYCLE_TIME:
+                $ret = $this->cmdGetThreadCycleTime($data);
+                break;
+            case ParserCommands::EXIT_APP:
+                $ret = $this->cmdExitApp($data);
+                break;
         }
 
         return $ret;

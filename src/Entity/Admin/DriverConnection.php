@@ -9,11 +9,11 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Class for driver connection configuration
- * 
+ *
  * @author Mateusz Mirosławski
  */
-class DriverConnection {
-    
+class DriverConnection
+{
     /**
      * Driver connection identifier
      */
@@ -46,34 +46,45 @@ class DriverConnection {
     
     /**
      * Default constructor
+     *
+     * @param int $id Connection identifier
+     * @param string $name Connection name
+     * @param int $type Connection type
+     * @param DriverModbus $mb DriverModbus object
+     * @param DriverSHM $shm DriverSHM object
      */
-    public function __construct() {
-                
-        $this->id = 0;
-        $this->name = 'conn1';
-        $this->type = DriverType::SHM;
-        $this->configModbus = null;
-        $this->configShm = null;
+    public function __construct(
+        int $id = 0,
+        string $name = 'conn1',
+        int $type = DriverType::SHM,
+        DriverModbus $mb = null,
+        DriverSHM $shm = null
+    ) {
+        $this->id = $id;
+        $this->name = $name;
+        $this->type = $type;
+        $this->configModbus = $mb;
+        $this->configShm = $shm;
         $this->enable = false;
     }
     
     /**
      * Get Driver connection identifier
-     * 
+     *
      * @return int Driver connection identifier
      */
-    public function getId(): int {
-        
+    public function getId(): int
+    {
         return $this->id;
     }
     
     /**
      * Set Driver connection identifier
-     * 
+     *
      * @param int $id Driver connection identifier
      */
-    public function setId(int $id) {
-                
+    public function setId(int $id)
+    {
         $this->checkId($id);
         
         $this->id = $id;
@@ -81,13 +92,13 @@ class DriverConnection {
     
     /**
      * Check Driver connection identifier
-     * 
+     *
      * @param int $id Driver connection identifier
      * @return bool True if Driver connection identifier is valid
      * @throws Exception if Driver connection identifier is invalid
      */
-    public static function checkId(int $id): bool {
-        
+    public static function checkId(int $id): bool
+    {
         // Check values
         if ($id < 0) {
             throw new Exception("Driver connection identifier wrong value");
@@ -98,21 +109,21 @@ class DriverConnection {
     
     /**
      * Get Driver connection name
-     * 
+     *
      * @return string Driver connection name
      */
-    public function getName() {
-        
+    public function getName()
+    {
         return $this->name;
     }
     
     /**
      * Set Driver connection name
-     * 
+     *
      * @param string $val Driver connection name
      */
-    public function setName(string $val) {
-        
+    public function setName(string $val)
+    {
         $this->checkName($val);
         
         $this->name = $val;
@@ -120,13 +131,13 @@ class DriverConnection {
     
     /**
      * Check Driver connection name
-     * 
+     *
      * @param string $nm Driver connection name
      * @return bool True if Driver connection name is valid
      * @throws Exception if Driver connection name is invalid
      */
-    public static function checkName(string $nm): bool {
-        
+    public static function checkName(string $nm): bool
+    {
         if (trim($nm) == false) {
             throw new Exception("Driver connection name can not be empty");
         }
@@ -136,21 +147,21 @@ class DriverConnection {
     
     /**
      * Get Driver connection type
-     * 
+     *
      * @return int Driver connection type identifier
      */
-    public function getType(): int {
-        
+    public function getType(): int
+    {
         return $this->type;
     }
     
     /**
      * Set Driver connection type
-     * 
+     *
      * @param int $dtyp Driver connection type identifier
      */
-    public function setType(int $dtyp) {
-        
+    public function setType(int $dtyp)
+    {
         DriverType::check($dtyp);
         
         $this->type = $dtyp;
@@ -158,21 +169,21 @@ class DriverConnection {
     
     /**
      * Get Modbus configuration
-     * 
+     *
      * @return ConfigDriverModbus object or null
      */
-    public function getModbusConfig() {
-        
+    public function getModbusConfig()
+    {
         return $this->configModbus;
     }
     
     /**
      * Check if Modbus configuration exist
-     * 
+     *
      * @return bool True if Modbus configuration exist
      */
-    public function isModbusConfig(): bool {
-        
+    public function isModbusConfig(): bool
+    {
         $ret = false;
         
         if ($this->configModbus instanceof DriverModbus) {
@@ -184,13 +195,13 @@ class DriverConnection {
     
     /**
      * Check Modbus configuration
-     * 
+     *
      * @param $mb Modbus configuration
      * @return bool True if Modbus configuration is valid
      * @throws Exception if Modbus configuration is invalid
      */
-    private function checkModbusConfig($mb): bool {
-        
+    private function checkModbusConfig($mb): bool
+    {
         if (!($mb instanceof DriverModbus)) {
             throw new Exception("Modbus configuration is wrong type");
         }
@@ -200,11 +211,11 @@ class DriverConnection {
     
     /**
      * Set Modbus configuration
-     * 
+     *
      * @param $mb Modbus configuration object
      */
-    public function setModbusConfig($mb) {
-        
+    public function setModbusConfig($mb)
+    {
         // Check value
         $this->checkModbusConfig($mb);
         
@@ -213,21 +224,21 @@ class DriverConnection {
     
     /**
      * Get SHM configuration
-     * 
+     *
      * @return ConfigDriverShm object or null
      */
-    public function getShmConfig() {
-        
+    public function getShmConfig()
+    {
         return $this->configShm;
     }
     
     /**
      * Check if SHM configuration exist
-     * 
+     *
      * @return bool True if SHM configuration exist
      */
-    public function isShmConfig(): bool {
-        
+    public function isShmConfig(): bool
+    {
         $ret = false;
         
         if ($this->configShm instanceof DriverSHM) {
@@ -239,13 +250,13 @@ class DriverConnection {
     
     /**
      * Check SHM configuration
-     * 
+     *
      * @param $shm SHM configuration
      * @return bool True if SHM configuration is valid
      * @throws Exception if SHM configuration is invalid
      */
-    private function checkShmConfig($shm): bool {
-        
+    private function checkShmConfig($shm): bool
+    {
         if (!($shm instanceof DriverSHM)) {
             throw new Exception("SHM configuration is wrong type");
         }
@@ -255,11 +266,11 @@ class DriverConnection {
     
     /**
      * Set SHM configuration
-     * 
+     *
      * @param $shm SHM configuration object
      */
-    public function setShmConfig($shm) {
-        
+    public function setShmConfig($shm)
+    {
         // Check value
         $this->checkShmConfig($shm);
         
@@ -268,33 +279,33 @@ class DriverConnection {
     
     /**
      * Get Driver connection enable flag
-     * 
+     *
      * @return bool Driver connection enable flag
      */
-    public function isEnabled(): bool {
-        
+    public function isEnabled(): bool
+    {
         return $this->enable;
     }
     
     /**
      * Set Driver connection enable flag
-     * 
+     *
      * @param bool $val Driver connection enable flag
      */
-    public function setEnable(bool $val) {
-        
+    public function setEnable(bool $val)
+    {
         $this->enable = $val;
     }
     
     /**
      * Check if Driver connection object is valid
-     * 
+     *
      * @param bool $checkID Flag validating driver connection identifier
      * @return bool True if Driver connection is valid
      * @throws Exception Throws when Driver connection is invalid
      */
-    public function isValid(bool $checkID = false): bool {
-        
+    public function isValid(bool $checkID = false): bool
+    {
         // Check identifier
         if ($checkID) {
             $this->checkId($this->id);

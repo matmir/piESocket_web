@@ -6,9 +6,7 @@ use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-
 use Symfony\Component\Config\Definition\Exception\Exception;
-
 use App\Service\Admin\BaseConfigMapper;
 use App\Entity\Admin\DriverConnection;
 use App\Entity\Admin\DriverModbus;
@@ -23,30 +21,30 @@ use App\Entity\AppException;
  *
  * @author Mateusz Mirosławski
  */
-class DriverConnectionMapper extends BaseConfigMapper {
-        
+class DriverConnectionMapper extends BaseConfigMapper
+{
     /**
      * Max connections
      */
-    const maxConnections = 5;
+    public const MAX_CONNECTIONS = 5;
     
-    public function __construct(Connection $connection) {
-        
+    public function __construct(Connection $connection)
+    {
         parent::__construct($connection);
     }
     
     /**
      * Get Driver connections
-     * 
+     *
      * @return array Array with Driver connections
      */
-    public function getConnections(bool $onlyActive=false) {
-        
+    public function getConnections(bool $onlyActive = false)
+    {
         // Basic query
         $sql = 'SELECT * FROM driver_connections';
         
         // Enabled?
-        if ($onlyActive===true) {
+        if ($onlyActive === true) {
             $sql .= ' WHERE dcEnable = 1';
         }
         
@@ -58,14 +56,13 @@ class DriverConnectionMapper extends BaseConfigMapper {
         $statement->execute();
         $items = $statement->fetchAll();
         
-        if (count($items) > self::maxConnections) {
+        if (count($items) > self::MAX_CONNECTIONS) {
             throw new Exception("Too much connections defined in DB");
         }
         
         $ret = array();
         
-        foreach($items as $item) {
-            
+        foreach ($items as $item) {
             // New connection
             $conn = new DriverConnection();
             
@@ -74,24 +71,20 @@ class DriverConnectionMapper extends BaseConfigMapper {
             $conn->setType($item['dcType']);
             
             // Check type
-            if ($conn->getType() == DriverType::Modbus) {
-                
-                if ($item['dcConfigModbus']===null) {
-                    throw new Exception("Missing modbus configuration for connection ".$conn->getName());
+            if ($conn->getType() == DriverType::MODBUS) {
+                if ($item['dcConfigModbus'] === null) {
+                    throw new Exception("Missing modbus configuration for connection " . $conn->getName());
                 }
                                 
                 // Get modbus configuration
                 $conn->setModbusConfig($this->getModbusConfig($item['dcConfigModbus']));
-                
-            } else if ($conn->getType() == DriverType::SHM) {
-                
-                if ($item['dcConfigSHM']===null) {
-                    throw new Exception("Missing SHM configuration for connection ".$conn->getName());
+            } elseif ($conn->getType() == DriverType::SHM) {
+                if ($item['dcConfigSHM'] === null) {
+                    throw new Exception("Missing SHM configuration for connection " . $conn->getName());
                 }
                                 
                 // Get modbus configuration
                 $conn->setShmConfig($this->getShmConfig($item['dcConfigSHM']));
-                
             } else {
                 throw new Exception("Unknown connection driver type");
             }
@@ -107,12 +100,12 @@ class DriverConnectionMapper extends BaseConfigMapper {
     
     /**
      * Get connection names with id
-     * 
+     *
      * @return array Connection names with id
      * @throws Exception
      */
-    public function getConnectionsName() {
-        
+    public function getConnectionsName()
+    {
         // Basic query
         $sql = 'SELECT * FROM driver_connections;';
         
@@ -121,14 +114,13 @@ class DriverConnectionMapper extends BaseConfigMapper {
         $statement->execute();
         $items = $statement->fetchAll();
         
-        if (count($items) > self::maxConnections) {
+        if (count($items) > self::MAX_CONNECTIONS) {
             throw new Exception("Too much connections defined in DB");
         }
         
         $ret = array();
         
-        foreach($items as $item) {
-            
+        foreach ($items as $item) {
             $ret[$item['dcName']] = $item['dcId'];
         }
         
@@ -137,12 +129,12 @@ class DriverConnectionMapper extends BaseConfigMapper {
     
     /**
      * Get Modbus configuration
-     * 
+     *
      * @param int $mid Modbus configuration identifier
      * @return DriverModbus Object with Modbus configuration
      */
-    private function getModbusConfig(int $mid): DriverModbus {
-                
+    private function getModbusConfig(int $mid): DriverModbus
+    {
         // Check identifier
         DriverModbus::checkId($mid);
         
@@ -153,10 +145,10 @@ class DriverConnectionMapper extends BaseConfigMapper {
         $statement->bindValue(1, $mid, ParameterType::INTEGER);
         $statement->execute();
         
-        $items= $statement->fetchAll();
+        $items = $statement->fetchAll();
         
         if (empty($items)) {
-            throw new Exception("Modbus configuration with identifier ".$mid." does not exist!");
+            throw new Exception("Modbus configuration with identifier " . $mid . " does not exist!");
         }
         if (count($items) != 1) {
             throw new Exception("Query return more than one element!");
@@ -176,7 +168,7 @@ class DriverConnectionMapper extends BaseConfigMapper {
             $mb->setRTUparity($item['dmRTU_parity']);
             $mb->setRTUport($item['dmRTU_port']);
             $mb->setRTUstopBit($item['dmRTU_stopBit']);
-        } else if ($mb->getMode() == DriverModbusMode::TCP) {
+        } elseif ($mb->getMode() == DriverModbusMode::TCP) {
             $mb->setTCPaddr($item['dmTCP_addr']);
             $mb->setTCPport($item['dmTCP_port']);
             $mb->setSlaveIdUsageInTCP($item['dmTCP_use_slaveID']);
@@ -189,12 +181,12 @@ class DriverConnectionMapper extends BaseConfigMapper {
     
     /**
      * Get SHM configuration
-     * 
+     *
      * @param int $sid SHM configuration identifier
      * @return DriverSHM Object with SHM configuration
      */
-    private function getShmConfig(int $sid): DriverSHM {
-        
+    private function getShmConfig(int $sid): DriverSHM
+    {
         // Check identifier
         DriverSHM::checkId($sid);
         
@@ -205,10 +197,10 @@ class DriverConnectionMapper extends BaseConfigMapper {
         $statement->bindValue(1, $sid, ParameterType::INTEGER);
         $statement->execute();
         
-        $items= $statement->fetchAll();
+        $items = $statement->fetchAll();
         
         if (empty($items)) {
-            throw new Exception("SHM configuration with identifier ".$sid." does not exist!");
+            throw new Exception("SHM configuration with identifier " . $sid . " does not exist!");
         }
         if (count($items) != 1) {
             throw new Exception("Query return more than one element!");
@@ -225,12 +217,12 @@ class DriverConnectionMapper extends BaseConfigMapper {
     
     /**
      * Get Driver connection
-     * 
+     *
      * @param int $cid Driver connection identifier
      * @return DriverConnection Driver connection
      */
-    public function getConnection(int $cid): DriverConnection {
-        
+    public function getConnection(int $cid): DriverConnection
+    {
         // Check identifier
         DriverConnection::checkId($cid);
         
@@ -241,10 +233,10 @@ class DriverConnectionMapper extends BaseConfigMapper {
         $statement->bindValue(1, $cid, ParameterType::INTEGER);
         $statement->execute();
         
-        $items= $statement->fetchAll();
+        $items = $statement->fetchAll();
         
         if (empty($items)) {
-            throw new Exception("Driver connection with identifier ".$cid." does not exist!");
+            throw new Exception("Driver connection with identifier " . $cid . " does not exist!");
         }
         if (count($items) != 1) {
             throw new Exception("Query return more than one element!");
@@ -259,24 +251,20 @@ class DriverConnectionMapper extends BaseConfigMapper {
         $conn->setType($item['dcType']);
 
         // Check type
-        if ($conn->getType() == DriverType::Modbus) {
-
-            if ($item['dcConfigModbus']===null) {
-                throw new Exception("Missing modbus configuration for connection ".$conn->getName());
+        if ($conn->getType() == DriverType::MODBUS) {
+            if ($item['dcConfigModbus'] === null) {
+                throw new Exception("Missing modbus configuration for connection " . $conn->getName());
             }
 
             // Get modbus configuration
             $conn->setModbusConfig($this->getModbusConfig($item['dcConfigModbus']));
-
-        } else if ($conn->getType() == DriverType::SHM) {
-
-            if ($item['dcConfigSHM']===null) {
-                throw new Exception("Missing SHM configuration for connection ".$conn->getName());
+        } elseif ($conn->getType() == DriverType::SHM) {
+            if ($item['dcConfigSHM'] === null) {
+                throw new Exception("Missing SHM configuration for connection " . $conn->getName());
             }
 
             // Get modbus configuration
             $conn->setShmConfig($this->getShmConfig($item['dcConfigSHM']));
-
         } else {
             throw new Exception("Unknown connection driver type");
         }
@@ -288,34 +276,34 @@ class DriverConnectionMapper extends BaseConfigMapper {
     
     /**
      * Check if there is available space for new connection
-     * 
+     *
      * @return bool True if there is available space for new connection
      * @throws Exception
      */
-    private function isFreeConnectionPool(): bool {
-        
+    private function isFreeConnectionPool(): bool
+    {
         // Basic query
         $sql = "SELECT count(*) AS 'cnt' FROM driver_connections;";
         
         $statement = $this->dbConn->prepare($sql);
         $statement->execute();
         
-        $items= $statement->fetchAll();
+        $items = $statement->fetchAll();
         
         if (empty($items) || count($items) != 1) {
             throw new Exception("Error during executing count query!");
         }
                 
-        return ($items[0]['cnt'] >= self::maxConnections)?(false):(true);
+        return ($items[0]['cnt'] >= self::MAX_CONNECTIONS) ? (false) : (true);
     }
     
     /**
      * Add Driver connection to the DB
-     * 
+     *
      * @param DriverConnection $newConn Driver connection to add
      */
-    public function addConnection(DriverConnection $newConn) {
-        
+    public function addConnection(DriverConnection $newConn)
+    {
         // Check connection limit
         if (!$this->isFreeConnectionPool()) {
             throw new AppException(
@@ -330,16 +318,15 @@ class DriverConnectionMapper extends BaseConfigMapper {
         $this->dbConn->beginTransaction();
         
         try {
-            
             $q = 'INSERT INTO driver_connections (dcName, dcType';
         
             // Check specific driver
             $dcId = 0;
-            if ($newConn->getType()==DriverType::Modbus && $newConn->isModbusConfig()) {
+            if ($newConn->getType() == DriverType::MODBUS && $newConn->isModbusConfig()) {
                 $q .= ', dcConfigModbus';
                 // Add modbus configuration
                 $dcId = $this->addModbusConfiguration($newConn->getModbusConfig());
-            } else if ($newConn->getType()==DriverType::SHM && $newConn->isShmConfig()) {
+            } elseif ($newConn->getType() == DriverType::SHM && $newConn->isShmConfig()) {
                 $q .= ', dcConfigSHM';
                 // Add SHM configuration
                 $dcId = $this->addShmConfiguration($newConn->getShmConfig());
@@ -363,32 +350,28 @@ class DriverConnectionMapper extends BaseConfigMapper {
             
             // Set restart flag
             $this->setServerRestartFlag();
-            
         } catch (UniqueConstraintViolationException $ex) {
-            
             $this->dbConn->rollBack();
             
             throw new AppException(
                 "Driver connection exist in DB!",
                 AppException::DRIVER_EXIST
             );
-            
         }
     }
     
     /**
      * Check if Modbus TCP addres is used in DB
-     * 
+     *
      * @param DriverModbus $newModbus Modbus driver configuration
      * @param bool $edit Edit flag
      * @return bool True if Modbus TCP addres is used in DB
      */
-    private function isModbusAddressUsed(DriverModbus $newModbus, bool $edit=false): bool {
-        
+    private function isModbusAddressUsed(DriverModbus $newModbus, bool $edit = false): bool
+    {
         $ret = false;
         
         if ($newModbus->getMode() == DriverModbusMode::TCP) {
-            
             // Basic query
             $sql = 'SELECT * FROM driver_modbus WHERE dmTCP_addr=?';
             
@@ -407,8 +390,7 @@ class DriverConnectionMapper extends BaseConfigMapper {
             $statement->execute();
             $items = $statement->fetchAll();
 
-            foreach($items as $item) {
-
+            foreach ($items as $item) {
                 if ($item['dmTCP_port'] == $newModbus->getTCPport()) {
                     $ret = true;
                     break;
@@ -421,12 +403,12 @@ class DriverConnectionMapper extends BaseConfigMapper {
     
     /**
      * Add Modbus configuration to the DB
-     * 
+     *
      * @param DriverModbus $newModbus Modbus configuration to add
      * @return int Inserted configuration identifier
      */
-    private function addModbusConfiguration(DriverModbus $newModbus): int {
-        
+    private function addModbusConfiguration(DriverModbus $newModbus): int
+    {
         // Check if driver is valid
         $newModbus->isValid();
         
@@ -456,15 +438,15 @@ class DriverConnectionMapper extends BaseConfigMapper {
             $stmt->bindValue(7, $newModbus->getRTUparity(), ParameterType::STRING);
             $stmt->bindValue(8, $newModbus->getRTUport(), ParameterType::STRING);
             $stmt->bindValue(9, $newModbus->getRTUstopBit(), ParameterType::INTEGER);
-            $stmt->bindValue(10, NULL, ParameterType::NULL);
-            $stmt->bindValue(11, NULL, ParameterType::NULL);
+            $stmt->bindValue(10, null, ParameterType::NULL);
+            $stmt->bindValue(11, null, ParameterType::NULL);
             $stmt->bindValue(12, 0, ParameterType::INTEGER);
         } else {
-            $stmt->bindValue(5, NULL, ParameterType::NULL);
-            $stmt->bindValue(6, NULL, ParameterType::NULL);
-            $stmt->bindValue(7, NULL, ParameterType::NULL);
-            $stmt->bindValue(8, NULL, ParameterType::NULL);
-            $stmt->bindValue(9, NULL, ParameterType::NULL);
+            $stmt->bindValue(5, null, ParameterType::NULL);
+            $stmt->bindValue(6, null, ParameterType::NULL);
+            $stmt->bindValue(7, null, ParameterType::NULL);
+            $stmt->bindValue(8, null, ParameterType::NULL);
+            $stmt->bindValue(9, null, ParameterType::NULL);
             $stmt->bindValue(10, $newModbus->getTCPaddr(), ParameterType::STRING);
             $stmt->bindValue(11, $newModbus->getTCPport(), ParameterType::INTEGER);
             $stmt->bindValue(12, $newModbus->useSlaveIdInTCP(), ParameterType::INTEGER);
@@ -479,12 +461,12 @@ class DriverConnectionMapper extends BaseConfigMapper {
     
     /**
      * Add SHM configuration to the DB
-     * 
+     *
      * @param DriverSHM $newShm SHM configuration to add
      * @return int Inserted configuration identifier
      */
-    private function addShmConfiguration(DriverSHM $newShm): int {
-        
+    private function addShmConfiguration(DriverSHM $newShm): int
+    {
         // Check if driver is valid
         $newShm->isValid();
         
@@ -495,15 +477,12 @@ class DriverConnectionMapper extends BaseConfigMapper {
         $stmt->bindValue(1, $newShm->getSegmentName(), ParameterType::STRING);
         
         try {
-            
             if (!$stmt->execute()) {
                 throw new Exception("Error during execute sql add query!");
             }
-            
         } catch (UniqueConstraintViolationException $ex) {
-            
             throw new AppException(
-                "SHM with segment name: ".$newShm->getSegmentName()." exist in DB!",
+                "SHM with segment name: " . $newShm->getSegmentName() . " exist in DB!",
                 AppException::SHM_EXIST
             );
         }
@@ -511,8 +490,8 @@ class DriverConnectionMapper extends BaseConfigMapper {
         return $this->dbConn->lastInsertId();
     }
     
-    private function editModbusConfiguration(DriverModbus $mb) {
-        
+    private function editModbusConfiguration(DriverModbus $mb)
+    {
         // Check if driver connection is valid
         $mb->isValid(true);
         
@@ -542,15 +521,15 @@ class DriverConnectionMapper extends BaseConfigMapper {
             $stmt->bindValue(7, $mb->getRTUparity(), ParameterType::STRING);
             $stmt->bindValue(8, $mb->getRTUport(), ParameterType::STRING);
             $stmt->bindValue(9, $mb->getRTUstopBit(), ParameterType::INTEGER);
-            $stmt->bindValue(10, NULL, ParameterType::NULL);
-            $stmt->bindValue(11, NULL, ParameterType::NULL);
+            $stmt->bindValue(10, null, ParameterType::NULL);
+            $stmt->bindValue(11, null, ParameterType::NULL);
             $stmt->bindValue(12, 0, ParameterType::INTEGER);
-        } else if ($mb->getMode() == DriverModbusMode::TCP) {
-            $stmt->bindValue(5, NULL, ParameterType::NULL);
-            $stmt->bindValue(6, NULL, ParameterType::NULL);
-            $stmt->bindValue(7, NULL, ParameterType::NULL);
-            $stmt->bindValue(8, NULL, ParameterType::NULL);
-            $stmt->bindValue(9, NULL, ParameterType::NULL);
+        } elseif ($mb->getMode() == DriverModbusMode::TCP) {
+            $stmt->bindValue(5, null, ParameterType::NULL);
+            $stmt->bindValue(6, null, ParameterType::NULL);
+            $stmt->bindValue(7, null, ParameterType::NULL);
+            $stmt->bindValue(8, null, ParameterType::NULL);
+            $stmt->bindValue(9, null, ParameterType::NULL);
             $stmt->bindValue(10, $mb->getTCPaddr(), ParameterType::STRING);
             $stmt->bindValue(11, $mb->getTCPport(), ParameterType::INTEGER);
             $stmt->bindValue(12, $mb->useSlaveIdInTCP(), ParameterType::INTEGER);
@@ -562,8 +541,8 @@ class DriverConnectionMapper extends BaseConfigMapper {
         }
     }
     
-    private function editShmConfiguration(DriverSHM $shm) {
-        
+    private function editShmConfiguration(DriverSHM $shm)
+    {
         // Check if driver connection is valid
         $shm->isValid(true);
         
@@ -575,15 +554,12 @@ class DriverConnectionMapper extends BaseConfigMapper {
         $stmt->bindValue(2, $shm->getId(), ParameterType::INTEGER);
         
         try {
-            
             if (!$stmt->execute()) {
                 throw new Exception("Error during execute sql add query!");
             }
-            
         } catch (UniqueConstraintViolationException $ex) {
-            
             throw new AppException(
-                "SHM with segment name: ".$shm->getSegmentName()." exist in DB!",
+                "SHM with segment name: " . $shm->getSegmentName() . " exist in DB!",
                 AppException::SHM_EXIST
             );
         }
@@ -591,18 +567,17 @@ class DriverConnectionMapper extends BaseConfigMapper {
     
     /**
      * Edit driver connection
-     * 
+     *
      * @param DriverConnection $newConn Driver connection to edit
      */
-    public function editConnection(DriverConnection $newConn) {
-        
+    public function editConnection(DriverConnection $newConn)
+    {
         // Check if driver connection is valid
         $newConn->isValid(true);
         
         $this->dbConn->beginTransaction();
         
         try {
-            
             $q = 'UPDATE driver_connections SET dcName = ?, dcType = ?, dcConfigModbus = ?, dcConfigSHM = ?';
             $q .= ' WHERE dcId = ?;';
 
@@ -610,17 +585,17 @@ class DriverConnectionMapper extends BaseConfigMapper {
 
             $stmt->bindValue(1, $newConn->getName(), ParameterType::STRING);
             $stmt->bindValue(2, $newConn->getType(), ParameterType::INTEGER);
-            if ($newConn->getType() == DriverType::Modbus) {
+            if ($newConn->getType() == DriverType::MODBUS) {
                 // Edit modbus connection
                 $this->editModbusConfiguration($newConn->getModbusConfig());
 
                 $stmt->bindValue(3, $newConn->getModbusConfig()->getId(), ParameterType::INTEGER);
-                $stmt->bindValue(4, NULL, ParameterType::NULL);
-            } else if ($newConn->getType() == DriverType::SHM) {
+                $stmt->bindValue(4, null, ParameterType::NULL);
+            } elseif ($newConn->getType() == DriverType::SHM) {
                 // Edit SHM connection
                 $this->editShmConfiguration($newConn->getShmConfig());
 
-                $stmt->bindValue(3, NULL, ParameterType::NULL);
+                $stmt->bindValue(3, null, ParameterType::NULL);
                 $stmt->bindValue(4, $newConn->getShmConfig()->getId(), ParameterType::INTEGER);
             }
             $stmt->bindValue(5, $newConn->getId(), ParameterType::INTEGER);
@@ -633,9 +608,7 @@ class DriverConnectionMapper extends BaseConfigMapper {
             
             // Set restart flag
             $this->setServerRestartFlag();
-            
         } catch (UniqueConstraintViolationException $ex) {
-            
             $this->dbConn->rollBack();
             
             throw new AppException(
@@ -647,12 +620,12 @@ class DriverConnectionMapper extends BaseConfigMapper {
     
     /**
      * Delete modbus configuration
-     * 
+     *
      * @param type $mId Modbus configuration identifier
      * @throws Exception
      */
-    private function deleteModbusConfiguration($mId) {
-        
+    private function deleteModbusConfiguration($mId)
+    {
         DriverModbus::checkId($mId);
         
         $statement = $this->dbConn->prepare('DELETE FROM driver_modbus WHERE dmId = ?;');
@@ -665,12 +638,12 @@ class DriverConnectionMapper extends BaseConfigMapper {
     
     /**
      * Delete shm configuration
-     * 
+     *
      * @param type $sId SHM configuration identifier
      * @throws Exception
      */
-    private function deleteShmConfiguration($sId) {
-        
+    private function deleteShmConfiguration($sId)
+    {
         DriverSHM::checkId($sId);
         
         $statement = $this->dbConn->prepare('DELETE FROM driver_shm WHERE dsId = ?;');
@@ -683,11 +656,11 @@ class DriverConnectionMapper extends BaseConfigMapper {
     
     /**
      * Delete driver connection
-     * 
+     *
      * @param numeric $connId Driver connection identifier
      */
-    public function deleteConnection($connId) {
-        
+    public function deleteConnection($connId)
+    {
         // Get connection object
         $conn = $this->getConnection($connId);
         
@@ -697,14 +670,13 @@ class DriverConnectionMapper extends BaseConfigMapper {
         $statement->bindValue(1, $conn->getId(), ParameterType::INTEGER);
         
         try {
-            
             if (!$statement->execute()) {
                 throw new Exception("Error during execute delete query!");
             }
             
-            if ($conn->getType() == DriverType::Modbus) {
+            if ($conn->getType() == DriverType::MODBUS) {
                 $this->deleteModbusConfiguration($conn->getModbusConfig()->getId());
-            } else if ($conn->getType() == DriverType::SHM) {
+            } elseif ($conn->getType() == DriverType::SHM) {
                 $this->deleteShmConfiguration($conn->getShmConfig()->getId());
             }
             
@@ -712,13 +684,11 @@ class DriverConnectionMapper extends BaseConfigMapper {
             
             // Set restart flag
             $this->setServerRestartFlag();
-            
         } catch (ForeignKeyConstraintViolationException $ex) {
-            
             $this->dbConn->rollBack();
             
             throw new AppException(
-                "Connection with identifier: ".$connId." is used inside system!",
+                "Connection with identifier: " . $connId . " is used inside system!",
                 AppException::DRIVER_USED
             );
         }
@@ -726,18 +696,18 @@ class DriverConnectionMapper extends BaseConfigMapper {
     
     /**
      * Enable driver connection
-     * 
+     *
      * @param numeric $connId Driver connection identifier
      * @param bool $en Enable flag
      */
-    public function enableConnection($connId, bool $en = true) {
-        
+    public function enableConnection($connId, bool $en = true)
+    {
         // Check identifier
         DriverConnection::checkId($connId);
         
         $stmt = $this->dbConn->prepare('UPDATE driver_connections SET dcEnable = ? WHERE dcId = ?;');
         
-        $stmt->bindValue(1, (($en)?(1):(0)), ParameterType::INTEGER);
+        $stmt->bindValue(1, (($en) ? (1) : (0)), ParameterType::INTEGER);
         $stmt->bindValue(2, $connId, ParameterType::INTEGER);
         
         if (!$stmt->execute()) {
@@ -750,12 +720,12 @@ class DriverConnectionMapper extends BaseConfigMapper {
     
     /**
      * Check if Tag byte address is out of driver range
-     * 
+     *
      * @param Tag $tg Tag object
      * @throws AppException
      */
-    public function checkDriverByteAddress(Tag $tg) {
-        
+    public function checkDriverByteAddress(Tag $tg)
+    {
         $maxByteAddress = 0;
         
         // Get connection
@@ -763,15 +733,19 @@ class DriverConnectionMapper extends BaseConfigMapper {
         
         // Get max allowed Byte address
         switch ($conn->getType()) {
-            case DriverType::SHM: $maxByteAddress = DriverSHM::maxProcessAddress; break;
-            case DriverType::Modbus: $maxByteAddress = $conn->getModbusConfig()->getMaxByteAddress(); break;
+            case DriverType::SHM:
+                $maxByteAddress = DriverSHM::MAX_PROCESS_ADDRESS;
+                break;
+            case DriverType::MODBUS:
+                $maxByteAddress = $conn->getModbusConfig()->getMaxByteAddress();
+                break;
         }
         
         // Check Tag address
         if ($tg->getByteAddress() >= $maxByteAddress) {
             throw new AppException(
-                "Tag byte address is out of driver range.".
-                " Max allowed byte address is ".($maxByteAddress-1),
+                "Tag byte address is out of driver range." .
+                " Max allowed byte address is " . ($maxByteAddress - 1),
                 AppException::TAG_BYTE_ADDRESS_WRONG
             );
         }

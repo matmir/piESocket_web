@@ -13,16 +13,16 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Mateusz Mirosławski
  */
-class ScriptItemTest extends TestCase {
-    
+class ScriptItemTest extends TestCase
+{
     /**
      * Test Default constructor
      */
-    public function testDefaultConstructor() {
-        
+    public function testDefaultConstructor()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
-        $tag->setType(TagType::Bit);
+        $tag->setType(TagType::BIT);
         
         $script = new ScriptItem($tag);
         
@@ -39,11 +39,11 @@ class ScriptItemTest extends TestCase {
     /**
      * Test setId method
      */
-    public function testSetId() {
-        
+    public function testSetId()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
-        $tag->setType(TagType::Bit);
+        $tag->setType(TagType::BIT);
         
         $script = new ScriptItem($tag);
         $script->setId(85);
@@ -58,14 +58,14 @@ class ScriptItemTest extends TestCase {
         $this->assertFalse($script->isEnabled());
     }
     
-    public function testSetIdWrong1() {
-        
+    public function testSetIdWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Script identifier wrong value');
         
         $tag = null;
         TagLoggerTest::createTag($tag);
-        $tag->setType(TagType::Bit);
+        $tag->setType(TagType::BIT);
         
         $script = new ScriptItem($tag);
         $script->setId(-9);
@@ -74,16 +74,16 @@ class ScriptItemTest extends TestCase {
     /**
      * Test setTag method
      */
-    public function testSetTag() {
-        
+    public function testSetTag()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
-        $tag->setType(TagType::Bit);
+        $tag->setType(TagType::BIT);
         
         $tagN = null;
         TagLoggerTest::createTag($tagN);
         $tagN->setId(66);
-        $tagN->setType(TagType::Bit);
+        $tagN->setType(TagType::BIT);
         
         $script = new ScriptItem($tag);
         $script->setTag($tagN);
@@ -94,11 +94,11 @@ class ScriptItemTest extends TestCase {
     /**
      * Test setName method
      */
-    public function testSetName() {
-        
+    public function testSetName()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
-        $tag->setType(TagType::Bit);
+        $tag->setType(TagType::BIT);
         
         $script = new ScriptItem($tag);
         $script->setName('script.sh');
@@ -113,14 +113,14 @@ class ScriptItemTest extends TestCase {
         $this->assertFalse($script->isEnabled());
     }
     
-    public function testSetNameWrong1() {
-        
+    public function testSetNameWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Script name can not be empty');
         
         $tag = null;
         TagLoggerTest::createTag($tag);
-        $tag->setType(TagType::Bit);
+        $tag->setType(TagType::BIT);
         
         $script = new ScriptItem($tag);
         $script->setName(' ');
@@ -129,11 +129,11 @@ class ScriptItemTest extends TestCase {
     /**
      * Test setRun method
      */
-    public function testSetRun() {
-        
+    public function testSetRun()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
-        $tag->setType(TagType::Bit);
+        $tag->setType(TagType::BIT);
         
         $script = new ScriptItem($tag);
         $script->setRun(true);
@@ -151,11 +151,11 @@ class ScriptItemTest extends TestCase {
     /**
      * Test setLocked method
      */
-    public function testSetLocked() {
-        
+    public function testSetLocked()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
-        $tag->setType(TagType::Bit);
+        $tag->setType(TagType::BIT);
         
         $script = new ScriptItem($tag);
         $script->setLocked(true);
@@ -173,27 +173,27 @@ class ScriptItemTest extends TestCase {
     /**
      * Test setFeedbackRun method
      */
-    public function testSetFeedbackRun1() {
-        
+    public function testSetFeedbackRun1()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
-        $tag->setType(TagType::Bit);
+        $tag->setType(TagType::BIT);
         
         $script = new ScriptItem($tag);
         
         $this->assertNull($script->getFeedbackRun());
     }
     
-    public function testSetFeedbackNotAck2() {
-        
+    public function testSetFeedbackNotAck2()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
-        $tag->setType(TagType::Bit);
+        $tag->setType(TagType::BIT);
         
         $tagF = null;
         TagLoggerTest::createTag($tagF);
         $tagF->setId(101);
-        $tagF->setType(TagType::Bit);
+        $tagF->setType(TagType::BIT);
         
         $script = new ScriptItem($tag);
         $script->setFeedbackRun($tagF);
@@ -203,14 +203,14 @@ class ScriptItemTest extends TestCase {
         $this->assertEquals(101, $script->getFeedbackRun()->getId());
     }
     
-    public function testSetFeedbackNotAckWrong1() {
-        
+    public function testSetFeedbackNotAckWrong1()
+    {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
         $this->expectExceptionMessage('Feedback Tag is wrong type');
         
         $tag = null;
         TagLoggerTest::createTag($tag);
-        $tag->setType(TagType::Bit);
+        $tag->setType(TagType::BIT);
                         
         $script = new ScriptItem($tag);
         $script->setFeedbackRun('frf');
@@ -219,11 +219,11 @@ class ScriptItemTest extends TestCase {
     /**
      * Test setEnabled method
      */
-    public function testSetEnabled() {
-        
+    public function testSetEnabled()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
-        $tag->setType(TagType::Bit);
+        $tag->setType(TagType::BIT);
         
         $script = new ScriptItem($tag);
         $script->setEnabled(true);
@@ -241,12 +241,29 @@ class ScriptItemTest extends TestCase {
     /**
      * Test isValid method
      */
-    public function testIsValid() {
-        
+    public function testIsValid()
+    {
         $tag = null;
         TagLoggerTest::createTag($tag);
-        $tag->setType(TagType::Bit);
+        $tag->setType(TagType::BIT);
         
+        $tagFB = null;
+        TagLoggerTest::createTag($tagFB);
+        $tagFB->setName('tettt');
+        $tagFB->setType(TagType::BIT);
+        
+        $script = new ScriptItem($tag, $tagFB);
+        $script->setName('test');
+        
+        $this->assertTrue($script->isValid(true));
+    }
+    
+    public function testIsValidErr1()
+    {
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
+        $this->expectExceptionMessage('Missing Tag object');
+        
+        $tag = null;
         $script = new ScriptItem($tag);
         $script->setName('test');
         

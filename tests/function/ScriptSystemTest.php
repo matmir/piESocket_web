@@ -9,13 +9,13 @@ use App\Tests\ScriptSystemFunctionTestCase;
  *
  * @author Mateusz Mirosławski
  */
-class ScriptSystemTest extends ScriptSystemFunctionTestCase {
-    
+class ScriptSystemTest extends ScriptSystemFunctionTestCase
+{
     /**
      * Test script - test1.sh
      */
-    public function testScript1() {
-        
+    public function testScript1()
+    {
         // Get script definition
         $script = $this->scriptMapper->getScriptByName('test1.sh');
         
@@ -53,9 +53,9 @@ class ScriptSystemTest extends ScriptSystemFunctionTestCase {
         $this->scriptMapper->enableScript($script->getId(), false);
         
         // Check execution log
-        $logPath = $this->cfg->getServerAppPath().'logs/scriptOutput/';
+        $logPath = $this->cfg->getServerAppPath() . 'logs/scriptOutput/';
         $files = scandir($logPath);
-        $log = file_get_contents($logPath.$files[2]);
+        $log = file_get_contents($logPath . $files[2]);
         
         $this->assertEquals('TEST_SCRIPT1', $script->getTag()->getName());
         $this->assertEquals('TEST_SCRIPT1_RUN', $script->getFeedbackRun()->getName());
@@ -85,8 +85,8 @@ class ScriptSystemTest extends ScriptSystemFunctionTestCase {
     /**
      * Test script - test1.sh - no feedbackRun tag
      */
-    public function testScript2() {
-        
+    public function testScript2()
+    {
         // Get script definition
         $script = $this->scriptMapper->getScriptByName('test1.sh');
         // Delete feedback tag
@@ -126,9 +126,9 @@ class ScriptSystemTest extends ScriptSystemFunctionTestCase {
         $this->scriptMapper->enableScript($script->getId(), false);
         
         // Check execution log
-        $logPath = $this->cfg->getServerAppPath().'logs/scriptOutput/';
+        $logPath = $this->cfg->getServerAppPath() . 'logs/scriptOutput/';
         $files = scandir($logPath);
-        $log = file_get_contents($logPath.$files[3]);
+        $log = file_get_contents($logPath . $files[3]);
         
         $this->assertEquals('TEST_SCRIPT1', $script->getTag()->getName());
         $this->assertNull($script->getFeedbackRun());
@@ -158,8 +158,8 @@ class ScriptSystemTest extends ScriptSystemFunctionTestCase {
     /**
      * Test script - test2.sh
      */
-    public function testScript3() {
-        
+    public function testScript3()
+    {
         // Get script definition
         $script = $this->scriptMapper->getScriptByName('test2.sh');
         
@@ -197,9 +197,9 @@ class ScriptSystemTest extends ScriptSystemFunctionTestCase {
         $this->scriptMapper->enableScript($script->getId(), false);
         
         // Check execution log
-        $logPath = $this->cfg->getServerAppPath().'logs/scriptOutput/';
+        $logPath = $this->cfg->getServerAppPath() . 'logs/scriptOutput/';
         $files = scandir($logPath);
-        $log = file_get_contents($logPath.$files[4]);
+        $log = file_get_contents($logPath . $files[4]);
         
         $this->assertEquals('TEST_SCRIPT2', $script->getTag()->getName());
         $this->assertNull($script->getFeedbackRun());
@@ -229,8 +229,8 @@ class ScriptSystemTest extends ScriptSystemFunctionTestCase {
     /**
      * Test script - test1.sh and test2.sh
      */
-    public function testScript4() {
-        
+    public function testScript4()
+    {
         // Get script definition
         $script1 = $this->scriptMapper->getScriptByName('test1.sh');
         $script2 = $this->scriptMapper->getScriptByName('test2.sh');
@@ -244,7 +244,7 @@ class ScriptSystemTest extends ScriptSystemFunctionTestCase {
         $this->scriptMapper->enableScript($script2->getId());
         
         // Set scripts trigger bits
-        $cmds = array(); 
+        $cmds = array();
         array_push($cmds, $this->parser->setBitCMD($script1->getTag()->getName()));
         array_push($cmds, $this->parser->setBitCMD($script2->getTag()->getName()));
         $this->parser->executeMultiCMD($cmds);
@@ -266,7 +266,7 @@ class ScriptSystemTest extends ScriptSystemFunctionTestCase {
         $data3S2 = $this->getScriptData($script2);
         
         // Reset script trigger bit
-        $cmds1 = array(); 
+        $cmds1 = array();
         array_push($cmds1, $this->parser->resetBitCMD($script1->getTag()->getName()));
         array_push($cmds1, $this->parser->resetBitCMD($script2->getTag()->getName()));
         $this->parser->executeMultiCMD($cmds1);
@@ -284,7 +284,7 @@ class ScriptSystemTest extends ScriptSystemFunctionTestCase {
         $this->scriptMapper->enableScript($script2->getId(), false);
         
         // Check execution log
-        $logPath = $this->cfg->getServerAppPath().'logs/scriptOutput/';
+        $logPath = $this->cfg->getServerAppPath() . 'logs/scriptOutput/';
         $files = scandir($logPath);
         
         $this->assertEquals('TEST_SCRIPT1', $script1->getTag()->getName());

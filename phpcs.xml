@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<ruleset name="PHP_CodeSniffer">
+
+<description>PHPCS configuration file.</description>
+<file>/home/virtual/onh/APP/SRC/openNetworkHMI_web/src/</file>
+<file>/home/virtual/onh/APP/SRC/openNetworkHMI_web/tests/</file>
+
+<exclude-pattern>*Kernel.php*</exclude-pattern>
+<exclude-pattern>*bootstrap.php*</exclude-pattern>
+
+<rule ref="PSR12"/>
+
+</ruleset>

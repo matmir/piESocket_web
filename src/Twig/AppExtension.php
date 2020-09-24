@@ -10,10 +10,10 @@ use App\Entity\Admin\AlarmTrigger;
 use App\Entity\Admin\TagLoggerInterval;
 use App\Entity\Admin\DriverType;
 
-class AppExtension extends AbstractExtension {
-    
-    public function getFunctions() {
-        
+class AppExtension extends AbstractExtension
+{
+    public function getFunctions()
+    {
         return [
             new TwigFunction('TagAreaName', [TagArea::class, 'getName']),
             new TwigFunction('TagAreaPrefix', [TagArea::class, 'getPrefix']),

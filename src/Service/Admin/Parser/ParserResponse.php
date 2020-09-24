@@ -12,18 +12,18 @@ use App\Service\Admin\Parser\ParserException;
  *
  * @author Mateusz Mirosławski
  */
-class ParserResponse {
-    
+class ParserResponse
+{
     /**
      * Prepare OK reply
-     * 
+     *
      * @param int $cmd Command number
      * @param int $data Command data
      * @return array
      * @throws ParserException
      */
-    private function res_ok($cmd, $data): array {
-
+    private function resOk($cmd, $data): array
+    {
         // Check data
         if (!is_numeric($data)) {
             throw new ParserException('res_ok: Data response need to be numeric!');
@@ -42,13 +42,13 @@ class ParserResponse {
     
     /**
      * Prepare reply with GET_BIT command
-     * 
+     *
      * @param int $data Command data
      * @return array
      * @throws ParserException
      */
-    private function RES_GET_BIT($data): array {
-
+    private function resGetBit($data): array
+    {
         // Check data
         if (!is_numeric($data)) {
             throw new ParserException('RES_GET_BIT: Data response need to be numeric!');
@@ -66,53 +66,53 @@ class ParserResponse {
     
     /**
      * Prepare reply with SET_BIT command
-     * 
+     *
      * @param int $data Command data
      * @return array
      */
-    private function RES_SET_BIT($data): array {
-
-        return $this->res_ok(ParserCommands::SET_BIT, $data);
+    private function resSetBit($data): array
+    {
+        return $this->resOk(ParserCommands::SET_BIT, $data);
     }
     
     /**
      * Prepare reply with RESET_BIT command
-     * 
+     *
      * @param int $data Command data
      * @return array
      */
-    private function RES_RESET_BIT($data): array {
-
-        return $this->res_ok(ParserCommands::RESET_BIT, $data);
+    private function resResetBit($data): array
+    {
+        return $this->resOk(ParserCommands::RESET_BIT, $data);
     }
     
     /**
      * Prepare reply with INVERT_BIT command
-     * 
+     *
      * @param int $data Command data
      * @return array
      */
-    private function RES_INVERT_BIT($data): array {
-
-        return $this->res_ok(ParserCommands::INVERT_BIT, $data);
+    private function resInvertBit($data): array
+    {
+        return $this->resOk(ParserCommands::INVERT_BIT, $data);
     }
     
     /**
      * Prepare reply with GET_BITS command
-     * 
+     *
      * @param string $data Command data
      * @return array
      * @throws ParserException
      */
-    private function RES_GET_BITS(string $data): array {
-
+    private function resGetBits(string $data): array
+    {
         // Check data
         if (empty($data)) {
             throw new ParserException('RES_GET_BITS: Data is empty!');
         }
 
         // Explode bit values
-        $dt = explode(ParserSeparators::vS, $data);
+        $dt = explode(ParserSeparators::VS, $data);
 
         if (empty($dt) || count($dt) < 2) {
             throw new ParserException('RES_GET_BITS: Error during data explode!');
@@ -121,8 +121,7 @@ class ParserResponse {
         $vals = array();
         $cn = count($dt);
         // Check values
-        for ($i=0; $i < $cn; ++$i) {
-
+        for ($i = 0; $i < $cn; ++$i) {
             if (!is_numeric($dt[$i])) {
                 throw new ParserException('RES_GET_BITS: Bit value is not numeric!');
             }
@@ -131,7 +130,6 @@ class ParserResponse {
             }
 
             $vals[$i] = $dt[$i];
-
         }
 
         return array(
@@ -142,28 +140,28 @@ class ParserResponse {
     
     /**
      * Prepare reply with SET_BITS command
-     * 
+     *
      * @param int $data Command data
      * @return array
      */
-    private function RES_SET_BITS($data): array {
-
-        return $this->res_ok(ParserCommands::SET_BITS, $data);
+    private function resSetBits($data): array
+    {
+        return $this->resOk(ParserCommands::SET_BITS, $data);
     }
     
     /**
      * Prepare reply with GET_BYTE command
-     * 
+     *
      * @param type $data Command data
      * @return array
      * @throws ParserException
      */
-    private function RES_GET_BYTE($data): array {
-
+    private function resGetByte($data): array
+    {
         // Check data
         if (trim($data) == '') {
             throw new ParserException('RES_GET_BYTE: Data is empty!');
-        }  
+        }
         if (!is_numeric($data)) {
             throw new ParserException('RES_GET_BYTE: Data value is not numeric!');
         }
@@ -179,25 +177,25 @@ class ParserResponse {
     
     /**
      * Prepare reply with WRITE_BYTE command
-     * 
+     *
      * @param type $data Command data
      * @return array
      * @throws ParserException
      */
-    private function RES_WRITE_BYTE($data): array {
-
-        return $this->res_ok(ParserCommands::WRITE_BYTE, $data);
+    private function resWriteByte($data): array
+    {
+        return $this->resOk(ParserCommands::WRITE_BYTE, $data);
     }
     
     /**
      * Prepare reply with GET_WORD command
-     * 
+     *
      * @param type $data Command data
      * @return array
      * @throws ParserException
      */
-    private function RES_GET_WORD($data): array {
-
+    private function resGetWord($data): array
+    {
         // Check data
         if (trim($data) == '') {
             throw new ParserException('RES_GET_WORD: Data is empty!');
@@ -217,25 +215,25 @@ class ParserResponse {
     
     /**
      * Prepare reply with WRITE_WORD command
-     * 
+     *
      * @param type $data Command data
      * @return array
      * @throws ParserException
      */
-    private function RES_WRITE_WORD($data): array {
-
-        return $this->res_ok(ParserCommands::WRITE_WORD, $data);
+    private function resWriteWord($data): array
+    {
+        return $this->resOk(ParserCommands::WRITE_WORD, $data);
     }
     
     /**
      * Prepare reply with GET_DWORD command
-     * 
+     *
      * @param type $data Command data
      * @return array
      * @throws ParserException
      */
-    private function RES_GET_DWORD($data): array {
-
+    private function resGetDWord($data): array
+    {
         // Check data
         if (trim($data) == '') {
             throw new ParserException('RES_GET_DWORD: Data is empty!');
@@ -255,25 +253,25 @@ class ParserResponse {
     
     /**
      * Prepare reply with WRITE_DWORD command
-     * 
+     *
      * @param type $data Command data
      * @return array
      * @throws ParserException
      */
-    private function RES_WRITE_DWORD($data): array {
-
-        return $this->res_ok(ParserCommands::WRITE_DWORD, $data);
+    private function resWriteDWord($data): array
+    {
+        return $this->resOk(ParserCommands::WRITE_DWORD, $data);
     }
     
     /**
      * Prepare reply with GET_INT command
-     * 
+     *
      * @param type $data Command data
      * @return array
      * @throws ParserException
      */
-    private function RES_GET_INT($data): array {
-
+    private function resGetInt($data): array
+    {
         // Check data
         if (trim($data) == '') {
             throw new ParserException('RES_GET_INT: Data is empty!');
@@ -293,25 +291,25 @@ class ParserResponse {
     
     /**
      * Prepare reply with WRITE_INT command
-     * 
+     *
      * @param type $data Command data
      * @return array
      * @throws ParserException
      */
-    private function RES_WRITE_INT($data): array {
-
-        return $this->res_ok(ParserCommands::WRITE_INT, $data);
+    private function resWriteInt($data): array
+    {
+        return $this->resOk(ParserCommands::WRITE_INT, $data);
     }
     
     /**
      * Prepare reply with GET_REAL command
-     * 
+     *
      * @param type $data Command data
      * @return array
      * @throws ParserException
      */
-    private function RES_GET_REAL($data): array {
-
+    private function resGetReal($data): array
+    {
         // Check data
         if (trim($data) == '') {
             throw new ParserException('RES_GET_REAL: Data is empty!');
@@ -325,32 +323,32 @@ class ParserResponse {
     
     /**
      * Prepare reply with WRITE_REAL command
-     * 
+     *
      * @param type $data Command data
      * @return array
      * @throws ParserException
      */
-    private function RES_WRITE_REAL($data): array {
-
-        return $this->res_ok(ParserCommands::WRITE_REAL, $data);
+    private function resWriteReal($data): array
+    {
+        return $this->resOk(ParserCommands::WRITE_REAL, $data);
     }
     
     /**
      * Prepare reply with MULTI_CMD command
-     * 
+     *
      * @param type $data Command data
      * @return array
      * @throws ParserException
      */
-    private function RES_MULTI_CMD($data): array {
-
+    private function resMultiCmd($data): array
+    {
         // Check data
         if (empty($data)) {
             throw new ParserException('RES_MULTI_CMD: Data is empty!');
         }
 
         // Explode commands to the array
-        $cmds = explode(ParserSeparators::cMS, $data);
+        $cmds = explode(ParserSeparators::CMS, $data);
 
         if (empty($cmds) || count($cmds) < 2) {
             throw new ParserException('RES_MULTI_CMD: Error during data explode!');
@@ -359,13 +357,12 @@ class ParserResponse {
         $cn = count($cmds);
 
         $retVal = array();
-        for ($i=0; $i<$cn; ++$i) {
-
+        for ($i = 0; $i < $cn; ++$i) {
             // Explode command and value from command string
-            $dt = explode(ParserSeparators::cvMS, $cmds[$i]);
+            $dt = explode(ParserSeparators::CVMS, $cmds[$i]);
 
             // Check data count
-            if (count($dt)!=2) {
+            if (count($dt) != 2) {
                 throw new ParserException('RES_MULTI_CMD: Server response is invalid!');
             }
 
@@ -381,12 +378,9 @@ class ParserResponse {
 
             // Check if response is error
             if ($cmd == ParserReplyCodes::NOK) {
-
                 // Create error reply
                 $res = $this->responseERROR($values);
-
             } else { // Normal reply
-
                 // Check command
                 if (!ParserCommands::checkCMD($cmd)) {
                     throw new ParserException('RES_MULTI_CMD: Wrong command number!');
@@ -400,30 +394,64 @@ class ParserResponse {
 
                 // Parse reply
                 switch ($cmd) {
-                    case ParserCommands::GET_BIT: $res = $this->RES_GET_BIT($values); break;
-                    case ParserCommands::SET_BIT: $res = $this->RES_SET_BIT($values); break;
-                    case ParserCommands::RESET_BIT: $res = $this->RES_RESET_BIT($values); break;
-                    case ParserCommands::INVERT_BIT: $res = $this->RES_INVERT_BIT($values); break;
-                    case ParserCommands::GET_BITS: $res = $this->RES_GET_BITS($values); break;
-                    case ParserCommands::SET_BITS: $res = $this->RES_SET_BITS($values); break;
-                    case ParserCommands::GET_BYTE: $res = $this->RES_GET_BYTE($values); break;
-                    case ParserCommands::WRITE_BYTE: $res = $this->RES_WRITE_BYTE($values); break;
-                    case ParserCommands::GET_WORD: $res = $this->RES_GET_WORD($values); break;
-                    case ParserCommands::WRITE_WORD: $res = $this->RES_WRITE_WORD($values); break;
-                    case ParserCommands::GET_DWORD: $res = $this->RES_GET_DWORD($values); break;
-                    case ParserCommands::WRITE_DWORD: $res = $this->RES_WRITE_DWORD($values); break;
-                    case ParserCommands::GET_INT: $res = $this->RES_GET_INT($values); break;
-                    case ParserCommands::WRITE_INT: $res = $this->RES_WRITE_INT($values); break;
-                    case ParserCommands::GET_REAL: $res = $this->RES_GET_REAL($values); break;
-                    case ParserCommands::WRITE_REAL: $res = $this->RES_WRITE_REAL($values); break;
-                    case ParserCommands::ACK_ALARM: $res = $this->RES_ACK_ALARM($values); break;
-                    case ParserCommands::EXIT_APP: $res = $this->RES_EXIT_APP($values); break;
+                    case ParserCommands::GET_BIT:
+                        $res = $this->resGetBit($values);
+                        break;
+                    case ParserCommands::SET_BIT:
+                        $res = $this->resSetBit($values);
+                        break;
+                    case ParserCommands::RESET_BIT:
+                        $res = $this->resResetBit($values);
+                        break;
+                    case ParserCommands::INVERT_BIT:
+                        $res = $this->resInvertBit($values);
+                        break;
+                    case ParserCommands::GET_BITS:
+                        $res = $this->resGetBits($values);
+                        break;
+                    case ParserCommands::SET_BITS:
+                        $res = $this->resSetBits($values);
+                        break;
+                    case ParserCommands::GET_BYTE:
+                        $res = $this->resGetByte($values);
+                        break;
+                    case ParserCommands::WRITE_BYTE:
+                        $res = $this->resWriteByte($values);
+                        break;
+                    case ParserCommands::GET_WORD:
+                        $res = $this->resGetWord($values);
+                        break;
+                    case ParserCommands::WRITE_WORD:
+                        $res = $this->resWriteWord($values);
+                        break;
+                    case ParserCommands::GET_DWORD:
+                        $res = $this->resGetDWord($values);
+                        break;
+                    case ParserCommands::WRITE_DWORD:
+                        $res = $this->resWriteDWord($values);
+                        break;
+                    case ParserCommands::GET_INT:
+                        $res = $this->resGetInt($values);
+                        break;
+                    case ParserCommands::WRITE_INT:
+                        $res = $this->resWriteInt($values);
+                        break;
+                    case ParserCommands::GET_REAL:
+                        $res = $this->resGetReal($values);
+                        break;
+                    case ParserCommands::WRITE_REAL:
+                        $res = $this->resWriteReal($values);
+                        break;
+                    case ParserCommands::ACK_ALARM:
+                        $res = $this->resAckAlarm($values);
+                        break;
+                    case ParserCommands::EXIT_APP:
+                        $res = $this->resExitApp($values);
+                        break;
                 }
-
             }
 
             $retVal[$i] = $res;
-
         }
 
         return array(
@@ -434,39 +462,39 @@ class ParserResponse {
     
     /**
      * Prepare reply with ACK_ALARM command
-     * 
+     *
      * @param type $data Command data
      * @return array
      * @throws ParserException
      */
-    private function RES_ACK_ALARM($data): array {
-
-        return $this->res_ok(ParserCommands::ACK_ALARM, $data);
+    private function resAckAlarm($data): array
+    {
+        return $this->resOk(ParserCommands::ACK_ALARM, $data);
     }
     
     /**
      * Prepare reply with EXIT_APP command
-     * 
+     *
      * @param type $data Command data
      * @return array
      * @throws ParserException
      */
-    private function RES_EXIT_APP($data): array {
-
-        return $this->res_ok(ParserCommands::EXIT_APP, $data);
+    private function resExitApp($data): array
+    {
+        return $this->resOk(ParserCommands::EXIT_APP, $data);
     }
     
     /**
      * Get cycle times from thread data
-     * 
+     *
      * @param type $threadData Thread data
      * @return array
      * @throws ParserException
      */
-    private function getCycleTime($threadData): array {
-                
+    private function getCycleTime($threadData): array
+    {
         // Updater cycle time values
-        $ctVals = explode(ParserSeparators::ctVal, $threadData);
+        $ctVals = explode(ParserSeparators::CTVAL, $threadData);
         if (count($ctVals) != 3) {
             throw new ParserException('RES_GET_THREAD_CYCLE_TIME: Error during thread values explode!');
         }
@@ -483,27 +511,27 @@ class ParserResponse {
     
     /**
      * Prepare reply with GET_THREAD_CYCLE_TIME command
-     * 
+     *
      * @param type $data Command data
      * @return array
      * @throws ParserException
      */
-    private function RES_GET_THREAD_CYCLE_TIME($data): array {
-
+    private function resGetThreadCycleTime($data): array
+    {
         // Check data
         if (empty($data)) {
             throw new ParserException('RES_GET_THREAD_CYCLE_TIME: Data is empty!');
         }
 
         // Explode thread cycle times
-        $threadData = explode(ParserSeparators::ctTh, $data);
+        $threadData = explode(ParserSeparators::CTTH, $data);
 
         if (empty($threadData) || count($threadData) < 5) {
             throw new ParserException('RES_GET_THREAD_CYCLE_TIME: Error during data explode!');
         }
         
         // Get number of updaters and buffers
-        $countDT = explode(ParserSeparators::ctVal, $threadData[0]);
+        $countDT = explode(ParserSeparators::CTVAL, $threadData[0]);
         if (count($countDT) != 2) {
             throw new ParserException('RES_GET_THREAD_CYCLE_TIME: Error during count data explode!');
         }
@@ -513,8 +541,8 @@ class ParserResponse {
         
         $UpdaterCTVals = array();
         // Get Cycle times from Process Updater
-        for ($i=0; $i<$countDT[0]; ++$i) {
-            $UpdaterCT = explode(ParserSeparators::ctThVal, $threadData[$i+1]);
+        for ($i = 0; $i < $countDT[0]; ++$i) {
+            $UpdaterCT = explode(ParserSeparators::CTTHVAL, $threadData[$i + 1]);
             if (count($UpdaterCT) != 2 || strpos($UpdaterCT[0], 'Updater_') === false) {
                 throw new ParserException('RES_GET_THREAD_CYCLE_TIME: Error during Process Updater data explode!');
             }
@@ -524,8 +552,8 @@ class ParserResponse {
             
         $PollingCTVals = array();
         // Get Cycle times from Driver polling
-        for ($i=0; $i<$countDT[1]; ++$i) {
-            $PollingCT = explode(ParserSeparators::ctThVal, $threadData[$i+1+$countDT[0]]);
+        for ($i = 0; $i < $countDT[1]; ++$i) {
+            $PollingCT = explode(ParserSeparators::CTTHVAL, $threadData[$i + 1 + $countDT[0]]);
             if (count($PollingCT) != 2 || strpos($PollingCT[0], 'DriverBuffer_') === false) {
                 throw new ParserException('RES_GET_THREAD_CYCLE_TIME: Error during Driver polling data explode!');
             }
@@ -537,28 +565,28 @@ class ParserResponse {
         $dtOffset = 1 + $countDT[0] + $countDT[1];
         
         // Get Cycle times from Tag Logger
-        $LoggerCT = explode(ParserSeparators::ctThVal, $threadData[$dtOffset]);
+        $LoggerCT = explode(ParserSeparators::CTTHVAL, $threadData[$dtOffset]);
         if (count($LoggerCT) != 2 || $LoggerCT[0] != "Logger") {
             throw new ParserException('RES_GET_THREAD_CYCLE_TIME: Error during Tag logger data explode!');
         }
         $LoggerCTVals = $this->getCycleTime($LoggerCT[1]);
         
         // Get Cycle times from Tag Logger Writer
-        $LoggerWriterCT = explode(ParserSeparators::ctThVal, $threadData[$dtOffset+1]);
+        $LoggerWriterCT = explode(ParserSeparators::CTTHVAL, $threadData[$dtOffset + 1]);
         if (count($LoggerWriterCT) != 2 || $LoggerWriterCT[0] != "LoggerWriter") {
             throw new ParserException('RES_GET_THREAD_CYCLE_TIME: Error during Tag logger writer data explode!');
         }
         $LoggerWriterCTVals = $this->getCycleTime($LoggerWriterCT[1]);
         
         // Get Cycle times from Alarming
-        $AlarmingCT = explode(ParserSeparators::ctThVal, $threadData[$dtOffset+2]);
+        $AlarmingCT = explode(ParserSeparators::CTTHVAL, $threadData[$dtOffset + 2]);
         if (count($AlarmingCT) != 2 || $AlarmingCT[0] != "Alarming") {
             throw new ParserException('RES_GET_THREAD_CYCLE_TIME: Error during Alarming data explode!');
         }
         $AlarmingCTVals = $this->getCycleTime($AlarmingCT[1]);
         
         // Get Cycle times from Script system
-        $ScriptCT = explode(ParserSeparators::ctThVal, $threadData[$dtOffset+3]);
+        $ScriptCT = explode(ParserSeparators::CTTHVAL, $threadData[$dtOffset + 3]);
         if (count($ScriptCT) != 2 || $ScriptCT[0] != "Script") {
             throw new ParserException('RES_GET_THREAD_CYCLE_TIME: Error during Script system data explode!');
         }
@@ -584,12 +612,12 @@ class ParserResponse {
     
     /**
      * Prepare error response
-     * 
+     *
      * @param type $errorDT Error data
      * @throws ParserException
      */
-    private function responseERROR($errorDT) {
-
+    private function responseERROR($errorDT)
+    {
         if (!is_numeric($errorDT)) {
             throw new ParserException('responseERROR: Error code need to be numeric!');
         }
@@ -597,39 +625,55 @@ class ParserResponse {
         $str = 'Unknown reply';
         
         switch ($errorDT) {
-            case ParserReplyCodes::NOT_EXIST: $str = 'Tag does not exist!'; break;
-            case ParserReplyCodes::WRONG_VALUE: $str = 'Tag has wrong value!'; break;
-            case ParserReplyCodes::WRONG_TAG_TYPE: $str = 'Tag has wrong type!'; break;
-            case ParserReplyCodes::WRONG_TAG_AREA: $str = 'Tag has wrong area!'; break;
-            case ParserReplyCodes::WRONG_ADDR: $str = 'Tag has wrong address!'; break;
-            case ParserReplyCodes::INTERNAL_ERR: $str = 'Internal error!'; break;
-            case ParserReplyCodes::SQL_ERROR: $str = 'SQL error!'; break;
-            case ParserReplyCodes::UNKNOWN_CMD: $str = 'Unknown command!'; break;
+            case ParserReplyCodes::NOT_EXIST:
+                $str = 'Tag does not exist!';
+                break;
+            case ParserReplyCodes::WRONG_VALUE:
+                $str = 'Tag has wrong value!';
+                break;
+            case ParserReplyCodes::WRONG_TAG_TYPE:
+                $str = 'Tag has wrong type!';
+                break;
+            case ParserReplyCodes::WRONG_TAG_AREA:
+                $str = 'Tag has wrong area!';
+                break;
+            case ParserReplyCodes::WRONG_ADDR:
+                $str = 'Tag has wrong address!';
+                break;
+            case ParserReplyCodes::INTERNAL_ERR:
+                $str = 'Internal error!';
+                break;
+            case ParserReplyCodes::SQL_ERROR:
+                $str = 'SQL error!';
+                break;
+            case ParserReplyCodes::UNKNOWN_CMD:
+                $str = 'Unknown command!';
+                break;
         }
 
         // Throw error
-        throw new ParserException('ServerError: '.$str, $errorDT);
+        throw new ParserException('ServerError: ' . $str, $errorDT);
     }
     
     /**
      * Prepare response from C++ application
-     * 
+     *
      * @param string $serverResponse Server response
      * @return array
      * @throws ParserException
      */
-    public function response(string $serverResponse): array {
-
+    public function response(string $serverResponse): array
+    {
         // Check server response
         if (empty($serverResponse)) {
             throw new ParserException('response: Server response is empty!');
         }
 
         // Explode command and value from response
-        $dt = explode(ParserSeparators::cvS, $serverResponse);
+        $dt = explode(ParserSeparators::CVS, $serverResponse);
 
         // Check data count
-        if (count($dt)!=2) {
+        if (count($dt) != 2) {
             throw new ParserException('response: Server response is not valid!');
         }
 
@@ -647,12 +691,9 @@ class ParserResponse {
 
         // Check if response is error
         if ($cmd == ParserReplyCodes::NOK) {
-
             // Create error reply
             $this->responseERROR($values);
-
         } else { // Normal reply
-
             // Check command
             if (!ParserCommands::checkCMD($cmd)) {
                 throw new ParserException('response: Wrong command number!');
@@ -660,28 +701,67 @@ class ParserResponse {
 
             // Parse reply
             switch ($cmd) {
-                case ParserCommands::GET_BIT: $res = $this->RES_GET_BIT($values); break;
-                case ParserCommands::SET_BIT: $res = $this->RES_SET_BIT($values); break;
-                case ParserCommands::RESET_BIT: $res = $this->RES_RESET_BIT($values); break;
-                case ParserCommands::INVERT_BIT: $res = $this->RES_INVERT_BIT($values); break;
-                case ParserCommands::GET_BITS: $res = $this->RES_GET_BITS($values); break;
-                case ParserCommands::SET_BITS: $res = $this->RES_SET_BITS($values); break;
-                case ParserCommands::GET_BYTE: $res = $this->RES_GET_BYTE($values); break;
-                case ParserCommands::WRITE_BYTE: $res = $this->RES_WRITE_BYTE($values); break;
-                case ParserCommands::GET_WORD: $res = $this->RES_GET_WORD($values); break;
-                case ParserCommands::WRITE_WORD: $res = $this->RES_WRITE_WORD($values); break;
-                case ParserCommands::GET_DWORD: $res = $this->RES_GET_DWORD($values); break;
-                case ParserCommands::WRITE_DWORD: $res = $this->RES_WRITE_DWORD($values); break;
-                case ParserCommands::GET_INT: $res = $this->RES_GET_INT($values); break;
-                case ParserCommands::WRITE_INT: $res = $this->RES_WRITE_INT($values); break;
-                case ParserCommands::GET_REAL: $res = $this->RES_GET_REAL($values); break;
-                case ParserCommands::WRITE_REAL: $res = $this->RES_WRITE_REAL($values); break;
-                case ParserCommands::MULTI_CMD: $res = $this->RES_MULTI_CMD($values); break;
-                case ParserCommands::ACK_ALARM: $res = $this->RES_ACK_ALARM($values); break;
-                case ParserCommands::GET_THREAD_CYCLE_TIME: $res = $this->RES_GET_THREAD_CYCLE_TIME($values); break;
-                case ParserCommands::EXIT_APP: $res = $this->RES_EXIT_APP($values); break;
+                case ParserCommands::GET_BIT:
+                    $res = $this->resGetBit($values);
+                    break;
+                case ParserCommands::SET_BIT:
+                    $res = $this->resSetBit($values);
+                    break;
+                case ParserCommands::RESET_BIT:
+                    $res = $this->resResetBit($values);
+                    break;
+                case ParserCommands::INVERT_BIT:
+                    $res = $this->resInvertBit($values);
+                    break;
+                case ParserCommands::GET_BITS:
+                    $res = $this->resGetBits($values);
+                    break;
+                case ParserCommands::SET_BITS:
+                    $res = $this->resSetBits($values);
+                    break;
+                case ParserCommands::GET_BYTE:
+                    $res = $this->resGetByte($values);
+                    break;
+                case ParserCommands::WRITE_BYTE:
+                    $res = $this->resWriteByte($values);
+                    break;
+                case ParserCommands::GET_WORD:
+                    $res = $this->resGetWord($values);
+                    break;
+                case ParserCommands::WRITE_WORD:
+                    $res = $this->resWriteWord($values);
+                    break;
+                case ParserCommands::GET_DWORD:
+                    $res = $this->resGetDWord($values);
+                    break;
+                case ParserCommands::WRITE_DWORD:
+                    $res = $this->resWriteDWord($values);
+                    break;
+                case ParserCommands::GET_INT:
+                    $res = $this->resGetInt($values);
+                    break;
+                case ParserCommands::WRITE_INT:
+                    $res = $this->resWriteInt($values);
+                    break;
+                case ParserCommands::GET_REAL:
+                    $res = $this->resGetReal($values);
+                    break;
+                case ParserCommands::WRITE_REAL:
+                    $res = $this->resWriteReal($values);
+                    break;
+                case ParserCommands::MULTI_CMD:
+                    $res = $this->resMultiCmd($values);
+                    break;
+                case ParserCommands::ACK_ALARM:
+                    $res = $this->resAckAlarm($values);
+                    break;
+                case ParserCommands::GET_THREAD_CYCLE_TIME:
+                    $res = $this->resGetThreadCycleTime($values);
+                    break;
+                case ParserCommands::EXIT_APP:
+                    $res = $this->resExitApp($values);
+                    break;
             }
-
         }
 
         return $res;
