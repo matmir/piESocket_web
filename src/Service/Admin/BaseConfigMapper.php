@@ -11,7 +11,7 @@ use Doctrine\DBAL\Driver\Connection;
  */
 abstract class BaseConfigMapper
 {
-    protected $dbConn;
+    protected Connection $dbConn;
     
     public function __construct(Connection $connection)
     {
