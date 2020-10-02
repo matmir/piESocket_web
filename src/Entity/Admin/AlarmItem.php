@@ -4,6 +4,7 @@ namespace App\Entity\Admin;
 
 use Symfony\Component\Config\Definition\Exception\Exception;
 use App\Entity\Admin\Alarm;
+use DateTime;
 
 /**
  * Class represents active/archived alarm
@@ -15,47 +16,47 @@ class AlarmItem
     /**
      * Pending alarm identifier
      */
-    private $apid;
+    private int $apid;
     
     /**
      * Alarm definition identifier
      */
-    private $apadid;
+    private int $apadid;
     
     /**
      * Alarm priority
      */
-    private $alarmPriority;
+    private int $alarmPriority;
     
     /**
      * Alarm message
      */
-    private $alarmMessage;
+    private string $alarmMessage;
     
     /**
      * Alarm active flag
      */
-    private $apActive;
+    private bool $apActive;
     
     /**
      * Alarm acknowledgment flag
      */
-    private $apAck;
+    private bool $apAck;
     
     /**
      * Alarm on timestamp
      */
-    private $apOnTimestamp;
+    private ?DateTime $apOnTimestamp;
     
     /**
      * Alarm off timestamp
      */
-    private $apOffTimestamp;
+    private ?DateTime $apOffTimestamp;
     
     /**
      * Alarm acknowledgment timestamp
      */
-    private $apAckTimestamp;
+    private ?DateTime $apAckTimestamp;
     
     /**
      * Default constructor
@@ -211,7 +212,7 @@ class AlarmItem
     public function getOnTimestamp(): string
     {
         if ($this->apOnTimestamp === null) {
-            throw new Exception("Alarm on timestamp is NULL");
+            throw new Exception('Alarm on timestamp is NULL');
         }
         
         return $this->apOnTimestamp->format('Y-m-d H:i:s');
@@ -226,14 +227,14 @@ class AlarmItem
     public function setOnTimestamp(string $timeStamp)
     {
         if (trim($timeStamp) == false) {
-            throw new Exception("Alarm on timestamp can not be empty");
+            throw new Exception('Alarm on timestamp can not be empty');
         }
         
         // Create DateTime
-        $dt = \DateTime::createFromFormat('Y-m-d H:i:s', $timeStamp);
+        $dt = DateTime::createFromFormat('Y-m-d H:i:s', $timeStamp);
         
         if ($dt === false) {
-            throw new Exception("Alarm on timestamp wrong format");
+            throw new Exception('Alarm on timestamp wrong format');
         }
         
         $this->apOnTimestamp = $dt;
@@ -248,7 +249,7 @@ class AlarmItem
     {
         $ret = false;
         
-        if ($this->apOffTimestamp instanceof \DateTime) {
+        if ($this->apOffTimestamp instanceof DateTime) {
             $ret = true;
         }
         
@@ -264,7 +265,7 @@ class AlarmItem
     public function getOffTimestamp(): string
     {
         if ($this->apOffTimestamp === null) {
-            throw new Exception("Alarm off timestamp is NULL");
+            throw new Exception('Alarm off timestamp is NULL');
         }
         
         return $this->apOffTimestamp->format('Y-m-d H:i:s');
@@ -279,14 +280,14 @@ class AlarmItem
     public function setOffTimestamp(string $timeStamp)
     {
         if (trim($timeStamp) == false) {
-            throw new Exception("Alarm off timestamp can not be empty");
+            throw new Exception('Alarm off timestamp can not be empty');
         }
         
         // Create DateTime
-        $dt = \DateTime::createFromFormat('Y-m-d H:i:s', $timeStamp);
+        $dt = DateTime::createFromFormat('Y-m-d H:i:s', $timeStamp);
         
         if ($dt === false) {
-            throw new Exception("Alarm off timestamp wrong format");
+            throw new Exception('Alarm off timestamp wrong format');
         }
         
         $this->apOffTimestamp = $dt;
@@ -301,7 +302,7 @@ class AlarmItem
     public function getAckTimestamp(): string
     {
         if ($this->apAckTimestamp === null) {
-            throw new Exception("Alarm ack timestamp is NULL");
+            throw new Exception('Alarm ack timestamp is NULL');
         }
         
         return $this->apAckTimestamp->format('Y-m-d H:i:s');
@@ -316,14 +317,14 @@ class AlarmItem
     public function setAckTimestamp(string $timeStamp)
     {
         if (trim($timeStamp) == false) {
-            throw new Exception("Alarm ack timestamp can not be empty");
+            throw new Exception('Alarm ack timestamp can not be empty');
         }
         
         // Create DateTime
-        $dt = \DateTime::createFromFormat('Y-m-d H:i:s', $timeStamp);
+        $dt = DateTime::createFromFormat('Y-m-d H:i:s', $timeStamp);
         
         if ($dt === false) {
-            throw new Exception("Alarm ack timestamp wrong format");
+            throw new Exception('Alarm ack timestamp wrong format');
         }
         
         $this->apAckTimestamp = $dt;
