@@ -20,7 +20,7 @@ use App\Entity\AppException;
  */
 class AlarmMapper
 {
-    private $dbConn;
+    private Connection $dbConn;
     
     public function __construct(Connection $connection)
     {
@@ -32,7 +32,7 @@ class AlarmMapper
      *
      * @return array Array with Pending alarms
      */
-    public function getPendingAlarms()
+    public function getPendingAlarms(): array
     {
         // Basic query
         $sql = 'SELECT * FROM alarms_pending ap, alarms_definition ad';
@@ -175,7 +175,7 @@ class AlarmMapper
      * @param Paginator $paginator Paginator object
      * @return array Array with Alarms
      */
-    public function getAlarms(int $area = 0, int $sort = 0, int $sortDESC = 0, Paginator $paginator = null)
+    public function getAlarms(int $area = 0, int $sort = 0, int $sortDESC = 0, Paginator $paginator = null): array
     {
         // Basic query
         $sql = 'SELECT * FROM alarms_definition ad, tags t';
@@ -295,10 +295,10 @@ class AlarmMapper
      * Get number of all Alarms in DB
      *
      * @param int $area Alarm area
-     * @return numeric Number of Alarms in DB
+     * @return int Number of Alarms in DB
      * @throws Exception
      */
-    public function getAlarmsCount(int $area = 0)
+    public function getAlarmsCount(int $area = 0): int
     {
         // Base query
         $sql = "SELECT count(*) AS 'cnt' FROM tags t, alarms_definition ad WHERE ad.adtid=t.tid";
@@ -332,10 +332,10 @@ class AlarmMapper
     /**
      * Get number of all Archived Alarms in DB
      *
-     * @return numeric Number of Archived Alarms in DB
+     * @return int Number of Archived Alarms in DB
      * @throws Exception
      */
-    public function getArchivedAlarmsCount()
+    public function getArchivedAlarmsCount(): int
     {
         // Base query
         $sql = "SELECT count(*) AS 'cnt' FROM alarms_history";
@@ -360,11 +360,11 @@ class AlarmMapper
     /**
      * Get Alarm data
      *
-     * @param numeric $alarmId Alarm identifier
+     * @param int $alarmId Alarm identifier
      * @return Alarm Alarm object
      * @throws Exception Alarm identifier invalid or Alarm not exist
      */
-    public function getAlarm($alarmId): Alarm
+    public function getAlarm(int $alarmId): Alarm
     {
         // Check alarm identifier
         Alarm::checkId($alarmId);
@@ -539,9 +539,9 @@ class AlarmMapper
     /**
      * Delete Alarm
      *
-     * @param numeric $alarmId Alarm identifier
+     * @param int $alarmId Alarm identifier
      */
-    public function deleteAlarm($alarmId)
+    public function deleteAlarm(int $alarmId)
     {
         // Check alarm identifier
         Alarm::checkId($alarmId);
@@ -560,9 +560,9 @@ class AlarmMapper
     /**
      * Delete Archived Alarms
      *
-     * @param numeric $alarmId Alarm definition identifier
+     * @param int $alarmId Alarm definition identifier
      */
-    public function deleteArchivedAlarm($alarmId = 0)
+    public function deleteArchivedAlarm(int $alarmId = 0)
     {
         $sql = 'DELETE FROM alarms_history';
         
@@ -583,10 +583,10 @@ class AlarmMapper
     /**
      * Enable alarm
      *
-     * @param numeric $alarmId Alarm identifier
+     * @param int $alarmId Alarm identifier
      * @param bool $en Enable flag
      */
-    public function enableAlarm($alarmId, bool $en = true)
+    public function enableAlarm(int $alarmId, bool $en = true)
     {
         // Check alarm identifier
         Alarm::checkId($alarmId);
