@@ -30,17 +30,6 @@ class PaginatorTest extends TestCase
         $this->assertEquals(array(1,2,3), $pg->getViewPages());
     }
     
-    public function testDefaultConstructorWrong1()
-    {
-        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
-        $this->expectExceptionMessage('Total rows variable need to be numeric');
-        
-        $totalRows = 'eleven';
-        $rowsPerPage = 2;
-        
-        $pg = new Paginator($totalRows, $rowsPerPage);
-    }
-    
     public function testDefaultConstructorWrong2()
     {
         $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
@@ -48,17 +37,6 @@ class PaginatorTest extends TestCase
         
         $totalRows = -11;
         $rowsPerPage = 2;
-        
-        $pg = new Paginator($totalRows, $rowsPerPage);
-    }
-    
-    public function testDefaultConstructorWrong3()
-    {
-        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
-        $this->expectExceptionMessage('Rows per page variable need to be numeric');
-        
-        $totalRows = 11;
-        $rowsPerPage = 'two';
         
         $pg = new Paginator($totalRows, $rowsPerPage);
     }
@@ -97,18 +75,6 @@ class PaginatorTest extends TestCase
         $pg->setCurrentPage(50);
         
         $this->assertEquals($pg->getTotalPages(), $pg->getCurrentPage());
-    }
-    
-    public function testSetCurrentPageWrong1()
-    {
-        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
-        $this->expectExceptionMessage('Page variable need to be numeric');
-        
-        $totalRows = 11;
-        $rowsPerPage = 2;
-        
-        $pg = new Paginator($totalRows, $rowsPerPage);
-        $pg->setCurrentPage('two');
     }
     
     public function testSetCurrentPageWrong2()

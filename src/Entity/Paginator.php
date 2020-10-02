@@ -14,48 +14,42 @@ class Paginator
     /**
      * Total number of rows in DB
      */
-    private $totalRows;
+    private int $totalRows;
     
     /**
      * Number of rows per page
      */
-    private $rowsPerPage;
+    private int $rowsPerPage;
     
     /**
      * Current page
      */
-    private $currentPage;
+    private int $currentPage;
     
     /**
      * Total number of pages
      */
-    private $totalPages;
+    private int $totalPages;
     
     /**
      * Number of button with pages to display
      */
-    private $viewCount;
+    private int $viewCount;
     
     /**
      * Default constructor
      *
-     * @param numeric $totalRows Total number of rows
-     * @param numeric $rowsPerPage Number of rows per page
+     * @param int $totalRows Total number of rows
+     * @param int $rowsPerPage Number of rows per page
      * @throws Exception Wrong parameters
      */
-    public function __construct($totalRows, $rowsPerPage)
+    public function __construct(int $totalRows, int $rowsPerPage)
     {
-        if (!is_numeric($totalRows)) {
-            throw new Exception("Total rows variable need to be numeric");
-        }
         if ($totalRows < 0) {
-            throw new Exception("Total rows can not be less than 0");
-        }
-        if (!is_numeric($rowsPerPage)) {
-            throw new Exception("Rows per page variable need to be numeric");
+            throw new Exception('Total rows can not be less than 0');
         }
         if ($rowsPerPage < 1) {
-            throw new Exception("Rows per page can not be less than 1");
+            throw new Exception('Rows per page can not be less than 1');
         }
         
         $this->totalRows = $totalRows;
@@ -72,9 +66,9 @@ class Paginator
     /**
      * Get current page
      *
-     * @return numeric Current page
+     * @return int Current page
      */
-    public function getCurrentPage()
+    public function getCurrentPage(): int
     {
         return $this->currentPage;
     }
@@ -82,16 +76,13 @@ class Paginator
     /**
      * Set current page number
      *
-     * @param numeric $page Page number
+     * @param int $page Page number
      * @throws Exception Wrong parameters
      */
-    public function setCurrentPage($page)
+    public function setCurrentPage(int $page)
     {
-        if (!is_numeric($page)) {
-            throw new Exception("Page variable need to be numeric");
-        }
         if ($page <= 0) {
-            throw new Exception("Page can not be less than 1");
+            throw new Exception('Page can not be less than 1');
         }
         
         if ($page > $this->totalPages) {
@@ -106,7 +97,7 @@ class Paginator
      *
      * @return int Page buttons count
      */
-    public function getViewCount()
+    public function getViewCount(): int
     {
         return $this->viewCount;
     }
@@ -119,7 +110,7 @@ class Paginator
     public function setViewCount(int $vCount)
     {
         if ($vCount <= 0) {
-            throw new Exception("Page count can not be less than 1");
+            throw new Exception('Page count can not be less than 1');
         }
         
         $this->viewCount = $vCount;
@@ -128,9 +119,9 @@ class Paginator
     /**
      * Get total number of pages
      *
-     * @return numeric Total number of pages
+     * @return int Total number of pages
      */
-    public function getTotalPages()
+    public function getTotalPages(): int
     {
         return $this->totalPages;
     }
@@ -138,9 +129,9 @@ class Paginator
     /**
      * Get rows per page
      *
-     * @return numeric Rows per page
+     * @return int Rows per page
      */
-    public function getRowsPerPage()
+    public function getRowsPerPage(): int
     {
         return $this->rowsPerPage;
     }
@@ -150,7 +141,7 @@ class Paginator
      *
      * @return string Query contains LIMIT and OFFSET values
      */
-    public function getSqlQuery()
+    public function getSqlQuery(): string
     {
         // Prepare limit
         $limitQuery = "LIMIT " . $this->rowsPerPage;
@@ -171,7 +162,7 @@ class Paginator
      *
      * @return array Page numbers to show
      */
-    public function getViewPages()
+    public function getViewPages(): array
     {
         $ret = array();
         
