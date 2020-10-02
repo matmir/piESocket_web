@@ -50,15 +50,15 @@ class DriverConnection
      * @param int $id Connection identifier
      * @param string $name Connection name
      * @param int $type Connection type
-     * @param DriverModbus $mb DriverModbus object
-     * @param DriverSHM $shm DriverSHM object
+     * @param DriverModbus|null $mb DriverModbus object
+     * @param DriverSHM|null $shm DriverSHM object
      */
     public function __construct(
         int $id = 0,
         string $name = 'conn1',
         int $type = DriverType::SHM,
-        DriverModbus $mb = null,
-        DriverSHM $shm = null
+        ?DriverModbus $mb = null,
+        ?DriverSHM $shm = null
     ) {
         $this->id = $id;
         $this->name = $name;

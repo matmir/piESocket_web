@@ -42,10 +42,10 @@ class UserMapper
      *
      * @param int $sort User sorting (0 - ID, 1 - user name, 2 - email, 3 - active flag)
      * @param int $sortDESC Sorting direction (0 - ASC, 1 - DESC)
-     * @param Paginator $paginator Paginator object
+     * @param Paginator|null $paginator Paginator object
      * @return array Array with Users
      */
-    public function getUsers(int $sort = 0, int $sortDESC = 0, Paginator $paginator = null): array
+    public function getUsers(int $sort = 0, int $sortDESC = 0, ?Paginator $paginator = null): array
     {
         // Basic query
         $sql = 'SELECT * FROM app_users u';

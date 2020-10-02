@@ -32,10 +32,10 @@ class TagLoggerMapper
      * @param int $area Tag logger area (0 - all, 1 - input, 2 - output, 3 - memory)
      * @param int $sort Tag logger sorting (0 - ID, 1 - tag name, 2 - interval, 3 - last update, 4 - enabled flag)
      * @param int $sortDESC Sorting direction (0 - ASC, 1 - DESC)
-     * @param Paginator $paginator Paginator object
+     * @param Paginator|null $paginator Paginator object
      * @return array Array with Tag loggers
      */
-    public function getLoggers(int $area = 0, int $sort = 0, int $sortDESC = 0, Paginator $paginator = null): array
+    public function getLoggers(int $area = 0, int $sort = 0, int $sortDESC = 0, ?Paginator $paginator = null): array
     {
         // Basic query
         $sql = 'SELECT * FROM log_tags lt, tags t';

@@ -88,12 +88,22 @@ class Alarm
     /**
      * Default constructor
      *
-     * @param Tag $tag Tag connected to the alarm
+     * @param Tag|null $tag Tag object
+     * @param Tag|null $fbTag Feedback Tag object
+     * @param Tag|null $hwTag HW ack Tag object
+     * @param int $id Alarm identifier
+     * @param int $prio Alarm priority
+     * @param string $msg Alarm message
+     * @param int $trig Alarm trigger
+     * @param bool $trigBin Alarm trigger binary value
+     * @param int $trigN Alarm trigger numeric value
+     * @param float $trigR Alarm trigger float value
+     * @param bool $autoAck Alarm auto ack flag
      */
     public function __construct(
-        Tag $tag = null,
-        Tag $fbTag = null,
-        Tag $hwTag = null,
+        ?Tag $tag = null,
+        ?Tag $fbTag = null,
+        ?Tag $hwTag = null,
         int $id = 0,
         int $prio = 1,
         string $msg = '',

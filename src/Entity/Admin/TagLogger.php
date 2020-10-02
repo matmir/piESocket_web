@@ -53,13 +53,13 @@ class TagLogger
     /**
      * Default constructor
      *
-     * @param Tag $tag Tag object
+     * @param Tag|null $tag Tag object
      * @param int $id Tag logger identifier
      * @param int $interval Tag logger interval identifier
      * @param int $intervalS Tag logger interval seconds
      */
     public function __construct(
-        Tag $tag = null,
+        ?Tag $tag = null,
         int $id = 0,
         int $interval = TagLoggerInterval::I_1S,
         int $intervalS = 0

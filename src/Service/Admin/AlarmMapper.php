@@ -88,9 +88,10 @@ class AlarmMapper
      *
      * @param int $sort Alarm sorting (0 - ID, 1 - priority, 2 - on time, 3 - off time, 4 - ack time)
      * @param int $sortDESC Sorting direction (0 - ASC, 1 - DESC)
+     * @param Paginator|null Paginator object
      * @return array Array with Archived alarms
      */
-    public function getArchivedAlarms(int $sort = 0, int $sortDESC = 0, Paginator $paginator = null): array
+    public function getArchivedAlarms(int $sort = 0, int $sortDESC = 0, ?Paginator $paginator = null): array
     {
         // Basic query
         $sql = 'SELECT * FROM alarms_history ah, alarms_definition ad';
@@ -172,10 +173,10 @@ class AlarmMapper
      * @param int $sort Alarm sorting (0 - ID, 1 - tag name, 2 - priority, 3 - trigger type,
      *                                      4 - auto ack flag, 5 - active flag, 6 - pending flag, 7 - enable flag)
      * @param int $sortDESC Sorting direction (0 - ASC, 1 - DESC)
-     * @param Paginator $paginator Paginator object
+     * @param Paginator|null $paginator Paginator object
      * @return array Array with Alarms
      */
-    public function getAlarms(int $area = 0, int $sort = 0, int $sortDESC = 0, Paginator $paginator = null): array
+    public function getAlarms(int $area = 0, int $sort = 0, int $sortDESC = 0, ?Paginator $paginator = null): array
     {
         // Basic query
         $sql = 'SELECT * FROM alarms_definition ad, tags t';

@@ -51,14 +51,14 @@ class ScriptItem
     /**
      * Default constructor
      *
-     * @param Tag $tag Tag object
-     * @param Tag $fb Feedback tag
+     * @param Tag|null $tag Tag object
+     * @param Tag|null $fb Feedback tag
      * @param int $id Script item identifier
      * @param string $sName Script name
      */
     public function __construct(
-        Tag $tag = null,
-        Tag $fb = null,
+        ?Tag $tag = null,
+        ?Tag $fb = null,
         int $id = 0,
         string $sName = ''
     ) {
