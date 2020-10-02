@@ -25,57 +25,57 @@ class ConfigGeneral
     /**
      * Alarmin system update interval (milliseconds)
      */
-    private $alarmingUpdateInterval;
+    private int $alarmingUpdateInterval;
     
     /**
      * Process data update interval (milliseconds)
      */
-    private $processUpdateInterval;
+    private int $processUpdateInterval;
     
     /**
      * Network socket maximal number of connections
      */
-    private $socketMaxConn;
+    private int $socketMaxConn;
     
     /**
      * Network socket port
      */
-    private $socketPort;
+    private int $socketPort;
     
     /**
      * Tag logger system update interval (milliseconds)
      */
-    private $tagLoggerUpdateInterval;
+    private int $tagLoggerUpdateInterval;
     
     /**
      * Server application path
      */
-    private $serverAppPath;
+    private string $serverAppPath;
     
     /**
      * Web application path
      */
-    private $webAppPath;
+    private string $webAppPath;
     
     /**
      * Script system execute script
      */
-    private $scriptSystemExecuteScript;
+    private string $scriptSystemExecuteScript;
     
     /**
      * Script system update interval (milliseconds)
      */
-    private $scriptSystemUpdateInterval;
+    private int $scriptSystemUpdateInterval;
     
     /**
      * User scripts path
      */
-    private $userScriptsPath;
+    private string $userScriptsPath;
     
     /**
      * Alarm acknowledgement rights role
      */
-    private $ackAccessRole;
+    private string $ackAccessRole;
     
     /**
      * Default constructor
@@ -131,7 +131,7 @@ class ConfigGeneral
     {
         // Check values
         if (!($interval >= self::UPDATE_INTERVAL_MIN && $interval <= self::UPDATE_INTERVAL_MAX)) {
-            throw new Exception("Wrong update interval value");
+            throw new Exception('Wrong update interval value');
         }
         
         return true;
@@ -192,7 +192,7 @@ class ConfigGeneral
     {
         // Check values
         if ($conn <= 0) {
-            throw new Exception("Socket max connection wrong value");
+            throw new Exception('Socket max connection wrong value');
         }
         
         return true;
@@ -231,7 +231,7 @@ class ConfigGeneral
     {
         // Check values
         if ($prt < 1 || $prt > 65535) {
-            throw new Exception("Socket port wrong value");
+            throw new Exception('Socket port wrong value');
         }
         
         return true;
@@ -291,7 +291,7 @@ class ConfigGeneral
     public static function checkServerAppPath(string $pth): bool
     {
         if (trim($pth) == false) {
-            throw new Exception("Server application path can not be empty");
+            throw new Exception('Server application path can not be empty');
         }
         
         return true;
@@ -329,7 +329,7 @@ class ConfigGeneral
     public static function checkWebAppPath(string $pth): bool
     {
         if (trim($pth) == false) {
-            throw new Exception("Web application path can not be empty");
+            throw new Exception('Web application path can not be empty');
         }
         
         return true;
@@ -389,7 +389,7 @@ class ConfigGeneral
     public static function checkScriptSystemExecuteScript(string $scr): bool
     {
         if (trim($scr) == false) {
-            throw new Exception("Script system execute script can not be empty");
+            throw new Exception('Script system execute script can not be empty');
         }
         
         return true;
@@ -427,7 +427,7 @@ class ConfigGeneral
     public static function checkUserScriptsPath(string $uscr): bool
     {
         if (trim($uscr) == false) {
-            throw new Exception("User scripts path can not be empty");
+            throw new Exception('User scripts path can not be empty');
         }
         
         return true;

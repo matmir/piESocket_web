@@ -17,32 +17,32 @@ class DriverConnection
     /**
      * Driver connection identifier
      */
-    private $id;
+    private int $id;
     
     /**
      * Driver connection name
      */
-    private $name;
+    private string $name;
     
     /**
      * Driver connection type
      */
-    private $type;
+    private int $type;
     
     /**
      * Modbus driver configuration instance
      */
-    private $configModbus;
+    private ?DriverModbus $configModbus;
     
     /**
      * SHM driver configuration instance
      */
-    private $configShm;
+    private ?DriverShm $configShm;
     
     /**
      * Driver enable flag
      */
-    private $enable;
+    private bool $enable;
     
     /**
      * Default constructor
@@ -101,7 +101,7 @@ class DriverConnection
     {
         // Check values
         if ($id < 0) {
-            throw new Exception("Driver connection identifier wrong value");
+            throw new Exception('Driver connection identifier wrong value');
         }
         
         return true;
@@ -112,7 +112,7 @@ class DriverConnection
      *
      * @return string Driver connection name
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -139,7 +139,7 @@ class DriverConnection
     public static function checkName(string $nm): bool
     {
         if (trim($nm) == false) {
-            throw new Exception("Driver connection name can not be empty");
+            throw new Exception('Driver connection name can not be empty');
         }
         
         return true;
@@ -170,9 +170,9 @@ class DriverConnection
     /**
      * Get Modbus configuration
      *
-     * @return ConfigDriverModbus object or null
+     * @return DriverModbus object or null
      */
-    public function getModbusConfig()
+    public function getModbusConfig(): ?DriverModbus
     {
         return $this->configModbus;
     }
@@ -194,40 +194,21 @@ class DriverConnection
     }
     
     /**
-     * Check Modbus configuration
-     *
-     * @param $mb Modbus configuration
-     * @return bool True if Modbus configuration is valid
-     * @throws Exception if Modbus configuration is invalid
-     */
-    private function checkModbusConfig($mb): bool
-    {
-        if (!($mb instanceof DriverModbus)) {
-            throw new Exception("Modbus configuration is wrong type");
-        }
-        
-        return true;
-    }
-    
-    /**
      * Set Modbus configuration
      *
-     * @param $mb Modbus configuration object
+     * @param DriverModbus $mb Modbus configuration object
      */
-    public function setModbusConfig($mb)
+    public function setModbusConfig(DriverModbus $mb)
     {
-        // Check value
-        $this->checkModbusConfig($mb);
-        
         $this->configModbus = $mb;
     }
     
     /**
      * Get SHM configuration
      *
-     * @return ConfigDriverShm object or null
+     * @return DriverShm object or null
      */
-    public function getShmConfig()
+    public function getShmConfig(): ?DriverShm
     {
         return $this->configShm;
     }
@@ -249,31 +230,12 @@ class DriverConnection
     }
     
     /**
-     * Check SHM configuration
-     *
-     * @param $shm SHM configuration
-     * @return bool True if SHM configuration is valid
-     * @throws Exception if SHM configuration is invalid
-     */
-    private function checkShmConfig($shm): bool
-    {
-        if (!($shm instanceof DriverSHM)) {
-            throw new Exception("SHM configuration is wrong type");
-        }
-        
-        return true;
-    }
-    
-    /**
      * Set SHM configuration
      *
-     * @param $shm SHM configuration object
+     * @param DriverShm $shm SHM configuration object
      */
-    public function setShmConfig($shm)
+    public function setShmConfig(DriverShm $shm)
     {
-        // Check value
-        $this->checkShmConfig($shm);
-        
         $this->configShm = $shm;
     }
     
@@ -319,7 +281,7 @@ class DriverConnection
         
         // Check driver instance
         if (!$this->isModbusConfig() && !$this->isShmConfig()) {
-            throw new Exception("Missing driver configuration object");
+            throw new Exception('Missing driver configuration object');
         }
         
         // Check modbus

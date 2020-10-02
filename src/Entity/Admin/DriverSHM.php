@@ -13,15 +13,13 @@ class DriverSHM
 {
     /**
      * SHM driver identifier
-     *
-     * @Assert\PositiveOrZero
      */
-    private $id;
+    private int $id;
     
     /**
      * SHM segment name
      */
-    private $segmentName;
+    private string $segmentName;
     
     /**
      * Max byte address
@@ -75,7 +73,7 @@ class DriverSHM
     {
         // Check values
         if ($id < 0) {
-            throw new Exception("SHM driver identifier wrong value");
+            throw new Exception('SHM driver identifier wrong value');
         }
         
         return true;
@@ -114,7 +112,7 @@ class DriverSHM
     {
         // Check values
         if (trim($val) == false) {
-            throw new Exception("SHM segment name can not be empty");
+            throw new Exception('SHM segment name can not be empty');
         }
         
         return true;
