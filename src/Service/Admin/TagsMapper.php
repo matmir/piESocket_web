@@ -20,7 +20,7 @@ use App\Service\Admin\DriverConnectionMapper;
  */
 class TagsMapper
 {
-    private $dbConn;
+    private Connection $dbConn;
     
     public function __construct(Connection $connection)
     {
@@ -36,7 +36,7 @@ class TagsMapper
      * @param Paginator $paginator Paginator object
      * @return array Array with Tags
      */
-    public function getTags(int $area = 0, int $sort = 0, int $sortDESC = 0, Paginator $paginator = null)
+    public function getTags(int $area = 0, int $sort = 0, int $sortDESC = 0, Paginator $paginator = null): array
     {
         // Basic query
         $sql = 'SELECT * FROM tags t, driver_connections dc WHERE t.tConnId = dc.dcId';
@@ -111,10 +111,10 @@ class TagsMapper
      * Get number of all tags in DB
      *
      * @param int $area Tag area
-     * @return numeric Number of tags in DB
+     * @return int Number of tags in DB
      * @throws Exception
      */
-    public function getTagsCount(int $area = 0)
+    public function getTagsCount(int $area = 0): int
     {
         // Base query
         $sql = "SELECT count(*) AS 'cnt' FROM tags";
@@ -148,11 +148,11 @@ class TagsMapper
     /**
      * Get Tag data
      *
-     * @param numeric $tagId Tag identifier
+     * @param int $tagId Tag identifier
      * @return Tag Tag object
      * @throws Exception Tag identifier invalid or Tag not exist
      */
-    public function getTag($tagId)
+    public function getTag(int $tagId)
     {
         // Check tag identifier
         Tag::checkId($tagId);
@@ -195,7 +195,7 @@ class TagsMapper
      * @return Tag Tag object
      * @throws Exception Tag name invalid or Tag not exist
      */
-    public function getTagByName(string $tagName)
+    public function getTagByName(string $tagName): Tag
     {
         // Check tag name
         Tag::checkName($tagName);
@@ -239,7 +239,7 @@ class TagsMapper
      * @throws AppException
      * @throws Exception
      */
-    public function searchTagsByName(string $tagName)
+    public function searchTagsByName(string $tagName): array
     {
         // Check tag name
         Tag::checkName($tagName);
@@ -281,10 +281,10 @@ class TagsMapper
      * Check if given Tag has unique address
      *
      * @param Tag $tag Tag object
-     * @return boolean True if address does not exist in DB
+     * @return bool True if address does not exist in DB
      * @throws Exception
      */
-    private function isTagAddressExist(Tag $tag)
+    private function isTagAddressExist(Tag $tag): bool
     {
         $ret = false;
         
@@ -428,9 +428,9 @@ class TagsMapper
     /**
      * Delete Tag
      *
-     * @param numeric $tagId Tag identifier
+     * @param int $tagId Tag identifier
      */
-    public function deleteTag($tagId)
+    public function deleteTag(int $tagId)
     {
         // Check tag identifier
         Tag::checkId($tagId);
