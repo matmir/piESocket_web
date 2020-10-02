@@ -19,52 +19,52 @@ class Tag
     /**
      * Tag identifier
      */
-    private $tid;
+    private int $tid;
     
     /**
      * Driver connection identifier
      */
-    private $connId;
+    private int $connId;
     
     /**
      * Driver connection name
      */
-    private $connName;
+    private string $connName;
     
     /**
      * Tag name
      */
-    private $tName;
+    private string $tName;
     
     /**
      * Tag type
      */
-    private $tType;
+    private int $tType;
     
     /**
      * Tag area
      */
-    private $tArea;
+    private int $tArea;
     
     /**
      * Tag byte address
      */
-    private $tByteAddress;
+    private int $tByteAddress;
     
     /**
      * Tag bit address
      */
-    private $tBitAddress;
+    private int $tBitAddress;
     
     /**
      * Tag read access role name
      */
-    private $tReadAccess;
+    private string $tReadAccess;
     
     /**
      * Tag write access role name
      */
-    private $tWriteAccess;
+    private string $tWriteAccess;
     
     /**
      * Default constructor
@@ -137,7 +137,7 @@ class Tag
     {
         // Check values
         if ($id < 0) {
-            throw new Exception("Tag identifier wrong value");
+            throw new Exception('Tag identifier wrong value');
         }
         
         return true;
@@ -219,7 +219,7 @@ class Tag
     public static function checkName(string $nm): bool
     {
         if (trim($nm) == false) {
-            throw new Exception("Tag name can not be empty");
+            throw new Exception('Tag name can not be empty');
         }
         
         return true;
@@ -306,7 +306,7 @@ class Tag
     private function checkByteAddress(int $byteAddr): bool
     {
         if ($byteAddr < 0) {
-            throw new Exception("Tag byte address can not be lower than 0");
+            throw new Exception('Tag byte address can not be lower than 0');
         }
         
         return true;
@@ -348,7 +348,7 @@ class Tag
     private function checkBitAddress(int $bitAddr): bool
     {
         if ($bitAddr < 0 || $bitAddr >= 8) {
-            throw new Exception("Tag bit address is invalid");
+            throw new Exception('Tag bit address is invalid');
         }
         
         return true;

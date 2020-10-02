@@ -110,6 +110,10 @@ class TagController extends AbstractController
                     // Add error
                     $form->get('tByteAddress')->addError(new FormError($errorObj->getMessage()));
                     break;
+                case AppException::TAG_WRONG_AREA:
+                    // Add error
+                    $form->get('tArea')->addError(new FormError($errorObj->getMessage()));
+                    break;
                 default:
                     $form->get('tName')->addError(new FormError('Unknown exception!'));
             }

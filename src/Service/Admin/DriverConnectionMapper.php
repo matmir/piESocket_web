@@ -14,6 +14,7 @@ use App\Entity\Admin\DriverModbusMode;
 use App\Entity\Admin\DriverSHM;
 use App\Entity\Admin\DriverType;
 use App\Entity\Admin\Tag;
+use App\Entity\Admin\TagArea;
 use App\Entity\AppException;
 
 /**
@@ -748,6 +749,29 @@ class DriverConnectionMapper extends BaseConfigMapper
                 " Max allowed byte address is " . ($maxByteAddress - 1),
                 AppException::TAG_BYTE_ADDRESS_WRONG
             );
+        }
+    }
+    
+    /**
+     * Check if Tag area is out of driver range
+     *
+     * @param Tag $tg Tag object
+     * @throws AppException
+     */
+    public function checkDriverArea(Tag $tg)
+    {
+        // Get connection
+        $conn = $this->getConnection($tg->getConnId());
+        
+        // Check driver type
+        if ($conn->isModbusConfig()) {
+            // Check Tag area
+            if ($tg->getArea() == TagArea::MEMORY) {
+                throw new AppException(
+                    'Memory area is not allowed for Modbus driver.',
+                    AppException::TAG_WRONG_AREA
+                );
+            }
         }
     }
 }

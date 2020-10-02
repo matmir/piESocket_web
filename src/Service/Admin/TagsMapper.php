@@ -340,6 +340,9 @@ class TagsMapper
         $conn = new DriverConnectionMapper($this->dbConn);
         $conn->checkDriverByteAddress($newTag);
         
+        // Check Area
+        $conn->checkDriverArea($newTag);
+        
         // Query
         $q = 'INSERT INTO tags (tConnId, tName, tType, tArea, tByteAddress, tBitAddress, tReadAccess, tWriteAccess)';
         $q .= ' VALUES(?, ?, ?, ?, ?, ?, ?, ?);';
@@ -390,6 +393,9 @@ class TagsMapper
         // Check Byte address
         $conn = new DriverConnectionMapper($this->dbConn);
         $conn->checkDriverByteAddress($newTag);
+        
+        // Check Area
+        $conn->checkDriverArea($newTag);
         
         // Query
         $q = 'UPDATE tags SET tConnId = ?, tName = ?, tType = ?, tArea = ?, tByteAddress = ?, tBitAddress = ?';
