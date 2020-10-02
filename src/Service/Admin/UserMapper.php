@@ -19,11 +19,11 @@ use App\Entity\AppException;
  */
 class UserMapper
 {
-    private $dbConn;
+    private Connection $dbConn;
     
-    private $encoder;
+    private UserPasswordEncoderInterface $encoder;
     
-    private $authChecker;
+    private AuthorizationCheckerInterface $authChecker;
     
     public function __construct(
         Connection $connection,
@@ -106,10 +106,10 @@ class UserMapper
     /**
      * Get number of all users in DB
      *
-     * @return numeric Number of users in DB
+     * @return int Number of users in DB
      * @throws Exception
      */
-    public function getUsersCount()
+    public function getUsersCount(): int
     {
         // Base query
         $sql = "SELECT count(*) AS 'cnt' FROM app_users;";
@@ -211,10 +211,10 @@ class UserMapper
      * Check if given User has unique email
      *
      * @param User $user User object
-     * @return boolean True if address exist in DB
+     * @return bool True if address exist in DB
      * @throws Exception
      */
-    private function isEmailAddressExist(User $user)
+    private function isEmailAddressExist(User $user): bool
     {
         $ret = false;
         
@@ -306,7 +306,7 @@ class UserMapper
      * @param string $oldPass Old user password
      * @return bool True if old password is valid
      */
-    private function verifyOldPassword(User $oldUser, $oldPass): bool
+    private function verifyOldPassword(User $oldUser, string $oldPass): bool
     {
         // Check password
         $valid = $this->encoder->isPasswordValid($oldUser, $oldPass);
@@ -338,7 +338,7 @@ class UserMapper
      * @param User $oldUser Old User object
      * @param string $oldPass Old user password
      */
-    public function editUser(User $newUser, User $oldUser, $oldPass)
+    public function editUser(User $newUser, User $oldUser, string $oldPass)
     {
         // Check old user data
         $oldUser->isValid(true);

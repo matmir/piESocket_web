@@ -14,10 +14,9 @@ use App\Entity\AppException;
  */
 class ParserAccessRights
 {
+    private Security $security;
     
-    private $security;
-    
-    private $tagsMapper;
+    private TagsMapper $tagsMapper;
     
     /**
      * Default constructor

@@ -29,7 +29,7 @@ class ParserQuery
     /**
      * Alarm acknowledgement rights
      */
-    private $ackRights;
+    private string $ackRights;
     
     /**
      * Default constructor
