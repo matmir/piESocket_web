@@ -16,42 +16,45 @@ class ScriptItem
     /**
      * Script identifier
      */
-    private $scid;
+    private int $scid;
     
     /**
      * Tag object
      */
-    private $scTag;
+    private ?Tag $scTag;
     
     /**
      * Script name
      */
-    private $scName;
+    private string $scName;
     
     /**
      * Script run flag
      */
-    private $scRun;
+    private bool $scRun;
     
     /**
      * Script lock flag
      */
-    private $scLock;
+    private bool $scLock;
     
     /**
      * Tag informs controller that script is running (optional)
      */
-    private $scFeedbackRun;
+    private ?Tag $scFeedbackRun;
     
     /**
      * Script is enabled
      */
-    private $scEnable;
+    private bool $scEnable;
     
     /**
      * Default constructor
      *
      * @param Tag $tag Tag object
+     * @param Tag $fb Feedback tag
+     * @param int $id Script item identifier
+     * @param string $sName Script name
      */
     public function __construct(
         Tag $tag = null,
@@ -99,7 +102,7 @@ class ScriptItem
     {
         // Check values
         if ($id < 0) {
-            throw new Exception("Script identifier wrong value");
+            throw new Exception('Script identifier wrong value');
         }
         
         return true;
@@ -176,7 +179,7 @@ class ScriptItem
     public static function checkName(string $msg): bool
     {
         if (trim($msg) == false) {
-            throw new Exception("Script name can not be empty");
+            throw new Exception('Script name can not be empty');
         }
         
         return true;
@@ -240,7 +243,7 @@ class ScriptItem
      *
      * @return Tag object or null
      */
-    public function getFeedbackRun()
+    public function getFeedbackRun(): ?Tag
     {
         return $this->scFeedbackRun;
     }
@@ -273,7 +276,7 @@ class ScriptItem
         if ($feedback instanceof Tag) {
             $feedback->isValid(true, true, TagType::BIT);
         } elseif (!($feedback === null)) {
-            throw new Exception("Feedback Tag is wrong type");
+            throw new Exception('Feedback Tag is wrong type');
         }
         
         return true;
@@ -284,7 +287,7 @@ class ScriptItem
      *
      * @param $feedback Tag object or null
      */
-    public function setFeedbackRun($feedback = null)
+    public function setFeedbackRun(?Tag $feedback = null)
     {
         // Check value
         $this->checkFeedbackRun($feedback);
@@ -330,7 +333,7 @@ class ScriptItem
         if ($this->isTag()) {
             $this->scTag->isValid(true, true, TagType::BIT);
         } else {
-            throw new Exception("Missing Tag object");
+            throw new Exception('Missing Tag object');
         }
         
         // Check Name
