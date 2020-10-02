@@ -19,7 +19,7 @@ use App\Entity\AppException;
  */
 class TagLoggerMapper
 {
-    private $dbConn;
+    private Connection $dbConn;
     
     public function __construct(Connection $connection)
     {
@@ -35,7 +35,7 @@ class TagLoggerMapper
      * @param Paginator $paginator Paginator object
      * @return array Array with Tag loggers
      */
-    public function getLoggers(int $area = 0, int $sort = 0, int $sortDESC = 0, Paginator $paginator = null)
+    public function getLoggers(int $area = 0, int $sort = 0, int $sortDESC = 0, Paginator $paginator = null): array
     {
         // Basic query
         $sql = 'SELECT * FROM log_tags lt, tags t';
@@ -121,10 +121,10 @@ class TagLoggerMapper
      * Get number of all tag loggers in DB
      *
      * @param int $area Tag area
-     * @return numeric Number of tag loggers in DB
+     * @return int Number of tag loggers in DB
      * @throws Exception
      */
-    public function getLoggersCount(int $area = 0)
+    public function getLoggersCount(int $area = 0): int
     {
         // Base query
         $sql = "SELECT count(*) AS 'cnt' FROM tags t, log_tags lt WHERE lt.lttid=t.tid";
@@ -158,11 +158,11 @@ class TagLoggerMapper
     /**
      * Get Tag logger data
      *
-     * @param numeric $loggerId Tag identifier
+     * @param int $loggerId Tag identifier
      * @return TagLogger Tag Logger object
      * @throws Exception Logger identifier invalid or Logger not exist
      */
-    public function getLogger($loggerId): TagLogger
+    public function getLogger(int $loggerId): TagLogger
     {
         // Check logger identifier
         TagLogger::checkId($loggerId);
@@ -598,9 +598,9 @@ class TagLoggerMapper
     /**
      * Delete Tag logger
      *
-     * @param numeric $loggerId Tag logger identifier
+     * @param int $loggerId Tag logger identifier
      */
-    public function deleteLogger($loggerId)
+    public function deleteLogger(int $loggerId)
     {
         // Check logger identifier
         TagLogger::checkId($loggerId);
@@ -632,10 +632,10 @@ class TagLoggerMapper
     /**
      * Enable logger
      *
-     * @param numeric $loggerId Tag logger identifier
+     * @param int $loggerId Tag logger identifier
      * @param bool $en Enable flag
      */
-    public function enableLogger($loggerId, bool $en = true)
+    public function enableLogger(int $loggerId, bool $en = true)
     {
         // Check logger identifier
         TagLogger::checkId($loggerId);
