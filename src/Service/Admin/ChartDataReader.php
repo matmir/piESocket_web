@@ -16,9 +16,9 @@ use App\Entity\Admin\TagType;
  */
 class ChartDataReader
 {
-    private $dbConn;
+    private Connection $dbConn;
     
-    private $tagLoggerMapper;
+    private TagLoggerMapper $tagLoggerMapper;
     
     public function __construct(Connection $connection)
     {

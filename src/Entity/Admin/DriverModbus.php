@@ -15,67 +15,67 @@ class DriverModbus
     /**
      * Modbus driver identifier
      */
-    private $id;
+    private int $id;
     
     /**
      * Modbus mode
      */
-    private $mode;
+    private int $mode;
     
     /**
      * Driver polling interval (ms)
      */
-    private $driverPolling;
+    private int $driverPolling;
     
     /**
      * Register count
      */
-    private $registerCount;
+    private int $registerCount;
     
     /**
      * Modbus RTU baud rate
      */
-    private $RTU_baud;
+    private int $RTU_baud;
     
     /**
      * Modbus RTU data bits
      */
-    private $RTU_dataBit;
+    private int $RTU_dataBit;
     
     /**
      * Modbus RTU parity
      */
-    private $RTU_parity;
+    private string $RTU_parity;
     
     /**
      * Modbus RTU port name
      */
-    private $RTU_port;
+    private string $RTU_port;
     
     /**
      * Modbus RTU stop bits
      */
-    private $RTU_stopBit;
+    private int $RTU_stopBit;
     
     /**
      * Modbus slave ID
      */
-    private $slaveID;
+    private int $slaveID;
     
     /**
      * Modbus TCP IP address
      */
-    private $TCP_addr;
+    private string $TCP_addr;
     
     /**
      * Modbus TCP port number
      */
-    private $TCP_port;
+    private int $TCP_port;
     
     /**
      * Use slaveID in TCP mode
      */
-    private $TCP_use_slaveID;
+    private bool $TCP_use_slaveID;
     
     /**
      * Default constructor
@@ -162,7 +162,7 @@ class DriverModbus
     {
         // Check values
         if ($id < 0) {
-            throw new Exception("Modbus driver identifier wrong value");
+            throw new Exception('Modbus driver identifier wrong value');
         }
         
         return true;
@@ -223,7 +223,7 @@ class DriverModbus
     {
         // Check values
         if ($val <= 0) {
-            throw new Exception("Modbus driver polling interval wrong value");
+            throw new Exception('Modbus driver polling interval wrong value');
         }
         
         return true;
@@ -234,7 +234,7 @@ class DriverModbus
      *
      * @return int Modbus register count
      */
-    public function getRegisterCount()
+    public function getRegisterCount(): int
     {
         return $this->registerCount;
     }
@@ -262,7 +262,7 @@ class DriverModbus
     {
         // Check values
         if ($val <= 0) {
-            throw new Exception("Modbus register count wrong value");
+            throw new Exception('Modbus register count wrong value');
         }
         
         return true;
@@ -273,7 +273,7 @@ class DriverModbus
      *
      * @return int Modbus RTU baud rate
      */
-    public function getRTUbaud()
+    public function getRTUbaud(): int
     {
         return $this->RTU_baud;
     }
@@ -301,7 +301,7 @@ class DriverModbus
     {
         // Check values
         if ($val <= 0) {
-            throw new Exception("Modbus baud rate wrong value");
+            throw new Exception('Modbus baud rate wrong value');
         }
         
         return true;
@@ -312,7 +312,7 @@ class DriverModbus
      *
      * @return int Modbus RTU data bit
      */
-    public function getRTUdataBit()
+    public function getRTUdataBit(): int
     {
         return $this->RTU_dataBit;
     }
@@ -340,7 +340,7 @@ class DriverModbus
     {
         // Check values
         if ($val < 5 || $val > 8) {
-            throw new Exception("Modbus data bit wrong value");
+            throw new Exception('Modbus data bit wrong value');
         }
         
         return true;
@@ -351,7 +351,7 @@ class DriverModbus
      *
      * @return string Modbus RTU parity
      */
-    public function getRTUparity()
+    public function getRTUparity(): string
     {
         return $this->RTU_parity;
     }
@@ -378,7 +378,7 @@ class DriverModbus
     public static function checkRTUparity(string $val): bool
     {
         if (strlen($val) != 1 || !($val == 'N' || $val == 'E' || $val == 'O')) {
-            throw new Exception("Modbus RTU parity wrong value");
+            throw new Exception('Modbus RTU parity wrong value');
         }
         
         return true;
@@ -389,7 +389,7 @@ class DriverModbus
      *
      * @return string Modbus RTU port
      */
-    public function getRTUport()
+    public function getRTUport(): string
     {
         return $this->RTU_port;
     }
@@ -417,7 +417,7 @@ class DriverModbus
     {
         // Check values
         if (trim($val) == false) {
-            throw new Exception("Modbus RTU port can not be empty");
+            throw new Exception('Modbus RTU port can not be empty');
         }
         
         return true;
@@ -428,7 +428,7 @@ class DriverModbus
      *
      * @return int Modbus RTU stop bit
      */
-    public function getRTUstopBit()
+    public function getRTUstopBit(): int
     {
         return $this->RTU_stopBit;
     }
@@ -456,7 +456,7 @@ class DriverModbus
     {
         // Check values
         if ($val < 1 || $val > 2) {
-            throw new Exception("Modbus stop bit wrong value");
+            throw new Exception('Modbus stop bit wrong value');
         }
         
         return true;
@@ -467,7 +467,7 @@ class DriverModbus
      *
      * @return int Modbus slave ID
      */
-    public function getSlaveID()
+    public function getSlaveID(): int
     {
         return $this->slaveID;
     }
@@ -495,7 +495,7 @@ class DriverModbus
     {
         // Check values
         if ($val < 1 || $val > 247) {
-            throw new Exception("Modbus slave ID wrong value");
+            throw new Exception('Modbus slave ID wrong value');
         }
         
         return true;
@@ -534,7 +534,7 @@ class DriverModbus
     {
         // Check values
         if (trim($val) == false) {
-            throw new Exception("Modbus slave IP address can not be empty");
+            throw new Exception('Modbus slave IP address can not be empty');
         }
         
         return true;
@@ -545,7 +545,7 @@ class DriverModbus
      *
      * @return int Modbus port number
      */
-    public function getTCPport()
+    public function getTCPport(): int
     {
         return $this->TCP_port;
     }
@@ -573,7 +573,7 @@ class DriverModbus
     {
         // Check values
         if ($val < 1) {
-            throw new Exception("Modbus TCP port wrong value");
+            throw new Exception('Modbus TCP port wrong value');
         }
         
         return true;

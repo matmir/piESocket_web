@@ -18,12 +18,12 @@ class ParserExecute
     /**
      * Parser query object
      */
-    private $query;
+    private ParserQuery $query;
     
     /**
      * Parser response object
      */
-    private $response;
+    private ParserResponse $response;
     
     /**
      * System configuration object

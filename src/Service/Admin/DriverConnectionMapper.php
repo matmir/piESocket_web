@@ -14,6 +14,7 @@ use App\Entity\Admin\DriverModbusMode;
 use App\Entity\Admin\DriverSHM;
 use App\Entity\Admin\DriverType;
 use App\Entity\Admin\Tag;
+use App\Entity\Admin\TagArea;
 use App\Entity\AppException;
 
 /**
@@ -38,7 +39,7 @@ class DriverConnectionMapper extends BaseConfigMapper
      *
      * @return array Array with Driver connections
      */
-    public function getConnections(bool $onlyActive = false)
+    public function getConnections(bool $onlyActive = false): array
     {
         // Basic query
         $sql = 'SELECT * FROM driver_connections';
@@ -104,7 +105,7 @@ class DriverConnectionMapper extends BaseConfigMapper
      * @return array Connection names with id
      * @throws Exception
      */
-    public function getConnectionsName()
+    public function getConnectionsName(): array
     {
         // Basic query
         $sql = 'SELECT * FROM driver_connections;';
@@ -621,10 +622,10 @@ class DriverConnectionMapper extends BaseConfigMapper
     /**
      * Delete modbus configuration
      *
-     * @param type $mId Modbus configuration identifier
+     * @param int $mId Modbus configuration identifier
      * @throws Exception
      */
-    private function deleteModbusConfiguration($mId)
+    private function deleteModbusConfiguration(int $mId)
     {
         DriverModbus::checkId($mId);
         
@@ -639,10 +640,10 @@ class DriverConnectionMapper extends BaseConfigMapper
     /**
      * Delete shm configuration
      *
-     * @param type $sId SHM configuration identifier
+     * @param int $sId SHM configuration identifier
      * @throws Exception
      */
-    private function deleteShmConfiguration($sId)
+    private function deleteShmConfiguration(int $sId)
     {
         DriverSHM::checkId($sId);
         
@@ -657,9 +658,9 @@ class DriverConnectionMapper extends BaseConfigMapper
     /**
      * Delete driver connection
      *
-     * @param numeric $connId Driver connection identifier
+     * @param int $connId Driver connection identifier
      */
-    public function deleteConnection($connId)
+    public function deleteConnection(int $connId)
     {
         // Get connection object
         $conn = $this->getConnection($connId);
@@ -697,10 +698,10 @@ class DriverConnectionMapper extends BaseConfigMapper
     /**
      * Enable driver connection
      *
-     * @param numeric $connId Driver connection identifier
+     * @param int $connId Driver connection identifier
      * @param bool $en Enable flag
      */
-    public function enableConnection($connId, bool $en = true)
+    public function enableConnection(int $connId, bool $en = true)
     {
         // Check identifier
         DriverConnection::checkId($connId);
@@ -748,6 +749,29 @@ class DriverConnectionMapper extends BaseConfigMapper
                 " Max allowed byte address is " . ($maxByteAddress - 1),
                 AppException::TAG_BYTE_ADDRESS_WRONG
             );
+        }
+    }
+    
+    /**
+     * Check if Tag area is out of driver range
+     *
+     * @param Tag $tg Tag object
+     * @throws AppException
+     */
+    public function checkDriverArea(Tag $tg)
+    {
+        // Get connection
+        $conn = $this->getConnection($tg->getConnId());
+        
+        // Check driver type
+        if ($conn->isModbusConfig()) {
+            // Check Tag area
+            if ($tg->getArea() == TagArea::MEMORY) {
+                throw new AppException(
+                    'Memory area is not allowed for Modbus driver.',
+                    AppException::TAG_WRONG_AREA
+                );
+            }
         }
     }
 }

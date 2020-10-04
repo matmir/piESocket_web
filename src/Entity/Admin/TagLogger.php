@@ -18,22 +18,22 @@ class TagLogger
     /**
      * Tag logger identifier
      */
-    private $ltid;
+    private int $ltid;
         
     /**
      * Tag object
      */
-    private $ltTag;
+    private ?Tag $ltTag;
     
     /**
      * Tag logger interval object
      */
-    private $ltInterval;
+    private int $ltInterval;
     
     /**
      * Tag logger interval seconds
      */
-    private $ltIntervalS;
+    private int $ltIntervalS;
     
     /**
      * Tag last log time
@@ -48,18 +48,18 @@ class TagLogger
     /**
      * Tag logger enabled flag
      */
-    private $ltEnable;
+    private bool $ltEnable;
     
     /**
      * Default constructor
      *
-     * @param Tag $tag Tag object
+     * @param Tag|null $tag Tag object
      * @param int $id Tag logger identifier
      * @param int $interval Tag logger interval identifier
      * @param int $intervalS Tag logger interval seconds
      */
     public function __construct(
-        Tag $tag = null,
+        ?Tag $tag = null,
         int $id = 0,
         int $interval = TagLoggerInterval::I_1S,
         int $intervalS = 0
@@ -99,7 +99,7 @@ class TagLogger
     {
         // Check values
         if ($id < 0) {
-            throw new Exception("Tag logger identifier wrong value");
+            throw new Exception('Tag logger identifier wrong value');
         }
         
         return true;
@@ -199,7 +199,7 @@ class TagLogger
     {
         if ($sec < 1 && $this->ltInterval == TagLoggerInterval::I_XS) {
             throw new AppException(
-                "Tag logger interval seconds should be greater than 0",
+                'Tag logger interval seconds should be greater than 0',
                 AppException::LOGGER_INTERVALS_WRONG
             );
         }
@@ -240,7 +240,7 @@ class TagLogger
     private function checkLastLogTime(string $lastTime)
     {
         if (trim($lastTime) == false) {
-            throw new Exception("Tag logger update time can not be empty");
+            throw new Exception('Tag logger update time can not be empty');
         }
         
         return true;
@@ -295,7 +295,7 @@ class TagLogger
     private function checkLastValue($value)
     {
         if (!is_numeric($value)) {
-            throw new Exception("Tag logger last value need to be numeric");
+            throw new Exception('Tag logger last value need to be numeric');
         }
         
         return true;
@@ -351,7 +351,7 @@ class TagLogger
         if ($this->isTag()) {
             $this->ltTag->isValid(true);
         } else {
-            throw new Exception("Missing Tag object");
+            throw new Exception('Missing Tag object');
         }
         
         // Check Interval

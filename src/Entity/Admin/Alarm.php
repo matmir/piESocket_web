@@ -18,82 +18,92 @@ class Alarm
     /**
      * Alarm identifier
      */
-    private $adid;
+    private int $adid;
     
     /**
      * Tag object connected to the alarm
      */
-    private $adTag;
+    private ?Tag $adTag;
     
     /**
      * Alarm priority (lower number -> most important)
      */
-    private $adPriority;
+    private int $adPriority;
     
     /**
      * Alarm message
      */
-    private $adMessage;
+    private string $adMessage;
     
     /**
      * Trigger object
      */
-    private $adTrigger;
+    private int $adTrigger;
     
     /**
      * Tag binary value that triggers alarm
      */
-    private $adTriggerB;
+    private bool $adTriggerB;
     
     /**
      * Tag numeric value that triggers alarm
      */
-    private $adTriggerN;
+    private int $adTriggerN;
     
     /**
      * Tag real value that triggers alarm
      */
-    private $adTriggerR;
+    private float $adTriggerR;
     
     /**
      * Alarm automatic acknowledgment
      */
-    private $adAutoAck;
+    private bool $adAutoAck;
     
     /**
      * Alarm is active
      */
-    private $adActive;
+    private bool $adActive;
     
     /**
      * Alarm is pending
      */
-    private $adPending;
+    private bool $adPending;
     
     /**
      * Tag informs controller that alarm is not acknowledgment
      */
-    private $adFeedbackNotACK;
+    private ?Tag $adFeedbackNotACK;
     
     /**
      * Tag HW alarm acknowledgment
      */
-    private $adHWAck;
+    private ?Tag $adHWAck;
     
     /**
      * Enable alarm
      */
-    private $adEnable;
+    private bool $adEnable;
     
     /**
      * Default constructor
      *
-     * @param Tag $tag Tag connected to the alarm
+     * @param Tag|null $tag Tag object
+     * @param Tag|null $fbTag Feedback Tag object
+     * @param Tag|null $hwTag HW ack Tag object
+     * @param int $id Alarm identifier
+     * @param int $prio Alarm priority
+     * @param string $msg Alarm message
+     * @param int $trig Alarm trigger
+     * @param bool $trigBin Alarm trigger binary value
+     * @param int $trigN Alarm trigger numeric value
+     * @param float $trigR Alarm trigger float value
+     * @param bool $autoAck Alarm auto ack flag
      */
     public function __construct(
-        Tag $tag = null,
-        Tag $fbTag = null,
-        Tag $hwTag = null,
+        ?Tag $tag = null,
+        ?Tag $fbTag = null,
+        ?Tag $hwTag = null,
         int $id = 0,
         int $prio = 1,
         string $msg = '',
@@ -151,7 +161,7 @@ class Alarm
     {
         // Check values
         if ($id < 0) {
-            throw new Exception("Alarm identifier wrong value");
+            throw new Exception('Alarm identifier wrong value');
         }
         
         return true;
@@ -229,7 +239,7 @@ class Alarm
     {
         // Check values
         if ($priority < 0) {
-            throw new Exception("Alarm priority wrong value");
+            throw new Exception('Alarm priority wrong value');
         }
         
         return true;
@@ -268,7 +278,7 @@ class Alarm
     public static function checkMessage(string $msg): bool
     {
         if (trim($msg) == false) {
-            throw new Exception("Alarm message can not be empty");
+            throw new Exception('Alarm message can not be empty');
         }
         
         return true;
@@ -468,7 +478,7 @@ class Alarm
         if ($feedback instanceof Tag) {
             $feedback->isValid(true, true, TagType::BIT);
         } elseif (!($feedback === null)) {
-            throw new Exception("Feedback Tag is wrong type");
+            throw new Exception('Feedback Tag is wrong type');
         }
         
         return true;
@@ -525,7 +535,7 @@ class Alarm
         if ($hwAck instanceof Tag) {
             $hwAck->isValid(true, true, TagType::BIT);
         } elseif (!($hwAck === null)) {
-            throw new Exception("HW acknowledgment Tag is wrong type");
+            throw new Exception('HW acknowledgment Tag is wrong type');
         }
         
         return true;
@@ -576,7 +586,7 @@ class Alarm
             // Check trigger
             if ($this->adTrigger != AlarmTrigger::TR_BIN) {
                 throw new AppException(
-                    "Alarm trigger need to be BIT type",
+                    'Alarm trigger need to be BIT type',
                     AppException::ALARM_TRIGGER_WRONG_TYPE
                 );
             }
@@ -584,7 +594,7 @@ class Alarm
             // Check trigger
             if ($this->adTrigger == AlarmTrigger::TR_BIN) {
                 throw new AppException(
-                    "Alarm trigger need to be numeric type",
+                    'Alarm trigger need to be numeric type',
                     AppException::ALARM_TRIGGER_WRONG_TYPE
                 );
             }
@@ -609,7 +619,7 @@ class Alarm
         if ($this->isTag()) {
             $this->adTag->isValid($checkID);
         } else {
-            throw new Exception("Missing Tag object");
+            throw new Exception('Missing Tag object');
         }
         
         // Check priority

@@ -29,7 +29,7 @@ class ParserQuery
     /**
      * Alarm acknowledgement rights
      */
-    private $ackRights;
+    private string $ackRights;
     
     /**
      * Default constructor
@@ -338,7 +338,7 @@ class ParserQuery
         }
         // Check value range REAL
         if ($func == 'CMD_WRITE_REAL') {
-            if (!(is_real($data['value']))) {
+            if (!(is_float($data['value']))) {
                 throw new ParserException($func . ': Value is out of range!');
             }
         }

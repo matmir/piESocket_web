@@ -57,7 +57,7 @@ class RunScriptCommand extends Command
      * @param string $script Script name
      * @return string Full path to the script
      */
-    public static function buildScriptPath(string $scriptDir, string $script)
+    public static function buildScriptPath(string $scriptDir, string $script): string
     {
         $scriptPath = "";
         

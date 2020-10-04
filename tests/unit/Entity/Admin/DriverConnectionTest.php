@@ -161,19 +161,6 @@ class DriverConnectionTest extends TestCase
         $this->assertFalse($cfg->isEnabled());
     }
     
-    public function testSetModbusConfigWrong1()
-    {
-        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
-        $this->expectExceptionMessage('Modbus configuration is wrong type');
-        
-        // SHM CFG
-        $shm = new DriverSHM();
-        
-        $cfg = new DriverConnection();
-        $cfg->setType(DriverType::MODBUS);
-        $cfg->setModbusConfig($shm);
-    }
-    
     /**
      * Test setShmConfig method
      */
@@ -200,19 +187,6 @@ class DriverConnectionTest extends TestCase
         $this->assertFalse($cfg->isModbusConfig());
         $this->assertTrue($cfg->isShmConfig());
         $this->assertFalse($cfg->isEnabled());
-    }
-    
-    public function testSetShmConfigWrong1()
-    {
-        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
-        $this->expectExceptionMessage('SHM configuration is wrong type');
-        
-        // Modbus CFG
-        $mb = new DriverModbus();
-        
-        $cfg = new DriverConnection();
-        $cfg->setType(DriverType::SHM);
-        $cfg->setShmConfig($mb);
     }
     
     /**

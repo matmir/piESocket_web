@@ -15,32 +15,32 @@ class User implements UserInterface
     /**
      * User identifier
      */
-    private $id;
+    private int $id;
 
     /**
      * User name
      */
-    private $username;
+    private string $username;
 
     /**
      * User password
      */
-    private $password;
+    private string $password;
 
     /**
      * User email
      */
-    private $email;
+    private string $email;
     
     /**
      * User role
      */
-    private $userRole;
+    private string $userRole;
 
     /**
      * User active flag
      */
-    private $isActive;
+    private bool $isActive;
 
     public function __construct(
         int $id = 0,
@@ -90,7 +90,7 @@ class User implements UserInterface
     {
         // Check values
         if ($id < 0) {
-            throw new Exception("User identifier wrong value");
+            throw new Exception('User identifier wrong value');
         }
         
         return true;
@@ -128,7 +128,7 @@ class User implements UserInterface
     public static function checkName(string $nm): bool
     {
         if (trim($nm) == false) {
-            throw new Exception("User name can not be empty");
+            throw new Exception('User name can not be empty');
         }
         
         return true;
@@ -166,7 +166,7 @@ class User implements UserInterface
     public static function checkPassword(string $pass): bool
     {
         if (trim($pass) == false) {
-            throw new Exception("User password can not be empty");
+            throw new Exception('User password can not be empty');
         }
         
         return true;
@@ -177,7 +177,7 @@ class User implements UserInterface
      *
      * @return array
      */
-    public function getRoles()
+    public function getRoles(): array
     {
         return array($this->userRole);
     }
@@ -266,7 +266,7 @@ class User implements UserInterface
     public static function checkEmail(string $mail): bool
     {
         if (trim($mail) == false) {
-            throw new Exception("User email can not be empty");
+            throw new Exception('User email can not be empty');
         }
         
         return true;

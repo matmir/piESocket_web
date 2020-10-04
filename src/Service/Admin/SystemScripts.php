@@ -16,12 +16,12 @@ class SystemScripts
     /**
      * System scripts directory
      */
-    private $systemScriptsPath;
+    private string $systemScriptsPath;
     
     /**
      * Path to the server application
      */
-    private $serverAppPath;
+    private string $serverAppPath;
     
     /**
      * Required scripts

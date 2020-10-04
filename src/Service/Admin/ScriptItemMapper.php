@@ -19,7 +19,7 @@ use App\Entity\AppException;
  */
 class ScriptItemMapper
 {
-    private $dbConn;
+    private Connection $dbConn;
     
     public function __construct(Connection $connection)
     {
@@ -33,10 +33,10 @@ class ScriptItemMapper
      * @param int $sort Script item sorting (0 - ID, 1 - tag name,
      *                                      2 - script name, 3 - run flag, 4 - lock flag, 5 - enabled flag)
      * @param int $sortDESC Sorting direction (0 - ASC, 1 - DESC)
-     * @param Paginator $paginator Paginator object
+     * @param Paginator|null $paginator Paginator object
      * @return array Array with Script item
      */
-    public function getScripts(int $area = 0, int $sort = 0, int $sortDESC = 0, Paginator $paginator = null)
+    public function getScripts(int $area = 0, int $sort = 0, int $sortDESC = 0, ?Paginator $paginator = null): array
     {
         // Basic query
         $sql = 'SELECT * FROM scripts sc, tags t';
@@ -134,10 +134,10 @@ class ScriptItemMapper
      * Get number of all script items in DB
      *
      * @param int $area Tag area
-     * @return numeric Number of script items in DB
+     * @return int Number of script items in DB
      * @throws Exception
      */
-    public function getScriptsCount(int $area = 0)
+    public function getScriptsCount(int $area = 0): int
     {
         // Base query
         $sql = "SELECT count(*) AS 'cnt' FROM tags t, scripts sc WHERE sc.scTagId=t.tid";
@@ -171,11 +171,11 @@ class ScriptItemMapper
     /**
      * Get Script item data
      *
-     * @param numeric $scriptId Script item identifier
+     * @param int $scriptId Script item identifier
      * @return ScriptItem Script item object
      * @throws Exception Script item identifier invalid or Script item not exist
      */
-    public function getScript($scriptId): ScriptItem
+    public function getScript(int $scriptId): ScriptItem
     {
         // Check script identifier
         ScriptItem::checkId($scriptId);
@@ -393,9 +393,9 @@ class ScriptItemMapper
     /**
      * Delete Script item
      *
-     * @param numeric $scriptId Script item identifier
+     * @param int $scriptId Script item identifier
      */
-    public function deleteScript($scriptId)
+    public function deleteScript(int $scriptId)
     {
         // Check script identifier
         ScriptItem::checkId($scriptId);
@@ -411,10 +411,10 @@ class ScriptItemMapper
     /**
      * Enable script item
      *
-     * @param numeric $scriptId Script item identifier
+     * @param int $scriptId Script item identifier
      * @param bool $en Enable flag
      */
-    public function enableScript($scriptId, bool $en = true)
+    public function enableScript(int $scriptId, bool $en = true)
     {
         // Check script identifier
         ScriptItem::checkId($scriptId);

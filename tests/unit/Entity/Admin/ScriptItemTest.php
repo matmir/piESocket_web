@@ -203,19 +203,6 @@ class ScriptItemTest extends TestCase
         $this->assertEquals(101, $script->getFeedbackRun()->getId());
     }
     
-    public function testSetFeedbackNotAckWrong1()
-    {
-        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
-        $this->expectExceptionMessage('Feedback Tag is wrong type');
-        
-        $tag = null;
-        TagLoggerTest::createTag($tag);
-        $tag->setType(TagType::BIT);
-                        
-        $script = new ScriptItem($tag);
-        $script->setFeedbackRun('frf');
-    }
-    
     /**
      * Test setEnabled method
      */
