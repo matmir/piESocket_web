@@ -160,9 +160,5 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('js/admin/parser/parser.js') }}"></script>
-    <script src="{{ asset('js/admin/parser/buttons.js') }}"></script>
-    <script src="{{ asset('js/admin/dashboard/services.js') }}"></script>
-    <script src="{{ asset('js/admin/dashboard/cycleTimes.js') }}"></script>
-    <script src="{{ asset('js/admin/dashboard/dashboardStatus.js') }}"></script>
+    <script type="module" src="{{ asset('js/admin/dashboard/dashboardStatus.js') }}"></script>
 {% endblock %}

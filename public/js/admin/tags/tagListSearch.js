@@ -1,63 +1,79 @@
-/**
- * Create tag list search object
- * 
- * @param {type} lName                  Data list identifier
- * @param {type} searchScriptAddress    Search script address
- * @returns {createTagListSearch}
- */
-function createTagListSearch(lName, searchScriptAddress) {
+
+// Tag list search
+export class tagListSearch {
     
-    // List name
-    var dataList = document.getElementById(lName);
-    
-    // Search script address
-    var searchScript = searchScriptAddress;
-    
-    // Lock flag
-    var lock = false;
-            
-    function parseReply(data, status) {
+    /**
+     * Tag list constructor
+     * 
+     * @param {type} lName
+     * @param {type} searchScriptAddress
+     */
+    constructor(lName, searchScriptAddress = '/admin/tags/search') {
         
-        if (status === "success" && data.error.state === false) {
-            
-            // Unlock script
-            lock = false;
+        // List name
+        this._dataList = document.getElementById(lName);
+        
+        // Search script address
+        this._searchScript = searchScriptAddress;
+    }
+    
+    /**
+     * Parse reply data
+     * 
+     * @param {object} data Data object with reply
+     */
+    _parseReply(data) {
+        
+        if (data.error.state === false) {
             
             // Clear list
-            dataList.innerHTML = '';
+            this._dataList.innerHTML = '';
             
             // Add new list options
-            for (var i=0; i<data.reply.length; ++i) {
+            for (let i=0; i<data.reply.length; ++i) {
                 
                 // Create <option> element
-                var option = document.createElement('option');
+                let option = document.createElement('option');
                 // Assign value
                 option.value = data.reply[i];
                 // Add to the list
-                dataList.appendChild(option);
-                
+                this._dataList.appendChild(option);
             }
-            
         } else {
-            if (data.error.state === true) {
-                console.log(data.error.msg);
-            } else {
-                console.log('Unknown error');
-            }
+            throw new Error(data.error.msg);
         }
-        
-    };
+    }
     
-    this.update = function(tagName) {
+    /**
+     * Update tag list
+     * 
+     * @param {string} tagName Tag name
+     * @returns {Promise}
+     */
+    async update(tagName) {
         
-        var tag = {
-        "tagName": tagName
-    };
-        
-        if (!lock && tag.tagName !=='') {
-            lock = true;
-            $.post(searchScript, { "json" : JSON.stringify(tag)}, parseReply);
+        try {
+            
+            let tag = {
+                "tagName": tagName.trim()
+            };
+            
+            if (tag.tagName !=='') {
+                // Get tags
+                let res = await fetch(this._searchScript, {
+                                    method: 'post',
+                                    headers: {'Content-Type': 'application/json'},
+                                    body: JSON.stringify(tag)
+                });
+                let data = await res.json();
+
+                this._parseReply(data);
+            }
+
+            return Promise.resolve(true);
+            
+        } catch (err) {
+            return Promise.reject(err);
         }
-        
-    };
+    }
 }

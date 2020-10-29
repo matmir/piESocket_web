@@ -244,7 +244,9 @@ class AlarmForm extends AbstractType implements DataMapperInterface
         } catch (AppException $ex) {
             if ($ex->getCode() == AppException::TAG_WRONG_TYPE) {
                 $msg = $ex->getMessage();
-                if (strpos($msg, $aforms['adFeedbackNotACK']->getData()) !== false) {
+                $dt = $aforms['adFeedbackNotACK']->getData();
+                $needle = ($dt == '') ? ('none') : ($dt);
+                if (strpos($msg, $needle) !== false) {
                     $aforms['adFeedbackNotACK']->addError(new FormError($ex->getMessage()));
                 } else {
                     $aforms['adHWAck']->addError(new FormError($ex->getMessage()));

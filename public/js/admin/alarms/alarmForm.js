@@ -1,31 +1,72 @@
-$(document).ready(function(){
+
+import {jsError} from './../../jsError.js';
+import {utils} from './../../utils.js';
+import {tagListSearch} from './../tags/tagListSearch.js';
+import {tagTypeSearch} from './../tags/tagTypeSearch.js';
+
+// Page loaded
+document.addEventListener('DOMContentLoaded', function () {
     
-    var tagNameSearch = new createTagListSearch('tagName-datalist', '/admin/tags/search');
-    var tagFbNotAckSearch = new createTagListSearch('tagFbNotAck-datalist', '/admin/tags/search');
-    var tagHWAckSearch = new createTagListSearch('tagHWAck-datalist', '/admin/tags/search');
-    var tagTypeSearch = new createTagTypeSearch('/admin/tags/search/1', tagTypeFound);
+    let tagNameSearch = new tagListSearch('tagName-datalist');
+    let tagFbNotAckSearch = new tagListSearch('tagFbNotAck-datalist');
+    let tagHWAckSearch = new tagListSearch('tagHWAck-datalist');
+    let tagType = new tagTypeSearch();
     
-    var alarmTriggerB = $('#alarmTriggerB');
-    var alarmTriggerN = $('#alarmTriggerN');
-    var alarmTriggerR = $('#alarmTriggerR');
-    var alarmTrigger = $('#alarm_form_adTrigger');
+    let alarmTriggerB = document.getElementById('alarmTriggerB');
+    let alarmTriggerN = document.getElementById('alarmTriggerN');
+    let alarmTriggerR = document.getElementById('alarmTriggerR');
+    let alarmTrigger = document.getElementById('alarm_form_adTrigger');
+    let alarmTagName = document.getElementById('alarm_form_adTagName');
+    let alarmFeedbackNotACK = document.getElementById('alarm_form_adFeedbackNotACK');
+    let alarmHWAck = document.getElementById('alarm_form_adHWAck');
+    
+    // Events
+    alarmTrigger.addEventListener('change', alarmTriggerChanged);
+    
+    alarmTagName.addEventListener('change', tagNameChanged);
+    alarmTagName.addEventListener('paste', tagNameChanged);
+    alarmTagName.addEventListener('keyup', tagNameChanged);
+    
+    alarmFeedbackNotACK.addEventListener('change', feedbackNotACKChanged);
+    alarmFeedbackNotACK.addEventListener('paste', feedbackNotACKChanged);
+    alarmFeedbackNotACK.addEventListener('keyup', feedbackNotACKChanged);
+    
+    alarmHWAck.addEventListener('change', HWAckChanged);
+    alarmHWAck.addEventListener('paste', HWAckChanged);
+    alarmHWAck.addEventListener('keyup', HWAckChanged);
+    
+    // Search tag type
+    searchType(alarmTagName.value);
+    
+    // Search tag type
+    function searchType(tagName) {
+        
+        tagType.search(tagName).then(
+            reply => { tagTypeFound(reply); },
+            error => { jsError.add(error); }
+        );
+    }
     
     // Feedback function (tag type found)
     function tagTypeFound(type) {
         
-        var oldval = alarmTrigger.val();
+        let oldval = alarmTrigger.value;
         
         if (type==='Real' || type==='Numeric') {
             if (oldval==='1') {
-                alarmTrigger.val('2').trigger('change');
+                alarmTrigger.value = '2';
+                alarmTrigger.dispatchEvent(new Event('change'));
             } else {
-                alarmTrigger.val(oldval).trigger('change');
+                alarmTrigger.value = oldval;
+                alarmTrigger.dispatchEvent(new Event('change'));
             }
         } else {
             if (oldval!=='1') {
-                alarmTrigger.val('1').trigger('change');
+                alarmTrigger.value = '1';
+                alarmTrigger.dispatchEvent(new Event('change'));
             } else {
-                alarmTrigger.val(oldval).trigger('change');
+                alarmTrigger.value = oldval;
+                alarmTrigger.dispatchEvent(new Event('change'));
             }
         }
         
@@ -35,63 +76,57 @@ $(document).ready(function(){
     function updateNumericFields(enable) {
         
         if (enable===true) {
-            if (tagTypeSearch.getType()==='Real') {
-                alarmTriggerN.hide();
-                alarmTriggerR.show();
-            } else if (tagTypeSearch.getType()==='Numeric') {
-                alarmTriggerN.show();
-                alarmTriggerR.hide();
+            if (tagType.getType()==='Real') {
+                utils.showTR(alarmTriggerN, false);
+                utils.showTR(alarmTriggerR);
+            } else if (tagType.getType()==='Numeric') {
+                utils.showTR(alarmTriggerN);
+                utils.showTR(alarmTriggerR, false);
             } else {
-                alarmTriggerN.hide();
-                alarmTriggerR.hide();
+                utils.showTR(alarmTriggerN, false);
+                utils.showTR(alarmTriggerR, false);
             }
         } else {
-            alarmTriggerN.hide();
-            alarmTriggerR.hide();
+            utils.showTR(alarmTriggerN, false);
+            utils.showTR(alarmTriggerR, false);
         }
         
     }
     
-    // Search tag type
-    tagTypeSearch.search($('#alarm_form_adTagName').val());
-    
-    alarmTrigger.on('change', function() {
+    // Change alarm trigger
+    function alarmTriggerChanged(e) {
         
-        if (this.value === '1') {
-            alarmTriggerB.show();
+        if (e.target.value === '1') {
+            utils.showTR(alarmTriggerB);
             updateNumericFields(false);
         } else {
-            alarmTriggerB.hide();
+            utils.showTR(alarmTriggerB, false);
             updateNumericFields(true);
         }
-        
-    });
+    };
     
     // Change tag name
-    $('#alarm_form_adTagName').on('change paste keyup', function() {
-        
+    function tagNameChanged(e) {
         // Update list
-        tagNameSearch.update(this.value);
-        
-        // Search tag type
-        tagTypeSearch.search(this.value);
-        
-    });
+        tagNameSearch.update(e.target.value).then(
+            reply => { searchType(e.target.value); },
+            error => { jsError.add(error); }
+        );
+    };
     
     // Change feedback not ack tag
-    $('#alarm_form_adFeedbackNotACK').on('change paste keyup', function() {
-        
+    function feedbackNotACKChanged(e) {
         // Update list
-        tagFbNotAckSearch.update(this.value);
-        
-    });
+        tagFbNotAckSearch.update(e.target.value).catch(
+            error => { jsError.add(error); }
+        );
+    };
     
     // Change HW ack tag
-    $('#alarm_form_adHWAck').on('change paste keyup', function() {
-        
+    function HWAckChanged(e) {
         // Update list
-        tagHWAckSearch.update(this.value);
-        
-    });
-    
+        tagHWAckSearch.update(e.target.value).catch(
+            error => { jsError.add(error); }
+        );
+    };
 });

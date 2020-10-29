@@ -1,57 +1,66 @@
-$(document).ready(function(){
+
+import {jsError} from './../../jsError.js';
+import {parserReadWrite} from './../../onh/parser/parserReadWrite.js';
+import {services} from './services.js';
+import {cycleTime} from './cycleTime.js';
+
+// Page loaded
+document.addEventListener('DOMContentLoaded', function () {
     
     // Parser
-    var pr = new createParser('/parser/query');
+    let pr = new parserReadWrite();
     
     // Services
-    var serviceONH = new createService("onhStatus");
-    var restartBadge = new createRestartBadge("onhRStatus");
-    
-    var serviceApache = new createService("apacheStatus");
-    var serviceMySQL = new createService("mysqlStatus");
-    var serviceAutoload = new createService("autoloading", true);
-    
-    // Service buttons
-    var buttonAutoload = new createServiceBtn("btnChangeAutoload");
-    var buttonONH = new createServiceBtn("btnChangeONH");
-    var buttonONHExit = new createExitButton(pr, "btnExitONH");
+    let serv = new services(
+                        'onhStatus',
+                        'onhRStatus',
+                        'apacheStatus',
+                        'mysqlStatus',
+                        'btnChangeAutoload',
+                        'btnChangeONH',
+                        'btnExitONH'
+    );
     
     // Cycle times
-    var cycleUpdater = new createCycleTime("process");
-    var cyclePolling = new createCycleTime("polling");
-    var cycleLogger = new createCycleTime("tagLogger");
-    var cycleLoggerWriter = new createCycleTime("tagLoggerWriter");
-    var cycleAlarming = new createCycleTime("alarming");
-    var cycleScript = new createCycleTime("script");
+    let cycleUpdater = new cycleTime("process", true);
+    let cyclePolling = new cycleTime("polling", true);
+    let cycleLogger = new cycleTime("tagLogger");
+    let cycleLoggerWriter = new cycleTime("tagLoggerWriter");
+    let cycleAlarming = new cycleTime("alarming");
+    let cycleScript = new cycleTime("script");
     
     // Pooling timer
-    var dashboardTid;
+    let dashboardTid;
         
     // Dashboard status
     function poolingDashboardStatus() {
-        
         // Get services status
-        serviceStatus(serviceONH, restartBadge, serviceApache, serviceMySQL, serviceAutoload, buttonAutoload, buttonONH, repoolingDashboardStatus);
-        
+        serv.update().then(
+            reply => { getCycleTimes(); },
+            error => { jsError.add(error); }
+        );
     }
     
-    function repoolingDashboardStatus() {
-        
-        // Check if client is running
-        if (serviceONH.isActive()) {
-            
-            // Show exit button
-            buttonONHExit.show();
-            
+    // Get cycle times
+    function getCycleTimes() {
+        // Check if service is running
+        if (serv.isONHActive()) {
             // Get cycle times
-            cycleTimes(pr, cycleUpdater, cyclePolling, cycleLogger, cycleLoggerWriter, cycleAlarming, cycleScript);
+            pr.getCycleTimes().then(
+                reply => {
+                    cycleUpdater.setValue(reply.Updater);
+                    cyclePolling.setValue(reply.Polling);
+                    cycleLogger.setValue(reply.Logger);
+                    cycleLoggerWriter.setValue(reply.LoggerWriter);
+                    cycleAlarming.setValue(reply.Alarming);
+                    cycleScript.setValue(reply.Script);
+                },
+                error => { }
+            );
         } else {
-            // Hide exit button
-            buttonONHExit.hide();
-            
             // Clear cycle times
-            cycleUpdater.clearM();
-            cyclePolling.clearM();
+            cycleUpdater.clear();
+            cyclePolling.clear();
             cycleLogger.clear();
             cycleLoggerWriter.clear();
             cycleAlarming.clear();
@@ -60,21 +69,8 @@ $(document).ready(function(){
         
         // Set next tik
         dashboardTid = setTimeout(poolingDashboardStatus, 1000);
-        
     }
     
     // Get status
     poolingDashboardStatus();
-    
-    $("#btnChangeAutoload").click(function(){
-        changeAutoloading(buttonAutoload, serviceAutoload);
-    });
-    
-    $("#btnChangeONH").click(function(){
-        startONH(buttonONH, serviceONH);
-    });
-    
-    $("#btnExitONH").click(function(){
-        buttonONHExit.Execute();
-    });
 });

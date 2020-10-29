@@ -1,204 +1,115 @@
-/**
- * Create service object
- * 
- * @param {type} sName          Service identifier name
- * @param {type} sVirtual       Virtual service flag
- * @returns {createService}
- */
-function createService(sName, sVirtual=false) {
+
+import {service} from './service.js';
+import {restartBadge} from './restartBadge.js';
+import {twoStateButton} from './twoStateButton.js';
+import {exitButton} from './../../onh/components/buttons/exitButton.js';
+
+// Services class
+export class services {
     
-    var serviceName = sName;
-    var state = 'inactive';
-    var started = false;
-    var virtual = sVirtual;
-
-    this.setState = function(st) {
-        state = st;
-        if (state === "active") {
-            started = true;
-        } else {
-            started = false;
-        }
-
-        if (!virtual) {
-            document.getElementById(serviceName).innerHTML = state;
-
-            if (state === "active") {
-                document.getElementById(serviceName).className = "badge badge-success";
-            } else if (state === "inactive") {
-                document.getElementById(serviceName).className = "badge badge-danger";
-            } else if (state === "failed") {
-                document.getElementById(serviceName).className = "badge badge-dark";
-            }
-        }
-    };
-    
-    this.setStarted = function(st) {
-        started = st;
-    };
-    
-    this.isActive = function() {
-        return started;
-    };
-
-    this.getURLflag = function() {
-        var ret = 0;
-
-        if (started===false) {
-            ret = 1;
-        } else {
-            ret = 0;
-        }
-
-        return ret;
-    };
-}
-
-function createRestartBadge(rbName) {
-    
-    var rbName = rbName;
-    
-    this.setState = function(state) {
-        if (state===true) {
-            document.getElementById(rbName).style.display = "inline-block";
-        } else {
-            document.getElementById(rbName).style.display = "none";
-        }
-    };
-}
-
-/**
- * Create srvice button object
- * 
- * @param {type} bName          Button identifier name
- * @returns {createServiceBtn}
- */
-function createServiceBtn(bName) {
-    
-    var btnName = bName;
-    var disableFlag = false;
-
-    this.updateDisable = function() {
-        document.getElementById(btnName).disabled = disableFlag;
-    };
-
-    this.setDisable = function() {
-        disableFlag = true;
-    };
-    
-    this.resetDisable = function() {
-        disableFlag = false;
-    };
-
-    this.setState = function(state, text) {
-        if (state===true) {
-            document.getElementById(btnName).innerHTML = text;
-            document.getElementById(btnName).className = "btn btn-success";
-        } else {
-            document.getElementById(btnName).innerHTML = text;
-            document.getElementById(btnName).className = "btn btn-danger";
-        }
-    };
-}
-
-/**
- * Get service status
- * 
- * @param {type} sONH           Service openNetworkHMI object
- * @param {type} srONH       Restart badge object
- * @param {type} sApache        Service Apache object
- * @param {type} sMySql         Service MySQL object
- * @param {type} sAutoload      Service Autoloading object (virtual)
- * @param {type} btnAutoload    Button Autoload object
- * @param {type} btnClient      Button Client object
- * @param {type} feedbackFunc   Feedback function - request OK
- * @returns {undefined}
- */
-function serviceStatus(sONH, srONH, sApache, sMySql, sAutoload, btnAutoload, btnClient, feedbackFunc) {
-
-    $.get("/services/status", function(data, status){
-
-        if (status === "success" && data.error.state === false) {
-
-            sONH.setState(data.services.openNetworkHMI);
-            srONH.setState(data.restart);
-            sApache.setState(data.services.Apache2);
-            sMySql.setState(data.services.MySQL);
-            sAutoload.setStarted(data.services.Autoload);
-
-        }
-
-        if (sAutoload.isActive()===true) {
-            btnAutoload.setState(true, "Enabled");
-        } else {
-            btnAutoload.setState(false, "Disabled");
-        }
-
-        if (sONH.isActive()===true) {
-            btnClient.setState(false, "Kill service");
-        } else {
-            btnClient.setState(true, "Start service");
-        }
-
-        btnAutoload.updateDisable();
-        btnClient.updateDisable();
+    /**
+     * Services constructor
+     * 
+     * @param {string} sONH ONH service identifier
+     * @param {string} srONH ONH reastart badge identifier
+     * @param {string} sApache Apache service identifier
+     * @param {string} sMySql MySQL service identifier
+     * @param {string} btnAutoload Autoload button identifier
+     * @param {string} btnONH ONH Start/Kill button identifier
+     * @param {string} btnExitONH ONH exit button identifier
+     */
+    constructor(sONH, srONH, sApache, sMySql, btnAutoload, btnONH, btnExitONH) {
         
-        feedbackFunc();
-
-    });
-
-}
-
-/**
- * Change autoloading state
- * 
- * @param {type} button     Button object
- * @param {type} service    Service object
- * @returns {undefined}
- */
-function changeAutoloading(button, service) {
-
-    // Disable change button
-    button.setDisable();
-    button.updateDisable();
-
-    // Change autoload state
-    $.get("/services/autoload/"+service.getURLflag(), function(data, status){
-
-        if (status === "success" && data.error.state === false) {
-
-            // Enable change button
-            button.resetDisable();
-
+        // Service ONH
+        this._serviceONH = new service(sONH);
+        
+        // Restart badge
+        this._restartBadge = new restartBadge(srONH);
+        
+        // Service Apache
+        this._serviceApache = new service(sApache);
+        
+        // Service MySQL
+        this._serviceMySQL = new service(sMySql);
+        
+        // Autoload service button
+        this._bAutoload = new twoStateButton(
+                                btnAutoload,
+                                'Disabled',
+                                'Enabled',
+                                '/services/autoload/',
+                                true,
+                                'btn btn-danger',
+                                'btn btn-success'
+        );
+        
+        // Start/Kill ONH button
+        this._bONH = new twoStateButton(btnONH, 'Start service', 'Kill service', '/services/onh/');
+        
+        // Exit ONH button
+        this._exitONH = new exitButton(btnExitONH, false);
+        
+        // Update service path
+        this._updatePath = '/services/status';
+    }
+    
+    /**
+     * Get ONH service active state
+     * 
+     * @returns {bool}
+     */
+    isONHActive() {
+        
+        let ret = false;
+        
+        if (this._serviceONH.isActive() && !this._bONH.isLocked() && !this._exitONH.isLocked()) {
+            ret = true;
         }
+        
+        return ret;
+    }
+    
+    /**
+     * Update services status
+     * 
+     * @returns {Promise}
+     */
+    async update() {
+        
+        try {
+            // Get services status
+            let res = await fetch(this._updatePath, { method: 'get' });
+            let data = await res.json();
 
-    });
+            if (data.error.state === false) {
+                
+                // Update services
+                this._serviceONH.setState(data.services.openNetworkHMI);
+                this._restartBadge.setState(data.restart);
+                this._serviceApache.setState(data.services.Apache2);
+                this._serviceMySQL.setState(data.services.MySQL);
+                
+                // Update autoload button
+                this._bAutoload.setState(data.services.Autoload);
+                // Update ONH button
+                this._bONH.setState(this.isONHActive());
+                
+                // Show/Hide exit button
+                if (this.isONHActive()) {
+                    this._exitONH.show();
+                    this._exitONH.enable();
+                } else {
+                    this._exitONH.hide();
+                }
+                
+            } else {
+                throw new Error(data.error.msg);
+            }
+            
+            return Promise.resolve(true);
 
-}
-
-/**
- * Start openNetworkHMI service
- * 
- * @param {type} button     Button object
- * @param {type} service    Service object
- * @returns {undefined}
- */
-function startONH(button, service) {
-
-    // Disable change button
-    button.setDisable();
-    button.updateDisable();
-
-    // Start/Stop client
-    $.get("/services/onh/"+service.getURLflag(), function(data, status){
-
-        if (status === "success" && data.error.state === false) {
-
-            // Enable change button
-            button.resetDisable();
-
+        } catch (err) {
+            return Promise.reject(err);
         }
-
-    });
-
+    }
 }

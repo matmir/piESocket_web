@@ -22,6 +22,6 @@
 
 {% block javascripts %}
     {% if drvType == 1 %}
-        <script src="{{ asset('js/admin/config/driverModbusForm.js') }}"></script>
+        <script type="module" src="{{ asset('js/admin/config/driverModbusForm.js') }}"></script>
     {% endif %}
 {% endblock %}

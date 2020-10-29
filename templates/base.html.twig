@@ -38,28 +38,19 @@
                         </li>
                     {% endif %}
                 </ul>
-                {% if is_granted('ROLE_ADMIN') and app.request.attributes.get( '_route' ) != 'admin_index' %}
-                <div>
-                    <span id="minONHRestart" class="badge badge-warning" style="display: none">Server need restart</span>
-                    <span id="minONHStatus" class="badge badge-secondary">C</span>
-                </div>
-                {% endif %}
             </div>
         </nav>
                 
         <br />
         
         <div class="container-fluid">
+        <div id="jsError" class="alert alert-danger" style="display: none"></div>
         {% block body %}{% endblock %}
         </div>
         
         <script src="{{ asset('js/lib/jquery-3.4.1.min.js') }}"></script>
         <script src="{{ asset('js/lib/bootstrap.bundle.min.js') }}"></script>
-        
-        {% if is_granted('ROLE_ADMIN') and app.request.attributes.get( '_route' ) != 'admin_index' %}
-            <script src="{{ asset('js/admin/minStatus.js') }}"></script>
-        {% endif %}
-        
+                
         {% block javascripts %}{% endblock %}
     </body>
 </html>
