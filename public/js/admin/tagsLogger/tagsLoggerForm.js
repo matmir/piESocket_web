@@ -1,24 +1,38 @@
-$(document).ready(function(){
+
+import {jsError} from './../../jsError.js';
+import {utils} from './../../utils.js';
+import {tagListSearch} from './../tags/tagListSearch.js';
+
+// Page loaded
+document.addEventListener('DOMContentLoaded', function () {
     
-    var tagSearch = new createTagListSearch('tagLogger-datalist', '/admin/tags/search');
+    let tagSearch = new tagListSearch('tagLogger-datalist');
     
-    // Change interval value
-    $('#tag_logger_form_ltInterval').on('change', function() {
-        
-        if (this.value === '5') {
-            $('#tagsLoggerIntervalS').show();
+    let loggerIntervalS = document.getElementById('tagsLoggerIntervalS');
+    let loggerInterval = document.getElementById('tag_logger_form_ltInterval');
+    let loggerTagName = document.getElementById('tag_logger_form_ltTagName');
+    
+    // Events
+    loggerInterval.addEventListener('change', intervalChanged);
+    
+    loggerTagName.addEventListener('change', tagNameChanged);
+    loggerTagName.addEventListener('paste', tagNameChanged);
+    loggerTagName.addEventListener('keyup', tagNameChanged);
+    
+    // Interval value changed
+    function intervalChanged(e) {
+        if (e.target.value === '5') {
+            utils.showTR(loggerIntervalS);
         } else {
-            $('#tagsLoggerIntervalS').hide();
+            utils.showTR(loggerIntervalS, false);
         }
-        
-    });
+    };
     
-    // Change tag name
-    $('#tag_logger_form_ltTagName').on('change paste keyup', function() {
-        
+    // Tag name changed
+    function tagNameChanged(e) {
         // Update list
-        tagSearch.update(this.value);
-        
-    });
-    
+        tagSearch.update(e.target.value).catch(
+            error => { jsError.add(error); }
+        );
+    };
 });

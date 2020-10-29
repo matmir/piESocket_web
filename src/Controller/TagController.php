@@ -338,8 +338,9 @@ class TagController extends AbstractController
         $reply = array();
         
         // Get data from POST
-        if ($request->request->get('json') !== null) {
-            $data = json_decode($request->request->get('json'), true);
+        if ($request->isMethod('POST')) {
+            
+            $data = json_decode($request->getContent(), true);
         
             try {
                 // Check data

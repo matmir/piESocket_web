@@ -5,13 +5,9 @@
 {% block adminAlarmBody %}
         
     {{ include('alarmStatus.html.twig', {'alarms': alarms}) }}
-                  
+                      
 {% endblock %}
 
-{% block javascripts %}
-    <script src="{{ asset('js/admin/parser/parser.js') }}"></script>
-    <script src="{{ asset('js/admin/parser/buttons.js') }}"></script>
-    <script src="{{ asset('js/admin/alarms/alarms.js') }}"></script>
-    
-    <script src="{{ asset('js/admin/alarms/alarmStatus.js') }}"></script>
+{% block javascripts %}    
+    <script type="module" src="{{ asset('js/admin/alarms/alarmActive.js') }}"></script>
 {% endblock %}

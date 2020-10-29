@@ -1,62 +1,83 @@
-/**
- * Create tag type search object
- * 
- * @param {type} searchScriptAddress    Search script address
- * @param {type} fbFunc                 Feedback function (when type was found)
- * @returns {createTagTypeSearch}
- */
-function createTagTypeSearch(searchScriptAddress, fbFunc) {
+
+// Tag type search
+export class tagTypeSearch {
+    
+    /**
+     * Tag type search constructor
+     * 
+     * @param {type} searchScriptAddress
+     */
+    constructor(searchScriptAddress = '/admin/tags/search/1') {
+                
+        // Search script address
+        this._searchScript = searchScriptAddress;
         
-    // Search script address
-    var searchScript = searchScriptAddress;
+        // Tag type
+        this._type = '';
+    }
     
-    // Lock flag
-    var lock = false;
-    
-    // Tag type
-    var type = '';
-    
-    this.getType = function() {
-        return type;
-    };
-    
-    function parseReply(data, status) {
+    /**
+     * Parse reply data
+     * 
+     * @param {object} data Data object with reply
+     */
+    _parseReply(data) {
         
-        if (status === "success" && data.error.state === false) {
-            
-            // Unlock script
-            lock = false;
+        if (data.error.state === false) {
             
             // Check reply
             if (data.reply.length===1) {
                 if (data.reply[0]!=='') {
-                    type = data.reply[0];
-                    // Call feedback function
-                    fbFunc(data.reply[0]);
+                    this._type = data.reply[0];
                 }
             }
-            
         } else {
-            if (data.error.state === true) {
-                console.log(data.error.msg);
-            } else {
-                console.log('Unknown error');
-            }
+            throw new Error(data.error.msg);
         }
-        
-    };
+    }
     
-    this.search = function(tagName) {
+    /**
+     * Get Tag type
+     * 
+     * @returns {String}
+     */
+    getType() {
+        return this._type;
+    }
+    
+    /**
+     * Search Tag type
+     * 
+     * @param {string} tagName Tag name
+     * @returns {Promise}
+     */
+    async search(tagName) {
         
-        var tag = {
-        "tagName": tagName
-    };
-        
-        if (!lock && tag.tagName !=='') {
-            lock = true;
-            type = '';
-            $.post(searchScript, { "json" : JSON.stringify(tag)}, parseReply);
+        try {
+            
+            let tag = {
+                "tagName": tagName.trim()
+            };
+            
+            if (tag.tagName !=='') {
+                
+                this._type = '';
+                
+                // Get tags
+                let res = await fetch(this._searchScript, {
+                                    method: 'post',
+                                    headers: {'Content-Type': 'application/json'},
+                                    body: JSON.stringify(tag)
+                });
+                let data = await res.json();
+
+                this._parseReply(data);
+            }
+
+            return Promise.resolve(this._type);
+            
+        } catch (err) {
+            return Promise.reject(err);
         }
-        
-    };
+    }
 }
