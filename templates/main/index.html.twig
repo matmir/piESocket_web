@@ -145,20 +145,8 @@
     <br />
     
     {{ include('alarmStatus.html.twig', {'alarms': []}) }}
-    
-    {% if is_granted('ROLE_ADMIN') %}
-        <br />
-        <button id="exitClient" type="button" class="btn btn-danger">Exit service</button>
-    {% endif %}
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('js/admin/parser/parser.js') }}"></script>
-    <script src="{{ asset('js/admin/parser/buttons.js') }}"></script>
-    <script src="{{ asset('js/admin/parser/multiCommand.js') }}"></script>
-    <script src="{{ asset('js/admin/alarms/alarms.js') }}"></script>
-    <script src="{{ asset('js/admin/alarms/alarmStatus.js') }}"></script>
-    
-    <script src="{{ asset('js/main/socket.js') }}"></script>
-    <script src="{{ asset('js/main/main.js') }}"></script>
+    <script type="module" src="{{ asset('js/main/main.js') }}"></script>
 {% endblock %}

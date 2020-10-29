@@ -1,121 +1,113 @@
-$(document).ready(function(){
+
+import {jsError} from './../jsError.js';
+import {parser} from './../onh/parser/parser.js';
+import {parserMultiCMD} from './../onh/parser/parserMultiCMD.js';
+import {actionButton} from './../onh/components/buttons/actionButton.js';
+import {alarmTable} from './../onh/components/alarm/alarmTable.js';
+import {socket} from './socket.js';
+
+// Page loaded
+document.addEventListener('DOMContentLoaded', function () {
+    
+    let alarmStatusTid;
+    let statePollingTid;
+    
+    // Alarm table
+    let alarm = new alarmTable();
         
-    var pr = new createParser('/parser/query');
+    // Lock buttons
+    let lockS1BTN = null;
+    let lockS2BTN = null;
+    let lockS3BTN = null;
+    let lockS4BTN = null;
     
-    var statePoolingTid;
-    
-    // Buttons
-    var lockS1BTN = new createActionButton(pr, 'S1lock', pr.CMD.INVERT_BIT, 'S1TriggerLock');
-    var lockS2BTN = new createActionButton(pr, 'S2lock', pr.CMD.INVERT_BIT, 'S2TriggerLock');
-    var lockS3BTN = new createActionButton(pr, 'S3lock', pr.CMD.INVERT_BIT, 'S3TriggerLock');
-    var lockS4BTN = new createActionButton(pr, 'S4lock', pr.CMD.INVERT_BIT, 'S4TriggerLock');
-    var exitBtn = new createExitButton(pr, 'exitClient');
+    if (document.getElementById('S1lock')!==null) {
+        lockS1BTN = new actionButton('S1lock', parser.CMD.INVERT_BIT, 'S1TriggerLock');
+    }
+    if (document.getElementById('S2lock')!==null) {
+        lockS2BTN = new actionButton('S2lock', parser.CMD.INVERT_BIT, 'S2TriggerLock');
+    }
+    if (document.getElementById('S3lock')!==null) {
+        lockS3BTN = new actionButton('S3lock', parser.CMD.INVERT_BIT, 'S3TriggerLock');
+    }
+    if (document.getElementById('S4lock')!==null) {
+        lockS4BTN = new actionButton('S4lock', parser.CMD.INVERT_BIT, 'S4TriggerLock');
+    }
     
     // Sockets
-    var socket1 = new createSocket(pr, 'S1Trigger', 'S1_img_state', 'S1_img_alarm', 'S1_img_blocked', 'S1_img_trigger', 'S1_error');
-    var socket2 = new createSocket(pr, 'S2Trigger', 'S2_img_state', 'S2_img_alarm', 'S2_img_blocked', 'S2_img_trigger', 'S2_error');
-    var socket3 = new createSocket(pr, 'S3Trigger', 'S3_img_state', 'S3_img_alarm', 'S3_img_blocked', 'S3_img_trigger', 'S3_error');
-    var socket4 = new createSocket(pr, 'S4Trigger', 'S4_img_state', 'S4_img_alarm', 'S4_img_blocked', 'S4_img_trigger', 'S4_error');
+    let socket1 = new socket('S1Trigger', 'S1_img_state', 'S1_img_alarm', 'S1_img_blocked', 'S1_img_trigger');
+    let socket2 = new socket('S2Trigger', 'S2_img_state', 'S2_img_alarm', 'S2_img_blocked', 'S2_img_trigger');
+    let socket3 = new socket('S3Trigger', 'S3_img_state', 'S3_img_alarm', 'S3_img_blocked', 'S3_img_trigger');
+    let socket4 = new socket('S4Trigger', 'S4_img_state', 'S4_img_alarm', 'S4_img_blocked', 'S4_img_trigger');
     
     // Multicommand
-    var multiCMD = new createMultiCommand(pr, multiError);
-    
+    let multiCMD = new parserMultiCMD();
+    multiCMD.addCommand(parser.CMD_GET_BITS(['S1Out', 'S1Alarm', 'S1Locked', 'S1Trigger']));
+    multiCMD.addCommand(parser.CMD_GET_BITS(['S2Out', 'S2Alarm', 'S2Locked', 'S2Trigger']));
+    multiCMD.addCommand(parser.CMD_GET_BITS(['S3Out', 'S3Alarm', 'S3Locked', 'S3Trigger']));
+    multiCMD.addCommand(parser.CMD_GET_BITS(['S4Out', 'S4Alarm', 'S4Locked', 'S4Trigger']));
+    // Execute multicommand
     function multiExecute() {
-        if (!multiCMD.isExecuting()) {
-            
-            var C1 = pr.m_GET_BITS(['S1Out', 'S1Alarm', 'S1Locked', 'S1Trigger']);
-            var C2 = pr.m_GET_BITS(['S2Out', 'S2Alarm', 'S2Locked', 'S2Trigger']);
-            var C3 = pr.m_GET_BITS(['S3Out', 'S3Alarm', 'S3Locked', 'S3Trigger']);
-            var C4 = pr.m_GET_BITS(['S4Out', 'S4Alarm', 'S4Locked', 'S4Trigger']);
-
-            multiCMD.addCommand(C1, multiGetC1);
-            multiCMD.addCommand(C2, multiGetC2);
-            multiCMD.addCommand(C3, multiGetC3);
-            multiCMD.addCommand(C4, multiGetC4);
-            multiCMD.Execute();
-        }
+        multiCMD.execute().then(
+            reply => { multiReply(reply); },
+            error => { jsError.add(error); }
+        );
     }
-    
-    function poolingState() {
-        // Update state
-        multiExecute();
-    }
-    
-    function repoolingState() {
-        statePoolingTid = setTimeout(poolingState, 1000);
-    }
-    
-    function multiError(msg) {
-        document.getElementById("mError").innerHTML = msg;
-    }
-    
-    poolingState();
-    
-    // Multicommand feedback functions
-    function multiGetC1(val) {
-        // State
-        socket1.state(val[0]);
-        // Alarm
-        socket1.alarm(val[1]);
-        // Blocked
-        socket1.blocked(val[2], val[3]);
-    }
-    function multiGetC2(val) {
-        // State
-        socket2.state(val[0]);
-        // Alarm
-        socket2.alarm(val[1]);
-        // Blocked
-        socket2.blocked(val[2], val[3]);
-    }
-    function multiGetC3(val) {
-        // State
-        socket3.state(val[0]);
-        // Alarm
-        socket3.alarm(val[1]);
-        // Blocked
-        socket3.blocked(val[2], val[3]);
-    }
-    function multiGetC4(val) {
-        // State
-        socket4.state(val[0]);
-        // Alarm
-        socket4.alarm(val[1]);
-        // Blocked
-        socket4.blocked(val[2], val[3]);
+    // Parse multicommand reply
+    function multiReply(val) {
+        let s1 = val[0];
+        let s2 = val[1];
+        let s3 = val[2];
+        let s4 = val[3];
         
-        repoolingState();
+        socket1.setState(s1[0], s1[1], s1[2], s1[3]);
+        socket2.setState(s2[0], s2[1], s2[2], s2[3]);
+        socket3.setState(s3[0], s3[1], s3[2], s3[3]);
+        socket4.setState(s4[0], s4[1], s4[2], s4[3]);
+        // Setup polling timer
+        repollingState();
     }
+    
+    // Setup polling timer
+    function repollingState() {
+        statePollingTid = setTimeout(multiExecute, 1000);
+    }
+    
+    // Update alarms function
+    function poolingAlarmStatus() {
+        alarm.update().then(
+            reply => { repoolingAlarms(); },
+            error => { jsError.add(error); }
+        );
+    }
+    // Setup alarm polling timer
+    function repoolingAlarms() {
+        alarmStatusTid = setTimeout(poolingAlarmStatus, 1000);
+    }
+    
+    // First loop
+    repoolingAlarms();
+    multiExecute();
     
     // Click trigger button
-    $("#S1_img_state").click(function(){
-        socket1.Trigger();
-    });
-    $("#S2_img_state").click(function(){
-        socket2.Trigger();
-    });
-    $("#S3_img_state").click(function(){
-        socket3.Trigger();
-    });
-    $("#S4_img_state").click(function(){
-        socket4.Trigger();
-    });
-    
-    // Click lock button
-    $("#S1lock").click(function(){
-        lockS1BTN.Execute();
-    });
-    $("#S2lock").click(function(){
-        lockS2BTN.Execute();
-    });
-    $("#S3lock").click(function(){
-        lockS3BTN.Execute();
-    });
-    $("#S4lock").click(function(){
-        lockS4BTN.Execute();
-    });
-    $("#exitClient").click(function(){
-        exitBtn.Execute();
-    });
-    
+    document.getElementById('S1_img_state').onclick = function() {
+        socket1.trigger().catch(
+            error => { jsError.add(error); }
+        );
+    };
+    document.getElementById('S2_img_state').onclick = function() {
+        socket2.trigger().catch(
+            error => { jsError.add(error); }
+        );
+    };
+    document.getElementById('S3_img_state').onclick = function() {
+        socket3.trigger().catch(
+            error => { jsError.add(error); }
+        );
+    };
+    document.getElementById('S4_img_state').onclick = function() {
+        socket4.trigger().catch(
+            error => { jsError.add(error); }
+        );
+    };
 });
