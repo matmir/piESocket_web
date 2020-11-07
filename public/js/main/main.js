@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', function () {
     let alarmStatusTid;
     let statePollingTid;
     
+    // Global off button
+    let globalOffBtn = new actionButton('globalOFF', parser.CMD.SET_BIT, 'SGlobalOFF');
+    
     // Alarm table
     let alarm = new alarmTable();
         

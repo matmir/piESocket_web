@@ -11,10 +11,9 @@ export class socket {
      * @param {type} imgStateId State img identifier
      * @param {type} imgAlarmId Alarm img identifier
      * @param {type} imgBlockedId Blocked img identifier
-     * @param {type} imgTriggerId Trigger img identifier
      * @returns {undefined}
      */
-    constructor(triggerTag, imgStateId, imgAlarmId, imgBlockedId, imgTriggerId) {
+    constructor(triggerTag, imgStateId, imgAlarmId, imgBlockedId) {
         
         // Parser
         this._parser = new parserReadWrite();
@@ -30,10 +29,7 @@ export class socket {
         
         // Blocked img object
         this._imgBlocked = document.getElementById(imgBlockedId);
-        
-        // Trigger img object
-        this._imgTrig = document.getElementById(imgTriggerId);
-        
+                
         // Lock flag
         this._lock = false;
     }
@@ -52,7 +48,7 @@ export class socket {
             this._imgState.src="img/main/electricSocketBussy.png";
 
             // Invert bit
-            let response = await this._parser.invertBit(this._triggerTag);
+            let response = await this._parser.setBit(this._triggerTag);
             
             this._lock = false;
 
@@ -86,16 +82,8 @@ export class socket {
         // Blocked/Trigger
         if (blocked === '1') {
             this._imgBlocked.src="img/main/blocked.png";
-            
-            // Trigger state
-            if (trigger === '1') {
-                this._imgTrig.src="img/main/on.png";
-            } else {
-                this._imgTrig.src="img/main/off.png";
-            }
         } else {
             this._imgBlocked.src="img/main/emptyIcon.png";
-            this._imgTrig.src="img/main/emptyIcon.png";
         }
     }
 }
