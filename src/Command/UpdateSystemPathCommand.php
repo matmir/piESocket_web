@@ -68,7 +68,7 @@ class UpdateSystemPathCommand extends Command
         // Detect service path
         $servicePathDetect = str_replace(
             'openNetworkHMI_web/src/Command',
-            'openNetworkHMI_service/build/app/',
+            'openNetworkHMI_service/build/',
             $commandPath
         );
         

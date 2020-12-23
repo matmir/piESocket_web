@@ -339,7 +339,6 @@ class TagController extends AbstractController
         
         // Get data from POST
         if ($request->isMethod('POST')) {
-            
             $data = json_decode($request->getContent(), true);
         
             try {

@@ -11,6 +11,3 @@
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 /nbproject/
-
-/composer.lock
-/symfony.lock
