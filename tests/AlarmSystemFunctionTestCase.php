@@ -19,7 +19,7 @@ abstract class AlarmSystemFunctionTestCase extends BaseFunctionTestCase
      */
     protected $alarmMapper;
     
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         
@@ -29,7 +29,7 @@ abstract class AlarmSystemFunctionTestCase extends BaseFunctionTestCase
         $this->alarmMapper->deleteArchivedAlarm();
     }
     
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->alarmMapper = null;
         

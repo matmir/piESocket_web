@@ -25,7 +25,7 @@ abstract class TagLoggerFunctionTestCase extends BaseFunctionTestCase
      */
     protected $chartReader;
     
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         
@@ -38,7 +38,7 @@ abstract class TagLoggerFunctionTestCase extends BaseFunctionTestCase
         $this->waitOnProcessDataSync();
     }
     
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->loggerMapper = null;
         $this->chartReader = null;

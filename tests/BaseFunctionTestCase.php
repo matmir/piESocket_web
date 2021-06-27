@@ -23,7 +23,7 @@ abstract class BaseFunctionTestCase extends WebTestCase
      */
     protected $tagsMapper;
     
-    public function setUp()
+    public function setUp(): void
     {
         self::bootKernel();
         
@@ -36,7 +36,7 @@ abstract class BaseFunctionTestCase extends WebTestCase
         $this->waitOnProcessDataSync(false);
     }
     
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->tagsMapper = null;
         $this->parser = null;

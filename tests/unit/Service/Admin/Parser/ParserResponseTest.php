@@ -291,7 +291,7 @@ class ParserResponseTest extends TestCase
         $this->assertArrayHasKey('cmd', $dt);
         $this->assertArrayHasKey('values', $dt);
         
-        $this->assertInternalType('array', $dt['values']);
+        $this->assertIsArray($dt['values']);
         
         $this->assertEquals(ParserCommands::GET_BITS, $dt['cmd']);
         $this->assertEquals(0, $dt['values'][0]);
@@ -1137,7 +1137,7 @@ class ParserResponseTest extends TestCase
         $this->assertArrayHasKey('cmd', $dt);
         $this->assertArrayHasKey('values', $dt);
         
-        $this->assertInternalType('array', $dt['values']);
+        $this->assertIsArray($dt['values']);
         $this->assertEquals(8, count($dt['values']));
         
         $this->assertEquals(ParserCommands::GET_THREAD_CYCLE_TIME, $dt['cmd']);
@@ -1146,17 +1146,17 @@ class ParserResponseTest extends TestCase
         $this->assertArrayHasKey('UpdaterCnt', $val);
         $this->assertArrayHasKey('PollingCnt', $val);
         $this->assertArrayHasKey('Updater', $val);
-        $this->assertInternalType('array', $val['Updater']);
+        $this->assertIsArray($val['Updater']);
         $this->assertArrayHasKey('Polling', $val);
-        $this->assertInternalType('array', $val['Polling']);
+        $this->assertIsArray($val['Polling']);
         $this->assertArrayHasKey('Logger', $val);
-        $this->assertInternalType('array', $val['Logger']);
+        $this->assertIsArray($val['Logger']);
         $this->assertArrayHasKey('LoggerWriter', $val);
-        $this->assertInternalType('array', $val['LoggerWriter']);
+        $this->assertIsArray( $val['LoggerWriter']);
         $this->assertArrayHasKey('Alarming', $val);
-        $this->assertInternalType('array', $val['Alarming']);
+        $this->assertIsArray($val['Alarming']);
         $this->assertArrayHasKey('Script', $val);
-        $this->assertInternalType('array', $val['Script']);
+        $this->assertIsArray($val['Script']);
         
         $this->assertEquals(3, $val['UpdaterCnt']);
         $this->assertEquals(2, $val['PollingCnt']);
@@ -1169,7 +1169,7 @@ class ParserResponseTest extends TestCase
         foreach ($val['Updater'] as $key => $value) {
             $upd = $val['Updater'][$key];
             $this->assertEquals($upd, $value);
-            $this->assertInternalType('array', $upd);
+            $this->assertIsArray($upd);
             $this->assertArrayHasKey('min', $upd);
             $this->assertArrayHasKey('max', $upd);
             $this->assertArrayHasKey('current', $upd);
@@ -1182,28 +1182,28 @@ class ParserResponseTest extends TestCase
         foreach ($val['Polling'] as $key => $value) {
             $upd = $val['Polling'][$key];
             $this->assertEquals($upd, $value);
-            $this->assertInternalType('array', $upd);
+            $this->assertIsArray($upd);
             $this->assertArrayHasKey('min', $upd);
             $this->assertArrayHasKey('max', $upd);
             $this->assertArrayHasKey('current', $upd);
         }
         
-        $this->assertInternalType('array', $val['Logger']);
+        $this->assertIsArray($val['Logger']);
         $this->assertArrayHasKey('min', $val['Logger']);
         $this->assertArrayHasKey('max', $val['Logger']);
         $this->assertArrayHasKey('current', $val['Logger']);
         
-        $this->assertInternalType('array', $val['LoggerWriter']);
+        $this->assertIsArray($val['LoggerWriter']);
         $this->assertArrayHasKey('min', $val['LoggerWriter']);
         $this->assertArrayHasKey('max', $val['LoggerWriter']);
         $this->assertArrayHasKey('current', $val['LoggerWriter']);
         
-        $this->assertInternalType('array', $val['Alarming']);
+        $this->assertIsArray($val['Alarming']);
         $this->assertArrayHasKey('min', $val['Alarming']);
         $this->assertArrayHasKey('max', $val['Alarming']);
         $this->assertArrayHasKey('current', $val['Alarming']);
         
-        $this->assertInternalType('array', $val['Script']);
+        $this->assertIsArray($val['Script']);
         $this->assertArrayHasKey('min', $val['Script']);
         $this->assertArrayHasKey('max', $val['Script']);
         $this->assertArrayHasKey('current', $val['Script']);
@@ -1433,33 +1433,33 @@ class ParserResponseTest extends TestCase
         $this->assertArrayHasKey('cmd', $dt);
         $this->assertArrayHasKey('value', $dt);
         
-        $this->assertInternalType('array', $dt['value']);
+        $this->assertIsArray($dt['value']);
         
         $this->assertEquals(ParserCommands::MULTI_CMD, $dt['cmd']);
         
         $cmd1 = $dt['value'][0];
-        $this->assertInternalType('array', $cmd1);
+        $this->assertIsArray($cmd1);
         $this->assertArrayHasKey('cmd', $cmd1);
         $this->assertArrayHasKey('value', $cmd1);
         $this->assertEquals(ParserCommands::GET_BIT, $cmd1['cmd']);
         $this->assertEquals(1, $cmd1['value']);
         
         $cmd2 = $dt['value'][1];
-        $this->assertInternalType('array', $cmd2);
+        $this->assertIsArray($cmd2);
         $this->assertArrayHasKey('cmd', $cmd2);
         $this->assertArrayHasKey('value', $cmd2);
         $this->assertEquals(ParserCommands::SET_BIT, $cmd2['cmd']);
         $this->assertEquals(ParserReplyCodes::OK, $cmd2['value']);
         
         $cmd3 = $dt['value'][2];
-        $this->assertInternalType('array', $cmd3);
+        $this->assertIsArray($cmd3);
         $this->assertArrayHasKey('cmd', $cmd3);
         $this->assertArrayHasKey('value', $cmd3);
         $this->assertEquals(ParserCommands::RESET_BIT, $cmd3['cmd']);
         $this->assertEquals(ParserReplyCodes::OK, $cmd3['value']);
         
         $cmd4 = $dt['value'][3];
-        $this->assertInternalType('array', $cmd4);
+        $this->assertIsArray($cmd4);
         $this->assertArrayHasKey('cmd', $cmd4);
         $this->assertArrayHasKey('value', $cmd4);
         $this->assertEquals(ParserCommands::INVERT_BIT, $cmd4['cmd']);
@@ -1478,37 +1478,37 @@ class ParserResponseTest extends TestCase
         $this->assertArrayHasKey('cmd', $dt);
         $this->assertArrayHasKey('value', $dt);
         
-        $this->assertInternalType('array', $dt['value']);
+        $this->assertIsArray($dt['value']);
         
         $this->assertEquals(ParserCommands::MULTI_CMD, $dt['cmd']);
         
         $cmd1 = $dt['value'][0];
-        $this->assertInternalType('array', $cmd1);
+        $this->assertIsArray($cmd1);
         $this->assertArrayHasKey('cmd', $cmd1);
         $this->assertArrayHasKey('values', $cmd1);
         $this->assertEquals(ParserCommands::GET_BITS, $cmd1['cmd']);
-        $this->assertInternalType('array', $cmd1['values']);
+        $this->assertIsArray($cmd1['values']);
         $this->assertEquals(1, $cmd1['values'][0]);
         $this->assertEquals(0, $cmd1['values'][1]);
         $this->assertEquals(1, $cmd1['values'][2]);
         $this->assertEquals(1, $cmd1['values'][3]);
         
         $cmd2 = $dt['value'][1];
-        $this->assertInternalType('array', $cmd2);
+        $this->assertIsArray($cmd2);
         $this->assertArrayHasKey('cmd', $cmd2);
         $this->assertArrayHasKey('value', $cmd2);
         $this->assertEquals(ParserCommands::SET_BITS, $cmd2['cmd']);
         $this->assertEquals(ParserReplyCodes::OK, $cmd2['value']);
         
         $cmd3 = $dt['value'][2];
-        $this->assertInternalType('array', $cmd3);
+        $this->assertIsArray($cmd3);
         $this->assertArrayHasKey('cmd', $cmd3);
         $this->assertArrayHasKey('value', $cmd3);
         $this->assertEquals(ParserCommands::GET_BYTE, $cmd3['cmd']);
         $this->assertEquals(200, $cmd3['value']);
         
         $cmd4 = $dt['value'][3];
-        $this->assertInternalType('array', $cmd4);
+        $this->assertIsArray($cmd4);
         $this->assertArrayHasKey('cmd', $cmd4);
         $this->assertArrayHasKey('value', $cmd4);
         $this->assertEquals(ParserCommands::WRITE_BYTE, $cmd4['cmd']);
@@ -1527,33 +1527,33 @@ class ParserResponseTest extends TestCase
         $this->assertArrayHasKey('cmd', $dt);
         $this->assertArrayHasKey('value', $dt);
         
-        $this->assertInternalType('array', $dt['value']);
+        $this->assertIsArray($dt['value']);
         
         $this->assertEquals(ParserCommands::MULTI_CMD, $dt['cmd']);
         
         $cmd1 = $dt['value'][0];
-        $this->assertInternalType('array', $cmd1);
+        $this->assertIsArray($cmd1);
         $this->assertArrayHasKey('cmd', $cmd1);
         $this->assertArrayHasKey('value', $cmd1);
         $this->assertEquals(ParserCommands::GET_WORD, $cmd1['cmd']);
         $this->assertEquals(500, $cmd1['value']);
         
         $cmd2 = $dt['value'][1];
-        $this->assertInternalType('array', $cmd2);
+        $this->assertIsArray($cmd2);
         $this->assertArrayHasKey('cmd', $cmd2);
         $this->assertArrayHasKey('value', $cmd2);
         $this->assertEquals(ParserCommands::WRITE_WORD, $cmd2['cmd']);
         $this->assertEquals(ParserReplyCodes::OK, $cmd2['value']);
         
         $cmd3 = $dt['value'][2];
-        $this->assertInternalType('array', $cmd3);
+        $this->assertIsArray($cmd3);
         $this->assertArrayHasKey('cmd', $cmd3);
         $this->assertArrayHasKey('value', $cmd3);
         $this->assertEquals(ParserCommands::GET_DWORD, $cmd3['cmd']);
         $this->assertEquals(200000, $cmd3['value']);
         
         $cmd4 = $dt['value'][3];
-        $this->assertInternalType('array', $cmd4);
+        $this->assertIsArray($cmd4);
         $this->assertArrayHasKey('cmd', $cmd4);
         $this->assertArrayHasKey('value', $cmd4);
         $this->assertEquals(ParserCommands::WRITE_DWORD, $cmd4['cmd']);
@@ -1572,33 +1572,33 @@ class ParserResponseTest extends TestCase
         $this->assertArrayHasKey('cmd', $dt);
         $this->assertArrayHasKey('value', $dt);
         
-        $this->assertInternalType('array', $dt['value']);
+        $this->assertIsArray($dt['value']);
         
         $this->assertEquals(ParserCommands::MULTI_CMD, $dt['cmd']);
         
         $cmd1 = $dt['value'][0];
-        $this->assertInternalType('array', $cmd1);
+        $this->assertIsArray($cmd1);
         $this->assertArrayHasKey('cmd', $cmd1);
         $this->assertArrayHasKey('value', $cmd1);
         $this->assertEquals(ParserCommands::GET_INT, $cmd1['cmd']);
         $this->assertEquals(-500, $cmd1['value']);
         
         $cmd2 = $dt['value'][1];
-        $this->assertInternalType('array', $cmd2);
+        $this->assertIsArray($cmd2);
         $this->assertArrayHasKey('cmd', $cmd2);
         $this->assertArrayHasKey('value', $cmd2);
         $this->assertEquals(ParserCommands::WRITE_INT, $cmd2['cmd']);
         $this->assertEquals(ParserReplyCodes::OK, $cmd2['value']);
         
         $cmd3 = $dt['value'][2];
-        $this->assertInternalType('array', $cmd3);
+        $this->assertIsArray($cmd3);
         $this->assertArrayHasKey('cmd', $cmd3);
         $this->assertArrayHasKey('value', $cmd3);
         $this->assertEquals(ParserCommands::GET_REAL, $cmd3['cmd']);
         $this->assertEquals(-3.14, $cmd3['value']);
         
         $cmd4 = $dt['value'][3];
-        $this->assertInternalType('array', $cmd4);
+        $this->assertIsArray($cmd4);
         $this->assertArrayHasKey('cmd', $cmd4);
         $this->assertArrayHasKey('value', $cmd4);
         $this->assertEquals(ParserCommands::WRITE_REAL, $cmd4['cmd']);
@@ -1617,19 +1617,19 @@ class ParserResponseTest extends TestCase
         $this->assertArrayHasKey('cmd', $dt);
         $this->assertArrayHasKey('value', $dt);
         
-        $this->assertInternalType('array', $dt['value']);
+        $this->assertIsArray($dt['value']);
         
         $this->assertEquals(ParserCommands::MULTI_CMD, $dt['cmd']);
         
         $cmd1 = $dt['value'][0];
-        $this->assertInternalType('array', $cmd1);
+        $this->assertIsArray($cmd1);
         $this->assertArrayHasKey('cmd', $cmd1);
         $this->assertArrayHasKey('value', $cmd1);
         $this->assertEquals(ParserCommands::ACK_ALARM, $cmd1['cmd']);
         $this->assertEquals(ParserReplyCodes::OK, $cmd1['value']);
         
         $cmd2 = $dt['value'][1];
-        $this->assertInternalType('array', $cmd2);
+        $this->assertIsArray($cmd2);
         $this->assertArrayHasKey('cmd', $cmd2);
         $this->assertArrayHasKey('value', $cmd2);
         $this->assertEquals(ParserCommands::EXIT_APP, $cmd2['cmd']);

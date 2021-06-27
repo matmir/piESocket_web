@@ -25,7 +25,7 @@ abstract class ScriptSystemFunctionTestCase extends BaseFunctionTestCase
      */
     protected $cfg;
     
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         
@@ -33,7 +33,7 @@ abstract class ScriptSystemFunctionTestCase extends BaseFunctionTestCase
         $this->cfg = self::$container->get(ConfigGeneralMapper::class);
     }
     
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->scriptMapper = null;
         $this->cfg = null;
