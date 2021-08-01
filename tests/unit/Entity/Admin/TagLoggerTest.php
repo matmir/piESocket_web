@@ -226,7 +226,7 @@ class TagLoggerTest extends TestCase
         $tagLog->setLastValue(5);
         
         $this->assertEquals(TagType::BIT, $tagLog->getTag()->getType());
-        $this->assertInternalType('bool', $tagLog->getLastValue(true));
+        $this->assertIsBool($tagLog->getLastValue(true));
         $this->assertTrue($tagLog->getLastValue(true));
     }
     
@@ -240,7 +240,7 @@ class TagLoggerTest extends TestCase
         $tagLog->setLastValue(-5.14);
         
         $this->assertEquals(TagType::REAL, $tagLog->getTag()->getType());
-        $this->assertInternalType('float', $tagLog->getLastValue(true));
+        $this->assertIsFloat($tagLog->getLastValue(true));
         $this->assertEquals(-5.14, $tagLog->getLastValue(true));
     }
     
@@ -254,7 +254,7 @@ class TagLoggerTest extends TestCase
         $tagLog->setLastValue(25015);
         
         $this->assertEquals(TagType::DWORD, $tagLog->getTag()->getType());
-        $this->assertInternalType('int', $tagLog->getLastValue(true));
+        $this->assertIsInt($tagLog->getLastValue(true));
         $this->assertEquals(25015, $tagLog->getLastValue(true));
     }
     
