@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use App\Service\Admin\ConfigGeneralMapper;
-use App\Command\RunScriptCommand;
+use App\Service\Admin\SystemScripts;
 
 /**
  * Command Class for generate test DB SQL file
@@ -49,7 +49,7 @@ class GenerateSudoersCommand extends Command
             $webApp = $this->cfg->getWebAppPath();
             
             // Generate shScript path
-            $shDir = RunScriptCommand::buildScriptPath($webApp, 'shScripts/');
+            $shDir = SystemScripts::buildScriptPath($webApp, 'shScripts/');
             
             // Check if path exist
             if (!is_dir($shDir)) {

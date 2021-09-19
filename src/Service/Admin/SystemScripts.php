@@ -4,7 +4,6 @@ namespace App\Service\Admin;
 
 use App\Service\Admin\ConfigGeneralMapper;
 use App\Entity\AppException;
-use App\Command\RunScriptCommand;
 
 /**
  * Class to execute system scripts (system services)
@@ -42,10 +41,32 @@ class SystemScripts
         $webApp = $cfgGeneral->getWebAppPath();
         
         // System scripts directory
-        $this->systemScriptsPath = RunScriptCommand::buildScriptPath($webApp, 'shScripts/');
+        $this->systemScriptsPath = $this->buildScriptPath($webApp, 'shScripts/');
         
         // Server application path
         $this->serverAppPath = $this->checkSlash($cfgGeneral->getServerAppPath());
+    }
+    
+    /**
+     * Build full path to the script
+     *
+     * @param string $scriptDir User script directory path
+     * @param string $script Script name
+     * @return string Full path to the script
+     */
+    public static function buildScriptPath(string $scriptDir, string $script): string
+    {
+        $scriptPath = "";
+        
+        // Script directory
+        $size = strlen($scriptDir);
+        if ($scriptDir[$size - 1] != '/') {
+            $scriptPath = $scriptDir . "/" . $script;
+        } else {
+            $scriptPath = $scriptDir . $script;
+        }
+        
+        return $scriptPath;
     }
     
     /**
