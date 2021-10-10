@@ -49,8 +49,6 @@ class ConfigGeneralMapper extends BaseConfigMapper
                 $cg->setSocketPort($items[$i]['cValue']);
             } elseif ($items[$i]['cName'] == 'webAppPath') {
                 $cg->setWebAppPath($items[$i]['cValue']);
-            } elseif ($items[$i]['cName'] == 'scriptSystemExecuteScript') {
-                $cg->setScriptSystemExecuteScript($items[$i]['cValue']);
             } elseif ($items[$i]['cName'] == 'scriptSystemUpdateInterval') {
                 $cg->setScriptSystemUpdateInterval($items[$i]['cValue']);
             } elseif ($items[$i]['cName'] == 'userScriptsPath') {
@@ -127,13 +125,6 @@ class ConfigGeneralMapper extends BaseConfigMapper
             $sql = "UPDATE configuration SET cValue = ? WHERE cName = 'socketPort';";
             array_push($sqls, $sql);
             array_push($vals, $newCFG->getSocketPort());
-        }
-        
-        // scriptSystemExecuteScript
-        if ($newCFG->getScriptSystemExecuteScript() <> $currentCFG->getScriptSystemExecuteScript()) {
-            $sql = "UPDATE configuration SET cValue = ? WHERE cName = 'scriptSystemExecuteScript';";
-            array_push($sqls, $sql);
-            array_push($vals, $newCFG->getScriptSystemExecuteScript());
         }
         
         // scriptSystemUpdateInterval

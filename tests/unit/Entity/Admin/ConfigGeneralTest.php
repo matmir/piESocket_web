@@ -28,7 +28,6 @@ class ConfigGeneralTest extends TestCase
         $this->assertEquals(8080, $cfg->getSocketPort());
         $this->assertEquals('', $cfg->getServerAppPath());
         $this->assertEquals('', $cfg->getWebAppPath());
-        $this->assertEquals('', $cfg->getScriptSystemExecuteScript());
         $this->assertEquals('', $cfg->getUserScriptsPath());
         $this->assertEquals('ROLE_USER', $cfg->getAckAccessRole());
     }
@@ -167,26 +166,6 @@ class ConfigGeneralTest extends TestCase
     }
     
     /**
-     * Test setSystemScriptsPath method
-     */
-    public function testSetScriptSystemExecuteScript()
-    {
-        $cfg = new ConfigGeneral();
-        $cfg->setScriptSystemExecuteScript('testPath');
-        
-        $this->assertEquals('testPath', $cfg->getScriptSystemExecuteScript());
-    }
-    
-    public function testSetScriptSystemExecuteScriptWrong()
-    {
-        $this->expectException(\Symfony\Component\Config\Definition\Exception\Exception::class);
-        $this->expectExceptionMessage('Script system execute script can not be empty');
-        
-        $cfg = new ConfigGeneral();
-        $cfg->setScriptSystemExecuteScript(' ');
-    }
-    
-    /**
      * Test setUserScriptsPath method
      */
     public function testSetUserScriptsPath()
@@ -232,7 +211,6 @@ class ConfigGeneralTest extends TestCase
     public function testIsValid()
     {
         $cfg = new ConfigGeneral();
-        $cfg->setScriptSystemExecuteScript('scr1');
         $cfg->setServerAppPath('serverApp');
         $cfg->setUserScriptsPath('usrScripts');
         $cfg->setWebAppPath('webApp');
@@ -246,7 +224,6 @@ class ConfigGeneralTest extends TestCase
         $this->expectExceptionMessage('User scripts path can not be empty');
         
         $cfg = new ConfigGeneral();
-        $cfg->setScriptSystemExecuteScript('scr1');
         $cfg->setServerAppPath('serverApp');
         $cfg->setWebAppPath('webApp');
         

@@ -61,10 +61,7 @@ class UpdateSystemPathCommand extends Command
         // Detect web app path
         $commandPath = dirname(__FILE__);
         $webAppDetect = str_replace('src/Command', '', $commandPath);
-        
-        // Detect console path
-        $consolePath = str_replace('src/Command', 'bin/console', $commandPath);
-        
+                
         // Detect service path
         $servicePathDetect = str_replace(
             'openNetworkHMI_web/src/Command',
@@ -93,10 +90,6 @@ class UpdateSystemPathCommand extends Command
                 throw new Exception("Web application directory does not exist");
             }
             
-            if (!file_exists($consolePath) || is_dir($consolePath)) {
-                throw new Exception("Web console file does not exist");
-            }
-
             if ($ask) {
                 $question2 = new Question("Please enter full path to the service application directory\nDefault [" .
                                             $servicePathDetect . "]:", $servicePathDetect);
@@ -133,7 +126,6 @@ class UpdateSystemPathCommand extends Command
             
             // Update paths
             $sysCfg->setWebAppPath($webAppPath);
-            $sysCfg->setScriptSystemExecuteScript("php " . $consolePath . " app:run-script");
             $sysCfg->setServerAppPath($servicePath);
             $sysCfg->setUserScriptsPath($scriptsPath);
             $sysCfg->setSocketPort($servicePort);
