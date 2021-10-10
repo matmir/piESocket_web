@@ -66,10 +66,6 @@ class GenerateTestSqlCommand extends Command
         // Detect web app path
         $webAppDetect = $sysCfg->getWebAppPath();
         
-        // Detect console path
-        $c1 = str_replace('php ', '', $sysCfg->getScriptSystemExecuteScript());
-        $consolePath = str_replace(' app:run-script', '', $c1);
-        
         // Detect service path
         $servicePathDetect = str_replace('openNetworkHMI_web/src/Command', 'tests/bin/onh/', $commandPath);
         
@@ -92,10 +88,6 @@ class GenerateTestSqlCommand extends Command
             
             if (!is_dir($webAppPath)) {
                 throw new Exception("Web application directory does not exist");
-            }
-            
-            if (!file_exists($consolePath) || is_dir($consolePath)) {
-                throw new Exception("Web console file does not exist");
             }
 
             if ($ask) {
@@ -147,10 +139,9 @@ class GenerateTestSqlCommand extends Command
             }
             // Prepare SQL content
             $cnt1 = str_replace('[webAppPath]', $webAppPath, $f);
-            $cnt2 = str_replace('[consoleScript]', $consolePath, $cnt1);
-            $cnt3 = str_replace('[serverAppPath]', $servicePath, $cnt2);
-            $cnt4 = str_replace('[userScriptsPath]', $scriptsPath, $cnt3);
-            $cnt = str_replace('[socketPrt]', "'" . $servicePort . "'", $cnt4);
+            $cnt2 = str_replace('[serverAppPath]', $servicePath, $cnt1);
+            $cnt3 = str_replace('[userScriptsPath]', $scriptsPath, $cnt2);
+            $cnt = str_replace('[socketPrt]', "'" . $servicePort . "'", $cnt3);
             
             // Write service file
             $r = file_put_contents($sqlFile, $cnt);

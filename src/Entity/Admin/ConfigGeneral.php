@@ -58,11 +58,6 @@ class ConfigGeneral
     private string $webAppPath;
     
     /**
-     * Script system execute script
-     */
-    private string $scriptSystemExecuteScript;
-    
-    /**
      * Script system update interval (milliseconds)
      */
     private int $scriptSystemUpdateInterval;
@@ -88,7 +83,6 @@ class ConfigGeneral
      * @param int $sockPort Socket port
      * @param string $serverApp Server app path
      * @param string $webApp Web app path
-     * @param string $scriptExecPath Execute script path
      * @param string $usrScripts User scripts path
      * @param string $ack Ack permission role
      */
@@ -101,7 +95,6 @@ class ConfigGeneral
         int $sockPort = 8080,
         string $serverApp = '',
         string $webApp = '',
-        string $scriptExecPath = '',
         string $usrScripts = '',
         string $ack = 'ROLE_USER'
     ) {
@@ -115,7 +108,6 @@ class ConfigGeneral
         
         $this->serverAppPath = $serverApp;
         $this->webAppPath = $webApp;
-        $this->scriptSystemExecuteScript = $scriptExecPath;
         $this->userScriptsPath = $usrScripts;
         $this->ackAccessRole = $ack;
     }
@@ -380,44 +372,6 @@ class ConfigGeneral
     }
     
     /**
-     * Check script system execute script
-     *
-     * @param string $scr script system execute script
-     * @return bool True if script system execute script
-     * @throws Exception if script system execute script
-     */
-    public static function checkScriptSystemExecuteScript(string $scr): bool
-    {
-        if (trim($scr) == false) {
-            throw new Exception('Script system execute script can not be empty');
-        }
-        
-        return true;
-    }
-    
-    /**
-     * Get script system execute script
-     *
-     * @return string Script system execute script
-     */
-    public function getScriptSystemExecuteScript(): string
-    {
-        return $this->scriptSystemExecuteScript;
-    }
-    
-    /**
-     * Set script system execute script
-     *
-     * @param string $val Script system execute script
-     */
-    public function setScriptSystemExecuteScript(string $val)
-    {
-        $this->checkScriptSystemExecuteScript($val);
-        
-        $this->scriptSystemExecuteScript = $val;
-    }
-    
-    /**
      * Check user scripts path
      *
      * @param string $uscr user scripts path
@@ -492,7 +446,6 @@ class ConfigGeneral
         $this->checkInterval($this->scriptSystemUpdateInterval);
         
         // Check cfg
-        $this->checkScriptSystemExecuteScript($this->scriptSystemExecuteScript);
         $this->checkServerAppPath($this->serverAppPath);
         $this->checkSocketMaxConn($this->socketMaxConn);
         $this->checkSocketPort($this->socketPort);

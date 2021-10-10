@@ -266,7 +266,7 @@ CREATE TABLE `configuration` (
 
 LOCK TABLES `configuration` WRITE;
 /*!40000 ALTER TABLE `configuration` DISABLE KEYS */;
-INSERT INTO `configuration` VALUES ('ackAccessRole','ROLE_USER'),('alarmingUpdateInterval','10'),('processUpdateInterval','10'),('scriptSystemExecuteScript','php [consoleScript] app:run-script'),('scriptSystemUpdateInterval','10'),('serverAppPath','[serverAppPath]'),('serverRestart','0'),('socketMaxConn','10'),('socketPort',[socketPrt]),('tagLoggerUpdateInterval','10'),('userScriptsPath','[userScriptsPath]'),('webAppPath','[webAppPath]');
+INSERT INTO `configuration` VALUES ('ackAccessRole','ROLE_USER'),('alarmingUpdateInterval','10'),('processUpdateInterval','10'),('scriptSystemUpdateInterval','10'),('serverAppPath','[serverAppPath]'),('serverRestart','0'),('socketMaxConn','10'),('socketPort',[socketPrt]),('tagLoggerUpdateInterval','10'),('userScriptsPath','[userScriptsPath]'),('webAppPath','[webAppPath]');
 /*!40000 ALTER TABLE `configuration` ENABLE KEYS */;
 UNLOCK TABLES;
 

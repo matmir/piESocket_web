@@ -238,7 +238,7 @@ CREATE TABLE `configuration` (
 
 LOCK TABLES `configuration` WRITE;
 /*!40000 ALTER TABLE `configuration` DISABLE KEYS */;
-INSERT INTO `configuration` VALUES ('ackAccessRole','ROLE_USER'),('alarmingUpdateInterval','100'),('processUpdateInterval','100'),('scriptSystemExecuteScript','php /home/virtual/Dokumenty/openNetworkHMI/APP/SRC/openNetworkHMI_web/bin/console app:run-script'),('scriptSystemUpdateInterval','100'),('serverAppPath','/home/virtual/onh/APP/SRC/tests/bin/onh/'),('serverRestart','0'),('socketMaxConn','10'),('socketPort','8080'),('tagLoggerUpdateInterval','100'),('userScriptsPath','/home/virtual/onh/APP/SRC/tests/scripts/'),('webAppPath','/home/virtual/Dokumenty/openNetworkHMI/APP/SRC/openNetworkHMI_web/');
+INSERT INTO `configuration` VALUES ('ackAccessRole','ROLE_USER'),('alarmingUpdateInterval','100'),('processUpdateInterval','100'),('scriptSystemUpdateInterval','100'),('serverAppPath','/home/virtual/onh/APP/SRC/tests/bin/onh/'),('serverRestart','0'),('socketMaxConn','10'),('socketPort','8080'),('tagLoggerUpdateInterval','100'),('userScriptsPath','/home/virtual/onh/APP/SRC/tests/scripts/'),('webAppPath','/home/virtual/Dokumenty/openNetworkHMI/APP/SRC/openNetworkHMI_web/');
 /*!40000 ALTER TABLE `configuration` ENABLE KEYS */;
 UNLOCK TABLES;
 

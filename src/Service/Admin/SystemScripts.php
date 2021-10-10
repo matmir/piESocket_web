@@ -50,7 +50,7 @@ class SystemScripts
     /**
      * Build full path to the script
      *
-     * @param string $scriptDir User script directory path
+     * @param string $scriptDir Script directory path
      * @param string $script Script name
      * @return string Full path to the script
      */

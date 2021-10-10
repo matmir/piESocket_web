@@ -84,12 +84,6 @@ class ConfigGeneralForm extends AbstractType implements DataMapperInterface
                                                 new Length(['max' => 200]),
                                             ],
                                             'empty_data' => ''))
-            ->add('scriptSystemExecuteScript', TextType::class, array('label' => 'System execute script',
-                                            'constraints' => [
-                                                new NotBlank(),
-                                                new Length(['max' => 200]),
-                                            ],
-                                            'empty_data' => ''))
             ->add('userScriptsPath', TextType::class, array('label' => 'User script path',
                                             'constraints' => [
                                                 new NotBlank(),
@@ -139,7 +133,6 @@ class ConfigGeneralForm extends AbstractType implements DataMapperInterface
         $aforms['socketPort']->setData($viewData->getSocketPort());
         $aforms['serverAppPath']->setData($viewData->getServerAppPath());
         $aforms['webAppPath']->setData($viewData->getWebAppPath());
-        $aforms['scriptSystemExecuteScript']->setData($viewData->getScriptSystemExecuteScript());
         $aforms['userScriptsPath']->setData($viewData->getUserScriptsPath());
         $aforms['ackAccessRole']->setData($viewData->getAckAccessRole());
     }
@@ -159,7 +152,6 @@ class ConfigGeneralForm extends AbstractType implements DataMapperInterface
             $aforms['socketPort']->getData(),
             $aforms['serverAppPath']->getData(),
             $aforms['webAppPath']->getData(),
-            $aforms['scriptSystemExecuteScript']->getData(),
             $aforms['userScriptsPath']->getData(),
             $aforms['ackAccessRole']->getData(),
         );
