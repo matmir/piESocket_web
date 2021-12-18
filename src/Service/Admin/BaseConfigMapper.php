@@ -2,7 +2,7 @@
 
 namespace App\Service\Admin;
 
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 
 /**
  * Base abstract class to read/write configuration of the system
@@ -36,8 +36,8 @@ abstract class BaseConfigMapper
     public function serverNeedRestart(): bool
     {
         $statement = $this->dbConn->prepare("SELECT * FROM configuration WHERE cName = 'serverRestart';");
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items)) {
             throw new Exception("Configuration serverRestart does not exist!");

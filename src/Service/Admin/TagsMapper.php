@@ -2,7 +2,7 @@
 
 namespace App\Service\Admin;
 
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
@@ -81,8 +81,8 @@ class TagsMapper
             $statement->bindValue(1, $area, ParameterType::INTEGER);
         }
         
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         $ret = array();
         
@@ -133,8 +133,8 @@ class TagsMapper
             $statement->bindValue(1, $area, ParameterType::INTEGER);
         }
         
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items) || count($items) != 1) {
             throw new Exception("Error during executing count query!");
@@ -160,9 +160,9 @@ class TagsMapper
         $q = 'SELECT * FROM tags t, driver_connections dc WHERE t.tConnId = dc.dcId AND tid = ?;';
         $statement = $this->dbConn->prepare($q);
         $statement->bindValue(1, $tagId, ParameterType::INTEGER);
-        $statement->execute();
         
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items)) {
             throw new Exception("Tag with identifier " . $tagId . " does not exist!");
@@ -203,9 +203,9 @@ class TagsMapper
         $q = 'SELECT * FROM tags t, driver_connections dc WHERE t.tConnId = dc.dcId AND tName = ?;';
         $statement = $this->dbConn->prepare($q);
         $statement->bindValue(1, $tagName, ParameterType::STRING);
-        $statement->execute();
         
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items)) {
             throw new AppException("Tag " . $tagName . " does not exist!", AppException::TAG_NOT_EXIST);
@@ -250,9 +250,9 @@ class TagsMapper
         $q = 'SELECT * FROM tags t, driver_connections dc WHERE t.tConnId = dc.dcId AND tName LIKE ?;';
         $statement = $this->dbConn->prepare($q);
         $statement->bindValue(1, $tagName, ParameterType::STRING);
-        $statement->execute();
-                
-        $items = $statement->fetchAll();
+        
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
                 
         $ret = array();
         
@@ -301,8 +301,8 @@ class TagsMapper
         $statement->bindValue(5, $tag->getConnId(), ParameterType::INTEGER);
         $statement->bindValue(6, $tag->getId(), ParameterType::INTEGER);
         
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items) || count($items) != 1) {
             throw new Exception("Error during executing count query!");

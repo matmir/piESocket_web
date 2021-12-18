@@ -2,7 +2,7 @@
 
 namespace App\Service\Admin;
 
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use App\Service\Admin\TagLoggerMapper;
@@ -232,8 +232,8 @@ class ChartDataReader
         $sql = "SELECT * FROM " . $cols['table'] . " ORDER BY " . $cols['sortId'] . " DESC LIMIT 10;";
         
         $statement = $this->dbConn->prepare($sql);
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         return $this->prepareChartData($items, $cols['value'], $cols['timestamp']);
     }
@@ -287,8 +287,8 @@ class ChartDataReader
         $statement->bindValue(1, $dtFrom, ParameterType::STRING);
         $statement->bindValue(2, $dtTo, ParameterType::STRING);
         
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         return $this->prepareChartData($items, $cols['value'], $cols['timestamp']);
     }
@@ -315,8 +315,8 @@ class ChartDataReader
         $statement = $this->dbConn->prepare($sql);
         $statement->bindValue(1, $dtFrom, ParameterType::STRING);
         
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         return $this->prepareChartData($items, $cols['value'], $cols['timestamp']);
     }

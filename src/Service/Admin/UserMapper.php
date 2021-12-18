@@ -2,7 +2,7 @@
 
 namespace App\Service\Admin;
 
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -81,8 +81,8 @@ class UserMapper
         
         $statement = $this->dbConn->prepare($sql);
                 
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         $ret = array();
         
@@ -116,8 +116,8 @@ class UserMapper
         
         $statement = $this->dbConn->prepare($sql);
                 
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items) || count($items) != 1) {
             throw new Exception("Error during executing count query!");
@@ -142,9 +142,9 @@ class UserMapper
         
         $statement = $this->dbConn->prepare('SELECT * FROM app_users u WHERE u.id = ?;');
         $statement->bindValue(1, $userId, ParameterType::INTEGER);
-        $statement->execute();
         
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items)) {
             throw new Exception("User with identifier " . $userId . " does not exist!");
@@ -180,9 +180,9 @@ class UserMapper
         
         $statement = $this->dbConn->prepare('SELECT * FROM app_users u WHERE u.username = ?;');
         $statement->bindValue(1, $userNm, ParameterType::STRING);
-        $statement->execute();
+        $results = $statement->execute();
         
-        $items = $statement->fetchAll();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items)) {
             throw new AppException(
@@ -224,8 +224,8 @@ class UserMapper
         
         $statement->bindValue(1, $user->getEmail(), ParameterType::STRING);
         
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items) || count($items) != 1) {
             throw new Exception("Error during executing count query!");

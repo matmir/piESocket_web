@@ -2,7 +2,7 @@
 
 namespace App\Service\Admin;
 
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
@@ -54,8 +54,8 @@ class DriverConnectionMapper extends BaseConfigMapper
         
         $statement = $this->dbConn->prepare($sql);
         
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (count($items) > self::MAX_CONNECTIONS) {
             throw new Exception("Too much connections defined in DB");
@@ -112,8 +112,8 @@ class DriverConnectionMapper extends BaseConfigMapper
         
         $statement = $this->dbConn->prepare($sql);
         
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (count($items) > self::MAX_CONNECTIONS) {
             throw new Exception("Too much connections defined in DB");
@@ -144,9 +144,9 @@ class DriverConnectionMapper extends BaseConfigMapper
         
         $statement = $this->dbConn->prepare($sql);
         $statement->bindValue(1, $mid, ParameterType::INTEGER);
-        $statement->execute();
         
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items)) {
             throw new Exception("Modbus configuration with identifier " . $mid . " does not exist!");
@@ -196,9 +196,9 @@ class DriverConnectionMapper extends BaseConfigMapper
         
         $statement = $this->dbConn->prepare($sql);
         $statement->bindValue(1, $sid, ParameterType::INTEGER);
-        $statement->execute();
         
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items)) {
             throw new Exception("SHM configuration with identifier " . $sid . " does not exist!");
@@ -232,9 +232,9 @@ class DriverConnectionMapper extends BaseConfigMapper
         
         $statement = $this->dbConn->prepare($sql);
         $statement->bindValue(1, $cid, ParameterType::INTEGER);
-        $statement->execute();
         
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items)) {
             throw new Exception("Driver connection with identifier " . $cid . " does not exist!");
@@ -287,9 +287,9 @@ class DriverConnectionMapper extends BaseConfigMapper
         $sql = "SELECT count(*) AS 'cnt' FROM driver_connections;";
         
         $statement = $this->dbConn->prepare($sql);
-        $statement->execute();
         
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items) || count($items) != 1) {
             throw new Exception("Error during executing count query!");
@@ -388,8 +388,8 @@ class DriverConnectionMapper extends BaseConfigMapper
                 $statement->bindValue(2, $newModbus->getId(), ParameterType::INTEGER);
             }
 
-            $statement->execute();
-            $items = $statement->fetchAll();
+            $results = $statement->execute();
+            $items = $results->fetchAllAssociative();
 
             foreach ($items as $item) {
                 if ($item['dmTCP_port'] == $newModbus->getTCPport()) {

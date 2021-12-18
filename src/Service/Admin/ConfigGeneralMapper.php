@@ -2,7 +2,7 @@
 
 namespace App\Service\Admin;
 
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use App\Entity\Admin\ConfigGeneral;
 use App\Service\Admin\BaseConfigMapper;
@@ -29,8 +29,8 @@ class ConfigGeneralMapper extends BaseConfigMapper
     public function getConfig(): ConfigGeneral
     {
         $statement = $this->dbConn->prepare('SELECT * FROM configuration;');
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         $cg = new ConfigGeneral();
         
@@ -170,8 +170,8 @@ class ConfigGeneralMapper extends BaseConfigMapper
     public function getWebAppPath(): string
     {
         $statement = $this->dbConn->prepare("SELECT * FROM configuration WHERE cName = 'webAppPath';");
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items)) {
             throw new Exception("Configuration webAppPath does not exist!");
@@ -192,8 +192,8 @@ class ConfigGeneralMapper extends BaseConfigMapper
     public function getSystemSocketPort(): int
     {
         $statement = $this->dbConn->prepare("SELECT * FROM configuration WHERE cName = 'socketPort';");
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items)) {
             throw new Exception("Configuration socketPort does not exist!");
@@ -214,8 +214,8 @@ class ConfigGeneralMapper extends BaseConfigMapper
     public function getServerAppPath(): string
     {
         $statement = $this->dbConn->prepare("SELECT * FROM configuration WHERE cName = 'serverAppPath';");
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items)) {
             throw new Exception("Configuration serverAppPath does not exist!");
@@ -236,8 +236,8 @@ class ConfigGeneralMapper extends BaseConfigMapper
     public function getUserScriptsPath(): string
     {
         $statement = $this->dbConn->prepare("SELECT * FROM configuration WHERE cName = 'userScriptsPath';");
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items)) {
             throw new Exception("Configuration userScriptsPath does not exist!");
@@ -258,8 +258,8 @@ class ConfigGeneralMapper extends BaseConfigMapper
     public function getAckAccessRole(): string
     {
         $statement = $this->dbConn->prepare("SELECT * FROM configuration WHERE cName = 'ackAccessRole';");
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items)) {
             throw new Exception("Configuration ackAccessRole does not exist!");
