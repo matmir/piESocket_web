@@ -574,7 +574,10 @@ class AlarmMapper
         $sql .= ';';
         
         $statement = $this->dbConn->prepare($sql);
-        $statement->bindValue(1, $alarmId, ParameterType::INTEGER);
+        
+        if ($alarmId > 0) {
+            $statement->bindValue(1, $alarmId, ParameterType::INTEGER);
+        }
                 
         if (!$statement->execute()) {
             throw new Exception("Error during execute delete query!");
