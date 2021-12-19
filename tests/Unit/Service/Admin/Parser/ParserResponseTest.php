@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Service\Admin\Parser;
+namespace App\Tests\Unit\Service\Admin\Parser;
 
 use App\Service\Admin\Parser\ParserCommands;
 use App\Service\Admin\Parser\ParserReplyCodes;

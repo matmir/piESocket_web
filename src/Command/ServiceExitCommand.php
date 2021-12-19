@@ -40,7 +40,7 @@ class ServiceExitCommand extends Command
                 ->setHelp('This command send exit command to the openNetworkHMI service.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $ret = 0;
         

@@ -6,7 +6,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\Config\Definition\Exception\Exception;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use App\Entity\Admin\User;
 use App\Entity\Paginator;
@@ -21,13 +21,13 @@ class UserMapper
 {
     private Connection $dbConn;
     
-    private UserPasswordEncoderInterface $encoder;
+    private UserPasswordHasherInterface $encoder;
     
     private AuthorizationCheckerInterface $authChecker;
     
     public function __construct(
         Connection $connection,
-        UserPasswordEncoderInterface $enc,
+        UserPasswordHasherInterface $enc,
         AuthorizationCheckerInterface $aci
     ) {
         $this->dbConn = $connection;

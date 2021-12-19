@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Tests\Entity\Admin;
+namespace App\Tests\Unit\Entity\Admin;
 
 use App\Entity\Admin\Tag;
 use App\Entity\Admin\TagType;
 use App\Entity\Admin\ScriptItem;
-use App\Tests\Entity\Admin\TagLoggerTest;
+use App\Tests\Unit\Entity\Admin\TagLoggerTest;
 use PHPUnit\Framework\TestCase;
 
 /**

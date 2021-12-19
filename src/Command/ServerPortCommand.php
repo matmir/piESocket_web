@@ -39,7 +39,7 @@ class ServerPortCommand extends Command
                 ->setHelp('This command gets openNetworkHMI server port number.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $ret = 0;
         

@@ -3,6 +3,7 @@
 namespace App\Entity\Admin;
 
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
@@ -10,7 +11,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
  *
  * @author Mateusz Mirosławski
  */
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * User identifier
@@ -106,6 +107,11 @@ class User implements UserInterface
         return $this->username;
     }
     
+    public function getUserIdentifier(): string
+    {
+        return $this->username;
+    }
+    
     /**
      * Set User name
      *
@@ -139,7 +145,7 @@ class User implements UserInterface
      *
      * @return string
      */
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -297,7 +303,7 @@ class User implements UserInterface
         return true;
     }
     
-    public function getSalt()
+    public function getSalt(): ?string
     {
         return null;
     }

@@ -12,7 +12,7 @@ use App\Entity\Admin\DriverType;
 
 class AppExtension extends AbstractExtension
 {
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('TagAreaName', [TagArea::class, 'getName']),
