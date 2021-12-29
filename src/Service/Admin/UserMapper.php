@@ -258,7 +258,7 @@ class UserMapper
         }
         
         // Encode password
-        $encoded = $this->encoder->encodePassword($newUser, $newUser->getPassword());
+        $encoded = $this->encoder->hashPassword($newUser, $newUser->getPassword());
         
         // Query
         $q = 'INSERT INTO app_users (username, password, email, userRole) VALUES(?, ?, ?, ?);';
@@ -385,7 +385,7 @@ class UserMapper
         
         if ($passwordChange) {
             // Encode new password
-            $encoded = $this->encoder->encodePassword($newUser, $newUser->getPassword());
+            $encoded = $this->encoder->hashPassword($newUser, $newUser->getPassword());
             
             $stmt->bindValue(1, $newUser->getUsername(), ParameterType::STRING);
             $stmt->bindValue(2, $encoded, ParameterType::STRING);

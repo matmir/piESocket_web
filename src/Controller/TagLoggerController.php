@@ -76,7 +76,7 @@ class TagLoggerController extends AbstractController
         $tagLogers = $tagLoggerMapper->getLoggers($area, $sort, $sortDESC, $paginator);
         
         // Store current url in session variable
-        $this->get('session')->set('tagLoggersListURL', $request->getUri());
+        $request->getSession()->set('tagLoggersListURL', $request->getUri());
         
         return $this->render('admin/tagsLogger/tagsLogger.html.twig', array(
             'loggers' => $tagLogers,
@@ -133,7 +133,7 @@ class TagLoggerController extends AbstractController
                 );
                 
                 // Get last Tags list url
-                $lastUrl = $this->get('session')->get('tagLoggersListURL', $this->generateUrl('admin_logger_list'));
+                $lastUrl = $request->getSession()->get('tagLoggersListURL', $this->generateUrl('admin_logger_list'));
 
                 return $this->redirect($lastUrl);
             } catch (AppException $ex) {
@@ -172,7 +172,7 @@ class TagLoggerController extends AbstractController
                 );
                 
                 // Get last Tags list url
-                $lastUrl = $this->get('session')->get('tagLoggersListURL', $this->generateUrl('admin_logger_list'));
+                $lastUrl = $request->getSession()->get('tagLoggersListURL', $this->generateUrl('admin_logger_list'));
 
                 return $this->redirect($lastUrl);
             } catch (AppException $ex) {
@@ -188,7 +188,7 @@ class TagLoggerController extends AbstractController
     /**
      * @Route("/admin/logger/delete/{loggerID}", name="admin_logger_delete")
      */
-    public function delete($loggerID, TagLoggerMapper $tagLoggerMapper)
+    public function delete($loggerID, TagLoggerMapper $tagLoggerMapper, Request $request)
     {
         // Delete logger
         $tagLoggerMapper->deleteLogger($loggerID);
@@ -199,7 +199,7 @@ class TagLoggerController extends AbstractController
         );
         
         // Get last Tags list url
-        $lastUrl = $this->get('session')->get('tagLoggersListURL', $this->generateUrl('admin_logger_list'));
+        $lastUrl = $request->getSession()->get('tagLoggersListURL', $this->generateUrl('admin_logger_list'));
 
         return $this->redirect($lastUrl);
     }
@@ -207,7 +207,7 @@ class TagLoggerController extends AbstractController
     /**
      * @Route("/admin/logger/enable/{loggerID}/{en}", name="admin_logger_enable")
      */
-    public function enable($loggerID, $en, TagLoggerMapper $tagLoggerMapper)
+    public function enable($loggerID, $en, TagLoggerMapper $tagLoggerMapper, Request $request)
     {
         if ($en < 0 || $en > 1) {
             $en = 0;
@@ -217,7 +217,7 @@ class TagLoggerController extends AbstractController
         $tagLoggerMapper->enableLogger($loggerID, $en);
         
         // Get last Tags list url
-        $lastUrl = $this->get('session')->get('tagLoggersListURL', $this->generateUrl('admin_logger_list'));
+        $lastUrl = $request->getSession()->get('tagLoggersListURL', $this->generateUrl('admin_logger_list'));
 
         return $this->redirect($lastUrl);
     }
