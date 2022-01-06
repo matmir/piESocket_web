@@ -45,6 +45,21 @@ class UserProvider implements UserProviderInterface
         
         return $user;
     }
+    
+    /**
+     * The loadUserByIdentifier() method was introduced in Symfony 5.3.
+     * In previous versions it was called loadUserByUsername()
+     *
+     * Symfony calls this method if you use features like switch_user
+     * or remember_me. If you're not using these features, you do not
+     * need to implement this method.
+     *
+     * @throws UserNotFoundException if the user is not found
+     */
+    public function loadUserByIdentifier(string $identifier): UserInterface
+    {
+        return $this->loadUserByUsername($identifier);
+    }
 
     /**
      * Refreshes the user after being reloaded from the session.
@@ -83,7 +98,7 @@ class UserProvider implements UserProviderInterface
     /**
      * Tells Symfony to use this provider for this User class.
      */
-    public function supportsClass($class)
+    public function supportsClass($class): bool
     {
         return User::class === $class;
     }

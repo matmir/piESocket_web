@@ -78,7 +78,7 @@ class TagController extends AbstractController
         $tags = $tagsMapper->getTags($area, $sort, $sortDESC, $paginator);
         
         // Store current url in session variable
-        $this->get('session')->set('tagsListURL', $request->getUri());
+        $request->getSession()->set('tagsListURL', $request->getUri());
         
         return $this->render('admin/tags/tags.html.twig', array(
             'tags' => $tags,
@@ -148,7 +148,7 @@ class TagController extends AbstractController
                 );
                 
                 // Get last Tags list url
-                $lastUrl = $this->get('session')->get('tagsListURL', $this->generateUrl('admin_tags_list'));
+                $lastUrl = $request->getSession()->get('tagsListURL', $this->generateUrl('admin_tags_list'));
 
                 return $this->redirect($lastUrl);
             } catch (AppException $ex) {
@@ -190,7 +190,7 @@ class TagController extends AbstractController
                 );
                 
                 // Get last Tags list url
-                $lastUrl = $this->get('session')->get('tagsListURL', $this->generateUrl('admin_tags_list'));
+                $lastUrl = $request->getSession()->get('tagsListURL', $this->generateUrl('admin_tags_list'));
 
                 return $this->redirect($lastUrl);
             } catch (AppException $ex) {
@@ -229,7 +229,7 @@ class TagController extends AbstractController
     /**
      * @Route("/admin/tags/delete/{tagID}", name="admin_tags_delete")
      */
-    public function delete($tagID, TagsMapper $tagsMapper)
+    public function delete($tagID, TagsMapper $tagsMapper, Request $request)
     {
         try {
             // Delete tag
@@ -244,7 +244,7 @@ class TagController extends AbstractController
         }
         
         // Get last Tags list url
-        $lastUrl = $this->get('session')->get('tagsListURL', $this->generateUrl('admin_tags_list'));
+        $lastUrl = $request->getSession()->get('tagsListURL', $this->generateUrl('admin_tags_list'));
 
         return $this->redirect($lastUrl);
     }
@@ -290,28 +290,37 @@ class TagController extends AbstractController
      * Prepare search reply array
      *
      * @param array $tags Reply array with tags
+     * @param string $tagName Tag name
      * @return array Reply array with tag types
      * @throws AppException
      */
-    private function prepareTagTypes(array $tags): array
+    private function prepareTagTypes(array $tags, string $tagName): array
     {
         $ret = array();
         $type = '';
+        $tag = 0;
         
-        // Get type only when one tag was found
-        if (count($tags) == 1) {
-            if (!($tags[0] instanceof Tag)) {
+        // Get one tag
+        for ($i = 0; $i < count($tags); ++$i) {
+            if (!($tags[$i] instanceof Tag)) {
                 throw new AppException('Tag search: Wrong Tag object in reply array!');
             }
             
-            if ($tags[0]->getType() == TagType::BIT) {
+            if ($tags[$i]->getName() == $tagName) {
+                $tag = $tags[$i];
+                break;
+            }
+        }
+        
+        if ($tag instanceof Tag) {
+            if ($tag->getType() == TagType::BIT) {
                 $type = 'Bit';
-            } elseif ($tags[0]->getType() == TagType::REAL) {
+            } elseif ($tag->getType() == TagType::REAL) {
                 $type = 'Real';
             } else {
                 $type = 'Numeric';
             }
-            
+
             // Add to the array
             array_push($ret, $type);
         }
@@ -349,7 +358,11 @@ class TagController extends AbstractController
                 $tags = $tagsMapper->searchTagsByName($data['tagName']);
                 
                 // Prepare reply
-                $reply = ($tagType == 0) ? ($this->prepareTagNames($tags)) : ($this->prepareTagTypes($tags));
+                if ($tagType == 0) {
+                    $reply = $this->prepareTagNames($tags);
+                } else {
+                    $reply = $this->prepareTagTypes($tags, $data['tagName']);
+                }
             } catch (AppException $ex) {
                 $error['state'] = true;
                 $error['msg'] = $ex->getMessage();

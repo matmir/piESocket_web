@@ -2,7 +2,7 @@
 
 namespace App\Service\Admin;
 
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -46,8 +46,8 @@ class AlarmMapper
         
         $statement = $this->dbConn->prepare($sql);
         
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         $ret = array();
         
@@ -131,8 +131,8 @@ class AlarmMapper
         
         $statement = $this->dbConn->prepare($sql);
         
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         $ret = array();
         
@@ -234,8 +234,8 @@ class AlarmMapper
             $statement->bindValue(1, $area, ParameterType::INTEGER);
         }
         
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         $ret = array();
         
@@ -318,8 +318,8 @@ class AlarmMapper
             $statement->bindValue(1, $area, ParameterType::INTEGER);
         }
         
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items) || count($items) != 1) {
             throw new Exception("Error during executing count query!");
@@ -346,8 +346,8 @@ class AlarmMapper
         
         $statement = $this->dbConn->prepare($sql);
         
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items) || count($items) != 1) {
             throw new Exception("Error during executing count query!");
@@ -377,9 +377,9 @@ class AlarmMapper
         
         $statement = $this->dbConn->prepare($sql);
         $statement->bindValue(1, $alarmId, ParameterType::INTEGER);
-        $statement->execute();
         
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items)) {
             throw new Exception("Alarm with identifier " . $alarmId . " does not exist!");
@@ -574,7 +574,10 @@ class AlarmMapper
         $sql .= ';';
         
         $statement = $this->dbConn->prepare($sql);
-        $statement->bindValue(1, $alarmId, ParameterType::INTEGER);
+        
+        if ($alarmId > 0) {
+            $statement->bindValue(1, $alarmId, ParameterType::INTEGER);
+        }
                 
         if (!$statement->execute()) {
             throw new Exception("Error during execute delete query!");

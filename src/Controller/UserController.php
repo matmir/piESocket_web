@@ -63,7 +63,7 @@ class UserController extends AbstractController
         $users = $userMapper->getUsers($sort, $sortDESC, $paginator);
         
         // Store current url in session variable
-        $this->get('session')->set('usersListURL', $request->getUri());
+        $request->getSession()->set('usersListURL', $request->getUri());
         
         return $this->render('admin/user/usersList.html.twig', array(
             'users' => $users,
@@ -130,7 +130,7 @@ class UserController extends AbstractController
                 );
                 
                 // Get last Tags list url
-                $lastUrl = $this->get('session')->get('userListURL', $this->generateUrl('admin_user_list'));
+                $lastUrl = $request->getSession()->get('userListURL', $this->generateUrl('admin_user_list'));
 
                 return $this->redirect($lastUrl);
             } catch (AppException $ex) {
@@ -169,7 +169,7 @@ class UserController extends AbstractController
                 );
                 
                 // Get last Tags list url
-                $lastUrl = $this->get('session')->get('userListURL', $this->generateUrl('admin_user_list'));
+                $lastUrl = $request->getSession()->get('userListURL', $this->generateUrl('admin_user_list'));
 
                 return $this->redirect($lastUrl);
             } catch (AppException $ex) {
@@ -185,7 +185,7 @@ class UserController extends AbstractController
     /**
      * @Route("/admin/user/delete/{userID}", name="admin_user_delete")
      */
-    public function delete($userID, UserMapper $userMapper)
+    public function delete($userID, UserMapper $userMapper, Request $request)
     {
         // Delete user
         $userMapper->deleteUser($userID);
@@ -196,7 +196,7 @@ class UserController extends AbstractController
         );
         
         // Get last Script list url
-        $lastUrl = $this->get('session')->get('userListURL', $this->generateUrl('admin_user_list'));
+        $lastUrl = $request->getSession()->get('userListURL', $this->generateUrl('admin_user_list'));
 
         return $this->redirect($lastUrl);
     }
@@ -204,7 +204,7 @@ class UserController extends AbstractController
     /**
      * @Route("/admin/user/enable/{userID}/{en}", name="admin_user_enable")
      */
-    public function enable($userID, $en, UserMapper $userMapper)
+    public function enable($userID, $en, UserMapper $userMapper, Request $request)
     {
         if ($en < 0 || $en > 1) {
             $en = 0;
@@ -214,7 +214,7 @@ class UserController extends AbstractController
         $userMapper->enableUser($userID, $en);
         
         // Get last Scrit list url
-        $lastUrl = $this->get('session')->get('userListURL', $this->generateUrl('admin_user_list'));
+        $lastUrl = $request->getSession()->get('userListURL', $this->generateUrl('admin_user_list'));
 
         return $this->redirect($lastUrl);
     }

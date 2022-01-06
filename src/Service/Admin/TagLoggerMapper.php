@@ -2,7 +2,7 @@
 
 namespace App\Service\Admin;
 
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -84,8 +84,8 @@ class TagLoggerMapper
             $statement->bindValue(1, $area, ParameterType::INTEGER);
         }
         
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         $ret = array();
         
@@ -143,8 +143,8 @@ class TagLoggerMapper
             $statement->bindValue(1, $area, ParameterType::INTEGER);
         }
         
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items) || count($items) != 1) {
             throw new Exception("Error during executing count query!");
@@ -174,9 +174,9 @@ class TagLoggerMapper
         
         $statement = $this->dbConn->prepare($sql);
         $statement->bindValue(1, $loggerId, ParameterType::INTEGER);
-        $statement->execute();
         
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items)) {
             throw new Exception("Logger with identifier " . $loggerId . " does not exist!");

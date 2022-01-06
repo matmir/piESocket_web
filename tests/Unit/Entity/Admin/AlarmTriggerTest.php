@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Entity\Admin;
+namespace App\Tests\Unit\Entity\Admin;
 
 use App\Entity\Admin\AlarmTrigger;
 use PHPUnit\Framework\TestCase;

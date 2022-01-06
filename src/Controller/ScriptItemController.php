@@ -78,7 +78,7 @@ class ScriptItemController extends AbstractController
         $scripts = $scriptMapper->getScripts($area, $sort, $sortDESC, $paginator);
         
         // Store current url in session variable
-        $this->get('session')->set('scriptListURL', $request->getUri());
+        $request->getSession()->set('ScriptListURL', $request->getUri());
         
         return $this->render('admin/script/scriptItem.html.twig', array(
             'scripts' => $scripts,
@@ -144,7 +144,7 @@ class ScriptItemController extends AbstractController
                 );
                 
                 // Get last Script list url
-                $lastUrl = $this->get('session')->get('ScriptListURL', $this->generateUrl('admin_script_list'));
+                $lastUrl = $request->getSession()->get('ScriptListURL', $this->generateUrl('admin_script_list'));
 
                 return $this->redirect($lastUrl);
             } catch (AppException $ex) {
@@ -193,7 +193,7 @@ class ScriptItemController extends AbstractController
                 );
                 
                 // Get last Script list url
-                $lastUrl = $this->get('session')->get('ScriptListURL', $this->generateUrl('admin_script_list'));
+                $lastUrl = $request->getSession()->get('ScriptListURL', $this->generateUrl('admin_script_list'));
 
                 return $this->redirect($lastUrl);
             } catch (AppException $ex) {
@@ -209,7 +209,7 @@ class ScriptItemController extends AbstractController
     /**
      * @Route("/admin/script/delete/{scriptID}", name="admin_script_delete")
      */
-    public function delete($scriptID, ScriptItemMapper $scriptMapper)
+    public function delete($scriptID, ScriptItemMapper $scriptMapper, Request $request)
     {
         // Delete script
         $scriptMapper->deleteScript($scriptID);
@@ -220,7 +220,7 @@ class ScriptItemController extends AbstractController
         );
         
         // Get last Script list url
-        $lastUrl = $this->get('session')->get('ScriptListURL', $this->generateUrl('admin_script_list'));
+        $lastUrl = $request->getSession()->get('ScriptListURL', $this->generateUrl('admin_script_list'));
 
         return $this->redirect($lastUrl);
     }
@@ -228,7 +228,7 @@ class ScriptItemController extends AbstractController
     /**
      * @Route("/admin/script/enable/{scriptID}/{en}", name="admin_script_enable")
      */
-    public function enable($scriptID, $en, ScriptItemMapper $scriptMapper)
+    public function enable($scriptID, $en, ScriptItemMapper $scriptMapper, Request $request)
     {
         if ($en < 0 || $en > 1) {
             $en = 0;
@@ -238,7 +238,7 @@ class ScriptItemController extends AbstractController
         $scriptMapper->enableScript($scriptID, $en);
         
         // Get last Scrit list url
-        $lastUrl = $this->get('session')->get('ScriptListURL', $this->generateUrl('admin_script_list'));
+        $lastUrl = $request->getSession()->get('ScriptListURL', $this->generateUrl('admin_script_list'));
 
         return $this->redirect($lastUrl);
     }

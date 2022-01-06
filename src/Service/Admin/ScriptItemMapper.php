@@ -2,7 +2,7 @@
 
 namespace App\Service\Admin;
 
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -88,8 +88,8 @@ class ScriptItemMapper
             $statement->bindValue(1, $area, ParameterType::INTEGER);
         }
         
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         $ret = array();
         
@@ -156,8 +156,8 @@ class ScriptItemMapper
             $statement->bindValue(1, $area, ParameterType::INTEGER);
         }
         
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items) || count($items) != 1) {
             throw new Exception("Error during executing count query!");
@@ -187,9 +187,9 @@ class ScriptItemMapper
         
         $statement = $this->dbConn->prepare($sql);
         $statement->bindValue(1, $scriptId, ParameterType::INTEGER);
-        $statement->execute();
         
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items)) {
             throw new Exception("Script item with identifier " . $scriptId . " does not exist!");
@@ -248,9 +248,9 @@ class ScriptItemMapper
         
         $statement = $this->dbConn->prepare($sql);
         $statement->bindValue(1, $scriptName, ParameterType::STRING);
-        $statement->execute();
         
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items)) {
             throw new Exception("Script item with name " . $scriptName . " does not exist!");
@@ -447,8 +447,8 @@ class ScriptItemMapper
         
         $statement->bindValue(1, $scriptName, ParameterType::STRING);
         
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items) || count($items) != 1) {
             throw new Exception("Error during executing count query!");

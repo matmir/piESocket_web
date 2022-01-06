@@ -2,11 +2,11 @@
 
 namespace App\Service\Admin;
 
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\Config\Definition\Exception\Exception;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use App\Entity\Admin\User;
 use App\Entity\Paginator;
@@ -21,13 +21,13 @@ class UserMapper
 {
     private Connection $dbConn;
     
-    private UserPasswordEncoderInterface $encoder;
+    private UserPasswordHasherInterface $encoder;
     
     private AuthorizationCheckerInterface $authChecker;
     
     public function __construct(
         Connection $connection,
-        UserPasswordEncoderInterface $enc,
+        UserPasswordHasherInterface $enc,
         AuthorizationCheckerInterface $aci
     ) {
         $this->dbConn = $connection;
@@ -81,8 +81,8 @@ class UserMapper
         
         $statement = $this->dbConn->prepare($sql);
                 
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         $ret = array();
         
@@ -116,8 +116,8 @@ class UserMapper
         
         $statement = $this->dbConn->prepare($sql);
                 
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items) || count($items) != 1) {
             throw new Exception("Error during executing count query!");
@@ -142,9 +142,9 @@ class UserMapper
         
         $statement = $this->dbConn->prepare('SELECT * FROM app_users u WHERE u.id = ?;');
         $statement->bindValue(1, $userId, ParameterType::INTEGER);
-        $statement->execute();
         
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items)) {
             throw new Exception("User with identifier " . $userId . " does not exist!");
@@ -180,9 +180,9 @@ class UserMapper
         
         $statement = $this->dbConn->prepare('SELECT * FROM app_users u WHERE u.username = ?;');
         $statement->bindValue(1, $userNm, ParameterType::STRING);
-        $statement->execute();
+        $results = $statement->execute();
         
-        $items = $statement->fetchAll();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items)) {
             throw new AppException(
@@ -224,8 +224,8 @@ class UserMapper
         
         $statement->bindValue(1, $user->getEmail(), ParameterType::STRING);
         
-        $statement->execute();
-        $items = $statement->fetchAll();
+        $results = $statement->execute();
+        $items = $results->fetchAllAssociative();
         
         if (empty($items) || count($items) != 1) {
             throw new Exception("Error during executing count query!");
@@ -258,7 +258,7 @@ class UserMapper
         }
         
         // Encode password
-        $encoded = $this->encoder->encodePassword($newUser, $newUser->getPassword());
+        $encoded = $this->encoder->hashPassword($newUser, $newUser->getPassword());
         
         // Query
         $q = 'INSERT INTO app_users (username, password, email, userRole) VALUES(?, ?, ?, ?);';
@@ -385,7 +385,7 @@ class UserMapper
         
         if ($passwordChange) {
             // Encode new password
-            $encoded = $this->encoder->encodePassword($newUser, $newUser->getPassword());
+            $encoded = $this->encoder->hashPassword($newUser, $newUser->getPassword());
             
             $stmt->bindValue(1, $newUser->getUsername(), ParameterType::STRING);
             $stmt->bindValue(2, $encoded, ParameterType::STRING);

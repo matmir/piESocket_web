@@ -43,7 +43,7 @@ class ClearScriptRunFlagCommand extends Command
         $this->addArgument('script', InputArgument::REQUIRED, 'Script name');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $ret = 0;
         

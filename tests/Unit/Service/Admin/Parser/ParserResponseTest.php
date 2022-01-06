@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Service\Admin\Parser;
+namespace App\Tests\Unit\Service\Admin\Parser;
 
 use App\Service\Admin\Parser\ParserCommands;
 use App\Service\Admin\Parser\ParserReplyCodes;
@@ -1152,7 +1152,7 @@ class ParserResponseTest extends TestCase
         $this->assertArrayHasKey('Logger', $val);
         $this->assertIsArray($val['Logger']);
         $this->assertArrayHasKey('LoggerWriter', $val);
-        $this->assertIsArray( $val['LoggerWriter']);
+        $this->assertIsArray($val['LoggerWriter']);
         $this->assertArrayHasKey('Alarming', $val);
         $this->assertIsArray($val['Alarming']);
         $this->assertArrayHasKey('Script', $val);

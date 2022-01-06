@@ -80,7 +80,7 @@ class AlarmController extends AbstractController
         $alarms = $alarmMapper->getAlarms($area, $sort, $sortDESC, $paginator);
         
         // Store current url in session variable
-        $this->get('session')->set('AlarmsListURL', $request->getUri());
+        $request->getSession()->set('AlarmListURL', $request->getUri());
         
         return $this->render('admin/alarm/alarmList.html.twig', array(
             'alarms' => $alarms,
@@ -163,7 +163,7 @@ class AlarmController extends AbstractController
                 );
                 
                 // Get last Tags list url
-                $lastUrl = $this->get('session')->get('AlarmListURL', $this->generateUrl('admin_alarm_list'));
+                $lastUrl = $request->getSession()->get('AlarmListURL', $this->generateUrl('admin_alarm_list'));
 
                 return $this->redirect($lastUrl);
             } catch (AppException $ex) {
@@ -208,7 +208,7 @@ class AlarmController extends AbstractController
                 );
                 
                 // Get last Tags list url
-                $lastUrl = $this->get('session')->get('AlarmListURL', $this->generateUrl('admin_alarm_list'));
+                $lastUrl = $request->getSession()->get('AlarmListURL', $this->generateUrl('admin_alarm_list'));
 
                 return $this->redirect($lastUrl);
             } catch (AppException $ex) {
@@ -225,7 +225,7 @@ class AlarmController extends AbstractController
     /**
      * @Route("/admin/alarm/delete/{alarmID}", name="admin_alarm_delete")
      */
-    public function delete($alarmID, AlarmMapper $alarmMapper)
+    public function delete($alarmID, AlarmMapper $alarmMapper, Request $request)
     {
         // Delete alarm
         $alarmMapper->deleteAlarm($alarmID);
@@ -236,7 +236,7 @@ class AlarmController extends AbstractController
         );
         
         // Get last Alarm list url
-        $lastUrl = $this->get('session')->get('AlarmListURL', $this->generateUrl('admin_alarm_list'));
+        $lastUrl = $request->getSession()->get('AlarmListURL', $this->generateUrl('admin_alarm_list'));
 
         return $this->redirect($lastUrl);
     }
@@ -244,7 +244,7 @@ class AlarmController extends AbstractController
     /**
      * @Route("/admin/alarm/enable/{alarmID}/{en}", name="admin_alarm_enable")
      */
-    public function enable($alarmID, $en, AlarmMapper $alarmMapper)
+    public function enable($alarmID, $en, AlarmMapper $alarmMapper, Request $request)
     {
         if ($en < 0 || $en > 1) {
             $en = 0;
@@ -254,7 +254,7 @@ class AlarmController extends AbstractController
         $alarmMapper->enableAlarm($alarmID, $en);
         
         // Get last Alarm list url
-        $lastUrl = $this->get('session')->get('AlarmListURL', $this->generateUrl('admin_alarm_list'));
+        $lastUrl = $request->getSession()->get('AlarmListURL', $this->generateUrl('admin_alarm_list'));
 
         return $this->redirect($lastUrl);
     }
@@ -365,7 +365,7 @@ class AlarmController extends AbstractController
         $alarms = $alarmMapper->getArchivedAlarms($sort, $sortDESC, $paginator);
         
         // Store current url in session variable
-        $this->get('session')->set('ArchivedAlarmsURL', $request->getUri());
+        $request->getSession()->set('ArchivedAlarmsURL', $request->getUri());
         
         return $this->render('admin/alarm/alarmArchived.html.twig', array(
             'alarms' => $alarms,

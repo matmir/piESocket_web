@@ -52,7 +52,7 @@ class ProcessReadCommand extends Command
         $this->addArgument('tag', InputArgument::REQUIRED, 'Tag name');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $ret = 0;
         try {

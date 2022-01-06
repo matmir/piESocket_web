@@ -40,7 +40,7 @@ class GenerateSudoersCommand extends Command
                 ->setHelp('This command generates sudoers premissions file.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $ret = 0;
         
