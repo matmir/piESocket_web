@@ -358,7 +358,11 @@ class TagController extends AbstractController
                 $tags = $tagsMapper->searchTagsByName($data['tagName']);
                 
                 // Prepare reply
-                $reply = ($tagType == 0) ? ($this->prepareTagNames($tags)) : ($this->prepareTagTypes($tags, $data['tagName']));
+                if ($tagType == 0) {
+                    $reply = $this->prepareTagNames($tags);
+                } else {
+                    $reply = $this->prepareTagTypes($tags, $data['tagName']);
+                }
             } catch (AppException $ex) {
                 $error['state'] = true;
                 $error['msg'] = $ex->getMessage();
